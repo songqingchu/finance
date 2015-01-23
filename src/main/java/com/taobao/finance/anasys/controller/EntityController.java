@@ -13,6 +13,8 @@ import com.taobao.finance.anasys.model.MyEntity;
 
 /**
  * Handles requests for the application home page.
+ * 
+ * hello
  */
 @Controller
 public class EntityController {
