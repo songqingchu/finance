@@ -19,6 +19,7 @@ public class EntityController {
 
 	private static final Logger logger = LoggerFactory.getLogger(EntityController.class);
 
+	private String a;
 	
 	@ModelAttribute("entity")
 	public MyEntity init(@PathVariable String id) {
