@@ -684,11 +684,7 @@ public class CheckUtil {
 		return false;
 	}
 
-	/**
-	 * 超级趋势
-	 * @param l
-	 * @return
-	 */
+
 	public static boolean checkBigTrend(List<Stock> l) {
 		if (l.size() < 100) {
 			return false;
@@ -698,7 +694,7 @@ public class CheckUtil {
 		List<Float> av10 = new ArrayList<Float>();
 		List<Float> av5 = new ArrayList<Float>();
 
-		for (int i = 1; i < 32; i++) {
+		for (int i = 1; i < 26; i++) {
 			Float today60 = getAve(l, 60, l.size() - i);	
 			Float today20 = getAve(l, 20, l.size() - i);		
 			Float today10 = getAve(l, 10, l.size() - i);
@@ -710,13 +706,13 @@ public class CheckUtil {
 		}
 
 		
-		Float r = (av10.get(0) - av10.get(30)) / 30;
+		Float r = (av10.get(0) - av10.get(24)) / 30;
 		int count60 = 0;
 		int count20 = 0;
         int count10=0;
         int cross=0;
         
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 24; i++) {
 			if (av60.get(i)> av60.get(i + 1)) {
 				count60++;
 			}
@@ -731,16 +727,16 @@ public class CheckUtil {
 			}
 		}
 
-		if (cross >5) {
+		if (cross >4) {
 			return false;
 		}
-		if (count60 < 21) {
+		if (count60 < 16) {
 			return false;
 		}
-		if (count20 < 25) {
+		if (count20 < 18) {
 			return false;
 		}
-		if (count10 < 27) {
+		if (count10 < 20) {
 			return false;
 		}
 		
@@ -756,13 +752,9 @@ public class CheckUtil {
 				angerCount10++;
 			}
 		}
-		
 		if (angerCount10>1) { 
 			return false; 
 		}
-		 
-
-
 		return true;
 	}
 
