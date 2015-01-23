@@ -27,7 +27,7 @@
 			var r = ec.init(document.getElementById('r_div'));
 			valueOption = {
 				title : {
-					text : '基准'
+					text : 'BASE'
 				},
 				tooltip : {
 					trigger : 'axis'
@@ -61,7 +61,7 @@
 				xAxis : [ {
 					type : 'category',
 					boundaryGap : false,
-					data : [ '周一', '周二', '周三', '周四', '周五', '周六', '周日' ]
+					data : [ ]
 				} ],
 				yAxis : [ {
 					type : 'value',
