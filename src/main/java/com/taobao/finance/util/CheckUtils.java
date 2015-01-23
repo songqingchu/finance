@@ -7,7 +7,7 @@ import com.taobao.finance.dataobject.Stock;
 
 
 /**
- * 微调参数，兼顾精确模型，以及不遗漏数据
+ * 微调参数，兼顾精确模型，以及不遗漏数据，增加校验
  * @author Administrator
  */
 public class CheckUtils {
