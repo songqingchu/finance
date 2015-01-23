@@ -11,21 +11,10 @@ import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.util.FetchUtil;
 
-/**
- * ������۹�ϵ��K����̬
- * 
- * @author Administrator
- * 
- */
 
 public class CheckUtil {
 
-	/**
-	 * ����Ƿ�һ��ƽ̨
-	 * 
-	 * @param l
-	 * @return
-	 */
+
 	public static boolean checkIsPlatform(List<Stock> l) {
 		if (l == null) {
 			return false;
@@ -56,12 +45,7 @@ public class CheckUtil {
 		return true;
 	}
 
-	/**
-	 * �������С��
-	 * 
-	 * @param l
-	 * @return
-	 */
+
 	public static List<Date> checkContinueLittleSun(List<Stock> l) {
 		List<Date> d = new ArrayList<Date>();
 		List<Date> d3 = check3ContinueLittleSun(l);
@@ -83,12 +67,7 @@ public class CheckUtil {
 		return d;
 	}
 
-	/**
-	 * ���������
-	 * 
-	 * @param l
-	 * @return
-	 */
+
 	public static List<Date> check3ContinueLittleSun(List<Stock> l) {
 		List<Date> d = new ArrayList<Date>();
 		if (l.size() < 8) {
@@ -121,9 +100,7 @@ public class CheckUtil {
 			Long v2 = tomorrow.getTradeNum();
 			Long v3 = tomorrow2.getTradeNum();
 
-			/**
-			 * ������
-			 */
+
 			if ((v1 + v2 + v3) / 3 >= total * 1.5 / 5) {
 				if (t3End > t3Begin && t2End > t2Begin && t1End > t1Begin) {
 					if (t3End > t2End && t2End > t1End) {
@@ -140,12 +117,7 @@ public class CheckUtil {
 		return d;
 	}
 
-	/**
-	 * ���������
-	 * 
-	 * @param l
-	 * @return
-	 */
+
 	public static List<Date> check2ContinueLittleSun(List<Stock> l) {
 		List<Date> d = new ArrayList<Date>();
 		if (l.size() < 7) {
@@ -173,9 +145,7 @@ public class CheckUtil {
 			Long v1 = today.getTradeNum();
 			Long v2 = tomorrow.getTradeNum();
 
-			/**
-			 * ������
-			 */
+
 			if ((v1 + v2) / 2 >= total * 1.5 / 5) {
 				if (t2End > t2Begin && t1End > t1Begin) {
 					if (t2End > t1End) {
@@ -192,12 +162,7 @@ public class CheckUtil {
 		return d;
 	}
 
-	/**
-	 * ���CLYģ��
-	 * 
-	 * @param l
-	 * @return
-	 */
+
 	public static boolean checkCLY(List<Stock> l) {
 		if (l.size() < 8) {
 			return false;
@@ -226,17 +191,13 @@ public class CheckUtil {
 		Long v2 = tomorrow.getTradeNum();
 		Long v3 = tomorrow2.getTradeNum();
 
-		/**
-		 * ������
-		 */
+
 		if (t3End > t3Begin && t2End > t2Begin && t1End > t1Begin) {
 			if (t3End > t2End && t2End > t1End) {
 				if (v1 < v2 && v1 < v3) {
 					if (t3End / t1Begin > 1.03 && t3End / t1Begin < 1.09) {
 
-						/**
-						 * ����ģ�Ͳ������ɽ���
-						 */
+
 						/*
 						 * Integer total=0; for(int i=4;i<10;i++){
 						 * total=total+l.get(l.size()-i).getTradeNum(); }
@@ -245,9 +206,7 @@ public class CheckUtil {
 						Float rrr1 = t1End / t0End;
 						Float rrr2 = t2End / t1End;
 						Float rrr3 = t3End / t2End;
-						/**
-						 * �����Ƿ���-2.5~2.5 �����Ƿ���0~3 �����Ƿ���0~5
-						 */
+
 						if (rrr1 < 1.025 && rrr1 > 0.975) {
 							if (rrr2 < 1.03 && rrr2 > 1.00) {
 								if (rrr3 < 1.05 && rrr3 > 1.00) {
@@ -260,9 +219,7 @@ public class CheckUtil {
 				}
 			}
 		}
-		/**
-		 * ������
-		 */
+
 		if (t3End > t3Begin && t2End > t2Begin) {
 			if (t3End > t2End) {
 				if (v1 < v2 && v2 < v3) {
@@ -276,9 +233,7 @@ public class CheckUtil {
 						}
 						Float rrr1 = t1End / t0End;
 						Float rrr2 = t2End / t1End;
-						/**
-						 * �����Ƿ���-2.5~2.5 �����Ƿ���1~5
-						 */
+
 						if (rrr1 < 1.03 && rrr1 > 0.975) {
 							if (rrr2 < 1.05 && rrr2 > 1.01) {
 								return true;
@@ -335,13 +290,7 @@ public class CheckUtil {
 		return false;
 	}
 
-	/**
-	 * ��鱶��ģ��
-	 * 
-	 * @param today
-	 * @param tomorow
-	 * @return
-	 */
+
 	public static boolean checkBV(Stock today, Stock tomorow) {
 		Float t1End = Float.parseFloat(today.getEndPrice());
 		Float t2End = Float.parseFloat(tomorow.getEndPrice());
@@ -350,16 +299,12 @@ public class CheckUtil {
 		Long v2 = tomorow.getTradeNum();
 
 		Float r = t2End / t1End;
-		/**
-		 * �Ƿ�����2.5������������ѡ��������
-		 */
+
 		if (r < 1.03) {
 			return false;
 		}
 
-		/**
-		 * 1.6������
-		 */
+
 		Float vrate = r * v2.floatValue() / v1.floatValue();
 		tomorow.setVrate(vrate);
 		if (v1 * 2 < v2) {
@@ -482,12 +427,7 @@ public class CheckUtil {
 		return false;
 	}
 
-	/**
-	 * �����߲���
-	 * 
-	 * @param l
-	 * @return
-	 */
+
 	public static boolean checkAve(List<Stock> l) {
 		if (l.size() < 20) {
 			return false;
@@ -1016,6 +956,11 @@ public class CheckUtil {
 		return true;
 	}
 
+	
+	
+	
+	
+	
 	public static boolean checkWave(List<Stock> l, Float rate, int av10t,
 			int av20t) {
 		if (l.size() < 50) {
