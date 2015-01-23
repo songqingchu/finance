@@ -23,6 +23,8 @@ public class EntityController {
 
 	private String a;
 	
+	private String b;
+	
 	@ModelAttribute("entity")
 	public MyEntity init(@PathVariable String id) {
 		return null;
