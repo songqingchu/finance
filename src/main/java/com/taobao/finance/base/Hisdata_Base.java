@@ -22,9 +22,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang3.StringUtils;
 
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 import com.taobao.finance.fetch.impl.Fetch_StockHistory;
-import com.taobao.finance.fetch.stock.Fetch_AllStock;
 import com.taobao.finance.util.FetchUtil;
 
 /**

@@ -11,7 +11,7 @@ import java.util.Map;
 
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.dataobject.Stock;
-import com.taobao.finance.fetch.stock.Fetch_AllStock;
+import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.util.CheckUtil;
 
 public class Base_Choose implements Choose{
@@ -25,7 +25,7 @@ public class Base_Choose implements Choose{
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
 			
-			//System.out.println("´¦Àí£º" + i);
+			//System.out.println("ï¿½ï¿½ï¿½?" + i);
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if(history==null){
 				continue;
@@ -67,7 +67,7 @@ public class Base_Choose implements Choose{
 			if(s.getCode().equals("002382")){
 				s.getCode();
 			}
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if(history==null){
 				continue;
@@ -95,7 +95,7 @@ public class Base_Choose implements Choose{
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
 			
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if(history==null){
 				continue;
@@ -123,7 +123,7 @@ public class Base_Choose implements Choose{
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
 			
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if(history==null){
 				continue;
@@ -151,7 +151,7 @@ public class Base_Choose implements Choose{
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
 			
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if(history==null){
 				continue;
@@ -179,7 +179,7 @@ public class Base_Choose implements Choose{
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
 			
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if(history==null){
 				continue;
@@ -205,7 +205,7 @@ public class Base_Choose implements Choose{
         List<Stock> l=new ArrayList<Stock>();
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if(history==null){
 				continue;
@@ -232,7 +232,7 @@ public class Base_Choose implements Choose{
         List<Stock> l=new ArrayList<Stock>();
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if(history==null){
 				continue;
@@ -268,7 +268,7 @@ public class Base_Choose implements Choose{
         List<Stock> l=new ArrayList<Stock>();
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			String symbol = s.getSymbol();
 			if(s.getCode().equals("000519")){
 				l.size();
@@ -297,7 +297,7 @@ public class Base_Choose implements Choose{
         List<Stock> l=new ArrayList<Stock>();
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			String symbol = s.getSymbol();
 			List<Stock> history=prepareData(symbol, null);
 			if(history==null){
@@ -341,7 +341,7 @@ public class Base_Choose implements Choose{
 		for (Stock st : l) {
 			System.out.println(st.getCode());
 		}
-		System.out.print("\n¹²¼Æ£º"+l.size());
+		System.out.print("\nï¿½ï¿½ï¿½Æ£ï¿½"+l.size());
 	}
 
 	@Override
@@ -358,7 +358,7 @@ public class Base_Choose implements Choose{
         List<Stock> l=new ArrayList<Stock>();
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			String symbol = s.getSymbol();
 			List<Stock> history=prepareData(symbol, null);
 			if(history==null){
@@ -383,7 +383,7 @@ public class Base_Choose implements Choose{
         List<Stock> l=new ArrayList<Stock>();
 		Collection<Stock> ss = allMap.values();
 		for (Stock s : ss) {
-			System.out.println("´¦Àí£º" + i);
+			System.out.println("ï¿½ï¿½ï¿½?" + i);
 			String symbol = s.getSymbol();
 			List<Stock> history=prepareData(symbol, null);
 			if(history==null){

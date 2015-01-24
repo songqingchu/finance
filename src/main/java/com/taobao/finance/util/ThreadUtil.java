@@ -1,12 +1,10 @@
 package com.taobao.finance.util;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import com.taobao.finance.dataobject.Stock;
-import com.taobao.finance.fetch.stock.Fetch_AllStock;
+import com.taobao.finance.fetch.impl.Fetch_AllStock;
 
 public class ThreadUtil {
 

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.taobao.finance.dataobject.Stock;
-import com.taobao.finance.fetch.stock.Fetch_AllStock;
+import com.taobao.finance.fetch.impl.Fetch_AllStock;
 
 public class VGolden_Recent_Anasys {
 	
