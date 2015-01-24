@@ -109,7 +109,7 @@ public class Fetch_StockHistory {
 	 */
 	public static List<Stock> fetch3(String code) {
 		List<Stock> s=new ArrayList<Stock>();
-		for(int j=1;j<5;j++){
+		for(int j=1;j<8;j++){
 			Map<String,String> params=prepareParams(code,j);
 			String url=toUrl(params);
 			url=code+"&"+url;
@@ -126,7 +126,7 @@ public class Fetch_StockHistory {
 	public static Map<String,String> prepareParams(String code,int page){
 		Map<String,String> param=new HashMap<String,String>();
 		Calendar start=Calendar.getInstance();
-		start.add(Calendar.MONTH, -5);
+		start.add(Calendar.MONTH, -10);
 		Calendar end=Calendar.getInstance();
 	
 		param.put("start_year",start.get(Calendar.YEAR)+"");

@@ -350,7 +350,6 @@ public class Hisdata_Base {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("---------����������ʷ�������---------");
 	}
 	
 	

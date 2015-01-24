@@ -23,7 +23,17 @@ public class CheckAll {
 	    	c.check(symbol);
 	    }
 	}
+	public static String fullName(String code){
+		if(code.startsWith("300")||code.startsWith("00")){
+			code="sz"+code;
+		}else{
+			code="sh"+code;
+		}
+		return code;
+	}
+	
 	public static void main(String args[]){
-		check("sh600213");
+		String symbol=fullName("002160");
+		check(symbol);
 	}
 }

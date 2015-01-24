@@ -19,6 +19,6 @@ public class Check_BigTrend extends Check{
 
 	@Override
 	public void printName() {
-		System.out.println(this.name+"--------------------");
+		System.out.println(this.name+"----------------");
 	}
 }

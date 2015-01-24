@@ -1,15 +1,9 @@
 package com.taobao.finance.filter;
 
-import java.util.Comparator;
-
 import com.taobao.finance.dataobject.Stock;
 
 public class Filter {
 
-	/**
-	 * ÆÕÍ¨Ä£ÐÍ
-	 * @author songhong.ljy
-	 */
 	public static class NormalFilter implements com.taobao.finance.filter2.Filter{
 		@Override
 		public boolean filter(Stock s) {
