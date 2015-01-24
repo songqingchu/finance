@@ -12,13 +12,12 @@ public class Check_AV20 extends Check{
 	public boolean match(List<Stock> history) {
 		return CheckUtil.checkAV20XRate(history);
 	}
-
-	public static void main(String args[]){
-		new Check_AV5().check("sh600213");
-	}
-
 	@Override
 	public void printName() {
 		System.out.println(this.name+"--------------------");
+	}
+	
+	public static void main(String args[]){
+		new Check_AV20().check("sh600213");
 	}
 }

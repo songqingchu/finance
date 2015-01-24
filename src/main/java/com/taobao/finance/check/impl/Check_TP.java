@@ -12,13 +12,12 @@ public class Check_TP extends Check{
 	public boolean match(List<Stock> history) {
 		return CheckUtil.checkTP(history);
 	}
-
-	public static void main(String args[]){
-		new Check_AV5().check("sh600213");
-	}
-
 	@Override
 	public void printName() {
 		System.out.println(this.name+"----------------------");
+	}
+	
+	public static void main(String args[]){
+		new Check_TP().check("sh600213");
 	}
 }

@@ -1019,21 +1019,31 @@ public class CheckUtil {
 	}
 
 	/**
-	 * 
+	 * AVCU用于发现起涨的早期阶段，以四日形态为特征
+	 * 1   十日涨幅不大于20
+	 * 2   股价应比倒数第四日，倒数第二日高
+	 * 3   单日涨幅不能大于5，不能小于2
+	 * 4  上涨日期不能小于3
+	 * 5  下跌日期不能大于1
+	 * 6  四日涨幅不能大于8
 	 * @param l
 	 * @return
 	 */
 	public static boolean checkAVCU(List<Stock> l) {
 		if (l.size() < 26) {
-			return false;
-		}
-		Float p10 = Float.parseFloat(l.get(l.size() - 15).getEndPrice());
+			return false; 
+		}		
+		Float p10 = Float.parseFloat(l.get(l.size() - 10).getEndPrice());
 		Float e = Float.parseFloat(l.get(l.size() - 1).getEndPrice());
 		Float e2 = Float.parseFloat(l.get(l.size() - 2).getEndPrice());
 		Float e4 = Float.parseFloat(l.get(l.size() - 4).getEndPrice());
-		if (e / p10 > 1.15F) {
+		Float r10=e/p10;
+	    
+		//case1
+		if (r10 > 1.20F) {
 			return false;
 		}
+		//case2
 		if (e2 > e) {
 			return false;
 		}
@@ -1045,10 +1055,11 @@ public class CheckUtil {
 		List<Float> av5 = new ArrayList<Float>();
 		List<Float> av10 = new ArrayList<Float>();
 
+		
 		Float begin = 0F;
 		Float end = 0F;
-		int count = 0;
-		int count2 = 0;
+		int downCount = 0;
+		int upCount = 0;
 		for (int i = 5; i > 1; i--) {
 			Float today = Float.parseFloat(l.get(l.size() - i).getEndPrice());
 			Float tomorrow = Float.parseFloat(l.get(l.size() - i + 1)
@@ -1064,52 +1075,56 @@ public class CheckUtil {
 				return false;
 			}
 			if (r > 1F) {
-				count2++;
+				upCount++;
 			}
 			if (r < 1F && r >= 0.98F) {
-				count++;
+				downCount++;
 			}
 			if (r < 0.98F) {
 				return false;
 			}
 		}
-		if (count > 1) {
+		//case4
+		if (downCount > 1) {
 			return false;
 		}
-		if (count2 < 3) {
+		//case5
+		if (upCount < 3) {
 			return false;
 		}
-		if (end / begin > 1.07F) {
+	    //case6
+		if (end / begin > 1.08F) {
 			return false;
 		}
 
 		boolean match = true;
 
 		for (int i = 0; i < 15; i++) {
-			Float today5 = getAve(l, 5);
-			Float today10 = getAve(l, 10);
+			Float today5 = getAve(l, 5, l.size()-i-1);
+			Float today10 = getAve(l, 10, l.size()-i-1);
 			av5.add(today5);
 			av10.add(today10);
-			l.remove(l.size() - 1);
+		//	l.remove(l.size() - 1);
 		}
 
 		Collections.reverse(av5);
 		Collections.reverse(av10);
 
-		int count5d = 0;
+		//case7 近八日中 五日均线逆反次数
+		int reverse5 = 0;
 		int last = -1;
 		for (int i = 6; i < 14; i++) {
 			if (av5.get(i) > av5.get(i + 1)) {
 				if (last == -1 || last == i - 1) {
-					count5d++;
+					reverse5++;
 					last = i;
 				} else {
-					count5d = 1;
+					reverse5 = 1;
 					last = i;
 				}
 			}
 		}
-		if (count5d > 3) {
+		if (reverse5 > 3) {
 			return false;
 		}
 
@@ -1132,15 +1147,13 @@ public class CheckUtil {
 			if (today10 > tomorrow5) {
 				count5BigCount10++;
 			}
-			if (!match) {
-				return false;
-			}
-
 		}
+		//case 五日均线 十日均线逆反次数
 		if (count5 + count10 >= 4) {
 			return false;
 		}
-		if (count5BigCount10 >= 4) {
+		//case 10日均线上穿5日均线次数
+		if (count5BigCount10 >= 2) {
 			return false;
 		}
 

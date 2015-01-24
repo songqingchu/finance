@@ -154,11 +154,11 @@ public class Fetch_StockHistory {
 	
 	public static void main(String args[]) {
 
-		List<Stock> history=Fetch_StockHistory.fetch3("sh000001");
+		List<Stock> history=Fetch_StockHistory.fetch3("sh600352");
         Collections.reverse(history);
-        Hisdata_Base.save("sh000001",history);
+        Hisdata_Base.save("sh600352",history);
         
-        history=Fetch_StockHistory.fetch3("sz399001");
+        /*history=Fetch_StockHistory.fetch3("sz399001");
         Collections.reverse(history);
         Hisdata_Base.save("sz399001",history);
         
@@ -168,7 +168,7 @@ public class Fetch_StockHistory {
         
         history=Fetch_StockHistory.fetch3("sz399101");
         Collections.reverse(history);
-        Hisdata_Base.save("sz399101",history);
+        Hisdata_Base.save("sz399101",history);*/
         
 	}
 

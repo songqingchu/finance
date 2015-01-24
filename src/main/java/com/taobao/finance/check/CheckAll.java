@@ -12,6 +12,7 @@ import com.taobao.finance.check.impl.Check_TP;
 
 public class CheckAll {	
 	public static void check(String symbol){
+		
 	    List<Check> l=new ArrayList<Check>();
 	    l.add(new Check_AV5());
 	    l.add(new Check_AV10());
@@ -23,17 +24,9 @@ public class CheckAll {
 	    	c.check(symbol);
 	    }
 	}
-	public static String fullName(String code){
-		if(code.startsWith("300")||code.startsWith("00")){
-			code="sz"+code;
-		}else{
-			code="sh"+code;
-		}
-		return code;
-	}
+	
 	
 	public static void main(String args[]){
-		String symbol=fullName("600213");
-		check(symbol);
+		check("600208");
 	}
 }
