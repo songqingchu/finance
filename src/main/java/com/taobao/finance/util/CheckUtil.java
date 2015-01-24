@@ -1050,6 +1050,9 @@ public class CheckUtil {
 		if (e4 > e) {
 			return false;
 		}
+		if (e/e4<1.02F) {
+			return false;
+		}
 		
 
 		List<Float> av5 = new ArrayList<Float>();

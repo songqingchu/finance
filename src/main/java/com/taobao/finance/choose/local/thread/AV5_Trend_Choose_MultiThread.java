@@ -61,7 +61,7 @@ class AV5_Trend_Task implements Callable<List<Stock>> {
 			if (history.size() < 2) {
 				continue;
 			}
-			boolean match = CheckUtils.check5(history,1.20F, 15, 11,11, 7);
+			boolean match = CheckUtils.check5(history,1.20F, 15, 11,10, 7);
 			//boolean match = CheckUtil.checkAV20Trend(l, 1.20F, 11, 8,6, 4);
 			if (match) {
 				s.setVrate(history.get(history.size() - 1).getVrate());

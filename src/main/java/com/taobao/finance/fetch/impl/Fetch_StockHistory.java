@@ -47,7 +47,7 @@ public class Fetch_StockHistory {
 	 */
 	public static List<Stock> fetch(String code) {
 		HttpClient client = new HttpClient();
-		List<Stock> s = null;
+		List<Stock> s = new ArrayList<Stock>();
 		String newUrl = getUrl(code);
 		if(code.contains("000001")){
 			code.length();
