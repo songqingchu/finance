@@ -33,7 +33,7 @@ public class CheckAll {
 	}
 	
 	public static void main(String args[]){
-		String symbol=fullName("002160");
+		String symbol=fullName("600213");
 		check(symbol);
 	}
 }
