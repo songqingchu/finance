@@ -15,7 +15,7 @@ import com.taobao.finance.util.FetchUtil;
 
 
 /**
- * ×¥È¡ÈÚÈ¯±êµÄ
+ * ×¥È¡ï¿½ï¿½È¯ï¿½ï¿½ï¿½
  * @author songhong.ljy
  */
 public class Fetch_SecuritiesLoan {
@@ -46,7 +46,7 @@ public class Fetch_SecuritiesLoan {
 	}
 	
 	/**
-	 * ×¥È¡Êý¾Ý
+	 * ×¥È¡ï¿½ï¿½ï¿½
 	 * @param url
 	 * @return
 	 */
@@ -73,7 +73,7 @@ public class Fetch_SecuritiesLoan {
 	}
 	
 	/**
-	 * ×¥È¡ÖÐÐÅÈÚÈ¯±êµÄ¹ÉÆ±
+	 * ×¥È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¯ï¿½ï¿½Ä¹ï¿½Æ±
 	 * @param url
 	 * @return
 	 */
@@ -102,7 +102,7 @@ public class Fetch_SecuritiesLoan {
 	
 
     /**
-     * ×¥È¡½ñÌìµÄÍ³¼ÆÊý¾Ý
+     * ×¥È¡ï¿½ï¿½ï¿½ï¿½ï¿½Í³ï¿½ï¿½ï¿½ï¿½ï¿½
      * @return
      */
     public static List<String> fetchRonqquan(){
@@ -147,7 +147,7 @@ public class Fetch_SecuritiesLoan {
     
 
 	public static void main(String args[]){
-		List<String> a=fetchRonqquan();
+		//List<String> a=fetchRonqquan();
 		//FetchUtil.save(FetchUtil.FILE_STOCK_ANASYS_BASE+FetchUtil.FILE_RONGQUAN, a);
 	}
 }
