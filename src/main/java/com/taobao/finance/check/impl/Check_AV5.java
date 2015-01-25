@@ -11,7 +11,7 @@ public class Check_AV5 extends Check{
 	public String name="AV5";
 	@Override
 	public boolean match(List<Stock> l) {
-		return CheckUtils.check5(l,1.20F, 15, 11,11, 7);
+		return CheckUtils.check5(l,1.25F, 15, 11,11, 7);
 	}
 	@Override
 	public void printName() {
@@ -19,6 +19,6 @@ public class Check_AV5 extends Check{
 	}
 	
 	public static void main(String args[]){
-		new Check_AV5().check("sh600213");
+		new Check_AV5().check("600735");
 	}
 }

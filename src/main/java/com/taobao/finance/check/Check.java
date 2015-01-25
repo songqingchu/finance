@@ -16,6 +16,9 @@ public abstract class Check {
 		List<Date> dl=new ArrayList<Date>();
 		List<Stock> l=Hisdata_Base.readHisDataMerge(symbol, null);
 		for(int i=0;i<150;i++){
+			if(l.size()-1<0){
+				break;
+			}
 			String s=FetchUtil.FILE_FORMAT.format(l.get(l.size()-1).getDate());
 			//System.out.println(s);
 			if(s.contains("2015.01.12")){

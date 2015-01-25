@@ -60,6 +60,11 @@ public class Fetch_AllStock {
 		}*/
 		List<Stock> l=fetch();
 		save(l);
+		Map<String,Stock> m=new HashMap<String,Stock>();
+		for(Stock s:l){
+			m.put(s.getSymbol(), s);
+		}
+		map=m;
 	}
 	
 	

@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -331,15 +332,40 @@ public class Hisdata_Base {
 		System.out.println("---------������ʷ�������---------");
 	}
 	
-	/**
-	 * ��������
-	 */
-	public static void updateDataHistoryData(){
+	public static void updateDataHistoryAll(){
+		Fetch_AllStock.getData();
 		Map<String,Stock> allMap=Fetch_AllStock.map;
+		updateDataHistoryDelta();
+		updateDataHistoryData(allMap,false);
+	}
+
+	public static void updateDataHistoryDelta(){
+		Map<String,Stock> allMap=Fetch_AllStock.map;
+		Map<String,Stock> newMap=new HashMap<String,Stock>();
+		Map<String,Stock> map=new HashMap<String,Stock>();
+		File f=new File(FetchUtil.FILE_STOCK_HISTORY_BASE);
+		String files[]=f.list();
+		for(String file:files){
+			file=file.replace(".txt", "");
+			map.put(file, null);
+		}
+		for(String s:allMap.keySet()){
+			if(!map.containsKey(s)){
+				Stock ss=new Stock();
+				ss.setSymbol(s);
+				newMap.put(s, ss);
+			}
+		}
+		updateDataHistoryData(newMap,true);
+	}
+	
+
+	public static void updateDataHistoryData(Map<String,Stock> map,boolean longTime){
+		Map<String,Stock> allMap=map;
 		List<List<Stock>> r=divide(allMap, 16);
 		List<Thread> lt=new ArrayList<Thread>();
 		for(int i=0;i<r.size();i++){
-			Thread t=new HisDataTask(r.get(i));
+			Thread t=new HisDataTask(r.get(i),longTime);
 			t.start();
 			lt.add(t);
 		}
@@ -357,8 +383,10 @@ public class Hisdata_Base {
 	
 	static class HisDataTask extends Thread{
 		private List<Stock> list;
-		public HisDataTask(List<Stock> list){
+		private boolean longTime;
+		public HisDataTask(List<Stock> list,boolean longTime){
 			this.list=list;
+			this.longTime=longTime;
 		}
 		
 		public void run(){
@@ -367,7 +395,12 @@ public class Hisdata_Base {
 	    		if(symbol.contains("sh000001")){
 	    			symbol.length();
 	    		}
-	    		List<Stock> history=Fetch_StockHistory.fetch(symbol);
+	    		List<Stock> history=null;
+	    		if(longTime){
+	    			history=Fetch_StockHistory.fetch3(symbol);
+	    		}else{
+	    			history=Fetch_StockHistory.fetch(symbol);
+	    		}
 	    		if(history==null){
 	              continue;    			
 	    		}

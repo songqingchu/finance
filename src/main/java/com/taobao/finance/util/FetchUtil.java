@@ -176,6 +176,7 @@ public class FetchUtil {
 	// "/home/songhong.ljy/finance/statis/";
 
 	public static String FILE_STOCK_ANASYS_BASE = "E:\\stock\\anasys\\";
+	public static String FILE_STOCK_HISTORY_BASE = "E:\\stock\\history\\";
 	public static String FILE_STOCK_STATIS_BASE = "E:\\stock\\statis\\";
 
 	public static int DATE_FORMAT_TYPE_COMPU_WRITE = 1;

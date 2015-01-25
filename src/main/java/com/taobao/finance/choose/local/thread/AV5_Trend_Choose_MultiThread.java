@@ -51,7 +51,7 @@ class AV5_Trend_Task implements Callable<List<Stock>> {
 	public List<Stock> call() throws Exception {
 		List<Stock> l = new ArrayList<Stock>();
 		for (Stock s : this.l) {
-			if(s.getCode().equals("002215")){
+			if(s.getSymbol().contains("300405")){
 				s.get_10changes();
 			}
 			List<Stock> history = prepareData(s.getSymbol(), null);
@@ -61,8 +61,7 @@ class AV5_Trend_Task implements Callable<List<Stock>> {
 			if (history.size() < 2) {
 				continue;
 			}
-			boolean match = CheckUtils.check5(history,1.20F, 15, 11,10, 7);
-			//boolean match = CheckUtil.checkAV20Trend(l, 1.20F, 11, 8,6, 4);
+			boolean match = CheckUtils.check5(history,1.20F, 13, 11,9, 4);
 			if (match) {
 				s.setVrate(history.get(history.size() - 1).getVrate());
 				l.add(s);
