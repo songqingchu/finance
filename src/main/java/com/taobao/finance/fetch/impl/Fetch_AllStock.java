@@ -64,6 +64,15 @@ public class Fetch_AllStock {
 		for(Stock s:l){
 			m.put(s.getSymbol(), s);
 		}
+		Stock ss=new Stock();
+		ss.setSymbol("sh000001");
+		ss.setName("上证指数");
+		m.put(ss.getSymbol(), ss);
+		
+		ss=new Stock();
+		ss.setSymbol("sz399001");
+		ss.setName("深证成指");
+		m.put(ss.getSymbol(), ss);
 		map=m;
 	}
 	

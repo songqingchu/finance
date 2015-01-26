@@ -23,6 +23,7 @@ public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
+
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	@ResponseBody
@@ -34,6 +35,7 @@ public class HomeController {
 		map.put("mine", m.get("mine"));
 		map.put("sh", m.get("sh"));
 		map.put("sz", m.get("sz"));
+		
 		return map;
 	}
 

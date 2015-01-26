@@ -335,6 +335,9 @@ public class Hisdata_Base {
 	public static void updateDataHistoryAll(){
 		Fetch_AllStock.getData();
 		Map<String,Stock> allMap=Fetch_AllStock.map;
+		
+		
+		
 		updateDataHistoryDelta();
 		updateDataHistoryData(allMap,false);
 	}
@@ -356,6 +359,12 @@ public class Hisdata_Base {
 				newMap.put(s, ss);
 			}
 		}
+		Stock ss=new Stock();
+		ss.setSymbol("sh000001");
+		ss.setName("上证指数");
+		newMap.put(ss.getSymbol(), ss);
+		
+		
 		updateDataHistoryData(newMap,true);
 	}
 	
@@ -459,6 +468,7 @@ public class Hisdata_Base {
     	
     }
 	public static void updateDataHistoryDataUnFormal(){
+		Fetch_AllStock.getData();
 		Map<String,Stock> allMap=Fetch_AllStock.map;
 		List<List<Stock>> r=divide(allMap, 30);
 		List<Thread> lt=new ArrayList<Thread>();
@@ -467,13 +477,6 @@ public class Hisdata_Base {
     		t.start();
     		lt.add(t);
 		}
-		/*for(Thread t:lt){
-			try {
-				t.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}*/
 	}
 	
 	
