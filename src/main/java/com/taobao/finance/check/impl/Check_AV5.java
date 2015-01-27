@@ -19,6 +19,6 @@ public class Check_AV5 extends Check{
 	}
 	
 	public static void main(String args[]){
-		new Check_AV5().check("600735");
+		new Check_AV5().check("600875");
 	}
 }

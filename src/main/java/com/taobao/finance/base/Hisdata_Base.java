@@ -307,6 +307,7 @@ public class Hisdata_Base {
 		s.setLowPrice(ss[2]);
 		s.setEndPrice(ss[3]);
 		s.setTradeNum(Long.parseLong(ss[4]));
+		s.setDate(new Date());
 		return s;
 	}
 	
@@ -335,9 +336,6 @@ public class Hisdata_Base {
 	public static void updateDataHistoryAll(){
 		Fetch_AllStock.getData();
 		Map<String,Stock> allMap=Fetch_AllStock.map;
-		
-		
-		
 		updateDataHistoryDelta();
 		updateDataHistoryData(allMap,false);
 	}
