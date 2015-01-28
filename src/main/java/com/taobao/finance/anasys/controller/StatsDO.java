@@ -15,8 +15,11 @@ public class StatsDO {
 	public Integer back=0;
 	public Double v=null;
 	
-	public Integer yCount;
-	public Integer sCount;
+	public Integer ayCount;
+	public Integer asCount;
+	public Integer nyCount;
+	public Integer nsCount;
+	
 	
 	public Double aY;
 	public Double aS;
@@ -30,17 +33,29 @@ public class StatsDO {
 	public static void setF(DecimalFormat f) {
 		StatsDO.f = f;
 	}
-	public Integer getyCount() {
-		return yCount;
+	public Integer getAyCount() {
+		return ayCount;
 	}
-	public void setyCount(Integer yCount) {
-		this.yCount = yCount;
+	public void setAyCount(Integer ayCount) {
+		this.ayCount = ayCount;
 	}
-	public Integer getsCount() {
-		return sCount;
+	public Integer getAsCount() {
+		return asCount;
 	}
-	public void setsCount(Integer sCount) {
-		this.sCount = sCount;
+	public void setAsCount(Integer asCount) {
+		this.asCount = asCount;
+	}
+	public Integer getNyCount() {
+		return nyCount;
+	}
+	public void setNyCount(Integer nyCount) {
+		this.nyCount = nyCount;
+	}
+	public Integer getNsCount() {
+		return nsCount;
+	}
+	public void setNsCount(Integer nsCount) {
+		this.nsCount = nsCount;
 	}
 	public Double getaY() {
 		return aY;

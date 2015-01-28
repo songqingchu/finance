@@ -80,36 +80,45 @@ public class MockUtil {
 		    if(row.getCell(1)==null){
 		    	break;
 		    }
+		    if(i==13){
+		    	row.cellIterator();
+		    }
 			String value=row.getCell(1).getRawValue(); 
-			String yc=row.getCell(2).getRawValue(); 
-			String sc=row.getCell(3).getRawValue(); 
-			String ay=row.getCell(4).getRawValue(); 
-			String as=row.getCell(5).getRawValue(); 
-			String ny=row.getCell(6).getRawValue(); 
-			String ns=row.getCell(7).getRawValue(); 
+			String ayc=row.getCell(2).getRawValue(); 
+			String asc=row.getCell(3).getRawValue();
+			String nyc=row.getCell(4).getRawValue(); 
+			String nsc=row.getCell(5).getRawValue(); 
+			
+			String ay=row.getCell(6).getRawValue(); 
+			String as=row.getCell(7).getRawValue(); 
+			String ny=row.getCell(8).getRawValue(); 
+			String ns=row.getCell(9).getRawValue(); 
 			
 		    if(StringUtils.isNotBlank(value)){
 		    	StatsDO s=new StatsDO();
 		    	s.setDate(date);
 		    	s.setValue(Double.parseDouble(value));
-		        s.setyCount(Integer.parseInt(yc));
-		        s.setsCount(Integer.parseInt(sc));
+		        s.setAyCount(Integer.parseInt(ayc));
+		        s.setAsCount(Integer.parseInt(asc));
+		        s.setNyCount(Integer.parseInt(nyc));
+		        s.setNsCount(Integer.parseInt(nsc));
+		        
 		        s.setaY(Double.parseDouble(ay));
 		        s.setaS(Double.parseDouble(as));
 		        s.setnY(Double.parseDouble(ny));
 		        s.setnS(Double.parseDouble(ns));
 		        
 		        //胜率
-		        if(s.getyCount()+s.getsCount()==0){
-		        	s.setsRate(1);
+		        if(s.getAyCount()+s.getAsCount()+s.getNsCount()+s.getNyCount()==0){
+		        	s.setsRate(50);
 		        }else{
-		        	s.setsRate(s.getyCount()/(s.getyCount()+s.getsCount()));
+		        	s.setsRate((s.getAyCount()+s.getNyCount())*100/(s.getAyCount()+s.getAsCount()+s.getNsCount()+s.getNyCount()));
 		        }	        
 		        //动态R
 		        if((0-s.getaS()-s.getnS()==0)){
-		        	s.setR(1);
+		        	s.setR(100);
 		        }else{
-		        	s.setR((s.getaY().intValue()+s.getnY().intValue())/(0-s.getaS().intValue()-s.getnS().intValue()));
+		        	s.setR((s.getaY().intValue()+s.getnY().intValue())*100/(s.getaS().intValue()+s.getnS().intValue()));
 		        }
 		        
 		    	l.add(s);
