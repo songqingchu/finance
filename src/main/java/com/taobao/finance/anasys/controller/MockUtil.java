@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +34,18 @@ public class MockUtil {
 		List<Double> mL=new ArrayList<Double>();
 		List<Double> shL=new ArrayList<Double>();
 		List<Double> szL=new ArrayList<Double>();
+		
+		List<Integer> sRate=new ArrayList<Integer>();
+		List<Integer> r=new ArrayList<Integer>();
+		List<Integer> yRate=new ArrayList<Integer>();
+		List<Integer> back=new ArrayList<Integer>();
 		for(StatsDO s:mine){
 			dList.add(s.getDate());
-		}
-		for(StatsDO s:mine){
 			mL.add(s.getV());
+			sRate.add(s.getsRate());
+			r.add(s.getR());
+			yRate.add(s.getyRate());
+			back.add(s.getBack());
 		}
 		for(StatsDO s:sh){
 			shL.add(s.getV());
@@ -50,47 +58,119 @@ public class MockUtil {
 		m.put("mine", mL);
 		m.put("sh", shL);
 		m.put("sz", szL);
+		
+		m.put("sRate",sRate );
+		m.put("yRate", yRate);
+		m.put("r", r);
+		m.put("back", back);
 		return m;
 	}
 	
-	public static  List<StatsDO> read() throws IOException{
+	public static  List<StatsDO> read() throws IOException, ParseException{
 		List<StatsDO> l=new ArrayList<StatsDO> ();
+		@SuppressWarnings("deprecation")
 		XSSFWorkbook xwb = new XSSFWorkbook("E:\\lunaworkspace\\finance\\src\\main\\resources\\统计.xlsx");  
 		XSSFSheet sheet = xwb.getSheetAt(0);  
 		XSSFRow row;  
 		
 		// 循环输出表格中的内容  
-		for (int i = sheet.getFirstRowNum()+1; i < sheet.getPhysicalNumberOfRows(); i++) {  
+		for (int i = sheet.getFirstRowNum()+2; i < sheet.getPhysicalNumberOfRows(); i++) {  
 		    row = sheet.getRow(i);  
 		    String date=row.getCell(0).getStringCellValue(); 
 		    if(row.getCell(1)==null){
 		    	break;
 		    }
-			String value=row.getCell(1).getRawValue();  
-			String r=row.getCell(2).getRawValue(); 
-			String rate=row.getCell(3).getRawValue(); 
-
+			String value=row.getCell(1).getRawValue(); 
+			String yc=row.getCell(2).getRawValue(); 
+			String sc=row.getCell(3).getRawValue(); 
+			String ay=row.getCell(4).getRawValue(); 
+			String as=row.getCell(5).getRawValue(); 
+			String ny=row.getCell(6).getRawValue(); 
+			String ns=row.getCell(7).getRawValue(); 
+			
 		    if(StringUtils.isNotBlank(value)){
 		    	StatsDO s=new StatsDO();
 		    	s.setDate(date);
 		    	s.setValue(Double.parseDouble(value));
-		    	s.setR(Double.parseDouble(r));
-		    	s.setRate(Double.parseDouble(rate));
+		        s.setyCount(Integer.parseInt(yc));
+		        s.setsCount(Integer.parseInt(sc));
+		        s.setaY(Double.parseDouble(ay));
+		        s.setaS(Double.parseDouble(as));
+		        s.setnY(Double.parseDouble(ny));
+		        s.setnS(Double.parseDouble(ns));
+		        
+		        //胜率
+		        if(s.getyCount()+s.getsCount()==0){
+		        	s.setsRate(1);
+		        }else{
+		        	s.setsRate(s.getyCount()/(s.getyCount()+s.getsCount()));
+		        }	        
+		        //动态R
+		        if((0-s.getaS()-s.getnS()==0)){
+		        	s.setR(1);
+		        }else{
+		        	s.setR((s.getaY().intValue()+s.getnY().intValue())/(0-s.getaS().intValue()-s.getnS().intValue()));
+		        }
+		        
 		    	l.add(s);
 		    }
 		}  
 		Double startValue=l.get(0).getValue();
-		for(StatsDO s:l){
-			s.setV(s.getValue().doubleValue()*100/startValue-100);
+		Date startDate=StatsDO.df.parse(l.get(0).getDate());
+		for(int i=0;i<l.size();i++){
+			StatsDO s=l.get(i);
+			
+			//最大回撤
+			Integer max=0;
+			int maxIndex=0;
+			Integer min=1000000000;
+			for(int j=0;j<=i;j++){
+				StatsDO ss=l.get(j);
+				if(ss.getValue()>max){
+					max=ss.getValue().intValue();
+					maxIndex=j;
+				}
+			}
+			for(int j=maxIndex;j<=i;j++){
+				StatsDO ss=l.get(j);
+				if(ss.getValue()<min){
+					min=ss.getValue().intValue();
+				}
+			}
+			Integer back=(max-min)*100/max;
+			s.setBack(back);
+			
+			//v
+			Double v=s.getValue().doubleValue()*100/startValue-100;
+			s.setV(v);
+			
+			//动态v
+			Date endDate=StatsDO.df.parse(s.getDate());
+			Calendar c=Calendar.getInstance();
+			c.setTime(startDate);    
+	        long time1 = c.getTimeInMillis();                 
+	        c.setTime(endDate);    
+	        long time2 = c.getTimeInMillis();         
+	        long dayCount=(time2-time1)/(1000*3600*24);  
+	        if(dayCount==0){
+		        s.setyRate(20);
+	        }else{
+	        	Double rV=v/dayCount*360;
+		        s.setyRate(rV.intValue());
+	        }  
 		}
 		return l;
+	}
+	
+	
+	public static void format(StatsDO s){
+	
 	}
 	
 	public static  List<StatsDO> readIndex(Date startDate,Date endDate,String symbol){
 		List<StatsDO> r=new ArrayList<StatsDO>();
 		List<Stock> l=Hisdata_Base.readHisDataMerge(symbol, startDate);
 		Double start=Double.parseDouble(l.get(0).getEndPrice());
-		DateFormat df=new SimpleDateFormat("yyyy.MM.dd");
 		for(Stock s:l){
 			StatsDO st=new StatsDO();
 			//st.setDate(df.format(s.getDate()));

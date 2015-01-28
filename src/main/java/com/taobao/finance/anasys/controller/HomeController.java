@@ -35,6 +35,10 @@ public class HomeController {
 		map.put("mine", m.get("mine"));
 		map.put("sh", m.get("sh"));
 		map.put("sz", m.get("sz"));
+		map.put("sRate", m.get("sRate"));
+		map.put("yRate", m.get("yRate"));
+		map.put("r", m.get("r"));
+		map.put("back", m.get("back"));
 		
 		return map;
 	}
