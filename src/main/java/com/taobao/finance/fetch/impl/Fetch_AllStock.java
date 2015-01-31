@@ -59,20 +59,22 @@ public class Fetch_AllStock {
 			return;
 		}*/
 		List<Stock> l=fetch();
+		Stock ss=new Stock();
+		ss.setSymbol("sh000001");
+		ss.setName("上证指数");
+		l.add(ss);
+		
+		ss=new Stock();
+		ss.setSymbol("sz399001");
+		ss.setName("深证成指");
+		l.add(ss);
+		
 		save(l);
 		Map<String,Stock> m=new HashMap<String,Stock>();
 		for(Stock s:l){
 			m.put(s.getSymbol(), s);
 		}
-		Stock ss=new Stock();
-		ss.setSymbol("sh000001");
-		ss.setName("上证指数");
-		m.put(ss.getSymbol(), ss);
 		
-		ss=new Stock();
-		ss.setSymbol("sz399001");
-		ss.setName("深证成指");
-		m.put(ss.getSymbol(), ss);
 		map=m;
 	}
 	

@@ -370,18 +370,9 @@ public class Hisdata_Base {
 	public static void updateDataHistoryData(Map<String,Stock> map,boolean longTime){
 		Map<String,Stock> allMap=map;
 		List<List<Stock>> r=divide(allMap, 16);
-		List<Thread> lt=new ArrayList<Thread>();
 		for(int i=0;i<r.size();i++){
 			Thread t=new HisDataTask(r.get(i),longTime);
 			t.start();
-			lt.add(t);
-		}
-		for(Thread t:lt){
-			try {
-				t.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 	
