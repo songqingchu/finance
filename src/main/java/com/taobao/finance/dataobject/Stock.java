@@ -1,5 +1,7 @@
 package com.taobao.finance.dataobject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -440,7 +442,8 @@ public class Stock implements Comparable<Stock> {
 		if (date == null) {
 			return "";
 		} else {
-			return FetchUtil.TIANTIAN_FORMAT.format(date);
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			return df.format(date);
 		}
 	}
 

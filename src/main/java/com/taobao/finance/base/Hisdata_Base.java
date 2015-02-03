@@ -130,10 +130,11 @@ public class Hisdata_Base {
 				line = br.readLine();
 			}
 			if(lastLine!=null){
+				DateFormat df = new SimpleDateFormat("yyyy.MM.dd");
 				String [] ss=lastLine.split(" ");
 				try {
 					String date=ss[0].replace("-", ".");
-					d=FetchUtil.FILE_FORMAT.parse(date);
+					d=df.parse(date);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -336,7 +337,7 @@ public class Hisdata_Base {
 	public static void updateDataHistoryAll(){
 		Fetch_AllStock.getData();
 		Map<String,Stock> allMap=Fetch_AllStock.map;
-		updateDataHistoryDelta();
+		//updateDataHistoryDelta();
 		updateDataHistoryData(allMap,false);
 	}
 
@@ -390,7 +391,7 @@ public class Hisdata_Base {
 		public void run(){
 			for(Stock s:list){
 	    		String symbol=s.getSymbol();
-	    		if(symbol.contains("sh000001")){
+	    		if(symbol.contains("002493")){
 	    			symbol.length();
 	    		}
 	    		List<Stock> history=null;

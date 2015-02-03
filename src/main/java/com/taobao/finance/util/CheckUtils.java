@@ -154,7 +154,7 @@ public class CheckUtils {
 		}
 
 		//必须要有涨幅
-		if (end1 / min < 1.06F) {
+		if (end1 / min < 1.01F) {
 			return false;
 		}
 

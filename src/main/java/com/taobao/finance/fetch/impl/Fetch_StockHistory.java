@@ -99,6 +99,9 @@ public class Fetch_StockHistory {
 			e.printStackTrace();
 		}
 		getMethod.releaseConnection();
+		if(s.size()==0){
+			s.size();
+		}
 		return s;
 	}
 

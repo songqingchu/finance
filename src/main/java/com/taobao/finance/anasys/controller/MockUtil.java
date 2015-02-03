@@ -69,7 +69,7 @@ public class MockUtil {
 	public static  List<StatsDO> read() throws IOException, ParseException{
 		List<StatsDO> l=new ArrayList<StatsDO> ();
 		@SuppressWarnings("deprecation")
-		XSSFWorkbook xwb = new XSSFWorkbook("E:\\lunaworkspace\\finance\\src\\main\\resources\\统计.xlsx");  
+		XSSFWorkbook xwb = new XSSFWorkbook("C:\\Documents and Settings\\Administrator\\git\\finance\\src\\main\\resources\\统计.xlsx");  
 		XSSFSheet sheet = xwb.getSheetAt(0);  
 		XSSFRow row;  
 		
