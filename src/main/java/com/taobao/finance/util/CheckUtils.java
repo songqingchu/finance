@@ -205,12 +205,12 @@ public class CheckUtils {
 			return false;
 		}*/
 		
-		for (int i = 0; i < 3; i++) {
+	/*	for (int i = 0; i < 3; i++) {
 			if (av20.get(i) < av20.get(i + 1)) {
 				return false;
 			}
-		}
-		for (int i = 0; i < 5; i++) {
+		}*/
+		for (int i = 0; i < 3; i++) {
 			if (av10.get(i) < av10.get(i + 1)) {
 				return false;
 			}
