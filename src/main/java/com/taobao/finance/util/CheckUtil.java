@@ -1133,7 +1133,7 @@ public class CheckUtil {
 
 		int count5 = 0;
 		int count10 = 0;
-		int count5BigCount10 = 0;
+		//int count5BigCount10 = 0;
 		for (int i = 7; i < 14; i++) {
 			Float today5 = av5.get(i);
 			Float tomorrow5 = av5.get(i + 1);
@@ -1144,21 +1144,28 @@ public class CheckUtil {
 			if (today5 > tomorrow5) {
 				count5++;
 			}
-			if (today10 > tomorrow10) {
+			if (today10 > tomorrow10&&i>10) {
 				count10++;
 			}
-			if (today10 > tomorrow5) {
+			/*if (today10 > tomorrow5) {
 				count5BigCount10++;
-			}
+			}*/
 		}
 		//case 五日均线 十日均线逆反次数
-		if (count5 + count10 >= 4) {
+		/*if (count5 + count10 >= 4) {
+			return false;
+		}*/
+		
+		if (count5>= 3) {
+			return false;
+		}
+		if (count5>= 2) {
 			return false;
 		}
 		//case 10日均线上穿5日均线次数
-		if (count5BigCount10 >= 2) {
+		/*if (count5BigCount10 >= 2) {
 			return false;
-		}
+		}*/
 
 		return match;
 	}
