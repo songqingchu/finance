@@ -28,12 +28,10 @@ import com.taobao.finance.util.ThreadUtil;
 public abstract class Local_Choose_MultiThread_Base {
 
 	public void choose() {
-		//long begin = System.currentTimeMillis();
 		int threadNum = Runtime.getRuntime().availableProcessors();
 		List<List<Stock>> l = ThreadUtil.split(threadNum);
 		ExecutorService service = Executors.newFixedThreadPool(threadNum);
-		CompletionService<List<Stock>> con = new ExecutorCompletionService<List<Stock>>(
-				service);
+		CompletionService<List<Stock>> con = new ExecutorCompletionService<List<Stock>>(service);
 		List<Callable<List<Stock>>> ll = prepareTask(l);
 		for (Callable<List<Stock>> c : ll) {
 			con.submit(c);
@@ -50,16 +48,11 @@ public abstract class Local_Choose_MultiThread_Base {
 			}
 			i++;
 		}
-		//long end = System.currentTimeMillis();
-		//System.out.println("”√ ±£∫" + (end - begin));
 		service.shutdown();
 		save(r);
-		//r = filter(r);
 		for (Stock s : r) {
 			System.out.println(s.getCode());
 		}
-		//System.out.println(r.size());
-
 	}
 
 	public abstract List<Callable<List<Stock>>> prepareTask(List<List<Stock>> ll);
@@ -83,14 +76,12 @@ public abstract class Local_Choose_MultiThread_Base {
 			try {
 				br.write(s.getSymbol()+"\n");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		try {
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

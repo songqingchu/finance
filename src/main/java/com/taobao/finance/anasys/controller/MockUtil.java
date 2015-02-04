@@ -66,6 +66,47 @@ public class MockUtil {
 		return m;
 	}
 	
+	
+	public static Map<String,Object> mockData2() throws IOException, ParseException{
+		Map<String,Object> m=new HashMap<String,Object>();
+		List<StatsDO> mine=read2();
+		DateFormat df=new SimpleDateFormat("yyyy.MM.dd");
+		Date startDate=df.parse(mine.get(0).getDate());
+
+		
+		List<String> dList=new ArrayList<String>();
+		List<Double> mL=new ArrayList<Double>();
+		List<Double> shL=new ArrayList<Double>();
+		List<Double> szL=new ArrayList<Double>();
+		
+		List<Integer> sRate=new ArrayList<Integer>();
+		List<Integer> r=new ArrayList<Integer>();
+		List<Integer> yRate=new ArrayList<Integer>();
+		List<Integer> back=new ArrayList<Integer>();
+		for(StatsDO s:mine){
+			dList.add(s.getDate());
+			mL.add(s.getV());
+			sRate.add(s.getsRate());
+			r.add(s.getR());
+			yRate.add(s.getyRate());
+			back.add(s.getBack());
+		}
+
+		m.put("date",dList );
+		m.put("mine", mL);
+		m.put("sh", shL);
+		m.put("sz", szL);
+		
+		m.put("sRate",sRate );
+		m.put("yRate", yRate);
+		m.put("r", r);
+		m.put("back", back);
+		return m;
+	}
+	
+	
+	
+	
 	public static  List<StatsDO> read() throws IOException, ParseException{
 		List<StatsDO> l=new ArrayList<StatsDO> ();
 		@SuppressWarnings("deprecation")
@@ -172,9 +213,66 @@ public class MockUtil {
 	}
 	
 	
-	public static void format(StatsDO s){
-	
+	public static  List<StatsDO> read2() throws IOException, ParseException{
+		List<StatsDO> l=new ArrayList<StatsDO> ();
+		@SuppressWarnings("deprecation")
+		XSSFWorkbook xwb = new XSSFWorkbook("C:\\Documents and Settings\\Administrator\\git\\finance\\src\\main\\resources\\统计.xlsx");  
+		XSSFSheet sheet = xwb.getSheetAt(2);  
+		XSSFRow row;  
+		
+		// 循环输出表格中的内容  
+		for (int i = sheet.getFirstRowNum()+2; i < sheet.getPhysicalNumberOfRows(); i++) {  
+		    row = sheet.getRow(i);  
+		    String date=row.getCell(0).getStringCellValue(); 
+		    if(row.getCell(1)==null){
+		    	break;
+		    }
+		    if(i==13){
+		    	row.cellIterator();
+		    }
+			String ayc=row.getCell(1).getRawValue(); 
+			String asc=row.getCell(2).getRawValue();
+			String nyc=row.getCell(3).getRawValue(); 
+			String nsc=row.getCell(4).getRawValue(); 
+			
+			String ay=row.getCell(5).getRawValue(); 
+			String as=row.getCell(6).getRawValue(); 
+			String ny=row.getCell(7).getRawValue(); 
+			String ns=row.getCell(8).getRawValue(); 
+			
+		    if(StringUtils.isNotBlank(ayc)){
+		    	StatsDO s=new StatsDO();
+		    	s.setDate(date);
+		        s.setAyCount(Integer.parseInt(ayc));
+		        s.setAsCount(Integer.parseInt(asc));
+		        s.setNyCount(Integer.parseInt(nyc));
+		        s.setNsCount(Integer.parseInt(nsc));
+		        
+		        s.setaY(Double.parseDouble(ay));
+		        s.setaS(Double.parseDouble(as));
+		        s.setnY(Double.parseDouble(ny));
+		        s.setnS(Double.parseDouble(ns));
+		        
+		        //胜率
+		        if(s.getAyCount()+s.getAsCount()+s.getNsCount()+s.getNyCount()==0){
+		        	s.setsRate(50);
+		        }else{
+		        	s.setsRate((s.getAyCount()+s.getNyCount())*100/(s.getAyCount()+s.getAsCount()+s.getNsCount()+s.getNyCount()));
+		        }	        
+		        //动态R
+		        if((0-s.getaS()-s.getnS()==0)){
+		        	s.setR(100);
+		        }else{
+		        	s.setR((s.getaY().intValue()+s.getnY().intValue())*100/(s.getaS().intValue()+s.getnS().intValue()));
+		        }
+		        
+		    	l.add(s);
+		    }
+		}  
+
+		return l;
 	}
+	
 	
 	public static  List<StatsDO> readIndex(Date startDate,Date endDate,String symbol){
 		List<StatsDO> r=new ArrayList<StatsDO>();

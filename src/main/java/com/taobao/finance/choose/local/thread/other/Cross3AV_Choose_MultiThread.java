@@ -46,10 +46,7 @@ class Cross3AV_Trend_Task implements Callable<List<Stock>> {
 
 	public List<Stock> call() throws Exception {
 		List<Stock> l = new ArrayList<Stock>();
-		int i=1;
 		for (Stock s : this.l) {
-			System.out.println("¥¶¿Ì"+i);
-			i++;
 			if(s.getCode().equals("000096")){
 				s.get_10changes();
 			}
@@ -66,7 +63,6 @@ class Cross3AV_Trend_Task implements Callable<List<Stock>> {
 				l.add(s);
 			}
 		}
-
 		return l;
 	}
 }

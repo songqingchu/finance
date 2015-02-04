@@ -42,12 +42,32 @@ public class HomeController {
 		
 		return map;
 	}
+	
+	@RequestMapping(value = "/bb.json", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> home2() throws IOException, ParseException {
+		logger.info("requesting home");
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String,Object> m=MockUtil.mockData2();
+		map.put("series", m.get("date"));
+		map.put("sRate", m.get("sRate"));
+		map.put("r", m.get("r"));
+		
+		return map;
+	}
 
 	@RequestMapping(value = "/a.do", method = RequestMethod.GET)
 	public String validataUser() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", true);
 		return "a";
+	}
+	
+	@RequestMapping(value = "/b.do", method = RequestMethod.GET)
+	public String validataUser2() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", true);
+		return "b";
 	}
 
 }
