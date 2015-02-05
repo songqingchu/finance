@@ -18,7 +18,7 @@ import com.taobao.finance.util.ThreadUtil;
 
 public class ZhenFu15_Choose extends Local_Choose_MultiThread_Base{
 
-	public void choose() {
+	public List<Stock> choose() {
 		long begin = System.currentTimeMillis();
 		int threadNum = Runtime.getRuntime().availableProcessors();
 		List<List<Stock>> l = ThreadUtil.split(threadNum);
@@ -42,7 +42,7 @@ public class ZhenFu15_Choose extends Local_Choose_MultiThread_Base{
 			i++;
 		}
 		long end = System.currentTimeMillis();
-		System.out.println("ÓÃÊ±£º" + (end - begin));
+		System.out.println("ï¿½ï¿½Ê±ï¿½ï¿½" + (end - begin));
 		service.shutdown();
 		save(r);
 		//r = filter(r);
@@ -53,7 +53,7 @@ public class ZhenFu15_Choose extends Local_Choose_MultiThread_Base{
 			
 		}
 		System.out.println(r.size());
-
+        return r;
 	}
 	
 	public static void main(String args[]){
@@ -93,7 +93,7 @@ class ZhenFu15_Task implements Callable<List<Stock>> {
 		List<Stock> l = new ArrayList<Stock>();
 		int i=1;
 		for (Stock s : this.l) {
-			System.out.println("´¦Àí"+i);
+			System.out.println("ï¿½ï¿½ï¿½ï¿½"+i);
 			i++;
 			if(s.getCode().equals("300288")){
 				s.get_10changes();

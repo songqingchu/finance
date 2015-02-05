@@ -2,11 +2,11 @@ package com.taobao.finance.anasys.controller;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.taobao.finance.choose.local.thread.AV10_Trend_Choose_MultiThread;
+import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
+import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
+import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
+import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
+import com.taobao.finance.dataobject.Stock;
 
 /**
  * Handles requests for the application home page.
@@ -68,6 +75,41 @@ public class HomeController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", true);
 		return "b";
+	}
+	
+	@RequestMapping(value = "/c.do", method = RequestMethod.GET)
+	public String validataUser3(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", true);
+		List<Stock> big=new BigTrend_Choose_MultiThread().choose();
+		List<Stock> acvu=new AVCU_Choose_MultiThread().choose();
+		List<Stock> av5=new AV5_Trend_Choose_MultiThread().choose();
+		List<Stock> av10=new AV10_Trend_Choose_MultiThread().choose();
+		List<Stock> tp=new TP_Choose_MultiThread().choose();
+		int size=0;
+		if(big.size()>size){
+			size=big.size();
+		}
+		if(acvu.size()>size){
+			size=acvu.size();
+		}
+		if(av5.size()>size){
+			size=av5.size();
+		}
+		if(av10.size()>size){
+			size=av10.size();
+		}
+		if(tp.size()>size){
+			size=tp.size();
+		}
+
+		request.setAttribute("size", size);
+		request.setAttribute("big", big);
+		request.setAttribute("acvu", acvu);
+		request.setAttribute("av5", av5);
+		request.setAttribute("av10", av10);
+		request.setAttribute("tp", tp);
+		return "c";
 	}
 
 }
