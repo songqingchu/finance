@@ -27,7 +27,7 @@ import com.taobao.finance.util.ThreadUtil;
 
 public abstract class Local_Choose_MultiThread_Base {
 
-	public void choose() {
+	public List<Stock> choose() {
 		int threadNum = Runtime.getRuntime().availableProcessors();
 		List<List<Stock>> l = ThreadUtil.split(threadNum);
 		ExecutorService service = Executors.newFixedThreadPool(threadNum);
@@ -53,6 +53,7 @@ public abstract class Local_Choose_MultiThread_Base {
 		for (Stock s : r) {
 			System.out.println(s.getCode());
 		}
+		return r;
 	}
 
 	public abstract List<Callable<List<Stock>>> prepareTask(List<List<Stock>> ll);
