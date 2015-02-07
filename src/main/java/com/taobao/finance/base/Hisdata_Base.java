@@ -37,6 +37,7 @@ public class Hisdata_Base {
 	public static String FILE_STOCK_TEMP_BASE = "E:\\stock\\tmp\\";
 	public static Boolean INCLUDE_TODAY=true;
 	public static AtomicInteger fetched=new AtomicInteger(0);
+	public static AtomicInteger unformalFetched=new AtomicInteger(0);
 	public static void save(String code,List<Stock> list){
 		String url=FILE_STOCK_HIS_BASE+code+".txt";
 		File f=new File(url);
@@ -426,7 +427,7 @@ public class Hisdata_Base {
 	    			continue;
 	    		}
 	    		saveTmp(s.getSymbol(),today);
-	    		System.out.println("======================="+fetched.getAndIncrement());
+	    		System.out.println("======================="+unformalFetched.getAndIncrement());
 			}
 		}
 	}
