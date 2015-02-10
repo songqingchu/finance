@@ -79,6 +79,13 @@ public class HomeController {
 		return "b";
 	}
 	
+	@RequestMapping(value = "/d.do", method = RequestMethod.GET)
+	public String validataUser4() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", true);
+		return "d";
+	}
+	
 	@RequestMapping(value = "/c.do", method = RequestMethod.GET)
 	public String validataUser3(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
