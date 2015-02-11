@@ -86,6 +86,21 @@ public class HomeController {
 		return "d";
 	}
 	
+	@RequestMapping(value = "/f.do", method = RequestMethod.GET)
+	public String validataUser5() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", true);
+		return "e";
+	}
+	
+	@RequestMapping(value = "/e.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> validataUser5(String symbol) throws IOException, ParseException {
+		Map<String,Object> map=MockUtil.mockData3(symbol);
+		return map;
+	}
+	
+	
 	@RequestMapping(value = "/c.do", method = RequestMethod.GET)
 	public String validataUser3(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();

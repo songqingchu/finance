@@ -83,13 +83,13 @@
 
 			sRateOption = {
 					title : {
-						text : '胜率'
+						text : '动态S'
 					},
 					tooltip : {
 						trigger : 'axis'
 					},
 					legend : {
-						data : [ '胜率' ]
+						data : [ '动态S' ]
 					},
 					toolbox : {
 						show : true,

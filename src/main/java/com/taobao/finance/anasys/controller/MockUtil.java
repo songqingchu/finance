@@ -104,6 +104,68 @@ public class MockUtil {
 		return m;
 	}
 	
+	public static Float getAve(List<Stock> l, int day, int start) {
+		Float ave = 0F;
+		Float total = 0F;
+		for (int i = start; i >= start - day + 1; i--) {
+			Float s=Float.parseFloat(l.get(i).getEndPrice());
+			total = total + s;
+		}
+		ave = total / day;
+		return ave;
+	}
+	
+	public static Map<String,Object> mockData3(String symbol) throws IOException, ParseException{
+		Map<String,Object> m=new HashMap<String,Object>();
+		
+		List<Stock> l=Hisdata_Base.readHisDataMerge(symbol, null);
+		List<Date> dList=new ArrayList<Date>();
+
+		
+		Object[][] av5=new Object[60][2];
+		Object[][] av10=new Object[60][2];
+		Object[][] av20=new Object[60][2];
+		Object[][] data=new Object[60][5];
+		Object[][] vol=new Object[60][2];
+		
+		
+		
+		if(l.size()>100){
+			for (int i = 1; i < 61; i++) {
+				Stock s=l.get(l.size() - i);
+				Float v5 = getAve(l, 5, l.size() - i);
+				Float v10 = getAve(l, 10, l.size() - i);
+				Float v20 = getAve(l, 20, l.size() - i);
+				
+				Date d=s.getDate()==null?new Date():s.getDate();
+				av5[i-1][0]=d;
+				av5[i-1][1]=v5;
+				
+				av10[i-1][0]=d;
+				av10[i-1][1]=v10;
+				
+				av20[i-1][0]=d;
+				av20[i-1][1]=v20;
+				
+				vol[i-1][0]=d;
+				vol[i-1][1]=s.getTradeNum();
+				
+				data[i-1][0]=d;
+				data[i-1][1]=Float.parseFloat(s.getStartPrice());
+				data[i-1][2]=Float.parseFloat(s.getLowPrice());
+				data[i-1][3]=Float.parseFloat(s.getHighPrice());
+				data[i-1][4]=Float.parseFloat(s.getEndPrice());
+			}
+		}
+	
+		m.put("av5",av5 );
+		m.put("av10", av10);
+		m.put("av20", av20);
+		m.put("vol", vol);	
+		m.put("data",data );
+		return m;
+	}
+	
 	
 	
 	
