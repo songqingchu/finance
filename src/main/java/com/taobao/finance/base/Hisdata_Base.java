@@ -338,8 +338,20 @@ public class Hisdata_Base {
 	public static void updateDataHistoryAll(){
 		Fetch_AllStock.getData();
 		Map<String,Stock> allMap=Fetch_AllStock.map;
-		//updateDataHistoryDelta();
-		updateDataHistoryData(allMap,false);
+		File f=new File("E:\\stock\\history");
+		String[] files=f.list();
+		Map<String,Stock> exist= new HashMap<String,Stock>();
+		Map<String,Stock> newMap= new HashMap<String,Stock>();
+		for(String file:files){
+			file=file.replace(".txt", "");
+			exist.put(file, null);
+		}
+		for(String s:allMap.keySet()){
+			if(!exist.containsKey(s)){
+				newMap.put(s, allMap.get(s));
+			}
+		}
+		updateDataHistoryData(newMap,true);
 	}
 
 	public static void updateDataHistoryDelta(){
@@ -392,7 +404,7 @@ public class Hisdata_Base {
 		public void run(){
 			for(Stock s:list){
 	    		String symbol=s.getSymbol();
-	    		if(symbol.contains("002493")){
+	    		if(symbol.contains("300019")){
 	    			symbol.length();
 	    		}
 	    		List<Stock> history=null;

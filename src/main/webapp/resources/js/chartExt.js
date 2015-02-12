@@ -228,7 +228,7 @@ var highStockChart = function(divID,result,crrentData,all){
          resetZoom:'还原图表',
          resetZoomTitle:'还原图表为1:1大小',
          thousandsSep:',',*/
-		shortMonths:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+		 shortMonths:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
          weekdays:['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
 		},
 	});
@@ -387,24 +387,24 @@ var highStockChart = function(divID,result,crrentData,all){
 			   if(this.y == undefined){
 				   return;
 			   }
-			   for(var i =0;i<data.length;i++){
+			   /*for(var i =0;i<data.length;i++){
 				   if(this.x == data[i][0]){
 					   zdf = parseFloat(data[i][7]).toFixed(2);
 					   zde = parseFloat(data[i][8]).toFixed(2);
 				//	   hsl = parseFloat(data[i][9]).toFixed(2);
 					   zs = parseFloat(data[i][10]).toFixed(2);
 				   }
-			   }
-			   open = this.points[0].point.open.toFixed(2);
-			   high = this.points[0].point.high.toFixed(2);
-			   low = this.points[0].point.low.toFixed(2);
-			   close = this.points[0].point.close.toFixed(2);
+			   }*/
+			   open = all.start.toFixed(2);
+			   high = all.high.toFixed(2);
+			   low = all.low.toFixed(2);
+			   close = all.end.toFixed(2);
 			   y = (this.points[1].point.y*0.0001).toFixed(2);
 			   MA5 =this.points[2].y.toFixed(2);
 			   MA10 =this.points[3].y.toFixed(2);
 			   MA30 =this.points[4].y.toFixed(2);
 			   relativeWidth = this.points[0].point.shapeArgs.x;
-			   var stockName = this.points[0].series.name;
+			   var stockName = all.name;
 		      var tip= '<b>'+ Highcharts.dateFormat('%Y-%m-%d  %A', this.x) +'</b><br/>';
 		      tip +=stockName+"<br/>";
 		      if(open>zs){
@@ -427,7 +427,7 @@ var highStockChart = function(divID,result,crrentData,all){
     		  }else{
     			  tip += '收盘价：<span style="color: #33AA11;">'+close+' </span><br/>';
     		  }
-    		  if(zde>0){
+    		  /*if(zde>0){
     			  tip += '涨跌额：<span style="color: #DD2200;">'+zde+' </span><br/>';
     		  }else{
     			  tip += '涨跌额：<span style="color: #33AA11;">'+zde+' </span><br/>';
@@ -436,14 +436,14 @@ var highStockChart = function(divID,result,crrentData,all){
     			  tip += '涨跌幅：<span style="color: #DD2200;">'+zdf+' </span><br/>';
     		  }else{
     			  tip += '涨跌幅：<span style="color: #33AA11;">'+zdf+' </span><br/>';
-    		  }
+    		  }*/
     		  if(y>10000){
     			  tip += "成交量："+(y*0.0001).toFixed(2)+"(亿股)<br/>";
     		  }else{
     			  tip += "成交量："+y+"(万股)<br/>";
     		  }
     		 /* tip += "换手率："+hsl+"<br/>";*/
-    		  $reporting.html(
+    		 /* $reporting.html(
     				  '  <span style="font-weight:bold">'+stockName+'</span>'
     				+ '  <span>开盘:</span>'+ open
     				+'  <span>收盘:</span>'+close
@@ -453,7 +453,7 @@ var highStockChart = function(divID,result,crrentData,all){
               		+'	<br/><b style="color:#1aadce;padding-left:25px">MA5</b> '+ MA5
               		+'  <b style="color: #8bbc21;padding-left:150px">MA10 </b> '+ MA10
               		+'  <b style="color:#910000;padding-left:150px">MA30</b> '+ MA30
-              		);
+              		);*/
     		  return tip;
 		   },
 		 //crosshairs:	[true, true]//双线
@@ -593,7 +593,7 @@ var highStockChart = function(divID,result,crrentData,all){
 	        dataGrouping: {
 				enabled: false
 			}
-	    },{
+	    }/*,{
 	    	 type : 'flags',
 	           cursor:'pointer',
 	           style:{
@@ -618,7 +618,7 @@ var highStockChart = function(divID,result,crrentData,all){
 	           onSeries : 'candlestick',
 	           width : 25,
 	           shape: 'squarepin'
-	    }
+	    }*/
 	    ]
 	});
 }

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.taobao.finance.choose.local.thread.AV10_Trend_Choose_MultiThread;
@@ -87,15 +88,16 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/f.do", method = RequestMethod.GET)
-	public String validataUser5() {
+	public String validataUser5(@RequestParam String symbol,HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", true);
+		request.setAttribute("symbol", symbol);
 		return "e";
 	}
 	
 	@RequestMapping(value = "/e.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> validataUser5(String symbol) throws IOException, ParseException {
+	public Map<String, Object> validataUser6(@RequestParam String symbol) throws IOException, ParseException {
 		Map<String,Object> map=MockUtil.mockData3(symbol);
 		return map;
 	}

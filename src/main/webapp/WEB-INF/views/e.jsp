@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div id="report" style="height: 50px; padding-top: 25px;"></div>
-	<div id="container" style="height: 800px; width: 800px"></div>
+	<div id="container" style="height: 800px; width: 1200px"></div>
 </body>
 <script>
 	function tradeChart(all) {
@@ -32,7 +32,7 @@
 		$.ajax({
 			type : "get",
 			async : true, //同步执行
-			url : "/e.do?symbol=sz300019",
+			url : "/e.do?symbol=${symbol}",
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {

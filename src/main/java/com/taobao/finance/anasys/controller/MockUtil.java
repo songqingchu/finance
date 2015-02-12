@@ -5,7 +5,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.fetch.impl.Fetch_AllStock;
 
 public class MockUtil {
 
@@ -122,47 +125,55 @@ public class MockUtil {
 		List<Date> dList=new ArrayList<Date>();
 
 		
-		Object[][] av5=new Object[60][2];
-		Object[][] av10=new Object[60][2];
-		Object[][] av20=new Object[60][2];
-		Object[][] data=new Object[60][5];
-		Object[][] vol=new Object[60][2];
+		Object[][] av5=new Object[260][2];
+		Object[][] av10=new Object[260][2];
+		Object[][] av20=new Object[260][2];
+		Object[][] data=new Object[260][5];
+		Object[][] vol=new Object[260][2];
 		
 		
 		
-		if(l.size()>100){
-			for (int i = 1; i < 61; i++) {
+		if(l.size()>300){
+			for (int i = 1; i < 261; i++) {
 				Stock s=l.get(l.size() - i);
 				Float v5 = getAve(l, 5, l.size() - i);
 				Float v10 = getAve(l, 10, l.size() - i);
 				Float v20 = getAve(l, 20, l.size() - i);
 				
 				Date d=s.getDate()==null?new Date():s.getDate();
-				av5[i-1][0]=d;
-				av5[i-1][1]=v5;
+				av5[260-i][0]=d;
+				av5[260-i][1]=v5;
 				
-				av10[i-1][0]=d;
-				av10[i-1][1]=v10;
+				av10[260-i][0]=d;
+				av10[260-i][1]=v10;
 				
-				av20[i-1][0]=d;
-				av20[i-1][1]=v20;
+				av20[260-i][0]=d;
+				av20[260-i][1]=v20;
 				
-				vol[i-1][0]=d;
-				vol[i-1][1]=s.getTradeNum();
+				vol[260-i][0]=d;
+				vol[260-i][1]=s.getTradeNum();
 				
-				data[i-1][0]=d;
-				data[i-1][1]=Float.parseFloat(s.getStartPrice());
-				data[i-1][2]=Float.parseFloat(s.getLowPrice());
-				data[i-1][3]=Float.parseFloat(s.getHighPrice());
-				data[i-1][4]=Float.parseFloat(s.getEndPrice());
+				data[260-i][0]=d;
+				data[260-i][1]=Float.parseFloat(s.getStartPrice());
+				data[260-i][2]=Float.parseFloat(s.getLowPrice());
+				data[260-i][3]=Float.parseFloat(s.getHighPrice());
+				data[260-i][4]=Float.parseFloat(s.getEndPrice());
 			}
 		}
 	
+
 		m.put("av5",av5 );
 		m.put("av10", av10);
 		m.put("av20", av20);
 		m.put("vol", vol);	
 		m.put("data",data );
+		Stock s=l.get(l.size()-1);
+		
+		m.put("name", s.getSymbol());
+		m.put("start", s.getStartPriceFloat());
+		m.put("high", s.getHighPriceFloat());
+		m.put("low", s.getLowPriceFloat());
+		m.put("end", s.getEndPriceFloat());
 		return m;
 	}
 	
