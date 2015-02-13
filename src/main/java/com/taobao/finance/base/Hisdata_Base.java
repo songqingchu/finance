@@ -338,7 +338,7 @@ public class Hisdata_Base {
 	public static void updateDataHistoryAll(){
 		Fetch_AllStock.getData();
 		Map<String,Stock> allMap=Fetch_AllStock.map;
-		File f=new File("E:\\stock\\history");
+		/*File f=new File("E:\\stock\\history");
 		String[] files=f.list();
 		Map<String,Stock> exist= new HashMap<String,Stock>();
 		Map<String,Stock> newMap= new HashMap<String,Stock>();
@@ -350,8 +350,8 @@ public class Hisdata_Base {
 			if(!exist.containsKey(s)){
 				newMap.put(s, allMap.get(s));
 			}
-		}
-		updateDataHistoryData(newMap,true);
+		}*/
+		updateDataHistoryData(allMap,false);
 	}
 
 	public static void updateDataHistoryDelta(){
