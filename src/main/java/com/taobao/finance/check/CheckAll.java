@@ -27,6 +27,6 @@ public class CheckAll {
 	
 	
 	public static void main(String args[]){
-		check("000586");
+		check("600421");
 	}
 }
