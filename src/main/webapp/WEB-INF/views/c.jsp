@@ -44,10 +44,17 @@
 <div id="container" style="height: 800px; width: 1200px;float:left;"></div>
 </body>
 <script>
+   /* var f='function a(i){if(i>0){return true;}else{ return false;};} a(i)';
+   var i=1;
+   eval("alert(eval(f))"); */
    var acvu=[${acvuStr}];
    var great=[${bigStr}];
    var av5=[${av5Str}];
    var av10=[${av10Str}];
+   
+   var base;
+   var start=0;
+   var total;
    
    $(".choose").on("click",function(){
 	   var id=$(this).attr("id");
@@ -67,6 +74,8 @@
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {
+					base=result;
+					total=base.length;
 					tradeChart(result);
 				}
 			},
@@ -74,6 +83,48 @@
 			}
 		});
    });
+   
+   $(document).keydown(function(event){ 
+	    event.stopPropagation(); 
+	    if(event.keyCode == 38) {
+	    	start=start+10;
+	    }
+	    
+        if(event.keyCode == 40) {
+        	start=start-10;
+	    }
+        var copyMap={};
+    	copyMap.av5 = base.av5.slice(start);
+    	copyMap.av10 = base.av10.slice(start);
+    	copyMap.av20 = base.av20.slice(start);
+    	copyMap.data = base.data.slice(start);
+    	copyMap.start=base.start;
+    	copyMap.high=base.high;
+    	copyMap.low=base.low;
+    	copyMap.end=base.end;
+    	copyMap.name=base.name;
+    	tradeChart(copyMap);
+   });  
+   
+   $(".symbolA").on("click",function(){
+	   var symbol=$(this).attr("symbol");
+	   $.ajax({
+			type : "get",
+			async : true, //同步执行
+			url : "/e.do?symbol="+symbol,
+			dataType : "json", //返回数据形式为json
+			success : function(result) {
+				if (result) {
+					base=result;
+					tradeChart(result);
+				}
+			},
+			error : function(errorMsg) {
+			}
+		});
+   });
+   
+   
    
    function tradeChart(all) {
 		var crrentData = [];
