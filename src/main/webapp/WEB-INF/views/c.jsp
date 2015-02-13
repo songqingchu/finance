@@ -25,19 +25,19 @@
    
 <div style="width:240px;float:left;">
 <c:forEach var="s" items="${big}">  
-     <span  class="bigSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" >${s.symbol}</a></span>
+     <span  class="bigSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol} }">${s.symbol}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${acvu}">  
-   <span style="display:none" class="acvuSymbol  symbol"  style="width:50px;float:left;">  <a href="#"  symbol="${s.symbol}" class="symbolA" >${s.symbol}</a></span>
+   <span style="display:none" class="acvuSymbol  symbol"  style="width:50px;float:left;">  <a href="#"  symbol="${s.symbol} id="${s.symbol} }"" class="symbolA" >${s.symbol}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av5}">  
-    <span style="display:none" class="av5Symbol  symbol"  style="width:50px;float:left;"> <a href="#"   symbol="${s.symbol}" class="symbolA">${s.symbol}</a></span>
+    <span style="display:none" class="av5Symbol  symbol"  style="width:50px;float:left;"> <a href="#"   symbol="${s.symbol} id="${s.symbol} }"" class="symbolA">${s.symbol}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av10}">  
-    <span style="display:none" class="av10Symbol  symbol"  style="width:50px;float:left;"> <a href="#"  symbol="${s.symbol}" class="symbolA"   >${s.symbol}</a></span>
+    <span style="display:none" class="av10Symbol  symbol"  style="width:50px;float:left;"> <a href="#"  symbol="${s.symbol} id="${s.symbol} }"" class="symbolA"   >${s.symbol}</a></span>
 </c:forEach>
 </div>
 
@@ -55,6 +55,7 @@
    var base;
    var start=0;
    var total;
+   var currentSymbol;
    
    $(".choose").on("click",function(){
 	   var id=$(this).attr("id");
@@ -67,6 +68,9 @@
    
    $(".symbolA").on("click",function(){
 	   var symbol=$(this).attr("symbol");
+	   currentSymbol=symbol;
+	   $(".symbolA").css("background-color","");
+	   $(this).css("background-color","pink");
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
@@ -86,24 +90,36 @@
    
    $(document).keydown(function(event){ 
 	    event.stopPropagation(); 
-	    if(event.keyCode == 38) {
-	    	start=start+10;
+	    if(event.keyCode == 38||event.keyCode == 40){
+	    	if(event.keyCode == 38) {
+		    	start=start+10;
+		    }
+		    
+	        if(event.keyCode == 40) {
+	        	start=start-10;
+		    }
+	        var copyMap={};
+	    	copyMap.av5 = base.av5.slice(start);
+	    	copyMap.av10 = base.av10.slice(start);
+	    	copyMap.av20 = base.av20.slice(start);
+	    	copyMap.data = base.data.slice(start);
+	    	copyMap.start=base.start;
+	    	copyMap.high=base.high;
+	    	copyMap.low=base.low;
+	    	copyMap.end=base.end;
+	    	copyMap.name=base.name;
+	    	tradeChart(copyMap);
 	    }
-	    
-        if(event.keyCode == 40) {
-        	start=start-10;
+	    if(event.keyCode == 37||event.keyCode == 39){
+	    	if(event.keyCode == 37) {
+               var a=$(this).parent().prev();
+               var aa=$(a).children(".first").trigger("click");
+		    }
+	    	if(event.keyCode == 39) {
+	    		var a=$(this).parent().next();
+	    		var aa=$(a).children(".first").trigger("click");
+		    }
 	    }
-        var copyMap={};
-    	copyMap.av5 = base.av5.slice(start);
-    	copyMap.av10 = base.av10.slice(start);
-    	copyMap.av20 = base.av20.slice(start);
-    	copyMap.data = base.data.slice(start);
-    	copyMap.start=base.start;
-    	copyMap.high=base.high;
-    	copyMap.low=base.low;
-    	copyMap.end=base.end;
-    	copyMap.name=base.name;
-    	tradeChart(copyMap);
    });  
    
    $(".symbolA").on("click",function(){
