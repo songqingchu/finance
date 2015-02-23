@@ -18,6 +18,6 @@ public class Check_AV20 extends Check{
 	}
 	
 	public static void main(String args[]){
-		new Check_AV20().check("sh600213");
+		new Check_AV20().check("600606");
 	}
 }

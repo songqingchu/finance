@@ -41,12 +41,12 @@ public abstract class Local_Choose_MultiThread_Base {
 		while (i <= threadNum) {
 			try {
 				r.addAll(con.take().get());
+				i++;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}
-			i++;
 		}
 		service.shutdown();
 		save(r);

@@ -279,8 +279,41 @@
 
 	</pluginRepositories>
 
-	<build>
+<profiles>  
+        <profile>  
+            <id>home</id>  
+            <properties>  
+                <env>test-home</env>  
+            </properties>  
+            <activation>  
+                <activeByDefault>true</activeByDefault>  
+            </activation>  
+        </profile>  
+        <profile>  
+            <id>office</id>  
+            <properties>  
+                <env>test-office</env>  
+            </properties>  
+        </profile>  
+        <profile>  
+            <id>pro</id>  
+            <properties>  
+                <env>product</env>  
+            </properties>  
+        </profile>  
+    </profiles>  
 
+	<build>
+	<finalName>anasys</finalName>
+<filters>  
+        <filter>src/main/resources/config/${env}.properties</filter>  
+        </filters>  
+        <resources>  
+            <resource>  
+                <directory>src/main/resources</directory>  
+                <filtering>true</filtering>  
+            </resource>  
+        </resources> 
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

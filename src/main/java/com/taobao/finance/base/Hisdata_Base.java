@@ -33,8 +33,8 @@ import com.taobao.finance.util.FetchUtil;
  */
 public class Hisdata_Base {
 
-	public static String FILE_STOCK_HIS_BASE = "E:\\stock\\history\\";
-	public static String FILE_STOCK_TEMP_BASE = "E:\\stock\\tmp\\";
+	public static String FILE_STOCK_HIS_BASE = FetchUtil.FILE_STOCK_HISTORY_BASE;
+	public static String FILE_STOCK_TEMP_BASE = FetchUtil.FILE_STOCK_TMP_BASE;
 	public static Boolean INCLUDE_TODAY=true;
 	public static AtomicInteger fetched=new AtomicInteger(0);
 	public static AtomicInteger unformalFetched=new AtomicInteger(0);

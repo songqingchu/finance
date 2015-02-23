@@ -45,6 +45,7 @@ class BigTrend_Task implements Callable<List<Stock>> {
 
 	public List<Stock> call() throws Exception {
 		List<Stock> l = new ArrayList<Stock>();
+		int i=0;
 		for (Stock s : this.l) {
 			try {
 				if (s.getCode().equals("600352")) {
@@ -53,6 +54,7 @@ class BigTrend_Task implements Callable<List<Stock>> {
 				if (s.getName().equals("浙江龙")) {
 					s.get_10changes();
 				}
+				System.out.println(i++);
 				List<Stock> history = prepareData(s.getSymbol(), null);
 				if (history == null) {
 					continue;

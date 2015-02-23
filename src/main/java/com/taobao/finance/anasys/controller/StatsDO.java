@@ -6,13 +6,31 @@ import java.text.SimpleDateFormat;
 public class StatsDO {
 	public static DecimalFormat f = new DecimalFormat("0.0");
 	public static DateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+	public static String SPLIT=",";
 	
 	public String date;
-	public Double value;
-	public Integer r=1;
+	public Integer value;
+	public Integer change;
+	
+	//增长率
+	public Integer vRate;
+	//胜率
 	public Integer sRate=0;
+	//损益比
+	public Integer r=1;
+	//仓位率
+	public Integer pRate;
+    //平均盈利率
 	public Integer yRate=0;
+	//平均盈利率(盈利)
+	public Integer yyRate;
+	//平均盈利率(损失)
+	public Integer ysRate;
+	//最大回撤
 	public Integer back=0;
+	
+	
+	
 	public Double v=null;
 	
 	public Integer ayCount;
@@ -20,18 +38,168 @@ public class StatsDO {
 	public Integer nyCount;
 	public Integer nsCount;
 	
+	public Integer ayValue;
+	public Integer asValue;
+	public Integer nyValue;
+	public Integer nsValue;
 	
-	public Double aY;
-	public Double aS;
-	public Double nY;
-	public Double nS;
+	public Integer ayPosition;
+	public Integer asPosition;
+	public Integer nyPosition;
+	public Integer nsPosition;
+	
+	public Integer ayRate;
+	public Integer asRate;
+	public Integer nyRate;
+	public Integer nsRate;
 	
 	
+	public String toFileString(){
+		String result="";
+		result+=this.date+SPLIT+
+				this.getValue()+SPLIT+
+				this.getChange()+SPLIT+
+				this.getvRate()+SPLIT+
+				this.getAyCount()+SPLIT+
+				this.getAsCount()+SPLIT+
+				this.getNyCount()+SPLIT+
+				this.getNsCount()+SPLIT+
+				this.getAyValue()+SPLIT+
+				this.getAsValue()+SPLIT+
+				this.getNyValue()+SPLIT+
+				this.getNsValue()+SPLIT+
+				this.getAyPosition()+SPLIT+
+				this.getAsPosition()+SPLIT+
+				this.getNyPosition()+SPLIT+
+				this.getNsPosition()+SPLIT+
+				this.getAyRate()+SPLIT+
+				this.getAsRate()+SPLIT+
+				this.getNyRate()+SPLIT+
+				this.getNsRate();
+		return result;
+	}
+	
+	
+	
+	public Integer getvRate() {
+		return vRate;
+	}
+	public void setvRate(Integer vRate) {
+		this.vRate = vRate;
+	}
+	public Integer getpRate() {
+		Float f=1F;
+		if(this.asPosition+this.nsPosition==0){
+			return 1;
+		}else{
+			f=(this.ayPosition+this.nyPosition)*100F/(this.asPosition+this.nsPosition);
+		}
+		return f.intValue();
+	}
+	public void setpRate(Integer pRate) {
+		this.pRate = pRate;
+	}
 	public static DecimalFormat getF() {
 		return f;
 	}
 	public static void setF(DecimalFormat f) {
 		StatsDO.f = f;
+	}
+	public static DateFormat getDf() {
+		return df;
+	}
+	public static void setDf(DateFormat df) {
+		StatsDO.df = df;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public Integer getValue() {
+		return value;
+	}
+	public void setValue(Integer value) {
+		this.value = value;
+	}
+	public Integer getChange() {
+		return change;
+	}
+	public void setChange(Integer change) {
+		this.change = change;
+	}
+	public Integer getR() {
+		Float f=1F;
+		if(this.asValue+this.nsValue==0){
+			return 1;
+		}else{
+			f=(this.ayValue+this.nyValue)*100F/(this.asValue+this.nsValue);
+		}
+		return f.intValue();
+	}
+	public void setR(Integer r) {
+		this.r = r;
+	}
+	public Integer getsRate() {
+		Float f=1F;
+		if(this.asCount+this.ayCount+this.nsCount+this.nyCount==0){
+			return 50;
+		}else{
+			f=(this.ayCount+this.nyCount)*100F/(this.asCount+this.ayCount+this.nsCount+this.nyCount);
+		}
+		return f.intValue();
+	}
+	public void setsRate(Integer sRate) {
+		this.sRate = sRate;
+	}
+	public Integer getyRate() {
+		Integer f=1;
+		if(this.asRate+this.ayRate+this.nsRate+this.nyRate==0){
+			return 0;
+		}else{
+			f=(this.asRate+this.ayRate+this.nsRate+this.nyRate)/(this.asCount+this.ayCount+this.nsCount+this.nyCount);
+		}
+		return f.intValue();
+	}
+	public Integer getYyRate() {
+		Integer f=1;
+		if(this.ayRate+this.nyRate==0){
+			return 0;
+		}else{
+			f=(this.ayRate+this.nyRate)/(this.ayCount+this.nyCount);
+		}
+		return f.intValue();
+	}
+	public void setYyRate(Integer yyRate) {
+		this.yyRate = yyRate;
+	}
+	public Integer getYsRate() {
+		Integer f=1;
+		if(this.asRate+this.nsRate==0){
+			return 0;
+		}else{
+			f=(this.asRate+this.nsRate)/(this.asCount+this.nsCount);
+		}
+		return f.intValue();
+	}
+	public void setYsRate(Integer ysRate) {
+		this.ysRate = ysRate;
+	}
+	public void setyRate(Integer yRate) {
+		this.yRate = yRate;
+	}
+	public Integer getBack() {
+		return back;
+	}
+	public void setBack(Integer back) {
+		this.back = back;
+	}
+	public Double getV() {
+		return v;
+	}
+	public void setV(Double v) {
+		this.v = v;
 	}
 	public Integer getAyCount() {
 		return ayCount;
@@ -57,71 +225,76 @@ public class StatsDO {
 	public void setNsCount(Integer nsCount) {
 		this.nsCount = nsCount;
 	}
-	public Double getaY() {
-		return aY;
+	public Integer getAyValue() {
+		return ayValue;
 	}
-	public void setaY(Double aY) {
-		this.aY = aY;
+	public void setAyValue(Integer ayValue) {
+		this.ayValue = ayValue;
 	}
-	public Double getaS() {
-		return aS;
+	public Integer getAsValue() {
+		return asValue;
 	}
-	public void setaS(Double aS) {
-		this.aS = aS;
+	public void setAsValue(Integer asValue) {
+		this.asValue = asValue;
 	}
-	public Double getnY() {
-		return nY;
+	public Integer getNyValue() {
+		return nyValue;
 	}
-	public void setnY(Double nY) {
-		this.nY = nY;
+	public void setNyValue(Integer nyValue) {
+		this.nyValue = nyValue;
 	}
-	public Double getnS() {
-		return nS;
+	public Integer getNsValue() {
+		return nsValue;
 	}
-	public void setnS(Double nS) {
-		this.nS = nS;
+	public void setNsValue(Integer nsValue) {
+		this.nsValue = nsValue;
 	}
-	public Double getV() {
-		return v;
+	public Integer getAyPosition() {
+		return ayPosition;
 	}
-	public void setV(Double v) {
-		String s=f.format(v);
-		this.v = Double.parseDouble(s);
+	public void setAyPosition(Integer ayPosition) {
+		this.ayPosition = ayPosition;
 	}
-	public Integer getR() {
-		return r;
+	public Integer getAsPosition() {
+		return asPosition;
 	}
-	public void setR(Integer r) {
-		this.r = r;
+	public void setAsPosition(Integer asPosition) {
+		this.asPosition = asPosition;
 	}
-	public Integer getsRate() {
-		return sRate;
+	public Integer getNyPosition() {
+		return nyPosition;
 	}
-	public void setsRate(Integer sRate) {
-		this.sRate = sRate;
+	public void setNyPosition(Integer nyPosition) {
+		this.nyPosition = nyPosition;
 	}
-	public Integer getyRate() {
-		return yRate;
+	public Integer getNsPosition() {
+		return nsPosition;
 	}
-	public void setyRate(Integer yRate) {
-		this.yRate = yRate;
+	public void setNsPosition(Integer nsPosition) {
+		this.nsPosition = nsPosition;
 	}
-	public Integer getBack() {
-		return back;
+	public Integer getAyRate() {
+		return ayRate;
 	}
-	public void setBack(Integer back) {
-		this.back = back;
+	public void setAyRate(Integer ayRate) {
+		this.ayRate = ayRate;
 	}
-	public String getDate() {
-		return date;
+	public Integer getAsRate() {
+		return asRate;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setAsRate(Integer asRate) {
+		this.asRate = asRate;
 	}
-	public Double getValue() {
-		return value;
+	public Integer getNyRate() {
+		return nyRate;
 	}
-	public void setValue(Double value) {
-		this.value = value;
+	public void setNyRate(Integer nyRate) {
+		this.nyRate = nyRate;
+	}
+	public Integer getNsRate() {
+		return nsRate;
+	}
+	public void setNsRate(Integer nsRate) {
+		this.nsRate = nsRate;
 	}
 }

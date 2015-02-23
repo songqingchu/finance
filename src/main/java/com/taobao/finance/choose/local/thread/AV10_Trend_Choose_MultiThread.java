@@ -46,7 +46,9 @@ class AV10_Trend_Task implements Callable<List<Stock>> {
 
 	public List<Stock> call() throws Exception {
 		List<Stock> l = new ArrayList<Stock>();
+		int i=0;
 		for (Stock s : this.l) {
+			System.out.println(i++);
 			if(s.getCode().equals("000096")){
 				s.get_10changes();
 			}

@@ -19,7 +19,7 @@ public class Check_AVCU extends Check{
 	
 	
 	public static void main(String args[]){
-		new Check_AVCU().check("600623");
+		new Check_AVCU().check("000507");
 	}
 
 }

@@ -512,6 +512,11 @@ public class CheckUtil {
 		return true;
 	}
 
+	/**
+	 * 1 
+	 * @param l
+	 * @return
+	 */
 	public static boolean checkAV20XRate(List<Stock> l) {
 		if (l.size() < 60) {
 			return false;
@@ -519,7 +524,7 @@ public class CheckUtil {
 
 		List<Float> av20 = new ArrayList<Float>();
 
-		for (int i = 1; i < 26; i++) {
+		for (int i = 1; i < 36; i++) {
 			Float today20 = getAve(l, 20, l.size() - i);
 			av20.add(today20);
 		}
@@ -529,25 +534,25 @@ public class CheckUtil {
 		int count20 = 0;
 
 		int angerCount20 = 0;
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 31; i++) {
 			if (av20.get(i) + 0.01 >= av20.get(i + 1)) {
 				count20++;
 			}
 		}
-		if (count20 < 16) {
+		if (count20 < 28) {
 			return false;
 		}
 
-		for (int i = 0; i < 20; i++) {
-			Float r2 = (av20.get(i) - av20.get(i + 5)) / 5;
+		/*for (int i = 0; i < 15; i++) {
+			Float r2 = (av20.get(i) - av20.get(i + 10)) / 5;
 			Float p = r2 / r;
 			if (p > 1.35F || p < 0.65F) {
 				angerCount20++;
 			}
-		}
-		if (angerCount20 > 4) {
+		}*/
+		/*if (angerCount20 > 4) {
 			return false;
-		}
+		}*/
 
 		Float av10 = getAve(l, 10, l.size() - 1);
 
@@ -685,6 +690,11 @@ public class CheckUtil {
 	}
 
 
+	/**
+	 * 超级趋势
+	 * @param l
+	 * @return
+	 */
 	public static boolean checkBigTrend(List<Stock> l) {
 		if (l.size() < 100) {
 			return false;
@@ -757,6 +767,91 @@ public class CheckUtil {
 		}
 		return true;
 	}
+	
+	
+	
+	
+	/**
+	 * 超级趋势
+	 * @param l
+	 * @return
+	 */
+	public static boolean checkBigTrend2(List<Stock> l) {
+		if (l.size() < 100) {
+			return false;
+		}
+		List<Float> av60 = new ArrayList<Float>();
+		List<Float> av20 = new ArrayList<Float>();
+		List<Float> av10 = new ArrayList<Float>();
+		List<Float> av5 = new ArrayList<Float>();
+
+		for (int i = 1; i < 26; i++) {
+			Float today60 = getAve(l, 60, l.size() - i);	
+			Float today20 = getAve(l, 20, l.size() - i);		
+			Float today10 = getAve(l, 10, l.size() - i);
+			Float today5 = getAve(l, 5, l.size() - i);
+			av60.add(today60);
+			av20.add(today20);
+			av10.add(today10);
+			av5.add(today5);
+		}
+
+		int count20 = 0;
+        
+		for (int i = 0; i < 18; i++) {
+			if (av20.get(i)> av20.get(i + 1)) {
+				count20++;
+			}
+		}
+
+		if (count20 < 15) {
+			return false;
+		}
+
+		if (av20.get(0) / av20.get(10) < 1.15F) {
+			return false;
+		}
+
+		int angerCount10=0;
+		int angerCount20=0;
+		for (int i = 0; i < 8; i++) {
+			Float p = (av20.get(i) / av20.get(i + 5));
+			if (p < 1.05F) {
+				angerCount20++;
+			}
+		}
+		
+		for (int i = 0; i < 8; i++) {
+			Float p = (av10.get(i) / av10.get(i + 5));
+			if (p < 1.05F) {
+				angerCount10++;
+			}
+		}
+		
+		if (angerCount10>2&&angerCount20>2) { 
+			return false; 
+		}
+		return true;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * ten day  ave check
@@ -1022,6 +1117,7 @@ public class CheckUtil {
 	 * AVCU用于发现起涨的早期阶段，以四日形态为特征
 	 * 1   十日涨幅不大于20
 	 * 2   股价应比倒数第四日，倒数第二日高
+	 * 3 4日涨幅不小2
 	 * 3   单日涨幅不能大于5，不能小于2
 	 * 4  上涨日期不能小于3
 	 * 5  下跌日期不能大于1
@@ -1107,65 +1203,24 @@ public class CheckUtil {
 			Float today10 = getAve(l, 10, l.size()-i-1);
 			av5.add(today5);
 			av10.add(today10);
-		//	l.remove(l.size() - 1);
 		}
 
 		Collections.reverse(av5);
 		Collections.reverse(av10);
 
-		//case7 近八日中 五日均线逆反次数
-		int reverse5 = 0;
-		int last = -1;
-		for (int i = 6; i < 14; i++) {
-			if (av5.get(i) > av5.get(i + 1)) {
-				if (last == -1 || last == i - 1) {
-					reverse5++;
-					last = i;
-				} else {
-					reverse5 = 1;
-					last = i;
-				}
-			}
-		}
-		if (reverse5 > 3) {
-			return false;
-		}
 
 		int count5 = 0;
-		int count10 = 0;
-		//int count5BigCount10 = 0;
 		for (int i = 7; i < 14; i++) {
 			Float today5 = av5.get(i);
 			Float tomorrow5 = av5.get(i + 1);
 
-			Float today10 = av10.get(i);
-			Float tomorrow10 = av10.get(i + 1);
-
 			if (today5 > tomorrow5) {
 				count5++;
 			}
-			if (today10 > tomorrow10&&i>10) {
-				count10++;
-			}
-			/*if (today10 > tomorrow5) {
-				count5BigCount10++;
-			}*/
 		}
-		//case 五日均线 十日均线逆反次数
-		/*if (count5 + count10 >= 4) {
-			return false;
-		}*/
-		
 		if (count5>= 3) {
 			return false;
 		}
-		if (count5>= 2) {
-			return false;
-		}
-		//case 10日均线上穿5日均线次数
-		/*if (count5BigCount10 >= 2) {
-			return false;
-		}*/
 
 		return match;
 	}

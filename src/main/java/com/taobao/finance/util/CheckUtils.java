@@ -102,16 +102,27 @@ public class CheckUtils {
 	}
 	
 	
-	//检查5日线,检查10天
-	public static boolean check5(List<Stock> l, Float rate, int day,int num5, int num10, int num20) {
+	/**
+     *  1  六天涨幅不超过20
+     *  2  最近六天内，不要暴涨暴跌【-4，+7】
+     *  3  六天必须有涨幅
+     *  4  如果最高价不是近日股价，那么现价和最高价只差不能高于3
+     *  5  13日最低价不能出现在最近4日中
+     *  6  最近13日振幅不能大于25
+     *  7  最近3日10均线上翘，最近6日5日均线上翘
+	 */
+	public static boolean check5(List<Stock> l) {
+		Float rate=1.25F;
+		int day=13;
+		
 		if (l.size() < 37) {
 			return false;
 		}
 
 		Float end1 = Float.parseFloat(l.get(l.size() - 1).getEndPrice());
-		Float end20 = Float.parseFloat(l.get(l.size() - 6).getEndPrice());
+		Float end6 = Float.parseFloat(l.get(l.size() - 6).getEndPrice());
 		//期间幅度不能过大
-		if (end1 / end20 > 1.20F) {
+		if (end1 / end6 > 1.20F) {
 			return false;
 		}
 
@@ -175,47 +186,12 @@ public class CheckUtils {
 			return false;
 		}
 
-		/*int count20 = 0;
-		int count10 = 0;
-		int continueCount5 = 0;
-		//考察均线的连续性
-		for (int i = 0; i < day - 1; i++) {
-			if (av20.get(i) >= av20.get(i + 1)) {
-				count20++;
-			}
-			if (av10.get(i) >= av10.get(i + 1)) {
-				count10++;
-			}
-			Float p = Float.parseFloat(l.get(l.size() - i - 1).getEndPrice());
-			if (p - av5.get(i) >= 0.005 * (0 - p)) {
-				continueCount5++;
-			}
-			
-			if (av5.get(i) >= av5.get(i + 1)) {
-				continueCount5++;
-			}
-		}
-		if (count20 < num20) {
-			return false;
-		}
-		if (count10 < num10) {
-			return false;
-		}
-		if (continueCount5 <= num5) {
-			return false;
-		}*/
-		
-	/*	for (int i = 0; i < 3; i++) {
-			if (av20.get(i) < av20.get(i + 1)) {
-				return false;
-			}
-		}*/
 		for (int i = 0; i < 3; i++) {
 			if (av10.get(i) < av10.get(i + 1)) {
 				return false;
 			}
 		}
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 5; i++) {
 			if (av5.get(i) < av5.get(i + 1)) {
 				return false;
 			}

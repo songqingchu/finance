@@ -10,7 +10,7 @@ public class Check_BigTrend extends Check{
 	public String name="BigTrend";
 	@Override
 	public boolean match(List<Stock> history) {
-		return CheckUtil.checkBigTrend(history);
+		return CheckUtil.checkBigTrend2(history);
 	}
 	@Override
 	public void printName() {
@@ -18,6 +18,6 @@ public class Check_BigTrend extends Check{
 	}
 	
 	public static void main(String args[]){
-		new Check_BigTrend().check("sh600213");
+		new Check_BigTrend().check("600895");
 	}
 }

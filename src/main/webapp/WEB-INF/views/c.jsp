@@ -9,44 +9,70 @@
 <script src="/resources/js/jquery.min.js" type="text/javascript"></script>
 <script src="/resources/js/highstock.js"></script>
 <script src="/resources/js/chartExt.js"></script>
+
+<style type="text/css">
+.choose .symbolA{
+cursor:pointer;
+}
+a{
+text-decoration:none; 
+}
+
+</style>
 </head>
 <body>
+<jsp:include page="common/head.jsp" flush="true"/>
+ 
 
-<div style="width:60px;float:left;">
-<b><span id="bigSymbol" class="choose" style="backgroud-color:red">acvu</span></b>
-<br>
-<b><span id="acvuSymbol"  class="choose">big&nbsp;</span></b>
-<br>
-<b><span id="av5Symbol" class="choose">av5&nbsp;</span></b>
-<br>
-<b><span id="av10Symbol"  class="choose">av10</span></b>
-<br>
-</div>
    
 <div style="width:240px;float:left;">
+<div style="width:240px;float:left;">
+<span  style="width:80px;float:left;">
+<b><a href="#" id="bigSymbol" class="choose" style="backgroud-color:red">acvu</a></b>
+</span>
+<span  style="width:80px;float:left;">
+<b><a href="#" id="acvuSymbol"  class="choose">big&nbsp;</a></b>
+</span>
+<span  style="width:80px;float:left;">
+<b><a href="#" id="av5Symbol" class="choose">av5&nbsp;</a></b>
+</span>
+<span  style="width:80px;float:left;">
+<b><a href="#" id="av10Symbol"  class="choose">av10</a></b>
+</span>
+<br>
+</div>
+
+<div style="width:240px;float:left;">
 <c:forEach var="s" items="${big}">  
-     <span  class="bigSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol} }">${s.symbol}</a></span>
+     <span  class="bigSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.symbol}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${acvu}">  
-   <span style="display:none" class="acvuSymbol  symbol"  style="width:50px;float:left;">  <a href="#"  symbol="${s.symbol} id="${s.symbol} }"" class="symbolA" >${s.symbol}</a></span>
+   <span style="display:none" class="acvuSymbol  symbol"  style="width:50px;float:left;">  <a href="#"  symbol="${s.symbol}" id="${s.symbol}" class="symbolA" >${s.symbol}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av5}">  
-    <span style="display:none" class="av5Symbol  symbol"  style="width:50px;float:left;"> <a href="#"   symbol="${s.symbol} id="${s.symbol} }"" class="symbolA">${s.symbol}</a></span>
+    <span style="display:none" class="av5Symbol  symbol"  style="width:50px;float:left;"> <a href="#"   symbol="${s.symbol}" id="${s.symbol}" class="symbolA">${s.symbol}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av10}">  
-    <span style="display:none" class="av10Symbol  symbol"  style="width:50px;float:left;"> <a href="#"  symbol="${s.symbol} id="${s.symbol} }"" class="symbolA"   >${s.symbol}</a></span>
+    <span style="display:none" class="av10Symbol  symbol"  style="width:50px;float:left;"> <a href="#"  symbol="${s.symbol}" id="${s.symbol}" class="symbolA"   >${s.symbol}</a></span>
 </c:forEach>
 </div>
+</div>
 
-<div id="container" style="height: 800px; width: 1200px;float:left;"></div>
+<div id="container" style="height: 800px;float:left;"></div>
 </body>
 <script>
    /* var f='function a(i){if(i>0){return true;}else{ return false;};} a(i)';
    var i=1;
    eval("alert(eval(f))"); */
+   var windowWidth=$(window).width();
+   var windowHight=$(window).height();
+   var w=windowWidth-350;
+   var h=windowHight*0.8;
+   $("#container").width(w);
+   $("#container").height(h);
    var acvu=[${acvuStr}];
    var great=[${bigStr}];
    var av5=[${av5Str}];
@@ -92,7 +118,7 @@
 	    event.stopPropagation(); 
 	    if(event.keyCode == 38||event.keyCode == 40){
 	    	if(event.keyCode == 38) {
-		    	start=start+10;
+		    	start=start+20;
 		    }
 		    
 	        if(event.keyCode == 40) {
@@ -103,6 +129,7 @@
 	    	copyMap.av10 = base.av10.slice(start);
 	    	copyMap.av20 = base.av20.slice(start);
 	    	copyMap.data = base.data.slice(start);
+	    	copyMap.vol = base.vol.slice(start);
 	    	copyMap.start=base.start;
 	    	copyMap.high=base.high;
 	    	copyMap.low=base.low;

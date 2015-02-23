@@ -1,13 +1,14 @@
 package com.taobao.finance.anasys.controller;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.dataobject.Stock;
-import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.util.FetchUtil;
 
 public class MockUtil {
 
@@ -42,6 +43,10 @@ public class MockUtil {
 		List<Integer> r=new ArrayList<Integer>();
 		List<Integer> yRate=new ArrayList<Integer>();
 		List<Integer> back=new ArrayList<Integer>();
+		
+		
+		
+        
 		for(StatsDO s:mine){
 			dList.add(s.getDate());
 			mL.add(s.getV());
@@ -66,6 +71,82 @@ public class MockUtil {
 		m.put("yRate", yRate);
 		m.put("r", r);
 		m.put("back", back);
+		return m;
+	}
+	
+	public static Map<String,Object> mockStats() throws IOException, ParseException{
+		Map<String,Object> m=new HashMap<String,Object>();
+		List<StatsDO> mine=readChart();
+		DateFormat df=new SimpleDateFormat("yyyy.MM.dd");
+		Date startDate=df.parse(mine.get(0).getDate());
+		List<StatsDO> sh=readIndex(startDate, null, "sh000001");
+		List<StatsDO> sz=readIndex(startDate, null, "sz399001");
+		
+		List<String> dList=new ArrayList<String>();
+		List<Integer> mL=new ArrayList<Integer>();
+		List<Integer> shL=new ArrayList<Integer>();
+		List<Integer> szL=new ArrayList<Integer>();
+		List<Integer> year=new ArrayList<Integer>();
+		
+		List<Integer> sRate=new ArrayList<Integer>();
+		List<Integer> r=new ArrayList<Integer>();
+		List<Integer> pRate=new ArrayList<Integer>();
+		List<Integer> yRate=new ArrayList<Integer>();
+		List<Integer> yyRate=new ArrayList<Integer>();
+		List<Integer> ysRate=new ArrayList<Integer>();
+		
+		for(StatsDO s:mine){
+			dList.add(s.getDate());
+			mL.add(s.getvRate()-1000);
+			
+			
+			Date endDate=StatsDO.df.parse(s.getDate());
+			Calendar c=Calendar.getInstance();
+			c.setTime(startDate);    
+	        long time1 = c.getTimeInMillis();                 
+	        c.setTime(endDate);    
+	        long time2 = c.getTimeInMillis();         
+	        long dayCount=(time2-time1)/(1000*3600*24);  
+	        if(dayCount==0){
+	        	year.add(20);
+	        }else{
+	        	Integer yearV=(s.getvRate()-1000)*365/(int)dayCount;
+	        	year.add(yearV);
+	        }  
+	        
+			
+			
+			sRate.add(s.getsRate());
+			r.add(s.getR());
+			pRate.add(s.getpRate());
+			yRate.add(s.getyRate());
+			yyRate.add(s.getYyRate());
+			ysRate.add(s.getYsRate());
+		}
+		for(StatsDO s:sh){
+			shL.add(s.getvRate());
+		}
+		for(StatsDO s:sz){
+			szL.add(s.getvRate());
+		}
+
+		m.put("series",dList );
+		m.put("mine", mL);
+		m.put("sh", shL);
+		m.put("sz", szL);
+		m.put("year", year);
+		
+		m.put("sRate",sRate );
+		m.put("rRate", r);
+		m.put("pRate",pRate );
+		
+		m.put("yRate", yRate);
+		m.put("yyRate", yyRate);
+		m.put("ysRate", ysRate);
+		m.put("data", mine);
+	//	m.put("r", r);
+		
+
 		return m;
 	}
 	
@@ -182,7 +263,7 @@ public class MockUtil {
 	
 	public static  List<StatsDO> read() throws IOException, ParseException{
 		List<StatsDO> l=new ArrayList<StatsDO> ();
-		@SuppressWarnings("deprecation")
+		/*@SuppressWarnings("deprecation")
 		XSSFWorkbook xwb = new XSSFWorkbook("C:\\Documents and Settings\\Administrator\\git\\finance\\src\\main\\resources\\统计.xlsx");  
 		XSSFSheet sheet = xwb.getSheetAt(0);  
 		XSSFRow row;  
@@ -281,7 +362,7 @@ public class MockUtil {
 	        	Double rV=v/dayCount*360;
 		        s.setyRate(rV.intValue());
 	        }  
-		}
+		}*/
 		return l;
 	}
 	
@@ -321,10 +402,10 @@ public class MockUtil {
 		        s.setNyCount(Integer.parseInt(nyc));
 		        s.setNsCount(Integer.parseInt(nsc));
 		        
-		        s.setaY(Double.parseDouble(ay));
-		        s.setaS(Double.parseDouble(as));
-		        s.setnY(Double.parseDouble(ny));
-		        s.setnS(Double.parseDouble(ns));
+		        s.setAyValue(Integer.parseInt(ay));
+		        s.setAsValue(Integer.parseInt(as));
+		        s.setNyValue(Integer.parseInt(ny));
+		        s.setNsValue(Integer.parseInt(ns));
 		        
 		        //胜率
 		        if(s.getAyCount()+s.getAsCount()+s.getNsCount()+s.getNyCount()==0){
@@ -333,19 +414,87 @@ public class MockUtil {
 		        	s.setsRate((s.getAyCount()+s.getNyCount())*100/(s.getAyCount()+s.getAsCount()+s.getNsCount()+s.getNyCount()));
 		        }	        
 		        //动态R
-		        if((0-s.getaS()-s.getnS()==0)){
+		        if((0-s.getAsValue()-s.getNsValue()==0)){
 		        	s.setR(100);
 		        }else{
-		        	s.setR((s.getaY().intValue()+s.getnY().intValue())*100/(s.getaS().intValue()+s.getnS().intValue()));
+		        	s.setR((s.getAyValue().intValue()+s.getNyValue().intValue())*100/(s.getAsValue().intValue()+s.getNsValue().intValue()));
 		        }
 		        
 		    	l.add(s);
 		    }
 		}  
-
 		return l;
 	}
 	
+	
+	
+	public static  List<StatsDO> readChart() throws IOException, ParseException{
+		List<StatsDO> l=new ArrayList<StatsDO> ();
+		File f = new File(FetchUtil.FILE_USER_STATS_BASE+"stats.csv");  
+		BufferedReader br=new BufferedReader(new FileReader(f));
+		String line=br.readLine();
+		while((line=br.readLine())!=null){
+			String[] data=line.split(",");
+			
+			String date=data[0]; 
+			String value=data[1]; 
+			String change=data[2]; 
+			String rate=data[3]; 
+			
+			String ayc=data[4]; 
+			String asc=data[5]; 
+			String nyc=data[6]; 
+			String nsc=data[7]; 
+			
+			String ayv=data[8]; 
+			String asv=data[9];  
+			String nyv=data[10]; 
+			String nsv=data[11];  
+			
+			String ayp=data[12]; 
+			String asp=data[13]; 
+			String nyp=data[14]; 
+			String nsp=data[15]; 
+			
+			String ayr=data[16];  
+			String asr=data[17];  
+			String nyr=data[18]; 
+			String nsr=data[19]; 
+			
+		    if(StringUtils.isNotBlank(ayc)){
+		    	StatsDO s=new StatsDO();
+		    	s.setDate(date);
+		    	s.setValue(Integer.parseInt(value));
+		    	s.setChange(Integer.parseInt(change));
+		    	s.setvRate(Integer.parseInt(rate));
+		    	
+		        s.setAyCount(Integer.parseInt(ayc));
+		        s.setAsCount(Integer.parseInt(asc));
+		        s.setNyCount(Integer.parseInt(nyc));
+		        s.setNsCount(Integer.parseInt(nsc));
+		        
+		        s.setAyValue(Integer.parseInt(ayv));
+		        s.setAsValue(Integer.parseInt(asv));
+		        s.setNyValue(Integer.parseInt(nyv));
+		        s.setNsValue(Integer.parseInt(nsv));
+		        
+		        s.setAyPosition(Integer.parseInt(ayp));
+		        s.setAsPosition(Integer.parseInt(asp));
+		        s.setNyPosition(Integer.parseInt(nyp));
+		        s.setNsPosition(Integer.parseInt(nsp));
+		        
+		        s.setAyRate(Integer.parseInt(ayr));
+		        s.setAsRate(Integer.parseInt(asr));
+		        s.setNyRate(Integer.parseInt(nyr));
+		        s.setNsRate(Integer.parseInt(nsr));
+		        
+		        
+		    	l.add(s);
+		}
+		}
+		br.close();
+		return l;
+	}
 	
 	public static  List<StatsDO> readIndex(Date startDate,Date endDate,String symbol){
 		List<StatsDO> r=new ArrayList<StatsDO>();
@@ -356,6 +505,7 @@ public class MockUtil {
 			//st.setDate(df.format(s.getDate()));
 			Double price=Double.parseDouble(s.getEndPrice());
 			st.setV(price*100/start-100);
+			st.setvRate((int)(price*100/start-100));
 			r.add(st);
 		}
 		return r;
