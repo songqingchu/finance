@@ -42,7 +42,7 @@ text-decoration:none;
 <br>
 </div>
 
-<div style="width:240px;float:left;">
+<div style="width:240px;height:800px;float:left;overflow-y:auto">
 <c:forEach var="s" items="${big}">  
      <span  class="bigSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.symbol}</a></span>
 </c:forEach>
@@ -118,11 +118,11 @@ text-decoration:none;
 	    event.stopPropagation(); 
 	    if(event.keyCode == 38||event.keyCode == 40){
 	    	if(event.keyCode == 38) {
-		    	start=start+20;
+		    	start=start+40;
 		    }
 		    
 	        if(event.keyCode == 40) {
-	        	start=start-10;
+	        	start=start-20;
 		    }
 	        var copyMap={};
 	    	copyMap.av5 = base.av5.slice(start);

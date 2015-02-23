@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
+
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.base.Local_Choose_MultiThread_Base;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.util.CheckUtil;
+import com.taobao.finance.util.FetchUtil;
 
 public class PF_Choose_MultiThread extends Local_Choose_MultiThread_Base{
 
@@ -25,7 +27,7 @@ public class PF_Choose_MultiThread extends Local_Choose_MultiThread_Base{
 	}
 	
 	public String getPath() {
-		return "E:\\stock\\choose\\av20\\";
+		return FetchUtil.FILE_STOCK_CHOOSE_BASE+"av20\\";
 	}
 }
 

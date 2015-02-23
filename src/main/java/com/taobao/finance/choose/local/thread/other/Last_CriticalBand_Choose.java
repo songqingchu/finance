@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.base.Local_Choose_MultiThread_Base;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.util.FetchUtil;
 
 public class Last_CriticalBand_Choose extends Local_Choose_MultiThread_Base{
 
@@ -24,7 +25,7 @@ public class Last_CriticalBand_Choose extends Local_Choose_MultiThread_Base{
 		return lt;
 	}
 	public String getPath() {
-		return "E:\\stock\\choose\\cb\\";
+		return FetchUtil.FILE_STOCK_CHOOSE_BASE+"cb\\";
 	}
 }
 
@@ -48,7 +49,7 @@ class LCB_Task implements Callable<List<Stock>> {
 		List<Stock> l = new ArrayList<Stock>();
 		int i=1;
 		for (Stock s : this.l) {
-			System.out.println("´¦Àí"+i);
+			System.out.println("ï¿½ï¿½ï¿½ï¿½"+i);
 			i++;
 			if(s.getCode().equals("300288")){
 				s.get_10changes();

@@ -69,7 +69,7 @@ public class ZhenFu15_Choose extends Local_Choose_MultiThread_Base{
 		return lt;
 	}
 	public String getPath() {
-		return "E:\\stock\\choose\\cb\\";
+		return FetchUtil.FILE_STOCK_CHOOSE_BASE+"cb\\";
 	}
 }
 

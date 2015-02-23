@@ -9,6 +9,7 @@ import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.base.Local_Choose_MultiThread_Base;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.util.CheckUtil;
+import com.taobao.finance.util.FetchUtil;
 
 public class ST_Choose_MultiThread extends Local_Choose_MultiThread_Base{
 
@@ -25,7 +26,7 @@ public class ST_Choose_MultiThread extends Local_Choose_MultiThread_Base{
 		return lt;
 	}
 	public String getPath() {
-		return "E:\\stock\\choose\\tp\\";
+		return FetchUtil.FILE_STOCK_CHOOSE_BASE+"tp\\";
 	}
 }
 

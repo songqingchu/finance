@@ -44,7 +44,9 @@ public class FetchUtil {
 	public  void setFILE_STOCK_HISTORY_BASE(String fILE_STOCK_HISTORY_BASE) {
 		FILE_STOCK_HISTORY_BASE = fILE_STOCK_HISTORY_BASE;
 	}
-
+	public  void setFILE_STOCK_CHOOSE_BASE(String fILE_STOCK_CHOOSE_BASE) {
+		FILE_STOCK_CHOOSE_BASE = fILE_STOCK_CHOOSE_BASE;
+	}
 	public  void setFILE_USER_STATS_BASE(String fILE_USER_STATS_BASE) {
 		FILE_USER_STATS_BASE = fILE_USER_STATS_BASE;
 	}
@@ -62,12 +64,16 @@ public class FetchUtil {
 	public  String getFILE_USER_STATS_BASE() {
 		return FILE_USER_STATS_BASE;
 	}
+	public  String getFILE_STOCK_CHOOSE_BASE() {
+		return FILE_STOCK_CHOOSE_BASE;
+	}
 
 
 	public static String FILE_STOCK_ANASYS_BASE ;
 	public static String FILE_STOCK_HISTORY_BASE ;
 	public static String FILE_USER_STATS_BASE ;
 	public static String FILE_STOCK_TMP_BASE ;
+	public static String FILE_STOCK_CHOOSE_BASE ;
 
 	
 	

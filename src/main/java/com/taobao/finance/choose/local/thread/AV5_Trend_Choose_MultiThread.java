@@ -9,6 +9,7 @@ import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.base.Local_Choose_MultiThread_Base;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.util.CheckUtils;
+import com.taobao.finance.util.FetchUtil;
 
 
 /**
@@ -30,7 +31,7 @@ public class AV5_Trend_Choose_MultiThread extends Local_Choose_MultiThread_Base{
 	}
 
 	public String getPath() {
-		return "E:\\stock\\choose\\av5\\";
+		return FetchUtil.FILE_STOCK_CHOOSE_BASE+"av5\\";
 	}
 }
 
