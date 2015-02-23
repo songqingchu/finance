@@ -395,10 +395,10 @@ var highStockChart = function(divID,result,crrentData,all){
 					   zs = parseFloat(data[i][10]).toFixed(2);
 				   }
 			   }*/
-			   open = all.start.toFixed(2);
-			   high = all.high.toFixed(2);
-			   low = all.low.toFixed(2);
-			   close = all.end.toFixed(2);
+			   open = this.points[0].point.open.toFixed(2);
+			   high = this.points[0].point.high.toFixed(2);
+			   low = this.points[0].point.low.toFixed(2);
+			   close = this.points[0].point.close.toFixed(2);
 			   y = (this.points[1].point.y*0.0001).toFixed(2);
 			  // MA5 =this.points[2].y.toFixed(2);
 			  // MA10 =this.points[3].y.toFixed(2);

@@ -25,8 +25,8 @@ text-decoration:none;
  
 
    
-<div style="width:240px;float:left;">
-<div style="width:240px;float:left;">
+<div style="width:270px;float:left;">
+<div style="width:270px;float:left;">
 <span  style="width:80px;float:left;">
 <b><a href="#" id="bigSymbol" class="choose" style="backgroud-color:red">acvu</a></b>
 </span>
@@ -42,7 +42,7 @@ text-decoration:none;
 <br>
 </div>
 
-<div style="width:240px;height:800px;float:left;overflow-y:auto">
+<div style="width:270px;height:530px;float:left;overflow-y:auto">
 <c:forEach var="s" items="${big}">  
      <span  class="bigSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.symbol}</a></span>
 </c:forEach>
@@ -100,7 +100,7 @@ text-decoration:none;
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
-			url : "/e.do?symbol="+symbol,
+			url : "/kData.do?symbol="+symbol,
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {
@@ -154,7 +154,7 @@ text-decoration:none;
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
-			url : "/e.do?symbol="+symbol,
+			url : "/kData.do?symbol="+symbol,
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {

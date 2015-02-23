@@ -21,6 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.util.FetchUtil;
 
 public class MockUtil {
@@ -249,8 +250,15 @@ public class MockUtil {
 		m.put("vol", vol);	
 		m.put("data",data );
 		Stock s=l.get(l.size()-1);
+		Stock st=Fetch_AllStock.map.get(s.getSymbol());
+		String name=null;
+		if(st!=null){
+			name=st.getName();
+		}else{
+			name=s.getSymbol();
+		}
 		
-		m.put("name", s.getSymbol());
+		m.put("name", name);
 		m.put("start", s.getStartPriceFloat());
 		m.put("high", s.getHighPriceFloat());
 		m.put("low", s.getLowPriceFloat());

@@ -85,12 +85,7 @@ public class HomeController {
 		return "e";
 	}
 	
-	@RequestMapping(value = "/e.do", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> validataUser6(@RequestParam String symbol) throws IOException, ParseException {
-		Map<String,Object> map=MockUtil.mockData3(symbol);
-		return map;
-	}
+
 	
 	@RequestMapping(value = "/chart.do", method = RequestMethod.GET)
 	public String chart(HttpServletRequest request) {
