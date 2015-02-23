@@ -17,7 +17,8 @@
     <bean class="com.taobao.finance.util.FetchUtil">      
             <property name="FILE_STOCK_TMP_BASE"  value="${stock.tmp}"/>
             <property name="FILE_STOCK_ANASYS_BASE"  value="${stock.anasys}"/>  
-            <property name="FILE_STOCK_HISTORY_BASE" value="${stock.history}"/>  
+            <property name="FILE_STOCK_HISTORY_BASE" value="${stock.history}"/>
+            <property name="FILE_STOCK_CHOOSE_BASE" value="${stock.choose}"/>   
             <property name="FILE_USER_STATS_BASE" value="${user.stats}"/>    
     </bean>
     
