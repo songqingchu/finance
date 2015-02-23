@@ -55,9 +55,6 @@ public class Fetch_AllStock {
 		FetchUtil.saveAbsolute(FetchUtil.FILE_STOCK_ANASYS_BASE+"stockAll.txt", save);
 	}
 	public static void getData(){
-		/*if(map.size()>0){
-			return;
-		}*/
 		List<Stock> l=fetch();
 		Stock ss=new Stock();
 		ss.setSymbol("sh000001");
@@ -74,7 +71,6 @@ public class Fetch_AllStock {
 		for(Stock s:l){
 			m.put(s.getSymbol(), s);
 		}
-		
 		map=m;
 	}
 	

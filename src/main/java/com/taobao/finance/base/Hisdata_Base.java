@@ -18,26 +18,40 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 import com.taobao.finance.fetch.impl.Fetch_StockHistory;
 import com.taobao.finance.util.FetchUtil;
 
+
 /**
  * @author Administrator
  */
 public class Hisdata_Base {
-
+	private static final Logger logger = Logger.getLogger("fileLogger");
 	public static String FILE_STOCK_HIS_BASE = FetchUtil.FILE_STOCK_HISTORY_BASE;
 	public static String FILE_STOCK_TEMP_BASE = FetchUtil.FILE_STOCK_TMP_BASE;
 	public static Boolean INCLUDE_TODAY=true;
 	public static AtomicInteger fetched=new AtomicInteger(0);
 	public static AtomicInteger unformalFetched=new AtomicInteger(0);
+	
+	@Autowired
+	private Store store;
+	
 	public static void save(String code,List<Stock> list){
 		String url=FILE_STOCK_HIS_BASE+code+".txt";
 		File f=new File(url);
@@ -336,22 +350,11 @@ public class Hisdata_Base {
 	}
 	
 	public static void updateDataHistoryAll(){
+		logger.info("开始下载历史数据");
 		Fetch_AllStock.getData();
 		Map<String,Stock> allMap=Fetch_AllStock.map;
-		/*File f=new File("E:\\stock\\history");
-		String[] files=f.list();
-		Map<String,Stock> exist= new HashMap<String,Stock>();
-		Map<String,Stock> newMap= new HashMap<String,Stock>();
-		for(String file:files){
-			file=file.replace(".txt", "");
-			exist.put(file, null);
-		}
-		for(String s:allMap.keySet()){
-			if(!exist.containsKey(s)){
-				newMap.put(s, allMap.get(s));
-			}
-		}*/
 		updateDataHistoryData(allMap,false);
+		logger.info("下载历史数据结束");
 	}
 
 	public static void updateDataHistoryDelta(){
@@ -382,18 +385,34 @@ public class Hisdata_Base {
 	
 
 	public static void updateDataHistoryData(Map<String,Stock> map,boolean longTime){
+		ExecutorService service = Executors.newFixedThreadPool(16);
+		CompletionService<Integer> con = new ExecutorCompletionService<Integer>(service);
+			
 		Map<String,Stock> allMap=map;
-		List<List<Stock>> r=divide(allMap, 16);
-		for(int i=0;i<r.size();i++){
-			Thread t=new HisDataTask(r.get(i),longTime);
-			t.start();
+		List<List<Stock>> rr=divide(allMap, 16);
+		for(int i=0;i<rr.size();i++){
+			Callable<Integer> t=new HisDataTask(rr.get(i),longTime);
+			con.submit(t);
 		}
+		
+		int i = 1;
+		while (i <= 16) {
+			try {
+				con.take().get();
+				i++;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		service.shutdown();
 	}
 	
 	
 	
 	
-	static class HisDataTask extends Thread{
+	static class HisDataTask implements Callable<Integer>{
 		private List<Stock> list;
 		private boolean longTime;
 		public HisDataTask(List<Stock> list,boolean longTime){
@@ -401,7 +420,7 @@ public class Hisdata_Base {
 			this.longTime=longTime;
 		}
 		
-		public void run(){
+		public Integer call(){
 			for(Stock s:list){
 	    		String symbol=s.getSymbol();
 	    		if(symbol.contains("300019")){
@@ -420,16 +439,17 @@ public class Hisdata_Base {
 	    		save(symbol,history);
 	    		System.out.println("======================="+fetched.getAndIncrement());
 			}
+			return 1;
 		}
 	}
 	
-	static class UnformalDataTask extends Thread{
+	static class UnformalDataTask implements Callable<Integer>{
 		private List<Stock> list;
 		public UnformalDataTask(List<Stock> list){
 			this.list=list;
 		}
 		
-		public void run(){
+		public Integer call(){
 			for(Stock s:list){
 				if(s.getSymbol().contains("600060")){
 					s.getSymbol();
@@ -441,6 +461,7 @@ public class Hisdata_Base {
 	    		saveTmp(s.getSymbol(),today);
 	    		System.out.println("======================="+unformalFetched.getAndIncrement());
 			}
+			return 1;
 		}
 	}
 	
@@ -471,15 +492,30 @@ public class Hisdata_Base {
     	
     }
 	public static void updateDataHistoryDataUnFormal(){
+		logger.info("开始下载非正式数据");
 		Fetch_AllStock.getData();
 		Map<String,Stock> allMap=Fetch_AllStock.map;
-		List<List<Stock>> r=divide(allMap, 30);
-		List<Thread> lt=new ArrayList<Thread>();
-		for(List<Stock> l:r){
-			Thread t=new UnformalDataTask(l);
-    		t.start();
-    		lt.add(t);
+		ExecutorService service = Executors.newFixedThreadPool(16);
+		CompletionService<Integer> con = new ExecutorCompletionService<Integer>(service);
+			
+		List<List<Stock>> rr=divide(allMap, 16);
+		for(int i=0;i<rr.size();i++){
+			Callable<Integer> t=new UnformalDataTask(rr.get(i));
+			con.submit(t);
+		}		
+		int i = 1;
+		while (i <= 16) {
+			try {
+				con.take().get();
+				i++;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
 		}
+		service.shutdown();
+		logger.info("下载非正式数据结束");
 	}
 	
 	

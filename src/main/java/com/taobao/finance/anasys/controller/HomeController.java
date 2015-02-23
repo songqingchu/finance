@@ -13,8 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,7 @@ import com.taobao.finance.util.FetchUtil;
 @Controller
 public class HomeController {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = Logger.getLogger("fileLogger");
 	@Autowired
 	private Store store;
 	
@@ -124,6 +123,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/record.do", method = RequestMethod.GET)
 	public String record(HttpServletRequest request) throws IOException, ParseException {
+		logger.info("请求增加记录");
 		Map<String,Object> m=MockUtil.mockStats();
 		boolean working=FetchUtil.checkWorkingDay();
 		List<StatsDO> l=(List<StatsDO>)m.get("data");
