@@ -201,15 +201,17 @@ public class MockUtil {
 		return ave;
 	}
 	
-	public static Map<String,Object> mockData3(String symbol,Boolean working) throws IOException, ParseException{
+	public static Map<String,Object> mockData3(String symbol,Boolean working,Boolean shi) throws IOException, ParseException{
 		Map<String,Object> m=new HashMap<String,Object>();
 		
 		List<Stock> l=Hisdata_Base.readHisDataMerge(symbol, null);
+		
 		if(working){
-			Stock s=Fetch_SingleStock.fetch(symbol);
-			l.add(s);
+			if(shi){
+				Stock s=Fetch_SingleStock.fetch(symbol);
+				l.add(s);
+			}
 		}
-		List<Date> dList=new ArrayList<Date>();
 
 		
 		Object[][] av5=new Object[260][2];

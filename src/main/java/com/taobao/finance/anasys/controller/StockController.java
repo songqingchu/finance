@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -105,6 +106,7 @@ public class StockController {
 					}
 				}.start();
 				request.setAttribute("message", "开始下载！");
+				return "download";
 			}
 			request.setAttribute("workday", workday);
 			request.setAttribute("message", "非工作日不用下载！");
@@ -118,7 +120,7 @@ public class StockController {
 		final Date d=new Date();
 		Integer status=store.getChooseStatus(d);
 		if(status!=null){
-			if(force!=null&&force==true&&status!=1){
+			if(force!=null&&force.equals(true)&&status!=1){
 				store.setChoosing(d);
 				new Thread(){
 					public void run(){
@@ -405,7 +407,24 @@ public class StockController {
 	@RequestMapping(value = "/kData.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> validataUser6(@RequestParam String symbol) throws IOException, ParseException {
-		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay);
+		
+		Calendar c=Calendar.getInstance();
+		int hour=c.get(Calendar.HOUR_OF_DAY);
+		int minits=c.get(Calendar.MINUTE);
+		boolean shi=true;
+		if(hour<9&&hour>=15){
+			shi=false;
+		}
+		if(hour==9&&minits<30){
+			shi=false;
+		}
+		if(hour==11&&minits>30){
+			shi=false;
+		}
+		if(hour==12){
+			shi=false;
+		}
+		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay,shi);
 		return map;
 	}
 	
