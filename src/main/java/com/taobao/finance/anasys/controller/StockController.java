@@ -7,11 +7,13 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,8 +32,15 @@ import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
 import com.taobao.finance.common.Store;
+import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.fetch.impl.Fetch_SingleStock;
+import com.taobao.finance.service.ThreadService;
+import com.taobao.finance.task.HisDataTask;
+import com.taobao.finance.task.UnformalDataTask;
 import com.taobao.finance.util.FetchUtil;
+import com.taobao.finance.util.ThreadUtil;
 
 
 @Controller
@@ -42,10 +51,13 @@ public class StockController {
 	@Autowired
 	private Store store;
 	
+	@Autowired
+	private ThreadService threadService;
+	
 	@RequestMapping(value = "/getToday.do", method = RequestMethod.GET)
 	public String stats(HttpServletRequest request,@RequestParam Boolean force) {
 		boolean workday=FetchUtil.checkWorkingDay();
-		if(!workday){
+		if(workday){
 			final Date d=new Date();
 			Integer status=store.getDownloadStatus(d);
 			if(status!=null){
@@ -53,8 +65,8 @@ public class StockController {
 					store.setDownloading(d);
 					new Thread(){
 						public void run(){
-							Hisdata_Base.updateDataHistoryAll();
-							Hisdata_Base.updateDataHistoryDataUnFormal();
+							store.updateHistory();
+							store.updateTmp();
 							store.setDownloaded(d);
 						}
 					}.start();
@@ -74,14 +86,26 @@ public class StockController {
 				store.setDownloading(d);
 				new Thread(){
 					public void run(){
-						Hisdata_Base.updateDataHistoryAll();
-						Hisdata_Base.updateDataHistoryDataUnFormal();
+						store.updateHistory();
+						store.updateTmp();
 						store.setDownloaded(d);
 					}
 				}.start();
 				request.setAttribute("message", "开始下载！");
 			}
 		}else{
+			if(force){
+				final Date d=new Date();
+				store.setDownloading(d);
+				new Thread(){
+					public void run(){
+						store.updateHistory();
+						store.updateTmp();
+						store.setDownloaded(d);
+					}
+				}.start();
+				request.setAttribute("message", "开始下载！");
+			}
 			request.setAttribute("workday", workday);
 			request.setAttribute("message", "非工作日不用下载！");
 		}
@@ -212,9 +236,43 @@ public class StockController {
 	@RequestMapping(value = "/publicPool.do", method = RequestMethod.GET)
 	public String publicPool(HttpServletRequest request) {
 		Set<String> s=store.publicPool.keySet();
+		List<String> symbolList=new ArrayList<String>();
+		symbolList.addAll(s);
+		List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
+		List<Callable<Object>> callList=new ArrayList<Callable<Object>>();
+		for(List<Object> sys:symbolTaskList){
+			callList.add(new RealTask(sys));
+		}
+        List<Object> r=threadService.service(callList);		
+        List<Stock> result=new ArrayList<Stock>();
+        for(Object l:r){
+        	List<Stock> slice=(List<Stock>)l;
+        	result.addAll(slice);
+        }
+		if(r.size()>0){
+			Collections.sort(result,new Comparator.RateDescComparator());
+		}
+		request.setAttribute("r", result);
 		request.setAttribute("set", s);
 		return "publicPool";
 	}
+	static class RealTask implements Callable<Object>{
+		public List<Object> l; 
+		public RealTask(List<Object> l){
+			this.l=l;
+		}
+		public Object call(){
+			List<Stock> r=new ArrayList<Stock>();
+			for(Object s:l){
+				Stock st=Fetch_SingleStock.fetch((String)s);
+				if(st!=null){
+					r.add(st);
+				}
+			}
+			return r;
+		}
+	}
+	
 	
 	@RequestMapping(value = "/addPublicPool.do", method = RequestMethod.GET)
 	@ResponseBody
@@ -347,7 +405,9 @@ public class StockController {
 	@RequestMapping(value = "/kData.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> validataUser6(@RequestParam String symbol) throws IOException, ParseException {
-		Map<String,Object> map=MockUtil.mockData3(symbol);
+		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay);
 		return map;
 	}
+	
+	
 }

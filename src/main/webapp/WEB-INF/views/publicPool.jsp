@@ -25,15 +25,15 @@ text-decoration:none;
  
 
    
-<div style="width:270px;float:left;">
-<div style="width:270px;height:360px;float:left;overflow-y:auto;border:1px solid">
-<c:forEach var="symbol" items="${set}">  
-     <span  class="bigSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${symbol}" class="symbolA" id="${symbol}">${symbol}</a></span>
+<div style="width:290px;float:left;">
+<div style="width:290px;height:360px;float:left;overflow-y:auto;border:1px solid">
+<c:forEach var="s" items="${r}">  
+     <span  class="bigSymbol symbol" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.nameFormat}&nbsp;&nbsp;${s.ratePercent}</a></span>
 </c:forEach>
 </div>
 
-<div style="width:270px;float:left;">
-<textarea rows="10" cols="30" id="symbolText">
+<div style="width:290px;float:left;">
+<textarea rows="10" cols="33" id="symbolText">
 </textarea>
 <br>
 <a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -62,7 +62,7 @@ text-decoration:none;
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
-			url : "/addPublicPool.do?symbols="+symbols+"replace="+replace,
+			url : "/addPublicPool.do?symbols="+symbols+"&replace="+replace,
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {
@@ -88,7 +88,7 @@ text-decoration:none;
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {
-					start=60;
+					start=180;
 					base=result;
 					total=base.length;
 					

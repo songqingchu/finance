@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.common.Store;
+import com.taobao.finance.util.FetchUtil;
 
 public class ChooseTask extends Thread{
 
@@ -15,14 +16,25 @@ public class ChooseTask extends Thread{
 		this.store=store;
 	}
 	public void run(){
-		Date d=new Date();
-		store.setDownloading(d);
-		Hisdata_Base.updateDataHistoryAll();
-		Hisdata_Base.updateDataHistoryDataUnFormal();
-		store.setDownloaded(d);
 		
-		store.setChoosing(d);
-		store.ananyse();
-		store.setChoosed(d);
+		Boolean workingDay=FetchUtil.checkWorkingDay();
+		store.workingDay=workingDay;
+		/**
+		 * 下载
+		 */
+		if(workingDay){
+			Date d=new Date();
+			store.setDownloading(d);
+			store.updateHistory();
+			store.updateTmp();
+			store.setDownloaded(d);
+			
+			/**
+			 * 分析
+			 */
+			store.setChoosing(d);
+			store.ananyse();
+			store.setChoosed(d);
+		}
 	}
 }

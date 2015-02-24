@@ -14,7 +14,7 @@
 	<context:component-scan base-package="com.taobao.finance" />
 
 
-    <bean class="com.taobao.finance.util.FetchUtil">      
+    <bean id="fetchUtil" class="com.taobao.finance.util.FetchUtil" init-method="init">      
             <property name="FILE_STOCK_TMP_BASE"  value="${stock.tmp}"/>
             <property name="FILE_STOCK_ANASYS_BASE"  value="${stock.anasys}"/>  
             <property name="FILE_STOCK_HISTORY_BASE" value="${stock.history}"/>

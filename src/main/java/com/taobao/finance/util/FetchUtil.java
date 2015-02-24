@@ -23,6 +23,7 @@ import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.util.NodeList;
 
 import com.taobao.finance.base.Hisdata_Base;
+import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 
@@ -32,6 +33,8 @@ public class FetchUtil {
 	public static DateFormat TIANTIAN_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	public static DateFormat FILE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
 
+	
+	public Store store;
 	public  void setFILE_STOCK_ANASYS_BASE(String fILE_STOCK_ANASYS_BASE) {
 		FILE_STOCK_ANASYS_BASE = fILE_STOCK_ANASYS_BASE;
 	}
@@ -66,6 +69,10 @@ public class FetchUtil {
 	public static String FILE_STOCK_CHOOSE_BASE ;
 
 	
+	public void init(){
+		boolean working=checkWorkingDay();
+		store.workingDay=working;
+	}
 	
 	public  String getFILE_STOCK_TMP_BASE() {
 		return FILE_STOCK_TMP_BASE;

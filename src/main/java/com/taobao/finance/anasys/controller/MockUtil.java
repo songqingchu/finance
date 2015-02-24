@@ -22,6 +22,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 import com.taobao.finance.util.FetchUtil;
 
 public class MockUtil {
@@ -200,10 +201,14 @@ public class MockUtil {
 		return ave;
 	}
 	
-	public static Map<String,Object> mockData3(String symbol) throws IOException, ParseException{
+	public static Map<String,Object> mockData3(String symbol,Boolean working) throws IOException, ParseException{
 		Map<String,Object> m=new HashMap<String,Object>();
 		
 		List<Stock> l=Hisdata_Base.readHisDataMerge(symbol, null);
+		if(working){
+			Stock s=Fetch_SingleStock.fetch(symbol);
+			l.add(s);
+		}
 		List<Date> dList=new ArrayList<Date>();
 
 		

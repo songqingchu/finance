@@ -11,13 +11,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -29,18 +30,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 import com.taobao.finance.fetch.impl.Fetch_StockHistory;
+import com.taobao.finance.service.ThreadService;
 import com.taobao.finance.util.FetchUtil;
+import com.taobao.finance.util.ThreadUtil;
 
 
 /**
  * @author Administrator
  */
+@Component
 public class Hisdata_Base {
 	private static final Logger logger = Logger.getLogger("fileLogger");
 	public static String FILE_STOCK_HIS_BASE = FetchUtil.FILE_STOCK_HISTORY_BASE;
@@ -51,6 +56,9 @@ public class Hisdata_Base {
 	
 	@Autowired
 	private Store store;
+	
+	@Autowired
+	private ThreadService threadService;
 	
 	public static void save(String code,List<Stock> list){
 		String url=FILE_STOCK_HIS_BASE+code+".txt";
@@ -279,6 +287,11 @@ public class Hisdata_Base {
 					   && st.getEndPriceFloat().equals(s.getEndPriceFloat())
 					   && st.getHighPriceFloat().equals(s.getHighPriceFloat())
 					   && st.getLowPriceFloat().equals(s.getLowPriceFloat()))){
+				   Date dd=s.getDate();
+				   Calendar c=Calendar.getInstance();
+				   c.setTime(dd);
+				   c.add(Calendar.DATE, 1);
+				   st.setDate(c.getTime());
 				   ll.add(st);
 			   }
             }
@@ -386,15 +399,19 @@ public class Hisdata_Base {
 
 	public static void updateDataHistoryData(Map<String,Stock> map,boolean longTime){
 		ExecutorService service = Executors.newFixedThreadPool(16);
-		CompletionService<Integer> con = new ExecutorCompletionService<Integer>(service);
+		CompletionService<Object> con = new ExecutorCompletionService<Object>(service);
 			
-		Map<String,Stock> allMap=map;
-		List<List<Stock>> rr=divide(allMap, 16);
-		for(int i=0;i<rr.size();i++){
-			Callable<Integer> t=new HisDataTask(rr.get(i),longTime);
-			con.submit(t);
-		}
 		
+		Set<String> s=Fetch_AllStock.map.keySet();
+		List<String> symbolList=new ArrayList<String>();
+		symbolList.addAll(s);
+		List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
+		List<Callable<Object>> callList=new ArrayList<Callable<Object>>();
+		for(List<Object> sys:symbolTaskList){
+			HisDataTask t=new HisDataTask(sys,false);
+			con.submit(t);
+		}	
+
 		int i = 1;
 		while (i <= 16) {
 			try {
@@ -412,17 +429,17 @@ public class Hisdata_Base {
 	
 	
 	
-	static class HisDataTask implements Callable<Integer>{
-		private List<Stock> list;
+	static class HisDataTask implements Callable<Object>{
+		private List<Object> list;
 		private boolean longTime;
-		public HisDataTask(List<Stock> list,boolean longTime){
+		public HisDataTask(List<Object> list,boolean longTime){
 			this.list=list;
 			this.longTime=longTime;
 		}
 		
-		public Integer call(){
-			for(Stock s:list){
-	    		String symbol=s.getSymbol();
+		public Object call(){
+			for(Object s:list){
+	    		String symbol=(String)s;
 	    		if(symbol.contains("300019")){
 	    			symbol.length();
 	    		}
@@ -443,66 +460,47 @@ public class Hisdata_Base {
 		}
 	}
 	
-	static class UnformalDataTask implements Callable<Integer>{
-		private List<Stock> list;
-		public UnformalDataTask(List<Stock> list){
+	static class UnformalDataTask implements Callable<Object>{
+		private List<Object> list;
+		public UnformalDataTask(List<Object> list){
 			this.list=list;
 		}
 		
 		public Integer call(){
-			for(Stock s:list){
-				if(s.getSymbol().contains("600060")){
-					s.getSymbol();
+			for(Object o:list){
+				String s=(String)o;
+				if(s.contains("600060")){
+					s.length();
 				}
-				Stock today = Fetch_SingleStock.fetch(s.getSymbol());
+				Stock today = Fetch_SingleStock.fetch(s);
 	    		if(today==null){
 	    			continue;
 	    		}
-	    		saveTmp(s.getSymbol(),today);
+	    		saveTmp(s,today);
 	    		System.out.println("======================="+unformalFetched.getAndIncrement());
 			}
 			return 1;
 		}
 	}
 	
-    public static List<List<Stock>> divide(Map<String,Stock> allMap,int num){
-    	List<List<Stock>> r=new ArrayList<List<Stock>>();
-    	List<Stock> all=new ArrayList<Stock>();
-    	all.addAll(allMap.values());
-    	Collections.sort(all,new Comparator<Stock>(){
-    		public int compare(Stock s1,Stock s2){
-    			return (s1.getSymbol().compareTo(s2.getSymbol()));
-    		}
-    	});
-    	int size=0;
-    	size=allMap.size()/num;
-    	List<Stock> slice=new ArrayList<Stock>();
-    	for(int i=0;i<all.size();i++){
-    		if(slice.size()<size){
-    			slice.add(all.get(i));
-    		}else {
-    			slice=new ArrayList<Stock>();
-    			slice.add(all.get(i));
-    		}
-    		if(slice.size()==size||i==all.size()-1){
-    			r.add(slice);
-    		}
-    	}
-    	return r;
-    	
-    }
+    
 	public static void updateDataHistoryDataUnFormal(){
 		logger.info("开始下载非正式数据");
 		Fetch_AllStock.getData();
-		Map<String,Stock> allMap=Fetch_AllStock.map;
 		ExecutorService service = Executors.newFixedThreadPool(16);
-		CompletionService<Integer> con = new ExecutorCompletionService<Integer>(service);
+		CompletionService<Object> con = new ExecutorCompletionService<Object>(service);
 			
-		List<List<Stock>> rr=divide(allMap, 16);
-		for(int i=0;i<rr.size();i++){
-			Callable<Integer> t=new UnformalDataTask(rr.get(i));
+
+		Set<String> s=Fetch_AllStock.map.keySet();
+		List<String> symbolList=new ArrayList<String>();
+		symbolList.addAll(s);
+		List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
+		List<Callable<Object>> callList=new ArrayList<Callable<Object>>();
+		for(List<Object> sys:symbolTaskList){
+			Callable<Object> t=new UnformalDataTask(sys);
 			con.submit(t);
-		}		
+		}	
+		
 		int i = 1;
 		while (i <= 16) {
 			try {

@@ -13,12 +13,15 @@
 <script src="/resources/js/chartExt.js"></script>
 </head>
 <body>
-	<div id="report" style="width:300px;height: 150px; padding-top: 25px;">
-	<form action="login.do" method="GET">
-	   用户名 <input type="text" name="userName"/><br>
-	  密&nbsp;&nbsp;码   <input type="password" name="passWord"/>
-	 <input type="submit" value="提交"/>
+<jsp:include page="common/head.jsp" flush="true"/>
+	<div id="report" style="width:100%;height: 600px;align:center;text-align: center;">
+	  <br><br><br><br><br><br><br><br>
+	  <form action="login.do" method="GET">
+	   用户名 <input type="text" name="userName"/><br><br>
+	  密&nbsp;&nbsp;码   <input type="password" name="passWord"/><br><br>
+	&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="登陆"/>
 	 </form>
+	
 	</div>
 </body>
 <script>

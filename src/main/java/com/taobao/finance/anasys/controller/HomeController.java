@@ -121,8 +121,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/loginOut.do", method = RequestMethod.GET)
-	public String loginOut(HttpServletRequest request,
-			@RequestParam String userName,@RequestParam String passWord) {
+	public String loginOut(HttpServletRequest request) {
 		request.getSession().removeAttribute("login");
 		return "login";
 	}

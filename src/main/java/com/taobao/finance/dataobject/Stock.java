@@ -524,9 +524,6 @@ public class Stock implements Comparable<Stock> {
 	
 	public String getRatePercent() {
 		if(rate!=null){
-			if(rate<-0.1F){
-				return "ͣ       ��";
-			}
 			return FetchUtil.formatRatePercent(rate);
 		}else{
 			return "";
