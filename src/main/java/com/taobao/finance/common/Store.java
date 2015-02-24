@@ -36,6 +36,7 @@ public class Store {
 	public Map<String, List<Stock>> store = new HashMap<String, List<Stock>>();
 	public Map<String, Integer> download = new HashMap<String, Integer>();
 	public Map<String, Integer> choose = new HashMap<String, Integer>();
+	public Map<String,Stock> publicPool=new HashMap<String,Stock>();
 
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
 

@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.taobao.finance.common.Store;
 
 
@@ -90,5 +95,35 @@ public class HomeController {
 	@RequestMapping(value = "/chart.do", method = RequestMethod.GET)
 	public String chart(HttpServletRequest request) {
 		return "c";
+	}
+	
+	@RequestMapping(value = "/security.do", method = RequestMethod.GET)
+	public String gotoLogin(HttpServletRequest request) {
+		return "login";
+	}
+	
+	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
+	public String login(HttpServletRequest request,HttpServletResponse response,
+			@RequestParam String userName,@RequestParam String passWord) throws IOException {
+		boolean success=false;
+		if(StringUtils.isNotBlank(userName)&&StringUtils.isNotBlank(passWord)){
+			if(userName.equals("root")&&passWord.equals("chenshanhui")){
+				success=true;
+				request.getSession().setAttribute("login", true);
+			}
+		}
+		if(success){
+			  response.sendRedirect(request.getContextPath() + "/record.do");  
+			  return null;
+		}else{
+			return "login";
+		}
+	}
+	
+	@RequestMapping(value = "/loginOut.do", method = RequestMethod.GET)
+	public String loginOut(HttpServletRequest request,
+			@RequestParam String userName,@RequestParam String passWord) {
+		request.getSession().removeAttribute("login");
+		return "login";
 	}
 }

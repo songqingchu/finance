@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -207,6 +208,42 @@ public class StockController {
 		map.put("code", true);
 		return "stats";
 	}
+	
+	@RequestMapping(value = "/publicPool.do", method = RequestMethod.GET)
+	public String publicPool(HttpServletRequest request) {
+		Set<String> s=store.publicPool.keySet();
+		request.setAttribute("set", s);
+		return "publicPool";
+	}
+	
+	@RequestMapping(value = "/addPublicPool.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> addPublicPool(@RequestParam String symbols,
+			@RequestParam String replace){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("status", "ok");
+		if(replace.equals("1")){
+			store.publicPool.clear();
+		}
+		if(StringUtils.isNotBlank(symbols)){
+			String[] syms=StringUtils.split(symbols,",");
+			for(String s:syms){
+				if(StringUtils.isNotBlank(s)){
+					if(s.startsWith("0")){
+						s=s.replaceFirst("0", "sz");
+						store.publicPool.put(s, null);
+					}
+					if(s.startsWith("1")){
+						s=s.replaceFirst("1", "sh");
+						store.publicPool.put(s, null);
+					}
+				}
+			}
+		}
+		return map;
+	}
+	
+	
 	
 	@RequestMapping(value = "/choose.do", method = RequestMethod.GET)
 	public String choose(HttpServletRequest request) {

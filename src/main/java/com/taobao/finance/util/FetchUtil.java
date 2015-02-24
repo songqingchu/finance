@@ -28,15 +28,9 @@ import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 
 public class FetchUtil {
 
-
-
-
 	public static DateFormat SHANGTOU_FORMAT = new SimpleDateFormat("yyyymmdd");
 	public static DateFormat TIANTIAN_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	public static DateFormat FILE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
-
-
-
 
 	public  void setFILE_STOCK_ANASYS_BASE(String fILE_STOCK_ANASYS_BASE) {
 		FILE_STOCK_ANASYS_BASE = fILE_STOCK_ANASYS_BASE;
@@ -50,10 +44,6 @@ public class FetchUtil {
 	public  void setFILE_USER_STATS_BASE(String fILE_USER_STATS_BASE) {
 		FILE_USER_STATS_BASE = fILE_USER_STATS_BASE;
 	}
-
-
-	//public static String FILE_STOCK_ANASYS_BASE = "E:\\stock\\anasys\\";
-	//public static String FILE_STOCK_HISTORY_BASE = "E:\\stock\\history\\";
 
 	public  String getFILE_STOCK_ANASYS_BASE() {
 		return FILE_STOCK_ANASYS_BASE;

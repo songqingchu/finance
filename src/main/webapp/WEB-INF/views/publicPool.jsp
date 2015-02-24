@@ -26,71 +26,55 @@ text-decoration:none;
 
    
 <div style="width:270px;float:left;">
-<div style="width:270px;float:left;">
-<span  style="width:80px;float:left;">
-<b><a href="#" id="bigSymbol" class="choose" style="backgroud-color:red">acvu</a></b>
-</span>
-<span  style="width:80px;float:left;">
-<b><a href="#" id="acvuSymbol"  class="choose">big&nbsp;</a></b>
-</span>
-<span  style="width:80px;float:left;">
-<b><a href="#" id="av5Symbol" class="choose">av5&nbsp;</a></b>
-</span>
-<span  style="width:80px;float:left;">
-<b><a href="#" id="av10Symbol"  class="choose">av10</a></b>
-</span>
-<br>
+<div style="width:270px;height:360px;float:left;overflow-y:auto;border:1px solid">
+<c:forEach var="symbol" items="${set}">  
+     <span  class="bigSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${symbol}" class="symbolA" id="${symbol}">${symbol}</a></span>
+</c:forEach>
 </div>
 
-<div style="width:270px;height:530px;float:left;overflow-y:auto">
-<c:forEach var="s" items="${big}">  
-     <span  class="bigSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.symbol}</a></span>
-</c:forEach>
-
-<c:forEach var="s" items="${acvu}">  
-   <span style="display:none" class="acvuSymbol  symbol"  style="width:50px;float:left;">  <a href="#"  symbol="${s.symbol}" id="${s.symbol}" class="symbolA" >${s.symbol}</a></span>
-</c:forEach>
-
-<c:forEach var="s" items="${av5}">  
-    <span style="display:none" class="av5Symbol  symbol"  style="width:50px;float:left;"> <a href="#"   symbol="${s.symbol}" id="${s.symbol}" class="symbolA">${s.symbol}</a></span>
-</c:forEach>
-
-<c:forEach var="s" items="${av10}">  
-    <span style="display:none" class="av10Symbol  symbol"  style="width:50px;float:left;"> <a href="#"  symbol="${s.symbol}" id="${s.symbol}" class="symbolA"   >${s.symbol}</a></span>
-</c:forEach>
+<div style="width:270px;float:left;">
+<textarea rows="10" cols="30" id="symbolText">
+</textarea>
+<br>
+<a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" class="submitA" replace="1">替换</a>
 </div>
 </div>
 
 <div id="container" style="height: 800px;float:left;"></div>
 </body>
 <script>
-   /* var f='function a(i){if(i>0){return true;}else{ return false;};} a(i)';
-   var i=1;
-   eval("alert(eval(f))"); */
    var windowWidth=$(window).width();
    var windowHight=$(window).height();
    var w=windowWidth-350;
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);
-   var acvu=[${acvuStr}];
-   var great=[${bigStr}];
-   var av5=[${av5Str}];
-   var av10=[${av10Str}];
-   
+
    var base;
    var start=0;
    var total;
    var currentSymbol;
    
-   $(".choose").on("click",function(){
-	   var id=$(this).attr("id");
-	   $(".choose").css("background-color","");
-	   $(this).css("background-color","pink");
-	   $(".symbol").css("display","none");
-	   var aa=$("."+id);
-	   $("."+id).attr("style","display:block;width:80px;float:left;");
+   $(".submitA").on("click",function(){
+	   var symbols=$("#symbolText").val().split("\n");
+	   var replace=$(this).attr("replace");
+	   $.ajax({
+			type : "get",
+			async : true, //同步执行
+			url : "/addPublicPool.do?symbols="+symbols+"replace="+replace,
+			dataType : "json", //返回数据形式为json
+			success : function(result) {
+				if (result) {
+					location.reload();
+					$("#symbolText").val("");
+				}
+			},
+			error : function(errorMsg) {
+			}
+		});
    });
+   
    
    $(".symbolA").on("click",function(){
 	   var symbol=$(this).attr("symbol");
