@@ -97,16 +97,27 @@ public class StockController {
 		}else{
 			if(force){
 				final Date d=new Date();
-				store.setDownloading(d);
-				new Thread(){
-					public void run(){
-						store.updateHistory();
-						store.updateTmp();
-						store.setDownloaded(d);
-					}
-				}.start();
-				request.setAttribute("message", "开始下载！");
-				return "download";
+				Integer status=store.getDownloadStatus(d);
+				if(status==null){
+					store.setDownloading(d);
+					new Thread(){
+						public void run(){
+							store.updateHistory();
+							store.updateTmp();
+							store.setDownloaded(d);
+						}
+					}.start();
+					request.setAttribute("message", "开始下载！");
+					return "download";
+				}
+				if(status==1){
+					request.setAttribute("message", "正在下载中！");
+					return "download";
+				}
+				if(status==2){
+					request.setAttribute("message", "今日数据已经下载完成！");
+					return "download";
+				}			
 			}
 			request.setAttribute("workday", workday);
 			request.setAttribute("message", "非工作日不用下载！");
@@ -416,12 +427,6 @@ public class StockController {
 			shi=false;
 		}
 		if(hour==9&&minits<30){
-			shi=false;
-		}
-		if(hour==11&&minits>30){
-			shi=false;
-		}
-		if(hour==12){
 			shi=false;
 		}
 		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay,shi);

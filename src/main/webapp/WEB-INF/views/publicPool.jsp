@@ -33,11 +33,13 @@ text-decoration:none;
 </div>
 
 <div style="width:290px;float:left;">
-<textarea rows="10" cols="33" id="symbolText">
-</textarea>
-<br>
 <a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="#" class="submitA" replace="1">替换</a>
+<a href="#" class="submitA" replace="1">替换</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="publicPool.do" >刷新</a>
+<br>
+<textarea rows="5" cols="33" id="symbolText">
+</textarea>
+
 </div>
 </div>
 
