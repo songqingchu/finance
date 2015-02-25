@@ -85,21 +85,21 @@ public class MockUtil {
 		List<StatsDO> sz=readIndex(startDate, null, "sz399001");
 		
 		List<String> dList=new ArrayList<String>();
-		List<Integer> mL=new ArrayList<Integer>();
-		List<Integer> shL=new ArrayList<Integer>();
-		List<Integer> szL=new ArrayList<Integer>();
-		List<Integer> year=new ArrayList<Integer>();
+		List<Float> mL=new ArrayList<Float>();
+		List<Float> shL=new ArrayList<Float>();
+		List<Float> szL=new ArrayList<Float>();
+		List<Float> year=new ArrayList<Float>();
 		
-		List<Integer> sRate=new ArrayList<Integer>();
-		List<Integer> r=new ArrayList<Integer>();
-		List<Integer> pRate=new ArrayList<Integer>();
-		List<Integer> yRate=new ArrayList<Integer>();
-		List<Integer> yyRate=new ArrayList<Integer>();
-		List<Integer> ysRate=new ArrayList<Integer>();
+		List<Float> sRate=new ArrayList<Float>();
+		List<Float> r=new ArrayList<Float>();
+		List<Float> pRate=new ArrayList<Float>();
+		List<Float> yRate=new ArrayList<Float>();
+		List<Float> yyRate=new ArrayList<Float>();
+		List<Float> ysRate=new ArrayList<Float>();
 		
 		for(StatsDO s:mine){
 			dList.add(s.getDate());
-			mL.add(s.getvRate()-1000);
+			mL.add(s.getvRate()/10F-100);
 			
 			
 			Date endDate=StatsDO.df.parse(s.getDate());
@@ -110,26 +110,26 @@ public class MockUtil {
 	        long time2 = c.getTimeInMillis();         
 	        long dayCount=(time2-time1)/(1000*3600*24);  
 	        if(dayCount==0){
-	        	year.add(20);
+	        	year.add(20F);
 	        }else{
-	        	Integer yearV=(s.getvRate()-1000)*365/(int)dayCount;
+	        	Float yearV=(s.getvRate()/10F-100)*365/dayCount;
 	        	year.add(yearV);
 	        }  
 	        
 			
 			
-			sRate.add(s.getsRate());
-			r.add(s.getR());
-			pRate.add(s.getpRate());
-			yRate.add(s.getyRate());
-			yyRate.add(s.getYyRate());
-			ysRate.add(s.getYsRate());
+			sRate.add(s.getsRate()/100F);
+			r.add(s.getR()/100F);
+			pRate.add(s.getpRate()/100F);
+			yRate.add(s.getyRate()/100F);
+			yyRate.add(s.getYyRate()/100F);
+			ysRate.add(0-s.getYsRate()/100F);
 		}
 		for(StatsDO s:sh){
-			shL.add(s.getvRate());
+			shL.add(s.getvRate()/100F);
 		}
 		for(StatsDO s:sz){
-			szL.add(s.getvRate());
+			szL.add(s.getvRate()/100F);
 		}
 
 		m.put("series",dList );
@@ -449,6 +449,9 @@ public class MockUtil {
 		BufferedReader br=new BufferedReader(new FileReader(f));
 		String line=br.readLine();
 		while((line=br.readLine())!=null){
+			if(StringUtils.isBlank(line)){
+				break;
+			}
 			String[] data=line.split(",");
 			
 			String date=data[0]; 
@@ -520,7 +523,7 @@ public class MockUtil {
 			//st.setDate(df.format(s.getDate()));
 			Double price=Double.parseDouble(s.getEndPrice());
 			st.setV(price*100/start-100);
-			st.setvRate((int)(price*100/start-100));
+			st.setvRate((int)(price*10000/start-10000));
 			r.add(st);
 		}
 		return r;

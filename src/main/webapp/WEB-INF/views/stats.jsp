@@ -65,7 +65,7 @@
 			
 			vRateOption = {
 				title : {
-					text : 'BASE'
+					text : '基准'
 				},
 				tooltip : {
 					trigger : 'axis'
@@ -103,12 +103,13 @@
 				} ],
 				yAxis : [ {
 					type : 'value',
+					precision: 2, 
 					axisLabel : {
 						formatter : '{value}'
 					}
 				} ],
 				series : [ {
-					name : '双子',
+					name : '基准',
 					type : 'line',
 					color: 'red',
 					data : [ 11, 11, 15, 13, 12, 13, 10 ]
@@ -166,12 +167,13 @@
 					} ],
 					yAxis : [ {
 						type : 'value',
+						 precision: 2, 
 						axisLabel : {
 							formatter : '{value}'
 						}
 					} ],
 					series : [ {
-						name : '动态R',
+						name : '年化',
 						type : 'line',
 						color: 'red',
 						data : [ 11, 11, 15, 13, 12, 13, 10 ]
@@ -332,7 +334,7 @@
 						}
 					} ],
 					series : [ {
-						name : '回撤',
+						name : '仓位率',
 						type : 'line',
 						color: 'red',
 						data : [ 11, 11, 15, 13, 12, 13, 10 ]
@@ -385,7 +387,7 @@
 						}
 					} ],
 					series : [ {
-						name : '年化',
+						name : '平均盈利率',
 						type : 'line',
 						color: 'red',
 						data : [ 11, 11, 15, 13, 12, 13, 10 ]
@@ -438,7 +440,7 @@
 						}
 					} ],
 					series : [ {
-						name : '年化',
+						name : '平均盈利率（胜）',
 						type : 'line',
 						color: 'red',
 						data : [ 11, 11, 15, 13, 12, 13, 10 ]
@@ -491,7 +493,7 @@
 						}
 					} ],
 					series : [ {
-						name : '年化',
+						name : '平均盈利率（损）',
 						type : 'line',
 						color: 'red',
 						data : [ 11, 11, 15, 13, 12, 13, 10 ]
@@ -520,16 +522,16 @@
 						ysRateOption.xAxis[0].data = result.series;
 						
 						//数据
-						vRateOption.series[0].data = result.mine;
-						vRateOption.series[1].data = result.sh;
-						vRateOption.series[2].data = result.sz;
-						yearVRateOption.series[0].data = result.year;
-						sRateOption.series[0].data = result.sRate;
-						rRateOption.series[0].data = result.rRate;
-						pRateOption.series[0].data = result.pRate;
-						yRateOption.series[0].data = result.yRate;
-						yyRateOption.series[0].data = result.yyRate;
-						ysRateOption.series[0].data = result.ysRate;
+						vRateOption.series[0].data = toFix(result.mine);
+						vRateOption.series[1].data = toFix(result.sh);
+						vRateOption.series[2].data = toFix(result.sz);
+						yearVRateOption.series[0].data = toFix(result.year);
+						sRateOption.series[0].data = toFix(result.sRate);
+						rRateOption.series[0].data = toFix(result.rRate);
+						pRateOption.series[0].data = toFix(result.pRate);
+						yRateOption.series[0].data = toFix(result.yRate);
+						yyRateOption.series[0].data = toFix(result.yyRate);
+						ysRateOption.series[0].data = toFix(result.ysRate);
 						//option.legend.data = result.legend;
 										
 						vRate.hideLoading();
@@ -561,5 +563,13 @@
 				}
 			});
 		});
+		
+		function toFix(array){
+			var r=[];
+			for(var i=0;i<array.length;i++){
+				r.push(array[i].toFixed(2));
+			}
+			return r;
+		}
 	</script>
 </body>

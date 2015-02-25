@@ -85,10 +85,10 @@ td {
 				       <td>${d.asPosition}</td>
 				       <td>${d.nyPosition}</td>
 				       <td>${d.nsPosition}</td>
-				       <td>${d.ayRate}</td>
-				       <td>${d.asRate}</td>
-				       <td>${d.nyRate}</td>
-				       <td>${d.nsRate}</td>
+				       <td>${d.ayRateFormat}</td>
+				       <td>${d.asRateFormat}</td>
+				       <td>${d.nyRateFormat}</td>
+				       <td>${d.nsRateFormat}</td>
 				</tr>
 				</c:forEach>
 				<tr>

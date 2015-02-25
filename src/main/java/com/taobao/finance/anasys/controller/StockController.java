@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -182,7 +183,8 @@ public class StockController {
 	}
 	
 	@RequestMapping(value = "/addRecord.do", method = RequestMethod.POST)
-	public String record(@RequestParam( "date" ) String date,
+	public String record(HttpServletRequest request,HttpServletResponse response,
+			@RequestParam( "date" ) String date,
 			@RequestParam( "value" ) Integer value,@RequestParam( "change" ) Integer change,
 			@RequestParam( "ayc" ) Integer ayc,@RequestParam( "asc" ) Integer asc,
 			@RequestParam( "nyc" ) Integer nyc,@RequestParam( "nsc" ) Integer nsc,
@@ -190,8 +192,8 @@ public class StockController {
 			@RequestParam( "nyv" ) Integer nyv,@RequestParam( "nsv" ) Integer nsv,
 			@RequestParam( "ayp" ) Integer ayp,@RequestParam( "asp" ) Integer asp,
 			@RequestParam( "nyp" ) Integer nyp,@RequestParam( "nsp" ) Integer nsp,
-			@RequestParam( "ayr" ) Integer ayr,@RequestParam( "asr" ) Integer asr,
-			@RequestParam( "nyr" ) Integer nyr,@RequestParam( "nsr" ) Integer nsr,
+			@RequestParam( "ayr" ) Float ayr,@RequestParam( "asr" ) Float asr,
+			@RequestParam( "nyr" ) Float nyr,@RequestParam( "nsr" ) Float nsr,
 			@RequestParam( "lastValue" ) Integer lastValue,@RequestParam( "lastVRate" ) Integer lastVRate
 			) throws IOException, ParseException {
 
@@ -218,17 +220,18 @@ public class StockController {
 		d.setNyPosition(nyp*100/value);
 		d.setNsPosition(nsp*100/value);
 		
-		d.setAyRate(ayr);
-		d.setAsRate(asr);
-		d.setNyRate(nyr);
-		d.setNsRate(nsr);
+		d.setAyRate((int)(ayr*100F));
+		d.setAsRate((int)(asr*100F));
+		d.setNyRate((int)(nyr*100F));
+		d.setNsRate((int)(nsr*100F));
 		
 		File f = new File(FetchUtil.FILE_USER_STATS_BASE+"stats.csv");  
 		BufferedWriter br=new BufferedWriter(new FileWriter(f,true));
 		String line=d.toFileString();
 		br.write("\n"+line);
 		br.close();
-		return "record";
+		response.sendRedirect(request.getContextPath() + "/record.do");  
+		return null;
 	}
 	
 	@RequestMapping(value = "/statsData.do", method = RequestMethod.GET)

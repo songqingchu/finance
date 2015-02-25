@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 public class StatsDO {
 	public static DecimalFormat f = new DecimalFormat("0.0");
 	public static DateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+	public static DecimalFormat nf=new DecimalFormat("0.00");
 	public static String SPLIT=",";
 	
 	public String date;
@@ -88,13 +89,13 @@ public class StatsDO {
 		this.vRate = vRate;
 	}
 	public Integer getpRate() {
-		Float f=1F;
-		if(this.asPosition+this.nsPosition==0){
-			return 1;
+		Integer f=1;
+		if(this.asPosition+this.nsPosition*100/this.value==0){
+			return 100;
 		}else{
-			f=(this.ayPosition+this.nyPosition)*100F/(this.asPosition+this.nsPosition);
+			f=(this.ayPosition+this.nyPosition)*100/(this.asPosition+this.nsPosition);
 		}
-		return f.intValue();
+		return f;
 	}
 	public void setpRate(Integer pRate) {
 		this.pRate = pRate;
@@ -130,25 +131,25 @@ public class StatsDO {
 		this.change = change;
 	}
 	public Integer getR() {
-		Float f=1F;
+		Integer f=1;
 		if(this.asValue+this.nsValue==0){
 			return 1;
 		}else{
-			f=(this.ayValue+this.nyValue)*100F/(this.asValue+this.nsValue);
+			f=(this.ayValue+this.nyValue)*100/(this.asValue+this.nsValue);
 		}
-		return f.intValue();
+		return f;
 	}
 	public void setR(Integer r) {
 		this.r = r;
 	}
 	public Integer getsRate() {
-		Float f=1F;
+		Integer f=1;
 		if(this.asCount+this.ayCount+this.nsCount+this.nyCount==0){
-			return 50;
+			return 5000;
 		}else{
-			f=(this.ayCount+this.nyCount)*100F/(this.asCount+this.ayCount+this.nsCount+this.nyCount);
+			f=(this.ayCount+this.nyCount)*10000/(this.asCount+this.ayCount+this.nsCount+this.nyCount);
 		}
-		return f.intValue();
+		return f;
 	}
 	public void setsRate(Integer sRate) {
 		this.sRate = sRate;
@@ -160,8 +161,10 @@ public class StatsDO {
 		}else{
 			f=(this.asRate+this.ayRate+this.nsRate+this.nyRate)/(this.asCount+this.ayCount+this.nsCount+this.nyCount);
 		}
-		return f.intValue();
+		return f;
 	}
+	
+	
 	public Integer getYyRate() {
 		Integer f=1;
 		if(this.ayRate+this.nyRate==0){
@@ -169,7 +172,7 @@ public class StatsDO {
 		}else{
 			f=(this.ayRate+this.nyRate)/(this.ayCount+this.nyCount);
 		}
-		return f.intValue();
+		return f;
 	}
 	public void setYyRate(Integer yyRate) {
 		this.yyRate = yyRate;
@@ -181,7 +184,7 @@ public class StatsDO {
 		}else{
 			f=(this.asRate+this.nsRate)/(this.asCount+this.nsCount);
 		}
-		return f.intValue();
+		return f;
 	}
 	public void setYsRate(Integer ysRate) {
 		this.ysRate = ysRate;
@@ -273,26 +276,49 @@ public class StatsDO {
 	public void setNsPosition(Integer nsPosition) {
 		this.nsPosition = nsPosition;
 	}
+	
+	
+	
 	public Integer getAyRate() {
 		return ayRate;
+	}
+	public String getAyRateFormat() {
+		return nf.format(ayRate/100F);
 	}
 	public void setAyRate(Integer ayRate) {
 		this.ayRate = ayRate;
 	}
+	
+	
+	
 	public Integer getAsRate() {
 		return asRate;
+	}
+	public String getAsRateFormat() {
+		return nf.format(asRate/100F);
 	}
 	public void setAsRate(Integer asRate) {
 		this.asRate = asRate;
 	}
+	
+	
+	
 	public Integer getNyRate() {
 		return nyRate;
+	}
+	public String getNyRateFormat() {
+		return nf.format(nyRate/100F);
 	}
 	public void setNyRate(Integer nyRate) {
 		this.nyRate = nyRate;
 	}
+	
+	
 	public Integer getNsRate() {
 		return nsRate;
+	}
+	public String getNsRateFormat() {
+		return nf.format(nsRate/100F);
 	}
 	public void setNsRate(Integer nsRate) {
 		this.nsRate = nsRate;
