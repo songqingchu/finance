@@ -107,10 +107,10 @@ td {
 				       <td><a href="#" toId="asp" value="${t.asPosition}" class="tianchong">填充</a></td>
 				       <td><a href="#" toId="nyp" value="${t.nyPosition}" class="tianchong">填充</a></td>
 				       <td><a href="#" toId="nsp" value="${t.nsPosition}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="ayr" value="${t.ayRate}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="asr" value="${t.asRate}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="nyr" value="${t.nyRate}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="nsr" value="${t.nsRate}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="ayr" value="${t.ayRateFormat}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="asr" value="${t.asRateFormat}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="nyr" value="${t.nyRateFormat}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="nsr" value="${t.nsRateFormat}" class="tianchong">填充</a></td>
 				</tr>
 				</tbody>
     </table>

@@ -123,7 +123,7 @@ public class MockUtil {
 			pRate.add(s.getpRate()/100F);
 			yRate.add(s.getyRate()/100F);
 			yyRate.add(s.getYyRate()/100F);
-			ysRate.add(0-s.getYsRate()/100F);
+			ysRate.add(s.getYsRate()/100F);
 		}
 		for(StatsDO s:sh){
 			shL.add(s.getvRate()/100F);

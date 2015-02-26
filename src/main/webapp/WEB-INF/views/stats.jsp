@@ -34,11 +34,7 @@
 	<a id="yRate_div_a" href="#top_a">回到顶部</a>
 	<div id="yRate_div" style="height: 400px"></div>
 	
-	<a id="yyRate_div_a" href="#top_a">回到顶部</a>
-	<div id="yyRate_div" style="height: 400px"></div>
 	
-	<a id="ysRate_div_a" href="#top_a">回到顶部</a>
-	<div id="ysRate_div" style="height: 400px"></div>
 	
 	<!-- ECharts单文件引入 -->
 	<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
@@ -60,8 +56,8 @@
 			var pRate = ec.init(document.getElementById('pRate_div'));
 			var sRate = ec.init(document.getElementById('sRate_div'));
 			var yRate = ec.init(document.getElementById('yRate_div'));
-			var yyRate = ec.init(document.getElementById('yyRate_div'));
-			var ysRate = ec.init(document.getElementById('ysRate_div'));
+			//var yyRate = ec.init(document.getElementById('yyRate_div'));
+
 			
 			vRateOption = {
 				title : {
@@ -350,7 +346,7 @@
 						trigger : 'axis'
 					},
 					legend : {
-						data : [ '平均盈利率' ]
+						data : [ '平均盈利率' ,'平均盈利率（胜）','平均盈利率（损）' ]
 					},
 					toolbox : {
 						show : true,
@@ -391,6 +387,16 @@
 						type : 'line',
 						color: 'red',
 						data : [ 11, 11, 15, 13, 12, 13, 10 ]
+					},{
+						name : '平均盈利率（胜）',
+						type : 'line',
+						color: 'red',
+						data : [ 11, 11, 15, 13, 12, 13, 10 ]
+					},{
+						name : '平均盈利率（损）',
+						type : 'line',
+						color: 'red',
+						data : [ 11, 11, 15, 13, 12, 13, 10 ]
 					}]
 				};
 			
@@ -403,7 +409,7 @@
 						trigger : 'axis'
 					},
 					legend : {
-						data : [ '平均盈利率（胜）' ]
+						data : [ '平均盈利率（胜）','平均盈利率（损）' ]
 					},
 					toolbox : {
 						show : true,
@@ -444,55 +450,7 @@
 						type : 'line',
 						color: 'red',
 						data : [ 11, 11, 15, 13, 12, 13, 10 ]
-					}]
-				};
-			
-			
-			ysRateOption = {
-					title : {
-						text : '平均盈利率（损）'
-					},
-					tooltip : {
-						trigger : 'axis'
-					},
-					legend : {
-						data : [ '平均盈利率（损）' ]
-					},
-					toolbox : {
-						show : true,
-						feature : {
-							mark : {
-								show : true
-							},
-							dataView : {
-								show : true,
-								readOnly : false
-							},
-							magicType : {
-								show : true,
-								type : [ 'line', 'bar' ]
-							},
-							restore : {
-								show : true
-							},
-							saveAsImage : {
-								show : true
-							}
-						}
-					},
-					calculable : true,
-					xAxis : [ {
-						type : 'category',
-						boundaryGap : false,
-						data : [ '周一', '周二', '周三', '周四', '周五', '周六', '周日' ]
-					} ],
-					yAxis : [ {
-						type : 'value',
-						axisLabel : {
-							formatter : '{value}'
-						}
-					} ],
-					series : [ {
+					},{
 						name : '平均盈利率（损）',
 						type : 'line',
 						color: 'red',
@@ -500,7 +458,8 @@
 					}]
 				};
 			
-
+			
+		
 			//通过Ajax获取数据
 			$.ajax({
 				type : "get",
@@ -518,8 +477,7 @@
 						rRateOption.xAxis[0].data = result.series;
 						pRateOption.xAxis[0].data = result.series;
 						yRateOption.xAxis[0].data = result.series;
-						yyRateOption.xAxis[0].data = result.series;
-						ysRateOption.xAxis[0].data = result.series;
+						//yyRateOption.xAxis[0].data = result.series;
 						
 						//数据
 						vRateOption.series[0].data = toFix(result.mine);
@@ -530,8 +488,8 @@
 						rRateOption.series[0].data = toFix(result.rRate);
 						pRateOption.series[0].data = toFix(result.pRate);
 						yRateOption.series[0].data = toFix(result.yRate);
-						yyRateOption.series[0].data = toFix(result.yyRate);
-						ysRateOption.series[0].data = toFix(result.ysRate);
+						yRateOption.series[1].data = toFix(result.yyRate);
+						yRateOption.series[2].data = toFix(result.ysRate);
 						//option.legend.data = result.legend;
 										
 						vRate.hideLoading();
@@ -552,11 +510,9 @@
 						yRate.hideLoading();
 						yRate.setOption(yRateOption);
 						
-						yyRate.hideLoading();
-						yyRate.setOption(yyRateOption);
+						//yyRate.hideLoading();
+						//yyRate.setOption(yyRateOption);
 						
-						ysRate.hideLoading();
-						ysRate.setOption(ysRateOption);
 					}
 				},
 				error : function(errorMsg) {
