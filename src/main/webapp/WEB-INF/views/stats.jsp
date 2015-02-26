@@ -12,8 +12,6 @@
     <a href="#sRate_div_a">胜率</a>&nbsp;&nbsp;
     <a href="#pRate_div_a">仓率</a>&nbsp;&nbsp;
     <a href="#yRate_div_a">平均盈利率</a>&nbsp;&nbsp;
-    <a href="#yyRate_div_a">平均盈利率（胜）</a>&nbsp;&nbsp;
-    <a href="#ysRate_div_a">平均盈利率（损）</a>&nbsp;&nbsp;
     
 	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 	

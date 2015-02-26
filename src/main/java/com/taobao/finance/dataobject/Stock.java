@@ -673,9 +673,12 @@ public class Stock implements Comparable<Stock> {
 	
 	public String getNameFormat() {
 		if(name.getBytes().length==7){
-			name=name+"&nbsp;";
+			name=name+"&nbsp;&nbsp;&nbsp";
 		}
 		if(name.getBytes().length==6){
+			name=name+"&nbsp;&nbsp;";
+		}
+		if(name.getBytes().length==9){
 			name=name+"&nbsp;&nbsp;";
 		}
 		return  name;
@@ -904,5 +907,10 @@ public class Stock implements Comparable<Stock> {
 		public int compare(Stock o1, Stock o2) {
 			return o2.getHardenTimes() - o1.getHardenTimes();
 		}
+	}
+	
+	public static void mian(String args[]){
+		System.out.println("中".getBytes().length);
+		System.out.println("A".getBytes().length);
 	}
 }

@@ -414,6 +414,8 @@ public class FetchUtil {
     }
 
     public static void main(String args[]) throws IOException, ParseException{
-		checkWorkingDay();
+		//checkWorkingDay();
+    	System.out.println("东南网架".getBytes().length);
+		System.out.println("巴安水务".getBytes().length);
 	}
 }
