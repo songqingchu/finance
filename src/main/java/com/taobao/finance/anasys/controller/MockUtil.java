@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.taobao.finance.base.Hisdata_Base;
+import com.taobao.finance.check.impl.Check_AV5;
+import com.taobao.finance.check.impl.Check_AVCU;
+import com.taobao.finance.check.impl.Check_BigTrend;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
@@ -250,12 +254,58 @@ public class MockUtil {
 			}
 		}
 	
+		List<String> acvuDate=new Check_AVCU().check(symbol);
+		List<String> av5Date=new Check_AV5().check(symbol);
+		List<String> bigDate=new Check_BigTrend().check(symbol);
+		
+		List<Map<String,Object>> acvuTips=new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> av5Tips=new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> bigTips=new ArrayList<Map<String,Object>>();
+		
+		for(String s:acvuDate){
+			Date d=FetchUtil.FILE_FORMAT.parse(s);
+			Map<String,Object> mm=new HashMap<String, Object>();
+			mm.put("x", d);
+			mm.put("title", "ACVU");
+			acvuTips.add(mm);
+		}
+		for(String s:av5Date){
+			Date d=FetchUtil.FILE_FORMAT.parse(s);
+			Map<String,Object> mm=new HashMap<String, Object>();
+			mm.put("x", d);
+			mm.put("title", "AV5");
+			av5Tips.add(mm);
+		}
+		for(String s:bigDate){
+			Date d=FetchUtil.FILE_FORMAT.parse(s);
+			Map<String,Object> mm=new HashMap<String, Object>();
+			mm.put("x", d);
+			mm.put("title", "BIG");
+			bigTips.add(mm);
+		}
+		
+		
+		if(acvuTips.size()>0){
+			Collections.reverse(acvuTips);
+		}
+		if(av5Tips.size()>0){
+			Collections.reverse(av5Tips);
+		}
+		if(bigTips.size()>0){
+			Collections.reverse(bigTips);
+		}
+		
+		
 
 		m.put("av5",av5 );
 		m.put("av10", av10);
 		m.put("av20", av20);
 		m.put("vol", vol);	
-		m.put("data",data );
+		m.put("data",data);
+		m.put("acvuTips",acvuTips);
+		m.put("av5Tips",av5Tips);
+		m.put("bigTips",bigTips);
+		
 		Stock s=l.get(l.size()-1);
 		Stock st=Fetch_AllStock.map.get(s.getSymbol());
 		String name=null;

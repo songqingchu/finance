@@ -14,6 +14,7 @@ var highStockChart = function(divID,result,crrentData,all){
 	MA20Array=all.av20;
 	
 	
+	
 	/*
 	 * 这个方法用来控制K线上的flags的显示情况，当afterSetExtremes时触发该方法,通过flags显示当前时间区间最高价和最低价
 	 * minTime  当前k线图上最小的时间点
@@ -119,7 +120,7 @@ var highStockChart = function(divID,result,crrentData,all){
 	         }
 		 });
 	 //动态update flags(最高价)
-       chart.series[5].update({
+      /* chart.series[5].update({
     	   data : flagsMaxData_2,
             point:{
          	   events:{
@@ -147,7 +148,7 @@ var highStockChart = function(divID,result,crrentData,all){
 			   			 });
              	}
          	}
-		});
+		});*/
        
        //动态update flags(最低价)
      /*  chart.series[6].update({
@@ -308,7 +309,8 @@ var highStockChart = function(divID,result,crrentData,all){
 	return new Highcharts.StockChart( {
 		chart:{
 			renderTo : divID,
-			margin: [30, 30,30, 30],
+			margin: [0, 0,0, 0],
+			spacing: [80, 60,30, 60],
 			plotBorderColor: '#3C94C4',
 			plotBorderWidth: 0.3,
 			events:{
@@ -326,7 +328,7 @@ var highStockChart = function(divID,result,crrentData,all){
 	            zindex:1000
 	    	}
 	    },
-		
+	
 		credits:{
 	            enabled:false
 	    },
@@ -593,32 +595,58 @@ var highStockChart = function(divID,result,crrentData,all){
 	        dataGrouping: {
 				enabled: false
 			}
-	    }/*,{
-	    	 type : 'flags',
-	           cursor:'pointer',
-	           style:{
-	        	   fontSize: '11px',
-	               fontWeight: 'normal',
-	               textAlign: 'center'
-	           },
-	           lineWidth:0.5,
-	           onSeries : 'candlestick',
-	           width : 25,
-	           shape: 'squarepin'
 	    },{
-	    	 type : 'flags',
-	         cursor:'pointer',
-	         y: 33,
-	         style:{
+	    
+	                type: 'flags',
+	                name: 'Flags on series',
+	                data: all.acvuTips,
+	                onSeries: 'candlestick',
+	                shape: 'squarepin',
+	                y:-100,
+	                style:{
+	 	        	   fontSize: '11px',
+	 	               fontWeight: 'normal',
+	 	               zIndex:    9999, 
+	 	               textAlign: 'center'  ,
+	                   color : 'red'
+	 	           },
+	 	           zIndex:9999,
+	 		       fillColor:'green'
+	    },{
+		    
+            type: 'flags',
+            name: 'Flags on series',
+            data:  all.av5Tips,
+            onSeries: 'candlestick',
+            shape: 'squarepin',
+            y:50,
+            style:{
 	        	   fontSize: '11px',
 	               fontWeight: 'normal',
-	               textAlign: 'center'
-	           },
-	           lineWidth:0.5,
-	           onSeries : 'candlestick',
-	           width : 25,
-	           shape: 'squarepin'
-	    }*/
+	               zIndex:    9999, 
+	               textAlign: 'center'  ,
+               color : 'red'
+	        },
+	        zIndex:9999,
+	        fillColor:'blue'
+        },{
+		    
+            type: 'flags',
+            name: 'Flags on series',
+            data:  all.bigTips,
+            onSeries: 'candlestick',
+            shape: 'squarepin',
+            y:100,
+            style:{
+	        	   fontSize: '11px',
+	               fontWeight: 'normal',
+	               zIndex:    9999, 
+	               textAlign: 'center'  ,
+               color : 'red'
+	        },
+	        zIndex:9999,
+	        fillColor:'pink'
+        }
 	    ]
 	});
 }

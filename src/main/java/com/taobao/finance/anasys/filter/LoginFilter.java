@@ -28,11 +28,14 @@ public class LoginFilter extends HttpServlet implements Filter {
             	   loginSuccess=true;
         	   } 
            }
-           if(loginSuccess || ( url.indexOf("Login")>0 || url.indexOf("login")>0 )|| url.indexOf("security")>0){
+           if(loginSuccess || ( url.indexOf("Login")>0 || url.indexOf("login")>0 )|| url.indexOf("security")>0||  url.indexOf("publicPool")>0){
         	   chain.doFilter(arg0, arg1);  
            }else{
         	   response.sendRedirect(request.getContextPath() + "/security.do");   
            }
+           
+           chain.doFilter(arg0, arg1);
+           
     }  
     public void init(FilterConfig arg0) throws ServletException {  
     }  

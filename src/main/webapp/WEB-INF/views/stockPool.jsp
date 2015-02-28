@@ -121,6 +121,10 @@ text-decoration:none;
 			    	copyMap.low=base.low;
 			    	copyMap.end=base.end;
 			    	copyMap.name=base.name;
+			    	copyMap.av5Tips=base.av5Tips;
+			    	copyMap.acvuTips=base.acvuTips;
+			    	copyMap.bigTips=base.bigTips;
+			    	
 			    	tradeChart(copyMap);
 				}
 			},
@@ -147,11 +151,15 @@ text-decoration:none;
 	    event.stopPropagation(); 
 	    if(event.keyCode == 38||event.keyCode == 40){
 	    	if(event.keyCode == 38) {
-		    	start=start+40;
+	    		if(start+40<total){
+	    			start=start+40;
+	    		}
 		    }
 		    
 	        if(event.keyCode == 40) {
-	        	start=start-20;
+	        	if(start-20>0){
+	        		start=start-20;
+	        	}
 		    }
 	        var copyMap={};
 	    	copyMap.av5 = base.av5.slice(start);
@@ -164,6 +172,10 @@ text-decoration:none;
 	    	copyMap.low=base.low;
 	    	copyMap.end=base.end;
 	    	copyMap.name=base.name;
+	    	copyMap.av5Tips=base.av5Tips;
+	    	copyMap.acvuTips=base.acvuTips;
+	    	copyMap.bigTips=base.bigTips;
+	    	
 	    	tradeChart(copyMap);
 	    }
 	    if(event.keyCode == 37||event.keyCode == 39){
