@@ -1225,6 +1225,8 @@ public class CheckUtil {
 		return match;
 	}
 
+	
+	
 	public static Float getAve(List<Stock> l, int day) {
 		Float ave = 0F;
 		Float total = 0F;

@@ -30,6 +30,6 @@ public class CheckAll {
 	
 	
 	public static void main(String args[]){
-		check("002373");
+		check("300350");
 	}
 }

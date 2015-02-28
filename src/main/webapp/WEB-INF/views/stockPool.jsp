@@ -28,27 +28,27 @@ text-decoration:none;
 <div style="width:270px;float:left;">
 <div style="width:270px;float:left;">
 <span  style="width:80px;float:left;">
-<b><a href="#" id="bigSymbol" class="choose" style="backgroud-color:red">acvu</a></b>
+<b><a href="#" id="acvuSymbol" class="choose" style="background-color:green">acvu:</a></b><font size="2">${acvuSize}</font>
 </span>
 <span  style="width:80px;float:left;">
-<b><a href="#" id="acvuSymbol"  class="choose">big&nbsp;</a></b>
+<b><a href="#" id="bigSymbol"  class="choose">big&nbsp;:</a></b><font size="2">${bigSize}</font>
 </span>
 <span  style="width:80px;float:left;">
-<b><a href="#" id="av5Symbol" class="choose">av5&nbsp;</a></b>
+<b><a href="#" id="av5Symbol" class="choose">av5&nbsp;:</a></b><font size="2">${av5Size}</font>
 </span>
 <span  style="width:80px;float:left;">
-<b><a href="#" id="av10Symbol"  class="choose">av10</a></b>
+<b><a href="#" id="av10Symbol"  class="choose">av10:</a></b><font size="2">${av10Size}</font>
 </span>
 <br>
 </div>
 
 <div style="width:270px;height:530px;float:left;overflow-y:auto">
-<c:forEach var="s" items="${big}">  
-     <span  class="bigSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.symbol}</a></span>
+<c:forEach var="s" items="${acvu}">  
+     <span  class="acvuSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.symbol}</a></span>
 </c:forEach>
 
-<c:forEach var="s" items="${acvu}">  
-   <span style="display:none" class="acvuSymbol  symbol"  style="width:50px;float:left;">  <a href="#"  symbol="${s.symbol}" id="${s.symbol}" class="symbolA" >${s.symbol}</a></span>
+<c:forEach var="s" items="${big}">  
+   <span style="display:none" class="bigSymbol  symbol"  style="width:50px;float:left;">  <a href="#"  symbol="${s.symbol}" id="${s.symbol}" class="symbolA" >${s.symbol}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av5}">  
@@ -60,6 +60,8 @@ text-decoration:none;
 </c:forEach>
 </div>
 </div>
+
+<div id="check_div" style="float:left;margin-left: 80px"></div>
 
 <div id="container" style="height: 800px;float:left;"></div>
 </body>
@@ -86,7 +88,7 @@ text-decoration:none;
    $(".choose").on("click",function(){
 	   var id=$(this).attr("id");
 	   $(".choose").css("background-color","");
-	   $(this).css("background-color","pink");
+	   $(this).css("background-color","green");
 	   $(".symbol").css("display","none");
 	   var aa=$("."+id);
 	   $("."+id).attr("style","display:block;width:80px;float:left;");
@@ -96,7 +98,7 @@ text-decoration:none;
 	   var symbol=$(this).attr("symbol");
 	   currentSymbol=symbol;
 	   $(".symbolA").css("background-color","");
-	   $(this).css("background-color","pink");
+	   $(this).css("background-color","green");
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
@@ -120,6 +122,20 @@ text-decoration:none;
 			    	copyMap.end=base.end;
 			    	copyMap.name=base.name;
 			    	tradeChart(copyMap);
+				}
+			},
+			error : function(errorMsg) {
+			}
+		});
+	   
+	   $.ajax({
+			type : "get",
+			async : true, //同步执行
+			url : "/match.do?symbol="+symbol,
+			dataType : "json", //返回数据形式为json
+			success : function(result) {
+				if (result) {
+                  $("#check_div").html(result.result);
 				}
 			},
 			error : function(errorMsg) {

@@ -52,7 +52,7 @@ class AVCU_Task implements Callable<List<Stock>> {
 	public List<Stock> call() throws Exception {
 		List<Stock> l = new ArrayList<Stock>();
 		for (Stock s : this.l) {
-			if(s.getCode().equals("002352")){
+			if(s.getCode().equals("601633")){
 				s.get_10changes();
 			}
 			List<Stock> history = prepareData(s.getSymbol(), null);

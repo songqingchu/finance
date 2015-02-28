@@ -11,7 +11,8 @@ import com.taobao.finance.util.FetchUtil;
 public abstract class Check {
 
 	public String name="";
-	public void check(String symbol){
+	public List<String> check(String symbol){
+		List<String> dateList=new ArrayList<String>();
 		symbol=fullName(symbol);
 		List<Date> dl=new ArrayList<Date>();
 		List<Stock> l=Hisdata_Base.readHisDataMerge(symbol, null);
@@ -31,8 +32,11 @@ public abstract class Check {
 		}
 		printName();
 		for(Date dd:dl){
-			System.out.println(FetchUtil.FILE_FORMAT.format(dd));
+			String s=FetchUtil.FILE_FORMAT.format(dd);
+			System.out.println(s);
+			dateList.add(s);
 		}
+		return dateList;
 	}
 	
 	public static String fullName(String code){

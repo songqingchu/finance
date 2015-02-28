@@ -48,7 +48,9 @@ public class Store {
 	public Map<String, Integer> download = new HashMap<String, Integer>();
 	public Map<String, Integer> choose = new HashMap<String, Integer>();
 	public Map<String,Stock> publicPool=new HashMap<String,Stock>();
-
+	public Map<String, Boolean> checkWorkingRecord = new HashMap<String, Boolean>();
+	
+	
 	public static Boolean workingDay;
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
 

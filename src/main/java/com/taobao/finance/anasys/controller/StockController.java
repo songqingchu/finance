@@ -29,6 +29,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.taobao.finance.base.Hisdata_Base;
+import com.taobao.finance.check.impl.Check_AV10;
+import com.taobao.finance.check.impl.Check_AV20;
+import com.taobao.finance.check.impl.Check_AV5;
+import com.taobao.finance.check.impl.Check_AVCU;
+import com.taobao.finance.check.impl.Check_BigTrend;
+import com.taobao.finance.check.impl.Check_TP;
 import com.taobao.finance.choose.local.thread.AV10_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
@@ -373,7 +379,10 @@ public class StockController {
 		List<String> acvuStr=new ArrayList<String>();
 		List<String> av5Str=new ArrayList<String>();
 		List<String> av10Str=new ArrayList<String>();
-		
+		System.out.println("big:"+big.size());
+		System.out.println("acvu:"+big.size());
+		System.out.println("av5:"+big.size());
+		System.out.println("av10:"+big.size());
 		for(Stock s:big){
 			bigStr.add(s.getSymbol());
 		}
@@ -409,6 +418,10 @@ public class StockController {
 		request.setAttribute("av5", av5);
 		request.setAttribute("av10", av10);
 		request.setAttribute("tp", tp);
+		request.setAttribute("bigSize", big.size());
+		request.setAttribute("acvuSize", acvu.size());
+		request.setAttribute("av5Size", av5.size());
+		request.setAttribute("av10Size", av10.size());
 		
 		request.setAttribute("bigStr", "'"+StringUtils.join(bigStr,"','")+"'");
 		request.setAttribute("acvuStr",  "'"+StringUtils.join(acvuStr,"','")+"'");
@@ -425,6 +438,14 @@ public class StockController {
 		Calendar c=Calendar.getInstance();
 		int hour=c.get(Calendar.HOUR_OF_DAY);
 		int minits=c.get(Calendar.MINUTE);
+		Date d=new Date();
+		String dateStr=DF.format(d);
+		Boolean checkedWorkingDay=store.checkWorkingRecord.get(dateStr);
+		if(checkedWorkingDay==null){
+			Boolean workingDay=FetchUtil.checkWorkingDay();
+			store.workingDay=workingDay;
+			store.checkWorkingRecord.put(dateStr, true);
+		}
 		boolean shi=true;
 		if(hour<9&&hour>=15){
 			shi=false;
@@ -434,7 +455,60 @@ public class StockController {
 		}
 		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay,shi);
 		return map;
+	}	
+	
+	
+	@RequestMapping(value = "/match.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> match(@RequestParam String symbol) throws IOException, ParseException {
+		Map<String,Object> map=new HashMap<String,Object>();
+		List<String> bigList=new Check_BigTrend().check(symbol);
+		List<String> acvuList=new Check_AVCU().check(symbol);
+		List<String> av5List=new Check_AV5().check(symbol);
+		List<String> av10List=new Check_AV10().check(symbol);
+		List<String> av20List=new Check_AV20().check(symbol);
+		List<String> tpList=new Check_TP().check(symbol);
+		if(bigList.size()>10){
+			bigList=bigList.subList(0, 8);
+		}
+		if(acvuList.size()>10){
+			acvuList=acvuList.subList(0, 8);
+		}
+		if(av5List.size()>10){
+			av5List=av5List.subList(0, 8);
+		}
+		if(av10List.size()>10){
+			av10List=av10List.subList(0, 8);
+		}
+		if(av20List.size()>10){
+			av20List=av20List.subList(0, 8);
+		}
+		if(tpList.size()>10){
+			tpList=tpList.subList(0, 8);
+		}
+		String big=StringUtils.join(bigList,",&nbsp;&nbsp;");
+		String acvu=StringUtils.join(acvuList,",&nbsp;&nbsp;");
+		String av5=StringUtils.join(av5List,",&nbsp;&nbsp;");
+		String av10=StringUtils.join(av10List,",&nbsp;&nbsp;");
+		String av20=StringUtils.join(av20List,",&nbsp;&nbsp;");
+		String tp=StringUtils.join(tpList,",&nbsp;&nbsp;");
+		
+		map.put("big", big); 
+		map.put("acvu", acvu);    
+		map.put("av5", av5);
+		map.put("av10", av10);
+		map.put("av20", av20); 
+		map.put("tp", tp); 
+		String result="";
+		
+		result+="<b>BIG&nbsp;</b>:"+big+"<br>";
+		result+="<b>ACVU</b>:"+acvu+"<br>";
+		result+="<b>AV5&nbsp;</b>:"+av5+"<br>";
+		result+="<b>AV10</b>:"+av10+"<br>";
+		result+="<b>AV20</b>:"+av20+"<br>";
+		result+="<b>TP&nbsp;&nbsp;</b>:"+tp+"<br> ";
+		
+		map.put("result", result); 
+		return map;
 	}
-	
-	
 }

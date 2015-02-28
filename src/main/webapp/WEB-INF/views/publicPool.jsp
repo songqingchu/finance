@@ -42,7 +42,7 @@ text-decoration:none;
 
 </div>
 </div>
-
+<div id="check_div" style="float:left;margin-left: 80px"></div>
 <div id="container" style="height: 800px;float:left;"></div>
 </body>
 <script>
@@ -83,6 +83,7 @@ text-decoration:none;
 	   currentSymbol=symbol;
 	   $(".symbolA").css("background-color","");
 	   $(this).css("background-color","pink");
+	   
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
@@ -106,6 +107,21 @@ text-decoration:none;
 			    	copyMap.end=base.end;
 			    	copyMap.name=base.name;
 			    	tradeChart(copyMap);
+				}
+			},
+			error : function(errorMsg) {
+			}
+		});
+	   
+	   
+	   $.ajax({
+			type : "get",
+			async : true, //同步执行
+			url : "/match.do?symbol="+symbol,
+			dataType : "json", //返回数据形式为json
+			success : function(result) {
+				if (result) {
+                   $("#check_div").html(result.result);
 				}
 			},
 			error : function(errorMsg) {

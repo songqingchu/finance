@@ -1,10 +1,7 @@
 package com.taobao.finance.task;
 
 import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.util.FetchUtil;
 
