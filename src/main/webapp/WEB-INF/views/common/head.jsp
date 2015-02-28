@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<div style="width:100%;border:0">
+<div style="width:100%;border:0" id="head_div">
 <br>
 <span>     
 <a href="record.do">逐日盯市</a> &nbsp;&nbsp;&nbsp;&nbsp;

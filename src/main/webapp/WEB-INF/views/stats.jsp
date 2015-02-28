@@ -17,16 +17,16 @@
 	
 	<div id="vRate_div" style="height: 400px"></div>
 	
-	<a id="yearVRate_div_a" href="#top_a">回到顶部</a>
+	<a id="yearVRate_div_a" href="#head_div">回到顶部</a>
 	<div id="yearVRate_div" style="height: 400px"></div>
 	
-	<a id="sRate_div_a" href="#top_a">回到顶部</a>
+	<a id="sRate_div_a" href="#head_div">回到顶部</a>
 	<div id="sRate_div" style="height: 400px"></div>
 	
-	<a id="rRate_div_a" href="#top_a">回到顶部</a>
+	<a id="rRate_div_a" href="#head_div">回到顶部</a>
 	<div id="rRate_div" style="height: 400px"></div>
 	
-	<a id="pRate_div_a" href="#top_a">回到顶部</a>
+	<a id="pRate_div_a" href="#head_div">回到顶部</a>
 	<div id="pRate_div" style="height: 400px"></div>
 	
 	<a id="yRate_div_a" href="#top_a">回到顶部</a>

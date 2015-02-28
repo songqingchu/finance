@@ -468,23 +468,23 @@ public class StockController {
 		List<String> av10List=new Check_AV10().check(symbol);
 		List<String> av20List=new Check_AV20().check(symbol);
 		List<String> tpList=new Check_TP().check(symbol);
-		if(bigList.size()>10){
-			bigList=bigList.subList(0, 8);
+		if(bigList.size()>5){
+			bigList=bigList.subList(0, 4);
 		}
-		if(acvuList.size()>10){
-			acvuList=acvuList.subList(0, 8);
+		if(acvuList.size()>5){
+			acvuList=acvuList.subList(0, 4);
 		}
-		if(av5List.size()>10){
-			av5List=av5List.subList(0, 8);
+		if(av5List.size()>5){
+			av5List=av5List.subList(0, 4);
 		}
-		if(av10List.size()>10){
-			av10List=av10List.subList(0, 8);
+		if(av10List.size()>5){
+			av10List=av10List.subList(0, 4);
 		}
-		if(av20List.size()>10){
-			av20List=av20List.subList(0, 8);
+		if(av20List.size()>5){
+			av20List=av20List.subList(0, 4);
 		}
-		if(tpList.size()>10){
-			tpList=tpList.subList(0, 8);
+		if(tpList.size()>5){
+			tpList=tpList.subList(0, 4);
 		}
 		String big=StringUtils.join(bigList,",&nbsp;&nbsp;");
 		String acvu=StringUtils.join(acvuList,",&nbsp;&nbsp;");

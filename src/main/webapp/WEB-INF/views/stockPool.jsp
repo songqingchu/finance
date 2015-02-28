@@ -25,8 +25,8 @@ text-decoration:none;
  
 
    
-<div style="width:270px;float:left;">
-<div style="width:270px;float:left;">
+<div style="width:200px;float:left;">
+<div style="width:200px;float:left;">
 <span  style="width:80px;float:left;">
 <b><a href="#" id="acvuSymbol" class="choose" style="background-color:green">acvu:</a></b><font size="2">${acvuSize}</font>
 </span>
@@ -42,7 +42,7 @@ text-decoration:none;
 <br>
 </div>
 
-<div style="width:270px;height:530px;float:left;overflow-y:auto">
+<div style="width:200px;height:530px;float:left;overflow-y:auto">
 <c:forEach var="s" items="${acvu}">  
      <span  class="acvuSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.symbol}</a></span>
 </c:forEach>

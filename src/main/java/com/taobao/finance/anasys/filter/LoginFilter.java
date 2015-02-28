@@ -34,8 +34,6 @@ public class LoginFilter extends HttpServlet implements Filter {
         	   response.sendRedirect(request.getContextPath() + "/security.do");   
            }
            
-           chain.doFilter(arg0, arg1);
-           
     }  
     public void init(FilterConfig arg0) throws ServletException {  
     }  

@@ -25,14 +25,14 @@ text-decoration:none;
  
 
    
-<div style="width:290px;float:left;">
-<div style="width:290px;height:360px;float:left;overflow-y:auto;border:1px solid">
+<div style="width:200px;float:left;">
+<div style="width:200px;height:360px;float:left;overflow-y:auto;border:1px solid">
 <c:forEach var="s" items="${r}">  
      <span  class="bigSymbol symbol" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.nameFormat}&nbsp;&nbsp;${s.ratePercent}</a></span>
 </c:forEach>
 </div>
 
-<div style="width:290px;float:left;">
+<div style="width:200px;float:left;">
 <a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="#" class="submitA" replace="1">替换</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="publicPool.do" >刷新</a>
@@ -48,7 +48,7 @@ text-decoration:none;
 <script>
    var windowWidth=$(window).width();
    var windowHight=$(window).height();
-   var w=windowWidth-350;
+   var w=windowWidth-200;
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);

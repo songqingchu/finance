@@ -19,6 +19,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
+import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.util.NodeList;
 
@@ -166,6 +167,38 @@ public class FetchUtil {
 
 	
 
+	public static Stock parseProfit(String s, String code)
+			throws Exception {
+		Map<String,String> m=new HashMap<String,String>();
+		try {
+			Parser parser = new Parser(s);
+			parser.setEncoding("GBK"); 
+			NodeList nodes = parser.parse(new HasAttributeFilter( "id", "FundHoldSharesTable" ));
+			NodeList trs=nodes.elementAt(0).getChildren();
+			if (nodes.size() > 0) {
+				int size=nodes.elementAt(0).getChildren().size();
+				for(int i=0;i<size;i++){
+					List<Node> l=new ArrayList<Node>();
+					Node n=trs.elementAt(i);System.out.println("-==========================================");
+					
+					System.out.println(n.toHtml());
+					if(n.toHtml().contains("公告日期")){
+						l.add(n);
+						String s1=n.getChildren().elementAt(0).getChildren().elementAt(1).getFirstChild().toHtml();
+						System.out.println(s1);
+					}
+					if(n.toHtml().contains("净利润")){
+						l.add(n);
+						String s2=n.getChildren().elementAt(1).getFirstChild().toHtml();
+						System.out.println(s2);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 
 	
