@@ -60,8 +60,10 @@ text-decoration:none;
 </c:forEach>
 </div>
 </div>
-
+<!-- 
 <div id="check_div" style="float:left;margin-left: 80px"></div>
+ -->
+
 
 <div id="container" style="height: 800px;float:left;"></div>
 </body>
@@ -71,7 +73,7 @@ text-decoration:none;
    eval("alert(eval(f))"); */
    var windowWidth=$(window).width();
    var windowHight=$(window).height();
-   var w=windowWidth-350;
+   var w=windowWidth-220;
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);
@@ -82,7 +84,7 @@ text-decoration:none;
    
    var base;
    var start=0;
-   var total;
+   var total=0;
    var currentSymbol;
    
    $(".choose").on("click",function(){
@@ -108,7 +110,7 @@ text-decoration:none;
 				if (result) {
 					start=60;
 					base=result;
-					total=base.length;
+					total=base.data.length;
 					
 					var copyMap={};
 			    	copyMap.av5 = base.av5.slice(start);
@@ -132,7 +134,7 @@ text-decoration:none;
 			}
 		});
 	   
-	   $.ajax({
+/* 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
 			url : "/match.do?symbol="+symbol,
@@ -144,7 +146,7 @@ text-decoration:none;
 			},
 			error : function(errorMsg) {
 			}
-		});
+		}); */
    });
    
    $(document).keydown(function(event){ 

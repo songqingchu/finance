@@ -37,18 +37,20 @@ text-decoration:none;
 <a href="#" class="submitA" replace="1">替换</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="publicPool.do" >刷新</a>
 <br>
-<textarea rows="5" cols="33" id="symbolText">
+<textarea rows="5" cols="20" id="symbolText">
 </textarea>
 
 </div>
 </div>
+<!-- 
 <div id="check_div" style="float:left;margin-left: 80px"></div>
+ -->
 <div id="container" style="height: 800px;float:left;"></div>
 </body>
 <script>
    var windowWidth=$(window).width();
    var windowHight=$(window).height();
-   var w=windowWidth-200;
+   var w=windowWidth-220;
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);
@@ -106,6 +108,9 @@ text-decoration:none;
 			    	copyMap.low=base.low;
 			    	copyMap.end=base.end;
 			    	copyMap.name=base.name;
+			    	copyMap.av5Tips=base.av5Tips;
+			    	copyMap.acvuTips=base.acvuTips;
+			    	copyMap.bigTips=base.bigTips;
 			    	tradeChart(copyMap);
 				}
 			},
@@ -113,7 +118,7 @@ text-decoration:none;
 			}
 		});
 	   
-	   
+	   /* 
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
@@ -126,7 +131,7 @@ text-decoration:none;
 			},
 			error : function(errorMsg) {
 			}
-		});
+		}); */
    });
    
    $(document).keydown(function(event){ 
