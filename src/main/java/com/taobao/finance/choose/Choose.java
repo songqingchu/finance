@@ -5,10 +5,11 @@ import java.util.List;
 
 import com.taobao.finance.dataobject.Stock;
 
+
 public interface Choose {
 
 	/**
-	 * Ñ¡Ôñ±¶Á¿
+	 * Ñ¡ï¿½ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public  List<Stock> chooseBV();
@@ -18,31 +19,31 @@ public interface Choose {
 	public  List<Stock> chooseChannel();
 	
 	/**
-	 * Ñ¡Ôñ»Æ½ðÖù
+	 * Ñ¡ï¿½ï¿½Æ½ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public  List<Stock> chooseGoldenV();
 	
 	/**
-	 * Ñ¡Ôñ¼ÛÔöÁ¿¼õ
+	 * Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public  List<Stock> choosePDVD();
 	
 	/**
-	 * ¼ì²éÁ¬Ñô
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public  List<Stock> chooseCLY();
 	
 	/**
-	 * ¼ì²éÆ½Ì¨ÒÑÍ»ÆÆ
+	 * ï¿½ï¿½ï¿½Æ½Ì¨ï¿½ï¿½Í»ï¿½ï¿½
 	 * @return
 	 */
 	public  List<Stock> choosePT();
 	
 	/**
-	 * ¼ì²éÆ½Ì¨´ýÍ»ÆÆ
+	 * ï¿½ï¿½ï¿½Æ½Ì¨ï¿½ï¿½Í»ï¿½ï¿½
 	 * @return
 	 */
 	public  List<Stock> chooseP();
@@ -54,13 +55,13 @@ public interface Choose {
 	public  List<Stock> chooseAVCU();
 	
 	/**
-	 * ¼ì²éÁ¬ÐøÕÇÍ£µÚ¶þ²¨
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½Ú¶ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public  List<Stock> chooseCB();
 	
 	/**
-	 * ÊµÊ±½Ó¿ÚºÍ±¾µØ½Ó¿ÚÊµÏÖ
+	 * ÊµÊ±ï¿½Ó¿ÚºÍ±ï¿½ï¿½Ø½Ó¿ï¿½Êµï¿½ï¿½
 	 * @param symbol
 	 * @param d
 	 * @return
@@ -68,12 +69,12 @@ public interface Choose {
 	public  List<Stock> prepareData(String symbol,Date d);
 	
 	/**
-	 * ¸ø³ö¹ÉÆ±³Ø
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½
 	 */
 	public  void printAnanyseResult();
 	
 	/**
-	 * ¸ø³ö
+	 * ï¿½ï¿½ï¿½ï¿½
 	 */
 	public  void printAnanyseResultDetail();
 }
