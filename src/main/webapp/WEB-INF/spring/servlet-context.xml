@@ -13,6 +13,7 @@
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
+	<mvc:default-servlet-handler />
 	<mvc:annotation-driven />
 	<tx:annotation-driven />
 	
