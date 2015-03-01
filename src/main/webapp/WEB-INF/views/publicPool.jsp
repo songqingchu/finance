@@ -33,8 +33,10 @@ text-decoration:none;
 </div>
 
 <div style="width:200px;float:left;">
+<if test="${root==true} }">
 <a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="#" class="submitA" replace="1">替换</a>&nbsp;&nbsp;&nbsp;&nbsp;
+</if>
 <a href="publicPool.do" >刷新</a>
 <br>
 <textarea rows="5" cols="20" id="symbolText">

@@ -255,6 +255,11 @@ public class StockController {
 		return "stats";
 	}
 	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String index(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		response.sendRedirect(request.getContextPath() + "/publicPool.do");  
+		return null;
+	}
 	@RequestMapping(value = "/publicPool.do", method = RequestMethod.GET)
 	public String publicPool(HttpServletRequest request) {
 		Set<String> s=store.publicPool.keySet();

@@ -27,7 +27,7 @@ public class HomeController {
 	@Autowired
 	private Store store;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/aaa", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> home() throws IOException, ParseException {
 		logger.info("requesting home");
@@ -110,6 +110,7 @@ public class HomeController {
 			if(userName.equals("root")&&passWord.equals("chenshanhui")){
 				success=true;
 				request.getSession().setAttribute("login", true);
+				request.getSession().setAttribute("root", true);
 			}
 		}
 		if(success){
