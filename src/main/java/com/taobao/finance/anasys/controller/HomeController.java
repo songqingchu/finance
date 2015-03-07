@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.taobao.finance.common.Store;
+import com.taobao.finance.entity.GUser;
+import com.taobao.finance.service.GUserService;
 
 
 @Controller
@@ -26,6 +28,9 @@ public class HomeController {
 	private static final Logger logger = Logger.getLogger("fileLogger");
 	@Autowired
 	private Store store;
+	
+	@Autowired
+	private GUserService gUserService;
 	
 	@RequestMapping(value = "/aaa", method = RequestMethod.GET)
 	@ResponseBody
@@ -107,11 +112,18 @@ public class HomeController {
 			@RequestParam String userName,@RequestParam String passWord) throws IOException {
 		boolean success=false;
 		if(StringUtils.isNotBlank(userName)&&StringUtils.isNotBlank(passWord)){
+			GUser user=this.gUserService.queryByName(userName);
+			if(user!=null){
+				if(user.getPassword().equals(passWord)){
+					success=true;
+				}
+			}
+			/*
 			if(userName.equals("root")&&passWord.equals("chenshanhui")){
 				success=true;
 				request.getSession().setAttribute("login", true);
 				request.getSession().setAttribute("root", true);
-			}
+			}*/
 		}
 		if(success){
 			  response.sendRedirect(request.getContextPath() + "/record.do");  
