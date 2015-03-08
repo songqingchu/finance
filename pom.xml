@@ -10,7 +10,7 @@
 
 	<properties>
 		<java-version>1.6</java-version>
-		<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
+		<org.springframework-version>3.1.1.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.9</org.aspectj-version>
 		<org.slf4j-version>1.6.1</org.slf4j-version>
 		<force.sdk.version>22.0.7-BETA</force.sdk.version>
@@ -19,16 +19,38 @@
 	</properties>
 
 	<dependencies>
-	<dependency>
+    	<dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-annotations</artifactId>
-	<version>3.2.0.ga</version>
+	<version>3.4.0.ga</version>
 </dependency>
 <dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-commons-annotations</artifactId>
 	<version>3.3.0.ga</version>
 </dependency>
+    <dependency>
+		<groupId>org.hibernate</groupId>
+  		<artifactId>hibernate</artifactId>
+  		<version>3.2.1.ga</version>
+	</dependency>
+	<dependency>
+	<groupId>mysql</groupId>
+	<artifactId>mysql-connector-java</artifactId>
+	<version>5.1.25</version>
+</dependency>
+	<dependency>
+	<groupId>org.aspectj</groupId>
+	<artifactId>aspectjweaver</artifactId>
+	<version>1.7.3</version>
+</dependency>
+
+<dependency>
+	<groupId>asm</groupId>
+	<artifactId>asm-all</artifactId>
+	<version>3.3</version>
+</dependency>
+	
 	    <dependency>
 	        <groupId>com.googlecode.xmemcached</groupId>
 	        <artifactId>xmemcached</artifactId>
@@ -49,11 +71,6 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.5</version>
 		</dependency>
-<dependency>
-	<groupId>hibernate</groupId>
-	<artifactId>hibernate</artifactId>
-	<version>3.0</version>
-</dependency>
 		<dependency>
 	<groupId>c3p0</groupId>
 	<artifactId>c3p0</artifactId>
@@ -295,6 +312,21 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>3.1.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>2.1.1</version>
 		</dependency>
 	</dependencies>
 

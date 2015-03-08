@@ -17,10 +17,11 @@
 	<div id="report" style="width:100%;height: 600px;align:center;text-align: center;">
 	  <br><br><br><br><br><br><br><br>
 	  <form action="login.do" method="POST">
+	  ${message}
+	  <br>
 	   用户名 <input type="text" name="userName"/><br><br>
 	  密&nbsp;&nbsp;码   <input type="password" name="passWord"/><br><br>
-	&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="登陆"/>&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="gotoRegister.do">还没有账户，去注册</a>
+	&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="注册"/>&nbsp;&nbsp;&nbsp;&nbsp;
 	 </form>
 	
 	</div>

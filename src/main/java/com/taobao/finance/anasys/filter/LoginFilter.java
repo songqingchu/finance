@@ -1,6 +1,8 @@
 package com.taobao.finance.anasys.filter;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,6 +17,15 @@ import javax.servlet.http.HttpSession;
 
 public class LoginFilter extends HttpServlet implements Filter {  
     private static final long serialVersionUID = 1L;  
+    public static Set<String> whiteList=new HashSet<String>();
+    static{
+    	whiteList.add("Login");
+    	whiteList.add("Login");
+    	whiteList.add("security");
+    	whiteList.add("publicPool");
+    	whiteList.add("kData");
+    	whiteList.add("register");
+    }
   
     public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain chain) throws IOException, ServletException {  
            HttpServletRequest request=(HttpServletRequest)arg0;     
@@ -28,13 +39,22 @@ public class LoginFilter extends HttpServlet implements Filter {
             	   loginSuccess=true;
         	   } 
            }
-           if(loginSuccess || ( url.indexOf("Login")>0 || url.indexOf("login")>0 )|| url.indexOf("security")>0|| url.indexOf("publicPool")>0){
+           if(loginSuccess || isInWhiteList(url)){
         	   chain.doFilter(arg0, arg1);  
            }else{
         	   response.sendRedirect(request.getContextPath() + "/security.do");   
            }
            
     }  
+    
+    public boolean isInWhiteList(String uri){
+        for(String s:whiteList){
+        	if(uri.indexOf(s)>0){
+        		return true;
+        	}
+        }
+    	return false;
+    }
     public void init(FilterConfig arg0) throws ServletException {  
     }  
   

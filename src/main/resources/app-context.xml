@@ -10,7 +10,7 @@
 		
 	<bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">  
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />  
-		<property name="jdbcUrl" value="rdsyafnv3rrvnea.mysql.rds.aliyuncs.com:3306/stock" />  
+		<property name="jdbcUrl" value="jdbc:mysql://stock100.mysql.rds.aliyuncs.com:3306/stock" />  
 		<property name="user" value="anasys" />  
 		<property name="password" value="Chenshanhui924" />  
 
@@ -36,6 +36,11 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>  
+		        <prop key="hibernate.connection.provider_class">
+                        org.hibernate.connection.C3P0ConnectionProvider
+                </prop>
 			</props>
 		</property>
 		<property name="packagesToScan" value="com.taobao.*" />

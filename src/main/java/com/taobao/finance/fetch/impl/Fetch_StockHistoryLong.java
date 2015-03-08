@@ -36,7 +36,7 @@ public class Fetch_StockHistoryLong{
 	}
 
 	/**
-	 * ×¥È¡Êý¾Ý
+	 * ×¥È¡ï¿½ï¿½ï¿½
 	 * 
 	 * @param url
 	 * @return
@@ -56,13 +56,13 @@ public class Fetch_StockHistoryLong{
 			client.executeMethod(getMethod);
 		
 	        //getMethod.releaseConnection();      
-	        //¼ì²éÊÇ·ñÖØ¶¨Ïò
+	        //ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ø¶ï¿½ï¿½ï¿½
 	        int statuscode = getMethod.getStatusCode();
 			if ((statuscode == HttpStatus.SC_MOVED_TEMPORARILY) ||
 	            (statuscode == HttpStatus.SC_MOVED_PERMANENTLY) ||
 	            (statuscode == HttpStatus.SC_SEE_OTHER) ||
 	            (statuscode == HttpStatus.SC_TEMPORARY_REDIRECT)) {
-	            //¶ÁÈ¡ÐÂµÄURLµØÖ·
+	            //ï¿½ï¿½È¡ï¿½Âµï¿½URLï¿½ï¿½Ö·
 	            Header header = getMethod.getResponseHeader("location");
 	            if (header != null) {
 	                String newuri = header.getValue();

@@ -73,6 +73,11 @@ public class HomeController {
 		return "a";
 	}
 	
+	@RequestMapping(value = "/gotoRegister.do", method = RequestMethod.GET)
+	public String gotoRegister() {
+		return "register";
+	}
+	
 	@RequestMapping(value = "/b.do", method = RequestMethod.GET)
 	public String validataUser2() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -107,7 +112,7 @@ public class HomeController {
 		return "login";
 	}
 	
-	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
 	public String login(HttpServletRequest request,HttpServletResponse response,
 			@RequestParam String userName,@RequestParam String passWord) throws IOException {
 		boolean success=false;
@@ -118,12 +123,12 @@ public class HomeController {
 					success=true;
 				}
 			}
-			/*
-			if(userName.equals("root")&&passWord.equals("chenshanhui")){
-				success=true;
+			if(success){
+				request.getSession().setMaxInactiveInterval(60*60);
 				request.getSession().setAttribute("login", true);
-				request.getSession().setAttribute("root", true);
-			}*/
+			    request.getSession().setAttribute("root", true);
+			    
+			}
 		}
 		if(success){
 			  response.sendRedirect(request.getContextPath() + "/record.do");  
@@ -132,6 +137,33 @@ public class HomeController {
 			return "login";
 		}
 	}
+	
+	@RequestMapping(value = "/register.do", method = RequestMethod.POST)
+	public String register(HttpServletRequest request,HttpServletResponse response,
+			@RequestParam String userName,@RequestParam String passWord) throws IOException {
+		boolean success=false;
+		String message="";
+		if(StringUtils.isNotBlank(userName)&&StringUtils.isNotBlank(passWord)){
+			GUser user=this.gUserService.queryByName(userName);
+			if(user!=null){
+				success=false;
+				message="该用户名已经被注册";
+				request.setAttribute("message", message);
+			}else{
+				user=new GUser();
+				user.setPassword(userName);
+				user.setPassword(passWord);
+				this.gUserService.insert(user);
+				success=true;
+			}
+		}
+		if(success){  
+			return "publicPool";
+		}else{
+			return "register";
+		}
+	}
+	
 	
 	@RequestMapping(value = "/loginOut.do", method = RequestMethod.GET)
 	public String loginOut(HttpServletRequest request) {
