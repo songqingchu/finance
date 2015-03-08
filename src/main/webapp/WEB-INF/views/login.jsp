@@ -6,7 +6,7 @@
 <head>
 <head>
 <meta charset="utf-8">
-<title>K线图</title>
+<title>见证你在股市中成长的每一步</title>
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="/resources/js/jquery.min.js" type="text/javascript"></script>
 <script src="/resources/js/highstock.js"></script>

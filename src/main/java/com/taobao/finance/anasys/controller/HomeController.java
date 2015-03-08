@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -121,12 +122,17 @@ public class HomeController {
 			if(user!=null){
 				if(user.getPassword().equals(passWord)){
 					success=true;
+					int seconds=30*24*60*60;  
+	                Cookie cookie = new Cookie("user", user.getUserName()+"=="+user.getPassword());  
+	                cookie.setMaxAge(seconds);                     
+	                response.addCookie(cookie);  
 				}
 			}
 			if(success){
 				request.getSession().setMaxInactiveInterval(60*60);
 				request.getSession().setAttribute("login", true);
 			    request.getSession().setAttribute("root", true);
+			    request.getSession().setAttribute("user", user);
 			    
 			}
 		}
