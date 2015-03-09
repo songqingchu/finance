@@ -19,7 +19,12 @@
 	
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<mvc:resources mapping="/resources/**" location="/resources/" />
-	
+	<mvc:interceptors>  
+        <mvc:interceptor>  
+            <mvc:mapping path="*.do"/>  
+            <bean class="com.taobao.finance.anasys.interceptor.SecurityFilter"></bean>  
+        </mvc:interceptor>  
+    </mvc:interceptors>  
 	
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->

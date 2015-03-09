@@ -65,7 +65,7 @@
 					trigger : 'axis'
 				},
 				legend : {
-					data : [ '双子', '上海', '深圳' ]
+					data : [ '双子', '上海', '深圳','创业板','中小板' ]
 				},
 				toolbox : {
 					show : true,
@@ -114,6 +114,16 @@
 					data : [ 1, -2, 2, 5, 3, 2, 0 ]
 				} , {
 					name : '深圳',
+					type : 'line',
+					color: 'blue',
+					data : [ 1, -2, 2, 5, 3, 2, 0 ]
+				}, {
+					name : '创业板',
+					type : 'line',
+					color: 'blue',
+					data : [ 1, -2, 2, 5, 3, 2, 0 ]
+				}, {
+					name : '中小板',
 					type : 'line',
 					color: 'blue',
 					data : [ 1, -2, 2, 5, 3, 2, 0 ]
@@ -481,6 +491,8 @@
 						vRateOption.series[0].data = toFix(result.mine);
 						vRateOption.series[1].data = toFix(result.sh);
 						vRateOption.series[2].data = toFix(result.sz);
+						vRateOption.series[3].data = toFix(result.ch);
+						vRateOption.series[4].data = toFix(result.zh);
 						yearVRateOption.series[0].data = toFix(result.year);
 						sRateOption.series[0].data = toFix(result.sRate);
 						rRateOption.series[0].data = toFix(result.rRate);

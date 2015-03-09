@@ -10,7 +10,7 @@
 
 	<properties>
 		<java-version>1.6</java-version>
-		<org.springframework-version>3.1.1.RELEASE</org.springframework-version>
+		<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.9</org.aspectj-version>
 		<org.slf4j-version>1.6.1</org.slf4j-version>
 		<force.sdk.version>22.0.7-BETA</force.sdk.version>
@@ -19,6 +19,12 @@
 	</properties>
 
 	<dependencies>
+	<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-entitymanager</artifactId>
+	<version>3.4.0.GA</version>
+</dependency>
+	
     	<dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-annotations</artifactId>
@@ -194,7 +200,7 @@
 		<dependency>
 	<groupId>org.springframework</groupId>
 	<artifactId>spring-orm</artifactId>
-	<version>3.1.1.RELEASE</version>
+	<version>${org.springframework-version}</version>
 </dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -321,7 +327,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>3.1.1.RELEASE</version>
+			<version>${org.springframework-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
@@ -329,8 +335,6 @@
 			<version>2.1.1</version>
 		</dependency>
 	</dependencies>
-
-
 	<pluginRepositories>
 
 	</pluginRepositories>

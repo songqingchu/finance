@@ -39,11 +39,18 @@ public class MockUtil {
 		Date startDate=df.parse(mine.get(0).getDate());
 		List<StatsDO> sh=readIndex(startDate, null, "sh000001");
 		List<StatsDO> sz=readIndex(startDate, null, "sz399001");
+		List<StatsDO> ch=readIndex(startDate, null, "sz399006");
+		List<StatsDO> zh=readIndex(startDate, null, "sz399101");
+		
 		
 		List<String> dList=new ArrayList<String>();
 		List<Double> mL=new ArrayList<Double>();
 		List<Double> shL=new ArrayList<Double>();
 		List<Double> szL=new ArrayList<Double>();
+		List<Double> chL=new ArrayList<Double>();
+		List<Double> zhL=new ArrayList<Double>();
+		
+		
 		
 		List<Integer> sRate=new ArrayList<Integer>();
 		List<Integer> r=new ArrayList<Integer>();
@@ -67,11 +74,19 @@ public class MockUtil {
 		for(StatsDO s:sz){
 			szL.add(s.getV());
 		}
+		for(StatsDO s:ch){
+			chL.add(s.getV());
+		}
+		for(StatsDO s:zh){
+			zhL.add(s.getV());
+		}
 
 		m.put("date",dList );
 		m.put("mine", mL);
 		m.put("sh", shL);
 		m.put("sz", szL);
+		m.put("ch", chL);
+		m.put("zh", zhL);
 		
 		m.put("sRate",sRate );
 		m.put("yRate", yRate);
@@ -87,12 +102,16 @@ public class MockUtil {
 		Date startDate=df.parse(mine.get(0).getDate());
 		List<StatsDO> sh=readIndex(startDate, null, "sh000001");
 		List<StatsDO> sz=readIndex(startDate, null, "sz399001");
+		List<StatsDO> ch=readIndex(startDate, null, "sz399006");
+		List<StatsDO> zh=readIndex(startDate, null, "sz399101");
 		
 		List<String> dList=new ArrayList<String>();
 		List<Float> mL=new ArrayList<Float>();
 		List<Float> shL=new ArrayList<Float>();
 		List<Float> szL=new ArrayList<Float>();
 		List<Float> year=new ArrayList<Float>();
+		List<Double> chL=new ArrayList<Double>();
+		List<Double> zhL=new ArrayList<Double>();
 		
 		List<Float> sRate=new ArrayList<Float>();
 		List<Float> r=new ArrayList<Float>();
@@ -135,11 +154,19 @@ public class MockUtil {
 		for(StatsDO s:sz){
 			szL.add(s.getvRate()/100F);
 		}
+		for(StatsDO s:ch){
+			chL.add(s.getV());
+		}
+		for(StatsDO s:zh){
+			zhL.add(s.getV());
+		}
 
 		m.put("series",dList );
 		m.put("mine", mL);
 		m.put("sh", shL);
 		m.put("sz", szL);
+		m.put("ch", chL);
+		m.put("zh", zhL);
 		m.put("year", year);
 		
 		m.put("sRate",sRate );

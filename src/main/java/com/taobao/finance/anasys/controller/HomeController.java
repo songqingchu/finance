@@ -33,24 +33,6 @@ public class HomeController {
 	@Autowired
 	private GUserService gUserService;
 	
-	@RequestMapping(value = "/aaa", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> home() throws IOException, ParseException {
-		logger.info("requesting home");
-		Map<String, Object> map = new HashMap<String, Object>();
-		Map<String,Object> m=MockUtil.mockData();
-		map.put("series", m.get("date"));
-		map.put("mine", m.get("mine"));
-		map.put("sh", m.get("sh"));
-		map.put("sz", m.get("sz"));
-		map.put("sRate", m.get("sRate"));
-		map.put("yRate", m.get("yRate"));
-		map.put("r", m.get("r"));
-		map.put("back", m.get("back"));
-		return map;
-	}
-	
-
 	
 	
 	
@@ -67,40 +49,15 @@ public class HomeController {
 		return map;
 	}
 
-	@RequestMapping(value = "/a.do", method = RequestMethod.GET)
-	public String validataUser() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", true);
-		return "a";
-	}
+
 	
 	@RequestMapping(value = "/gotoRegister.do", method = RequestMethod.GET)
 	public String gotoRegister() {
 		return "register";
 	}
+
 	
-	@RequestMapping(value = "/b.do", method = RequestMethod.GET)
-	public String validataUser2() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", true);
-		return "b";
-	}
-	
-	@RequestMapping(value = "/d.do", method = RequestMethod.GET)
-	public String validataUser4() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", true);
-		return "d";
-	}
-	
-	@RequestMapping(value = "/f.do", method = RequestMethod.GET)
-	public String validataUser5(@RequestParam String symbol,HttpServletRequest request) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", true);
-		request.setAttribute("symbol", symbol);
-		return "e";
-	}
-	
+
 
 	
 	@RequestMapping(value = "/chart.do", method = RequestMethod.GET)
@@ -157,7 +114,7 @@ public class HomeController {
 				request.setAttribute("message", message);
 			}else{
 				user=new GUser();
-				user.setPassword(userName);
+				user.setUserName(userName);
 				user.setPassword(passWord);
 				this.gUserService.insert(user);
 				success=true;

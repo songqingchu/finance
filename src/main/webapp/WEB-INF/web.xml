@@ -32,6 +32,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+<!-- 
 <filter>    
     <filter-name>SecurityServlet</filter-name>    
     <filter-class>com.taobao.finance.anasys.filter.LoginFilter</filter-class>    
@@ -44,6 +45,9 @@
     <filter-name>SecurityServlet</filter-name>    
     <url-pattern>*.do</url-pattern>    
 </filter-mapping> 
+
+ -->
+
 
 	<servlet>
 		<servlet-name>appServlet</servlet-name>

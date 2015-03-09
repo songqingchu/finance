@@ -66,6 +66,16 @@ public class Fetch_AllStock {
 		ss.setName("深证成指");
 		l.add(ss);
 		
+		ss=new Stock();
+		ss.setSymbol("sz399006");
+		ss.setName("创业板指");
+		l.add(ss);
+		
+		ss=new Stock();
+		ss.setSymbol("sz399101");
+		ss.setName("中小板指");
+		l.add(ss);
+		
 		save(l);
 		Map<String,Stock> m=new HashMap<String,Stock>();
 		for(Stock s:l){
