@@ -1,14 +1,21 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ include file="common/head.jsp"%> 
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <title>见证你在股市中成长的每一步</title>
-<script src="/resources/js/jquery.js"></script>
+<script src="/resources/js/jquery.js"></script> 
 </head>
 <body>
-<jsp:include page="common/head.jsp" flush="true"/>
+
+
+<c:if test="${exist==false}">
+    您还没有添加盯市记录
+</c:if>
+ 
+<c:if test="${exist==true}">
     <a id="top_a" href="#yearVRate_div_a">年化</a>&nbsp;&nbsp;
-    <a href="#rRate_div_a">动态R</a>&nbsp;&nbsp;
+    <a href="#rRate_div_a">动态R${exist}</a>&nbsp;&nbsp;
     <a href="#sRate_div_a">胜率</a>&nbsp;&nbsp;
     <a href="#pRate_div_a">仓率</a>&nbsp;&nbsp;
     <a href="#yRate_div_a">平均盈利率</a>&nbsp;&nbsp;
@@ -538,4 +545,6 @@
 			return r;
 		}
 	</script>
+</c:if>
+   
 </body>

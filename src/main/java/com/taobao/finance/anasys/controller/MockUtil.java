@@ -95,87 +95,90 @@ public class MockUtil {
 		return m;
 	}
 	
-	public static Map<String,Object> mockStats() throws IOException, ParseException{
+	public static Map<String,Object> mockStats(Integer id) throws IOException, ParseException{
 		Map<String,Object> m=new HashMap<String,Object>();
-		List<StatsDO> mine=readChart();
+		List<StatsDO> mine=readChart(id);
 		DateFormat df=new SimpleDateFormat("yyyy.MM.dd");
-		Date startDate=df.parse(mine.get(0).getDate());
-		List<StatsDO> sh=readIndex(startDate, null, "sh000001");
-		List<StatsDO> sz=readIndex(startDate, null, "sz399001");
-		List<StatsDO> ch=readIndex(startDate, null, "sz399006");
-		List<StatsDO> zh=readIndex(startDate, null, "sz399101");
-		
-		List<String> dList=new ArrayList<String>();
-		List<Float> mL=new ArrayList<Float>();
-		List<Float> shL=new ArrayList<Float>();
-		List<Float> szL=new ArrayList<Float>();
-		List<Float> year=new ArrayList<Float>();
-		List<Double> chL=new ArrayList<Double>();
-		List<Double> zhL=new ArrayList<Double>();
-		
-		List<Float> sRate=new ArrayList<Float>();
-		List<Float> r=new ArrayList<Float>();
-		List<Float> pRate=new ArrayList<Float>();
-		List<Float> yRate=new ArrayList<Float>();
-		List<Float> yyRate=new ArrayList<Float>();
-		List<Float> ysRate=new ArrayList<Float>();
-		
-		for(StatsDO s:mine){
-			dList.add(s.getDate());
-			mL.add(s.getvRate()/10F-100);
+		if(mine.size()>0){
+			Date startDate=df.parse(mine.get(0).getDate());
+			List<StatsDO> sh=readIndex(startDate, null, "sh000001");
+			List<StatsDO> sz=readIndex(startDate, null, "sz399001");
+			List<StatsDO> ch=readIndex(startDate, null, "sz399006");
+			List<StatsDO> zh=readIndex(startDate, null, "sz399101");
 			
+			List<String> dList=new ArrayList<String>();
+			List<Float> mL=new ArrayList<Float>();
+			List<Float> shL=new ArrayList<Float>();
+			List<Float> szL=new ArrayList<Float>();
+			List<Float> year=new ArrayList<Float>();
+			List<Double> chL=new ArrayList<Double>();
+			List<Double> zhL=new ArrayList<Double>();
 			
-			Date endDate=StatsDO.df.parse(s.getDate());
-			Calendar c=Calendar.getInstance();
-			c.setTime(startDate);    
-	        long time1 = c.getTimeInMillis();                 
-	        c.setTime(endDate);    
-	        long time2 = c.getTimeInMillis();         
-	        long dayCount=(time2-time1)/(1000*3600*24);  
-	        if(dayCount==0){
-	        	year.add(20F);
-	        }else{
-	        	Float yearV=(s.getvRate()/10F-100)*365/dayCount;
-	        	year.add(yearV);
-	        }  
-	        
+			List<Float> sRate=new ArrayList<Float>();
+			List<Float> r=new ArrayList<Float>();
+			List<Float> pRate=new ArrayList<Float>();
+			List<Float> yRate=new ArrayList<Float>();
+			List<Float> yyRate=new ArrayList<Float>();
+			List<Float> ysRate=new ArrayList<Float>();
 			
-			
-			sRate.add(s.getsRate()/100F);
-			r.add(s.getR()/100F);
-			pRate.add(s.getpRate()/100F);
-			yRate.add(s.getyRate()/100F);
-			yyRate.add(s.getYyRate()/100F);
-			ysRate.add(s.getYsRate()/100F);
-		}
-		for(StatsDO s:sh){
-			shL.add(s.getvRate()/100F);
-		}
-		for(StatsDO s:sz){
-			szL.add(s.getvRate()/100F);
-		}
-		for(StatsDO s:ch){
-			chL.add(s.getV());
-		}
-		for(StatsDO s:zh){
-			zhL.add(s.getV());
-		}
+			for(StatsDO s:mine){
+				dList.add(s.getDate());
+				mL.add(s.getvRate()/10F-100);
+				
+				
+				Date endDate=StatsDO.df.parse(s.getDate());
+				Calendar c=Calendar.getInstance();
+				c.setTime(startDate);    
+		        long time1 = c.getTimeInMillis();                 
+		        c.setTime(endDate);    
+		        long time2 = c.getTimeInMillis();         
+		        long dayCount=(time2-time1)/(1000*3600*24);  
+		        if(dayCount==0){
+		        	year.add(20F);
+		        }else{
+		        	Float yearV=(s.getvRate()/10F-100)*365/dayCount;
+		        	year.add(yearV);
+		        }  
+		        
+				
+				
+				sRate.add(s.getsRate()/100F);
+				r.add(s.getR()/100F);
+				pRate.add(s.getpRate()/100F);
+				yRate.add(s.getyRate()/100F);
+				yyRate.add(s.getYyRate()/100F);
+				ysRate.add(s.getYsRate()/100F);
+			}
+			for(StatsDO s:sh){
+				shL.add(s.getvRate()/100F);
+			}
+			for(StatsDO s:sz){
+				szL.add(s.getvRate()/100F);
+			}
+			for(StatsDO s:ch){
+				chL.add(s.getV());
+			}
+			for(StatsDO s:zh){
+				zhL.add(s.getV());
+			}
 
-		m.put("series",dList );
-		m.put("mine", mL);
-		m.put("sh", shL);
-		m.put("sz", szL);
-		m.put("ch", chL);
-		m.put("zh", zhL);
-		m.put("year", year);
+			m.put("series",dList );
+			m.put("mine", mL);
+			m.put("sh", shL);
+			m.put("sz", szL);
+			m.put("ch", chL);
+			m.put("zh", zhL);
+			m.put("year", year);
+			
+			m.put("sRate",sRate );
+			m.put("rRate", r);
+			m.put("pRate",pRate );
+			
+			m.put("yRate", yRate);
+			m.put("yyRate", yyRate);
+			m.put("ysRate", ysRate);
+		}
 		
-		m.put("sRate",sRate );
-		m.put("rRate", r);
-		m.put("pRate",pRate );
-		
-		m.put("yRate", yRate);
-		m.put("yyRate", yyRate);
-		m.put("ysRate", ysRate);
 		m.put("data", mine);
 	//	m.put("r", r);
 		
@@ -356,11 +359,11 @@ public class MockUtil {
 	public static  List<StatsDO> read() throws IOException, ParseException{
 		List<StatsDO> l=new ArrayList<StatsDO> ();
 		/*@SuppressWarnings("deprecation")
-		XSSFWorkbook xwb = new XSSFWorkbook("C:\\Documents and Settings\\Administrator\\git\\finance\\src\\main\\resources\\统计.xlsx");  
+		XSSFWorkbook xwb = new XSSFWorkbook("C:\\Documents and Settings\\Administrator\\git\\finance\\src\\main\\resources\\缁熻.xlsx");  
 		XSSFSheet sheet = xwb.getSheetAt(0);  
 		XSSFRow row;  
 		
-		// 循环输出表格中的内容  
+		// 寰幆杈撳嚭琛ㄦ牸涓殑鍐呭  
 		for (int i = sheet.getFirstRowNum()+2; i < sheet.getPhysicalNumberOfRows(); i++) {  
 		    row = sheet.getRow(i);  
 		    String date=row.getCell(0).getStringCellValue(); 
@@ -395,13 +398,13 @@ public class MockUtil {
 		        s.setnY(Double.parseDouble(ny));
 		        s.setnS(Double.parseDouble(ns));
 		        
-		        //胜率
+		        //鑳滅巼
 		        if(s.getAyCount()+s.getAsCount()+s.getNsCount()+s.getNyCount()==0){
 		        	s.setsRate(50);
 		        }else{
 		        	s.setsRate((s.getAyCount()+s.getNyCount())*100/(s.getAyCount()+s.getAsCount()+s.getNsCount()+s.getNyCount()));
 		        }	        
-		        //动态R
+		        //鍔ㄦ�丷
 		        if((0-s.getaS()-s.getnS()==0)){
 		        	s.setR(100);
 		        }else{
@@ -416,7 +419,7 @@ public class MockUtil {
 		for(int i=0;i<l.size();i++){
 			StatsDO s=l.get(i);
 			
-			//最大回撤
+			//鏈�澶у洖鎾�
 			Integer max=0;
 			int maxIndex=0;
 			Integer min=1000000000;
@@ -440,7 +443,7 @@ public class MockUtil {
 			Double v=s.getValue().doubleValue()*100/startValue-100;
 			s.setV(v);
 			
-			//动态v
+			//鍔ㄦ�乿
 			Date endDate=StatsDO.df.parse(s.getDate());
 			Calendar c=Calendar.getInstance();
 			c.setTime(startDate);    
@@ -462,11 +465,11 @@ public class MockUtil {
 	public static  List<StatsDO> read2() throws IOException, ParseException{
 		List<StatsDO> l=new ArrayList<StatsDO> ();
 		@SuppressWarnings("deprecation")
-		XSSFWorkbook xwb = new XSSFWorkbook("C:\\Documents and Settings\\Administrator\\git\\finance\\src\\main\\resources\\统计.xlsx");  
+		XSSFWorkbook xwb = new XSSFWorkbook("C:\\Documents and Settings\\Administrator\\git\\finance\\src\\main\\resources\\缁熻.xlsx");  
 		XSSFSheet sheet = xwb.getSheetAt(2);  
 		XSSFRow row;  
 		
-		// 循环输出表格中的内容  
+		// 寰幆杈撳嚭琛ㄦ牸涓殑鍐呭  
 		for (int i = sheet.getFirstRowNum()+2; i < sheet.getPhysicalNumberOfRows(); i++) {  
 		    row = sheet.getRow(i);  
 		    String date=row.getCell(0).getStringCellValue(); 
@@ -499,13 +502,13 @@ public class MockUtil {
 		        s.setNyValue(Integer.parseInt(ny));
 		        s.setNsValue(Integer.parseInt(ns));
 		        
-		        //胜率
+		        //鑳滅巼
 		        if(s.getAyCount()+s.getAsCount()+s.getNsCount()+s.getNyCount()==0){
 		        	s.setsRate(50);
 		        }else{
 		        	s.setsRate((s.getAyCount()+s.getNyCount())*100/(s.getAyCount()+s.getAsCount()+s.getNsCount()+s.getNyCount()));
 		        }	        
-		        //动态R
+		        //鍔ㄦ�丷
 		        if((0-s.getAsValue()-s.getNsValue()==0)){
 		        	s.setR(100);
 		        }else{
@@ -520,74 +523,77 @@ public class MockUtil {
 	
 	
 	
-	public static  List<StatsDO> readChart() throws IOException, ParseException{
+	public static  List<StatsDO> readChart(Integer id) throws IOException, ParseException{
 		List<StatsDO> l=new ArrayList<StatsDO> ();
-		File f = new File(FetchUtil.FILE_USER_STATS_BASE+"stats.csv");  
-		BufferedReader br=new BufferedReader(new FileReader(f));
-		String line=br.readLine();
-		while((line=br.readLine())!=null){
-			if(StringUtils.isBlank(line)){
-				break;
+		File f = new File(FetchUtil.FILE_USER_STATS_BASE+id+".csv");  
+		if(f.exists()){
+			BufferedReader br=new BufferedReader(new FileReader(f));
+			String line=br.readLine();
+			while((line=br.readLine())!=null){
+				if(StringUtils.isBlank(line)){
+					break;
+				}
+				String[] data=line.split(",");
+				
+				String date=data[0]; 
+				String value=data[1]; 
+				String change=data[2]; 
+				String rate=data[3]; 
+				
+				String ayc=data[4]; 
+				String asc=data[5]; 
+				String nyc=data[6]; 
+				String nsc=data[7]; 
+				
+				String ayv=data[8]; 
+				String asv=data[9];  
+				String nyv=data[10]; 
+				String nsv=data[11];  
+				
+				String ayp=data[12]; 
+				String asp=data[13]; 
+				String nyp=data[14]; 
+				String nsp=data[15]; 
+				
+				String ayr=data[16];  
+				String asr=data[17];  
+				String nyr=data[18]; 
+				String nsr=data[19]; 
+				
+			    if(StringUtils.isNotBlank(ayc)){
+			    	StatsDO s=new StatsDO();
+			    	s.setDate(date);
+			    	s.setValue(Integer.parseInt(value));
+			    	s.setChange(Integer.parseInt(change));
+			    	s.setvRate(Integer.parseInt(rate));
+			    	
+			        s.setAyCount(Integer.parseInt(ayc));
+			        s.setAsCount(Integer.parseInt(asc));
+			        s.setNyCount(Integer.parseInt(nyc));
+			        s.setNsCount(Integer.parseInt(nsc));
+			        
+			        s.setAyValue(Integer.parseInt(ayv));
+			        s.setAsValue(Integer.parseInt(asv));
+			        s.setNyValue(Integer.parseInt(nyv));
+			        s.setNsValue(Integer.parseInt(nsv));
+			        
+			        s.setAyPosition(Integer.parseInt(ayp));
+			        s.setAsPosition(Integer.parseInt(asp));
+			        s.setNyPosition(Integer.parseInt(nyp));
+			        s.setNsPosition(Integer.parseInt(nsp));
+			        
+			        s.setAyRate(Integer.parseInt(ayr));
+			        s.setAsRate(Integer.parseInt(asr));
+			        s.setNyRate(Integer.parseInt(nyr));
+			        s.setNsRate(Integer.parseInt(nsr));
+			        
+			    	l.add(s);
 			}
-			String[] data=line.split(",");
-			
-			String date=data[0]; 
-			String value=data[1]; 
-			String change=data[2]; 
-			String rate=data[3]; 
-			
-			String ayc=data[4]; 
-			String asc=data[5]; 
-			String nyc=data[6]; 
-			String nsc=data[7]; 
-			
-			String ayv=data[8]; 
-			String asv=data[9];  
-			String nyv=data[10]; 
-			String nsv=data[11];  
-			
-			String ayp=data[12]; 
-			String asp=data[13]; 
-			String nyp=data[14]; 
-			String nsp=data[15]; 
-			
-			String ayr=data[16];  
-			String asr=data[17];  
-			String nyr=data[18]; 
-			String nsr=data[19]; 
-			
-		    if(StringUtils.isNotBlank(ayc)){
-		    	StatsDO s=new StatsDO();
-		    	s.setDate(date);
-		    	s.setValue(Integer.parseInt(value));
-		    	s.setChange(Integer.parseInt(change));
-		    	s.setvRate(Integer.parseInt(rate));
-		    	
-		        s.setAyCount(Integer.parseInt(ayc));
-		        s.setAsCount(Integer.parseInt(asc));
-		        s.setNyCount(Integer.parseInt(nyc));
-		        s.setNsCount(Integer.parseInt(nsc));
-		        
-		        s.setAyValue(Integer.parseInt(ayv));
-		        s.setAsValue(Integer.parseInt(asv));
-		        s.setNyValue(Integer.parseInt(nyv));
-		        s.setNsValue(Integer.parseInt(nsv));
-		        
-		        s.setAyPosition(Integer.parseInt(ayp));
-		        s.setAsPosition(Integer.parseInt(asp));
-		        s.setNyPosition(Integer.parseInt(nyp));
-		        s.setNsPosition(Integer.parseInt(nsp));
-		        
-		        s.setAyRate(Integer.parseInt(ayr));
-		        s.setAsRate(Integer.parseInt(asr));
-		        s.setNyRate(Integer.parseInt(nyr));
-		        s.setNsRate(Integer.parseInt(nsr));
-		        
-		        
-		    	l.add(s);
+			}
+			br.close();
+		}else{
+			f.createNewFile();
 		}
-		}
-		br.close();
 		return l;
 	}
 	

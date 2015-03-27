@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.check.impl.Check_AV10;
 import com.taobao.finance.check.impl.Check_AV20;
 import com.taobao.finance.check.impl.Check_AV5;
@@ -42,11 +41,9 @@ import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
-import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.entity.GUser;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 import com.taobao.finance.service.ThreadService;
-import com.taobao.finance.task.HisDataTask;
-import com.taobao.finance.task.UnformalDataTask;
 import com.taobao.finance.util.FetchUtil;
 import com.taobao.finance.util.ThreadUtil;
 
@@ -174,16 +171,25 @@ public class StockController {
 	@RequestMapping(value = "/record.do", method = RequestMethod.GET)
 	public String record(HttpServletRequest request) throws IOException, ParseException {
 		logger.info("请求增加记录");
-		Map<String,Object> m=MockUtil.mockStats();
+		
+		GUser user=(GUser) request.getSession().getAttribute("user");
+		Map<String,Object> m=MockUtil.mockStats(user.getId());
+		
+		
 		boolean working=FetchUtil.checkWorkingDay();
 		List<StatsDO> l=(List<StatsDO>)m.get("data");
-		StatsDO d=l.get(l.size()-1);
-		Integer lastVRate=d.getvRate();
-		Integer value=d.getValue();
-		request.setAttribute("t", d);
+		if(l.size()>0){
+			StatsDO d=l.get(l.size()-1);
+			request.setAttribute("t", d);
+			Integer lastVRate=d.getvRate();
+			Integer value=d.getValue();
+			request.setAttribute("lastValue", value);
+			request.setAttribute("lastVRate", lastVRate);
+		}
+		
+		
 		request.setAttribute("data", l);
-		request.setAttribute("lastValue", value);
-		request.setAttribute("lastVRate", lastVRate);
+		request.setAttribute("size", l.size());
 		request.setAttribute("working", working);
 		return "record";
 	}
@@ -209,6 +215,10 @@ public class StockController {
 		d.setDate(date);
 		d.setValue(value);
 		d.setChange(change);
+		if(lastValue==null){
+			lastValue=value;
+			lastVRate=1;
+		}
 		d.setvRate((value-change)*lastVRate/lastValue);
 		
 		d.setAyCount(ayc);
@@ -231,27 +241,49 @@ public class StockController {
 		d.setNyRate((int)(nyr*100F));
 		d.setNsRate((int)(nsr*100F));
 		
-		File f = new File(FetchUtil.FILE_USER_STATS_BASE+"stats.csv");  
-		BufferedWriter br=new BufferedWriter(new FileWriter(f,true));
-		String line=d.toFileString();
-		br.write("\n"+line);
-		br.close();
+		GUser user=(GUser) request.getSession().getAttribute("user");
+		File f = new File(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");  
+		if(!f.exists()){
+			FetchUtil.createFile(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");
+			BufferedWriter br=new BufferedWriter(new FileWriter(f,true));
+			br.write("date,value,change,rate,ayc,asc,nyc,nsc,ayv,asv,nyv,nsv,ayp,asp,nyp,nsp,ayr,asr,nyr,ns\n");
+			String line=d.toFileString();
+			br.write(line+"\n");
+			br.close();
+			
+		}else{
+			BufferedWriter br=new BufferedWriter(new FileWriter(f,true));
+			String line=d.toFileString();
+			br.write(line+"\n");
+			br.close();
+		}
+		
 		response.sendRedirect(request.getContextPath() + "/record.do");  
 		return null;
 	}
 	
 	@RequestMapping(value = "/statsData.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> statsData() throws IOException, ParseException {
+	public Map<String, Object> statsData(HttpServletRequest request) throws IOException, ParseException {
 		logger.info("requesting home");
-		Map<String,Object> m=MockUtil.mockStats();
+		GUser user=(GUser) request.getSession().getAttribute("user");
+		if(user!=null){
+			Integer id=user.getId();
+		}
+		Map<String,Object> m=MockUtil.mockStats(user.getId());
 		return m;
 	}
 	
 	@RequestMapping(value = "/stats.do", method = RequestMethod.GET)
-	public String stats() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", true);
+	public String stats(HttpServletRequest request) {
+		GUser user=(GUser) request.getSession().getAttribute("user");
+		File f = new File(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");  
+		if(!f.exists()){
+			request.setAttribute("exist", true);
+		}else{
+			request.setAttribute("exist", false);
+		}
+
 		return "stats";
 	}
 	

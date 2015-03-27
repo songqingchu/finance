@@ -71,8 +71,8 @@ public class FetchUtil {
 
 	
 	public void init(){
-		boolean working=checkWorkingDay();
-		store.workingDay=working;
+		/*boolean working=checkWorkingDay();
+		store.workingDay=working;*/
 	}
 	
 	public  String getFILE_STOCK_TMP_BASE() {

@@ -266,10 +266,10 @@ public class Hisdata_Base {
 		
 		String url=FILE_STOCK_TEMP_BASE+code+".txt";
 		List<Stock> ll=readHisData(code, d);
-		if(ll.size()==0){
+		/*if(ll.size()==0){
 			return ll;
 		}
-		
+		*/
 		if(!INCLUDE_TODAY){
 			return ll;
 		}
@@ -291,7 +291,7 @@ public class Hisdata_Base {
 				   Calendar c=Calendar.getInstance();
 				   c.setTime(dd);
 				   c.add(Calendar.DATE, 1);
-				   st.setDate(c.getTime());
+//				   st.setDate(c.getTime());
 				   ll.add(st);
 			   }
             }
@@ -352,22 +352,22 @@ public class Hisdata_Base {
 		int i= 1;		
 		Collection<Stock> ss=allMap.values();
 		for(Stock s:ss){
-    		System.out.println("����"+i+"/"+allMap.size());
+    		System.out.println("锟斤拷锟斤拷"+i+"/"+allMap.size());
     		String symbol=s.getSymbol();
     		List<Stock> history=Fetch_StockHistory.fetch3(symbol);
             Collections.reverse(history);
     		save(symbol,history);
     		i++;
 		}
-		System.out.println("---------������ʷ�������---------");
+		System.out.println("---------锟斤拷锟斤拷锟斤拷史锟斤拷锟斤拷锟斤拷锟�---------");
 	}
 	
 	public static void updateDataHistoryAll(){
-		logger.info("开始下载历史数据");
+		logger.info("寮�濮嬩笅杞藉巻鍙叉暟鎹�");
 		Fetch_AllStock.getData();
 		Map<String,Stock> allMap=Fetch_AllStock.map;
 		updateDataHistoryData(allMap,false);
-		logger.info("下载历史数据结束");
+		logger.info("涓嬭浇鍘嗗彶鏁版嵁缁撴潫");
 	}
 
 	public static void updateDataHistoryDelta(){
@@ -389,7 +389,7 @@ public class Hisdata_Base {
 		}
 		Stock ss=new Stock();
 		ss.setSymbol("sh000001");
-		ss.setName("上证指数");
+		ss.setName("涓婅瘉鎸囨暟");
 		newMap.put(ss.getSymbol(), ss);
 		
 		
@@ -485,7 +485,7 @@ public class Hisdata_Base {
 	
     
 	public static void updateDataHistoryDataUnFormal(){
-		logger.info("开始下载非正式数据");
+		logger.info("寮�濮嬩笅杞介潪姝ｅ紡鏁版嵁");
 		Fetch_AllStock.getData();
 		ExecutorService service = Executors.newFixedThreadPool(16);
 		CompletionService<Object> con = new ExecutorCompletionService<Object>(service);
@@ -513,7 +513,7 @@ public class Hisdata_Base {
 			}
 		}
 		service.shutdown();
-		logger.info("下载非正式数据结束");
+		logger.info("涓嬭浇闈炴寮忔暟鎹粨鏉�");
 	}
 	
 	

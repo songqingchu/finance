@@ -91,6 +91,7 @@ td {
 				       <td>${d.nsRateFormat}</td>
 				</tr>
 				</c:forEach>
+				<c:if test="${size>0}">
 				<tr>
 				       <td></td>
 				       <td><a href="#" toId="value" value="${t.value}" class="tianchong">填充</a></td>
@@ -112,6 +113,7 @@ td {
 				       <td><a href="#" toId="nyr" value="${t.nyRateFormat}" class="tianchong">填充</a></td>
 				       <td><a href="#" toId="nsr" value="${t.nsRateFormat}" class="tianchong">填充</a></td>
 				</tr>
+				</c:if>
 				</tbody>
     </table>
 </form>

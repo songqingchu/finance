@@ -110,13 +110,24 @@ public class HomeController {
 			GUser user=this.gUserService.queryByName(userName);
 			if(user!=null){
 				success=false;
-				message="该用户名已经被注册";
+				message="璇ョ敤鎴峰悕宸茬粡琚敞鍐�";
 				request.setAttribute("message", message);
 			}else{
 				user=new GUser();
 				user.setUserName(userName);
 				user.setPassword(passWord);
 				this.gUserService.insert(user);
+				
+
+				int seconds=30*24*60*60;  
+		        Cookie cookie = new Cookie("user", user.getUserName()+"=="+user.getPassword());  
+		        cookie.setMaxAge(seconds);                     
+		        response.addCookie(cookie);  
+
+				request.getSession().setMaxInactiveInterval(60*60);
+				request.getSession().setAttribute("login", true);
+				request.getSession().setAttribute("user", user);
+				
 				success=true;
 			}
 		}

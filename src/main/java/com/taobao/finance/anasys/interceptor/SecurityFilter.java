@@ -20,7 +20,7 @@ import com.taobao.finance.service.GUserService;
  * <p>Copyright: Copyright (c) 2015</p>
  * <p>Company: www.dianwoba.com</p>
  * @author lijiayang
- * @date   2015年3月9日
+ * @date   2015骞�3鏈�9鏃�
  */
 public class SecurityFilter implements HandlerInterceptor{  
   
@@ -56,8 +56,10 @@ public class SecurityFilter implements HandlerInterceptor{
     @Override  
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,  
             Object obj) throws Exception {  
-        HttpSession session = request.getSession(true);       
-        rememberMe(request);
+        HttpSession session = request.getSession(true);    
+        if(!request.toString().contains("loginOut")){
+        	rememberMe(request);
+        }
         String url=request.getRequestURI();    
         Object login=session.getAttribute("login");
         Boolean loginSuccess=false;
@@ -92,6 +94,9 @@ public class SecurityFilter implements HandlerInterceptor{
             				if(user.getPassword().equals(password)){
             					request.getSession().setAttribute("login", true);
             					request.getSession().setAttribute("user", user);
+            					if(user.getUserName().contains("root")){
+            						request.getSession().setAttribute("root", true);
+            					}
             				}
             			}
                     }  	
