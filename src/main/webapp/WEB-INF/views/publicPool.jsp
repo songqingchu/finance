@@ -28,19 +28,21 @@ text-decoration:none;
 <div style="width:200px;float:left;">
 <div style="width:200px;height:360px;float:left;overflow-y:auto;border:1px solid">
 <c:forEach var="s" items="${r}">  
-     <span  class="bigSymbol symbol" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.nameFormat}&nbsp;&nbsp;${s.ratePercent}</a></span>
+     <span  class="bigSymbol symbol" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.nameFormat}&nbsp;&nbsp;${s.ratePercent}</a></span>&nbsp;&nbsp;<c:if test="${root==true} }"><a href="/removeFromPublicPool.do?symbol=${s.symbol}">删除</a></c:if>
 </c:forEach>
 </div>
 
 <div style="width:200px;float:left;">
-<if test="${root==true} }">
+<c:if test="${root==true} }">
 <a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="#" class="submitA" replace="1">替换</a>&nbsp;&nbsp;&nbsp;&nbsp;
-</if>
+</c:if>
 <a href="publicPool.do" >刷新</a>
 <br>
+<c:if test="${root==true} }">
 <textarea rows="5" cols="20" id="symbolText">
 </textarea>
+</c:if>
 
 </div>
 </div>
@@ -157,6 +159,9 @@ text-decoration:none;
 	    	copyMap.low=base.low;
 	    	copyMap.end=base.end;
 	    	copyMap.name=base.name;
+	    	copyMap.av5Tips=base.av5Tips;
+	    	copyMap.acvuTips=base.acvuTips;
+	    	copyMap.bigTips=base.bigTips;
 	    	tradeChart(copyMap);
 	    }
 	    if(event.keyCode == 37||event.keyCode == 39){

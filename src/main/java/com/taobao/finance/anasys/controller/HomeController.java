@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.taobao.finance.common.Store;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.service.GUserService;
@@ -88,7 +85,9 @@ public class HomeController {
 			if(success){
 				request.getSession().setMaxInactiveInterval(60*60);
 				request.getSession().setAttribute("login", true);
-			    request.getSession().setAttribute("root", true);
+				if(userName.contains("root")){
+					request.getSession().setAttribute("root", true);
+				}
 			    request.getSession().setAttribute("user", user);
 			    
 			}
@@ -110,7 +109,7 @@ public class HomeController {
 			GUser user=this.gUserService.queryByName(userName);
 			if(user!=null){
 				success=false;
-				message="璇ョ敤鎴峰悕宸茬粡琚敞鍐�";
+				message="username already exist!";
 				request.setAttribute("message", message);
 			}else{
 				user=new GUser();
@@ -141,7 +140,9 @@ public class HomeController {
 	
 	@RequestMapping(value = "/loginOut.do", method = RequestMethod.GET)
 	public String loginOut(HttpServletRequest request) {
+		request.getSession().removeAttribute("user");;
 		request.getSession().removeAttribute("login");
+		request.getSession().removeAttribute("root");
 		return "login";
 	}
 }

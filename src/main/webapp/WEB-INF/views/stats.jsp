@@ -15,7 +15,7 @@
  
 <c:if test="${exist==true}">
     <a id="top_a" href="#yearVRate_div_a">年化</a>&nbsp;&nbsp;
-    <a href="#rRate_div_a">动态R${exist}</a>&nbsp;&nbsp;
+    <a href="#rRate_div_a">动态R</a>&nbsp;&nbsp;
     <a href="#sRate_div_a">胜率</a>&nbsp;&nbsp;
     <a href="#pRate_div_a">仓率</a>&nbsp;&nbsp;
     <a href="#yRate_div_a">平均盈利率</a>&nbsp;&nbsp;
@@ -66,13 +66,13 @@
 			
 			vRateOption = {
 				title : {
-					text : '基准'
+					text : '增长率'
 				},
 				tooltip : {
 					trigger : 'axis'
 				},
 				legend : {
-					data : [ '双子', '上海', '深圳','创业板','中小板' ]
+					data : [ '增长率', '上海', '深圳','创业板','中小板' ]
 				},
 				toolbox : {
 					show : true,
@@ -140,13 +140,13 @@
 			
 			yearVRateOption = {
 					title : {
-						text : '年化'
+						text : '预期年化'
 					},
 					tooltip : {
 						trigger : 'axis'
 					},
 					legend : {
-						data : [ '年化' ]
+						data : [ '预期年化' ]
 					},
 					toolbox : {
 						show : true,

@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,8 +42,11 @@ import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GUser;
+import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
+import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.ThreadService;
 import com.taobao.finance.util.FetchUtil;
 import com.taobao.finance.util.ThreadUtil;
@@ -59,8 +63,12 @@ public class StockController {
 	@Autowired
 	private ThreadService threadService;
 	
+	@Autowired
+	private GPublicStockService gPublicStockService;
+	
 	@RequestMapping(value = "/getToday.do", method = RequestMethod.GET)
 	public String stats(HttpServletRequest request,@RequestParam Boolean force) {
+		logger.info("request:get today data");
 		boolean workday=FetchUtil.checkWorkingDay();
 		if(workday){
 			final Date d=new Date();
@@ -132,6 +140,7 @@ public class StockController {
 	
 	@RequestMapping(value = "/ananyse.do", method = RequestMethod.GET)
 	public String choose(HttpServletRequest request,@RequestParam Boolean force) {
+		logger.info("request:ananyse");
 		final Date d=new Date();
 		Integer status=store.getChooseStatus(d);
 		if(status!=null){
@@ -170,7 +179,7 @@ public class StockController {
 	
 	@RequestMapping(value = "/record.do", method = RequestMethod.GET)
 	public String record(HttpServletRequest request) throws IOException, ParseException {
-		logger.info("请求增加记录");
+		logger.info("request:view record");
 		
 		GUser user=(GUser) request.getSession().getAttribute("user");
 		Map<String,Object> m=MockUtil.mockStats(user.getId());
@@ -209,7 +218,7 @@ public class StockController {
 			@RequestParam( "lastValue" ) Integer lastValue,@RequestParam( "lastVRate" ) Integer lastVRate
 			) throws IOException, ParseException {
 
-		logger.info("请求增加记录");
+		logger.info("request:add record");
 		StatsDO d=new StatsDO();
 		date=date.replace("/", ".");
 		d.setDate(date);
@@ -265,7 +274,7 @@ public class StockController {
 	@RequestMapping(value = "/statsData.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> statsData(HttpServletRequest request) throws IOException, ParseException {
-		logger.info("requesting home");
+		logger.info("request:get stats data");
 		GUser user=(GUser) request.getSession().getAttribute("user");
 		if(user!=null){
 			Integer id=user.getId();
@@ -275,15 +284,15 @@ public class StockController {
 	}
 	
 	@RequestMapping(value = "/stats.do", method = RequestMethod.GET)
-	public String stats(HttpServletRequest request) {
+	public String stats(HttpServletRequest request) throws IOException, ParseException {
+		logger.info("request:view stats chart");
 		GUser user=(GUser) request.getSession().getAttribute("user");
 		File f = new File(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");  
 		if(!f.exists()){
-			request.setAttribute("exist", true);
-		}else{
 			request.setAttribute("exist", false);
+		}else{
+			request.setAttribute("exist", true);
 		}
-
 		return "stats";
 	}
 	
@@ -292,11 +301,29 @@ public class StockController {
 		response.sendRedirect(request.getContextPath() + "/publicPool.do");  
 		return null;
 	}
+	
+	@RequestMapping(value = "/history.do", method = RequestMethod.GET)
+	public String history(HttpServletRequest request) {
+		logger.info("request:view public pool");
+		List<GPublicStock> all=store.history;
+		request.setAttribute("all", all);
+		return "history";
+	}
+	
+	
+	
 	@RequestMapping(value = "/publicPool.do", method = RequestMethod.GET)
 	public String publicPool(HttpServletRequest request) {
-		Set<String> s=store.publicPool.keySet();
+		logger.info("request:view public pool");
+		List<GPublicStock> all=store.publicStock;
+		//Set<String> s=store.publicPool.keySet();
+		Set<String> set=new HashSet<String>();
 		List<String> symbolList=new ArrayList<String>();
-		symbolList.addAll(s);
+	
+		for(GPublicStock s:all){
+			symbolList.add(s.getSymbol());
+		}
+		set.addAll(symbolList);
 		List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
 		List<Callable<Object>> callList=new ArrayList<Callable<Object>>();
 		for(List<Object> sys:symbolTaskList){
@@ -312,9 +339,29 @@ public class StockController {
 			Collections.sort(result,new Comparator.RateDescComparator());
 		}
 		request.setAttribute("r", result);
-		request.setAttribute("set", s);
+		request.setAttribute("set", set);
 		return "publicPool";
 	}
+	
+	
+	
+	@RequestMapping(value = "/removeFromPublicPool.do", method = RequestMethod.GET)
+	public String removeFromPublicPool(HttpServletRequest request,HttpServletResponse response, @RequestParam String symbol) throws IOException {
+		logger.info("request:remove from public pool");
+        GPublicStock ps=this.gPublicStockService.findRecordByProperty("symbol", symbol);
+        if(ps!=null){
+        	ps.setHold((byte)0);
+        	ps.setRemoveDate(new Date());
+        	this.gPublicStockService.update(ps);
+        	this.store.removeFromPublic(symbol);
+        }
+        response.sendRedirect(request.getContextPath() + "/publicPool.do");  
+		return null;
+	}
+	
+	
+	
+	
 	static class RealTask implements Callable<Object>{
 		public List<Object> l; 
 		public RealTask(List<Object> l){
@@ -337,33 +384,63 @@ public class StockController {
 	@ResponseBody
 	public Map<String, Object> addPublicPool(@RequestParam String symbols,
 			@RequestParam String replace){
+		logger.info("request:add stock to public pool");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "ok");
 		if(replace.equals("1")){
 			store.publicPool.clear();
 		}
 		if(StringUtils.isNotBlank(symbols)){
-			String[] syms=StringUtils.split(symbols,",");
+			String[] syms=StringUtils.split(symbols,",");			
+			List<GPublicStock> l=new ArrayList<GPublicStock>();
 			for(String s:syms){
+				GPublicStock ps=new GPublicStock();
+				String symbol=null;
 				if(StringUtils.isNotBlank(s)){
-					if(s.startsWith("0")){
-						s=s.replaceFirst("0", "sz");
-						store.publicPool.put(s, null);
+					if(s.length()==6){
+						if(s.startsWith("6")){
+							s="sh"+s;
+						}else{
+							s="sz"+s;
+						}
 					}
-					if(s.startsWith("1")){
-						s=s.replaceFirst("1", "sh");
-						store.publicPool.put(s, null);
+					if(s.length()==7){
+						if(s.startsWith("0")){
+							symbol=s.replaceFirst("0", "sz");
+							store.publicPool.put(symbol, null);
+						}
+						if(s.startsWith("1")){
+							symbol=s.replaceFirst("1", "sh");
+							store.publicPool.put(symbol, null);
+						}
 					}
+					if(s.length()==8){
+						symbol=s;
+					}
+					
+					Stock st=Fetch_AllStock.map.get(symbol);
+					if(st!=null){
+						ps.setName(st.getName());
+					}
+					ps.setSymbol(symbol);
+					ps.setAddDate(new Date());
+					l.add(ps);
 				}
 			}
+			this.gPublicStockService.add(l);
+			this.store.reloadPublicStock();
 		}
 		return map;
 	}
 	
-	
+	@RequestMapping(value = "/help.do", method = RequestMethod.GET)
+	public String help(HttpServletRequest request) {
+		return "help";
+	}
 	
 	@RequestMapping(value = "/choose.do", method = RequestMethod.GET)
 	public String choose(HttpServletRequest request) {
+		logger.info("request:choose stock");
 		List<Stock> big=null;
 		List<Stock> acvu=null;
 		List<Stock> av5=null;
@@ -471,7 +548,7 @@ public class StockController {
 	@RequestMapping(value = "/kData.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> validataUser6(@RequestParam String symbol) throws IOException, ParseException {
-		
+		logger.info("request:get k data");
 		Calendar c=Calendar.getInstance();
 		int hour=c.get(Calendar.HOUR_OF_DAY);
 		int minits=c.get(Calendar.MINUTE);
@@ -490,6 +567,7 @@ public class StockController {
 		if(hour==9&&minits<30){
 			shi=false;
 		}
+		
 		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay,shi);
 		return map;
 	}	

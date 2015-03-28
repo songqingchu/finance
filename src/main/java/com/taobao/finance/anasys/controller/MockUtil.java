@@ -591,8 +591,6 @@ public class MockUtil {
 			}
 			}
 			br.close();
-		}else{
-			f.createNewFile();
 		}
 		return l;
 	}

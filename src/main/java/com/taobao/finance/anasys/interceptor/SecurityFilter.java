@@ -57,11 +57,14 @@ public class SecurityFilter implements HandlerInterceptor{
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,  
             Object obj) throws Exception {  
         HttpSession session = request.getSession(true);    
+        Object login=session.getAttribute("login");
         if(!request.toString().contains("loginOut")){
-        	rememberMe(request);
+        	if(login==null){
+        		rememberMe(request);
+        	}
         }
         String url=request.getRequestURI();    
-        Object login=session.getAttribute("login");
+        login=session.getAttribute("login");
         Boolean loginSuccess=false;
         if(login!=null){
             if((Boolean)login.equals(true)){

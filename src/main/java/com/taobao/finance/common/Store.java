@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -20,7 +22,9 @@ import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.ThreadService;
 import com.taobao.finance.task.HisDataTask;
 import com.taobao.finance.task.UnformalDataTask;
@@ -49,6 +53,8 @@ public class Store {
 	public Map<String, Integer> choose = new HashMap<String, Integer>();
 	public Map<String,Stock> publicPool=new HashMap<String,Stock>();
 	public Map<String, Boolean> checkWorkingRecord = new HashMap<String, Boolean>();
+	public List<GPublicStock> publicStock=new ArrayList<GPublicStock>();
+	public List<GPublicStock> history=new ArrayList<GPublicStock>();
 	
 	
 	public static Boolean workingDay;
@@ -62,8 +68,35 @@ public class Store {
 	
 	
 	public Store() {
+		
 	}
+	
+	@PostConstruct
+	public void init(){
+		publicStock=this.gPublicStockService.queryAll();
+		history=this.gPublicStockService.queryHistory();
+	}
+	
+	@Autowired
+	private GPublicStockService gPublicStockService;
 
+	
+	public void removeFromPublic(String symbol){
+		List<GPublicStock> l=new ArrayList<GPublicStock>();
+		for(GPublicStock s:this.publicStock){
+			if(!s.getSymbol().equals(symbol)){
+				l.add(s);
+			}
+		}
+		this.publicStock=l;
+	}
+	
+	public void reloadPublicStock(){
+		publicStock=this.gPublicStockService.queryAll();
+	}
+	
+	
+	
 	public void updateTmp(){
 		Set<String> s=Fetch_AllStock.map.keySet();
 		List<String> symbolList=new ArrayList<String>();
