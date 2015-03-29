@@ -25,10 +25,14 @@ text-decoration:none;
  
 
    
-<div style="width:200px;float:left;">
-<div style="width:200px;height:360px;float:left;overflow-y:auto;border:1px solid">
+<div style="width:300px;float:left;">
+<div style="width:300px;height:360px;float:left;overflow-y:auto;border:1px solid">
 <c:forEach var="s" items="${r}">  
-     <span  class="bigSymbol symbol" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.nameFormat}&nbsp;&nbsp;${s.ratePercent}</a></span>&nbsp;&nbsp;<c:if test="${root==true} }"><a href="/removeFromPublicPool.do?symbol=${s.symbol}">删除</a></c:if>
+     <span  class="bigSymbol symbol" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.nameFormat}&nbsp;&nbsp;${s.ratePercent}</a></span>&nbsp;&nbsp;<c:if test="${sessionScope.root==true}">
+     <a href="/setType.do?symbol=${s.symbol}&type=av5">av5</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=acvu">acv</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=oth">oth</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}">删除</a></c:if>
 </c:forEach>
 </div>
 
@@ -54,7 +58,7 @@ text-decoration:none;
 <script>
    var windowWidth=$(window).width();
    var windowHight=$(window).height();
-   var w=windowWidth-220;
+   var w=windowWidth-320;
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);

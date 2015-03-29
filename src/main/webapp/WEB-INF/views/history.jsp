@@ -19,7 +19,7 @@
 <div style="width:200px;float:left;">
 <div style="width:200px;height:360px;float:left;overflow-y:auto;border:1px solid">
 <c:forEach var="s" items="${all}">  
-     <span  class="bigSymbol symbol" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.nameFormat}&nbsp;&nbsp;</a></span>&nbsp;&nbsp;<c:if test="${root==true} }"><a href="/removeFromPublicPool.do?symbol=${s.symbol}">删除</a></c:if>
+     <span  class="bigSymbol symbol" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.name}&nbsp;&nbsp;</a></span>&nbsp;&nbsp;<c:if test="${root==true} }"><a href="/removeFromPublicPool.do?symbol=${s.symbol}">删除</a></c:if>
 </c:forEach>
 </div>
 
@@ -71,7 +71,7 @@
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
-			url : "/kData.do?symbol="+symbol,
+			url : "/canonHistory.do?symbol="+symbol,
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {

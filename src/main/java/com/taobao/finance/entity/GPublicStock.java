@@ -25,8 +25,15 @@ public class GPublicStock {
 	private Date addDate;
 	private Date removeDate;
 	private Byte hold=1;
+	private String type;
 	
-	
+	@Column(name = "type")
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	@Column(name = "hold")
 	public Byte getHold() {
 		return hold;

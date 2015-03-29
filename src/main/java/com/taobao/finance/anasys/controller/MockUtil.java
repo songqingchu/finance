@@ -25,6 +25,7 @@ import com.taobao.finance.check.impl.Check_AV5;
 import com.taobao.finance.check.impl.Check_AVCU;
 import com.taobao.finance.check.impl.Check_BigTrend;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 import com.taobao.finance.util.FetchUtil;
@@ -353,7 +354,137 @@ public class MockUtil {
 		return m;
 	}
 	
+	public static Map<String,Object> canonHistory(String symbol,Boolean working,Boolean shi,List<GPublicStock> his) throws IOException, ParseException{
+		Map<String,Object> m=new HashMap<String,Object>();
+		
+		List<Stock> l=Hisdata_Base.readHisDataMerge(symbol, null);
+		
+		if(working){
+			if(shi){
+				Stock s=Fetch_SingleStock.fetch(symbol);
+				l.add(s);
+			}
+		}
+
+		
+		Object[][] av5=new Object[260][2];
+		Object[][] av10=new Object[260][2];
+		Object[][] av20=new Object[260][2];
+		Object[][] data=new Object[260][5];
+		Object[][] vol=new Object[260][2];
+		
+		
+		
+		if(l.size()>300){
+			for (int i = 1; i < 261; i++) {
+				Stock s=l.get(l.size() - i);
+				Float v5 = getAve(l, 5, l.size() - i);
+				Float v10 = getAve(l, 10, l.size() - i);
+				Float v20 = getAve(l, 20, l.size() - i);
+				
+				Date d=s.getDate()==null?new Date():s.getDate();
+				av5[260-i][0]=d;
+				av5[260-i][1]=v5;
+				
+				av10[260-i][0]=d;
+				av10[260-i][1]=v10;
+				
+				av20[260-i][0]=d;
+				av20[260-i][1]=v20;
+				
+				vol[260-i][0]=d;
+				vol[260-i][1]=s.getTradeNum();
+				
+				data[260-i][0]=d;
+				data[260-i][1]=Float.parseFloat(s.getStartPrice());
+				data[260-i][2]=Float.parseFloat(s.getLowPrice());
+				data[260-i][3]=Float.parseFloat(s.getHighPrice());
+				data[260-i][4]=Float.parseFloat(s.getEndPrice());
+			}
+		}
 	
+		List<String> acvuDate=new Check_AVCU().check(symbol);
+		List<String> av5Date=new Check_AV5().check(symbol);
+		List<String> bigDate=new Check_BigTrend().check(symbol);
+		
+		List<Map<String,Object>> acvuTips=new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> av5Tips=new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> bigTips=new ArrayList<Map<String,Object>>();
+		
+		for(String s:acvuDate){
+			Date d=FetchUtil.FILE_FORMAT.parse(s);
+			for(GPublicStock st:his){
+				if((!d.before(st.getAddDate())&&(!d.after(st.getRemoveDate()))) && st.getType().equals("acvu")){
+					Map<String,Object> mm=new HashMap<String, Object>();
+					mm.put("x", d);
+					mm.put("title", "ACVU");
+					acvuTips.add(mm);
+				}
+			}
+		}
+		
+		for(String s:av5Date){
+			Date d=FetchUtil.FILE_FORMAT.parse(s);
+			for(GPublicStock st:his){
+				if((!d.before(st.getAddDate())&&(!d.after(st.getRemoveDate()))) && st.getType().equals("av5")){
+					Map<String,Object> mm=new HashMap<String, Object>();
+					mm.put("x", d);
+					mm.put("title", "AV5");
+					av5Tips.add(mm);
+				}
+			}
+		}
+		
+		for(String s:bigDate){
+			Date d=FetchUtil.FILE_FORMAT.parse(s);
+			for(GPublicStock st:his){
+				if((!d.before(st.getAddDate())&&(!d.after(st.getRemoveDate()))) && st.getType().equals("oth")){
+					Map<String,Object> mm=new HashMap<String, Object>();
+					mm.put("x", d);
+					mm.put("title", "BIG");
+					bigTips.add(mm);
+				}
+			}
+		}
+		
+		
+		if(acvuTips.size()>0){
+			Collections.reverse(acvuTips);
+		}
+		if(av5Tips.size()>0){
+			Collections.reverse(av5Tips);
+		}
+		if(bigTips.size()>0){
+			Collections.reverse(bigTips);
+		}
+		
+		
+
+		m.put("av5",av5 );
+		m.put("av10", av10);
+		m.put("av20", av20);
+		m.put("vol", vol);	
+		m.put("data",data);
+		m.put("acvuTips",acvuTips);
+		m.put("av5Tips",av5Tips);
+		m.put("bigTips",bigTips);
+		
+		Stock s=l.get(l.size()-1);
+		Stock st=Fetch_AllStock.map.get(s.getSymbol());
+		String name=null;
+		if(st!=null){
+			name=st.getName();
+		}else{
+			name=s.getSymbol();
+		}
+		
+		m.put("name", name);
+		m.put("start", s.getStartPriceFloat());
+		m.put("high", s.getHighPriceFloat());
+		m.put("low", s.getLowPriceFloat());
+		m.put("end", s.getEndPriceFloat());
+		return m;
+	}
 	
 	
 	public static  List<StatsDO> read() throws IOException, ParseException{

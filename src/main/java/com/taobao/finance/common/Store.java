@@ -95,6 +95,10 @@ public class Store {
 		publicStock=this.gPublicStockService.queryAll();
 	}
 	
+	public void reloadHistoryStock(){
+		history=this.gPublicStockService.queryHistory();
+	}
+	
 	
 	
 	public void updateTmp(){

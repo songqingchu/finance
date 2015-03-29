@@ -354,6 +354,7 @@ public class StockController {
         	ps.setRemoveDate(new Date());
         	this.gPublicStockService.update(ps);
         	this.store.removeFromPublic(symbol);
+        	this.store.reloadPublicStock();
         }
         response.sendRedirect(request.getContextPath() + "/publicPool.do");  
 		return null;
@@ -547,7 +548,7 @@ public class StockController {
 	
 	@RequestMapping(value = "/kData.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> validataUser6(@RequestParam String symbol) throws IOException, ParseException {
+	public Map<String, Object> kData(@RequestParam String symbol) throws IOException, ParseException {
 		logger.info("request:get k data");
 		Calendar c=Calendar.getInstance();
 		int hour=c.get(Calendar.HOUR_OF_DAY);
@@ -568,9 +569,48 @@ public class StockController {
 			shi=false;
 		}
 		
+		List<GPublicStock> his=this.gPublicStockService.queryHistory(symbol);
 		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay,shi);
 		return map;
 	}	
+	
+	
+	@RequestMapping(value = "/canonHistory.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> canonHistory(@RequestParam String symbol) throws IOException, ParseException {
+		logger.info("request:get k data");
+		Calendar c=Calendar.getInstance();
+		int hour=c.get(Calendar.HOUR_OF_DAY);
+		int minits=c.get(Calendar.MINUTE);
+		Date d=new Date();
+		String dateStr=DF.format(d);
+		Boolean checkedWorkingDay=store.checkWorkingRecord.get(dateStr);
+		if(checkedWorkingDay==null){
+			Boolean workingDay=FetchUtil.checkWorkingDay();
+			store.workingDay=workingDay;
+			store.checkWorkingRecord.put(dateStr, true);
+		}
+		boolean shi=true;
+		if(hour<9&&hour>=15){
+			shi=false;
+		}
+		if(hour==9&&minits<30){
+			shi=false;
+		}
+		
+		List<GPublicStock> his=this.gPublicStockService.queryHistory(symbol);
+		Map<String,Object> map=MockUtil.canonHistory(symbol,store.workingDay,shi,his);
+		return map;
+	}	
+	
+	
+	
+	@RequestMapping(value = "/setType.do", method = RequestMethod.GET)
+	public String setType(HttpServletRequest request,HttpServletResponse response,@RequestParam String symbol,@RequestParam String type) throws IOException, ParseException {
+		this.gPublicStockService.setType(symbol, type);
+		response.sendRedirect(request.getContextPath() + "/publicPool.do");  
+		return null;
+	}
 	
 	
 	@RequestMapping(value = "/match.do", method = RequestMethod.GET)
