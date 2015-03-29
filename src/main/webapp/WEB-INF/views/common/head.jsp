@@ -10,6 +10,10 @@ cursor:pointer;
 a{
 text-decoration:none; 
 }
+body{
+font-size:13px;
+color:purple;
+}
 </style>
 
 <div style="width:100%;border:0" id="head_div">

@@ -131,7 +131,7 @@ public class HomeController {
 			}
 		}
 		if(success){  
-			return "publicPool";
+			return "help";
 		}else{
 			return "register";
 		}

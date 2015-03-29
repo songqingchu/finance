@@ -110,7 +110,7 @@
 					}
 				} ],
 				series : [ {
-					name : '基准',
+					name : '增长率',
 					type : 'line',
 					color: 'red',
 					data : [ 11, 11, 15, 13, 12, 13, 10 ]
