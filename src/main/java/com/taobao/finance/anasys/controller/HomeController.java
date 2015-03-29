@@ -137,7 +137,6 @@ public class HomeController {
 		}
 	}
 	
-	
 	@RequestMapping(value = "/loginOut.do", method = RequestMethod.GET)
 	public String loginOut(HttpServletRequest request) {
 		request.getSession().removeAttribute("user");;
