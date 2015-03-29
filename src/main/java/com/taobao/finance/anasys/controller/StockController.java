@@ -344,6 +344,12 @@ public class StockController {
 	}
 	
 	
+	@RequestMapping(value = "/check.do", method = RequestMethod.GET)
+	public String check(HttpServletRequest request) {
+		logger.info("request:check");
+		return "check";
+	}
+	
 	
 	@RequestMapping(value = "/removeFromPublicPool.do", method = RequestMethod.GET)
 	public String removeFromPublicPool(HttpServletRequest request,HttpServletResponse response, @RequestParam String symbol) throws IOException {
@@ -550,6 +556,25 @@ public class StockController {
 	@ResponseBody
 	public Map<String, Object> kData(@RequestParam String symbol) throws IOException, ParseException {
 		logger.info("request:get k data");
+		if(symbol.length()==6){
+			if(symbol.startsWith("6")){
+				symbol="sh"+symbol;
+			}else{
+				symbol="sz"+symbol;
+			}
+		}
+		if(symbol.startsWith("sz")||symbol.startsWith("sh")){
+			
+		}else if(symbol.length()==6&&StringUtils.isNumeric(symbol)){
+			if(symbol.startsWith("6")){
+				symbol="sh"+symbol;
+			}else{
+				symbol="sz"+symbol;
+			}
+		}else{
+			symbol=Fetch_AllStock.nameMap.get(symbol);
+		}
+		
 		Calendar c=Calendar.getInstance();
 		int hour=c.get(Calendar.HOUR_OF_DAY);
 		int minits=c.get(Calendar.MINUTE);
@@ -665,5 +690,9 @@ public class StockController {
 		
 		map.put("result", result); 
 		return map;
+	}
+	
+	public static void main(String args[]){
+		System.out.println(StringUtils.isNumeric("002333"));
 	}
 }

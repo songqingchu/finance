@@ -19,11 +19,15 @@ public class Fetch_AllStock {
 	
 	
 	public static Map<String,Stock> map=new HashMap<String,Stock>();
+	public static Map<String,String> nameMap=new HashMap<String,String>();
 	
 	static{
 		File f=new File(FetchUtil.FILE_STOCK_ANASYS_BASE+"stockAll.txt");
 		if(f.exists()){
 			map=FetchUtil.readFileMapAbsolute(FetchUtil.FILE_STOCK_ANASYS_BASE+"stockAll.txt");
+			for(Stock s:map.values()){
+				nameMap.put(s.getName(),s.getSymbol());
+			}
 		}
 	}
 	public static List<Stock> fetch() {

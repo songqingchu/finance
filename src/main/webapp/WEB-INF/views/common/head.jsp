@@ -22,10 +22,13 @@ text-decoration:none;
 <a href="help.do">新手必读</a> &nbsp;
 <c:if test="${root==true}">
 <a href="choose.do">模型筛选</a> &nbsp;
+<a href="check.do">检测</a> &nbsp;
 <a href="getToday.do?force=false">下载今日数据</a>【<a href="getToday.do?force=true">强制</a>】 &nbsp;
 <a href="ananyse.do?force=false">分析数据</a>【<a href="ananyse.do?force=true">强制</a>】  &nbsp;
 </c:if>
+<c:if test="${user.userName!= null}">
 ${user.userName},<a href="loginOut.do?force=false">退出</a>  &nbsp;
+</c:if>
 </span>
 <hr style="color:blue;" size="1px">
 </div>
