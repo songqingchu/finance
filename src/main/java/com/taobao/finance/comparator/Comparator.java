@@ -14,6 +14,9 @@ public class Comparator {
 	public static class RateDescComparator implements java.util.Comparator<Stock>{
 
 		public int compare(Stock o1, Stock o2) {
+			if(o1.getSymbol().equals("sh000001")||o1.getSymbol().equals("sz399001")||o1.getSymbol().equals("sz399006")||o1.getSymbol().equals("sz399101")){
+				return -1;
+			}
 			return o1.getRate()-o2.getRate()>0?-1:1;
 		}
 		

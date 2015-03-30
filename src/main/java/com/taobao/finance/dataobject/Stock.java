@@ -681,6 +681,9 @@ public class Stock implements Comparable<Stock> {
 		if(name.getBytes().length==9){
 			name=name+"&nbsp;&nbsp;";
 		}
+		if(this.getSymbol().equals("sh000001")||this.getSymbol().equals("sz399001")||this.getSymbol().equals("sz399006")||this.getSymbol().equals("sz399101")){
+			name="<b>"+name+"</b>";
+		}
 		return  name;
 	}
 	public String getNameEclipseFormat() {
