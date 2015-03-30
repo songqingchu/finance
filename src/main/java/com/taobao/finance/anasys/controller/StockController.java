@@ -1,6 +1,8 @@
 package com.taobao.finance.anasys.controller;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -189,6 +191,7 @@ public class StockController {
 		List<StatsDO> l=(List<StatsDO>)m.get("data");
 		if(l.size()>0){
 			StatsDO d=l.get(l.size()-1);
+			d.setLast(true);
 			request.setAttribute("t", d);
 			Integer lastVRate=d.getvRate();
 			Integer value=d.getValue();
@@ -270,6 +273,40 @@ public class StockController {
 		response.sendRedirect(request.getContextPath() + "/record.do");  
 		return null;
 	}
+	
+	
+	@RequestMapping(value = "/delLastLine.do", method = RequestMethod.GET)
+	public void delLastLine(HttpServletRequest request,HttpServletResponse response
+			) throws IOException, ParseException {
+		logger.info("request:del last line");	
+		GUser user=(GUser) request.getSession().getAttribute("user");
+		File f = new File(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");  
+		if(f.exists()){
+			BufferedReader br=new BufferedReader(new FileReader(f));
+			List<String> content=new ArrayList<String>();
+			String line=null;
+			while((line=br.readLine())!=null){
+				content.add(line);
+			}
+			br.close();	
+			if(content.size()>1){
+				content.remove(content.size()-1);
+			}
+			
+			f.delete();
+			f = new File(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");  
+			if(!f.exists()){
+				FetchUtil.createFile(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");
+				BufferedWriter bw=new BufferedWriter(new FileWriter(f,true));
+				for(String c:content){
+					bw.write(c+"\n");
+				}
+				bw.close();
+			}
+		}
+		response.sendRedirect(request.getContextPath() + "/record.do");  
+	}
+	
 	
 	@RequestMapping(value = "/statsData.do", method = RequestMethod.GET)
 	@ResponseBody

@@ -133,7 +133,7 @@ public class HomeController {
 		if(success){  
 			return "help";
 		}else{
-			return "register";
+			return "register"; 
 		}
 	}
 	

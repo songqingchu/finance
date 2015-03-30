@@ -51,10 +51,10 @@ td {
 						<th width="40px">ASC</th>
                         <th width="40px">NYC</th>
 						<th width="40px">NSC</th>
-						<th width="80px">AYV</th>
-						<th width="80px">ASV</th>
-						<th width="70px">NYV</th>
-						<th width="70px">NSV</th>
+						<th width="60px">AYV</th>
+						<th width="60px">ASV</th>
+						<th width="50px">NYV</th>
+						<th width="50px">NSV</th>
 						<th width="40px">AYP</th>
 						<th width="40px">ASP</th>
 						<th width="40px">NYP</th>
@@ -63,6 +63,7 @@ td {
 						<th width="40px">ASR</th>
 						<th width="40px">NYR</th>
 						<th width="40px">NSR</th>
+						<th width="40px">操作</th>
 					</tr>
 				</thead>
 				
@@ -89,6 +90,11 @@ td {
 				       <td>${d.asRateFormat}</td>
 				       <td>${d.nyRateFormat}</td>
 				       <td>${d.nsRateFormat}</td>
+				       <td>
+				       <c:if test="${d.last==true}">
+				       <a href="delLastLine.do">删除</a>
+				       </c:if>
+				       </td>
 				</tr>
 				</c:forEach>
 				<c:if test="${size>0}">

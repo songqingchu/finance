@@ -54,7 +54,20 @@ public class StatsDO {
 	public Integer nyRate;
 	public Integer nsRate;
 	
+    public Boolean last=false;
 	
+	public Boolean getLast() {
+		return last;
+	}
+
+
+
+	public void setLast(Boolean last) {
+		this.last = last;
+	}
+
+
+
 	public String toFileString(){
 		String result="";
 		result+=this.date+SPLIT+
