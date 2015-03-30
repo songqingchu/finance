@@ -472,7 +472,7 @@ public class StockController {
 					}else if(s.startsWith("sh")||s.startsWith("sz")){
 						
 					}else{
-						symbol=Fetch_AllStock.nameMap.get(symbol);
+						symbol=Fetch_AllStock.nameMap.get(s);
 					}
 					
 					Stock st=Fetch_AllStock.map.get(symbol);
