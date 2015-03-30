@@ -403,6 +403,18 @@ public class StockController {
 		return null;
 	}
 	
+	@RequestMapping(value = "/delFromPublicPool.do", method = RequestMethod.GET)
+	public String delFromPublicPool(HttpServletRequest request,HttpServletResponse response, @RequestParam String symbol) throws IOException {
+		logger.info("request:remove from public pool");
+        GPublicStock ps=this.gPublicStockService.queryStockInPool(symbol);
+        if(ps!=null){
+        	//this.store.removeFromPublic(symbol);
+        	this.store.reloadPublicStock();
+        }
+        response.sendRedirect(request.getContextPath() + "/publicPool.do");  
+		return null;
+	}
+	
 	
 	
 	
@@ -441,25 +453,26 @@ public class StockController {
 				GPublicStock ps=new GPublicStock();
 				String symbol=null;
 				if(StringUtils.isNotBlank(s)){
-					if(s.length()==6){
-						if(s.startsWith("6")){
-							s="sh"+s;
-						}else{
-							s="sz"+s;
+					if(StringUtils.isNumeric(s)){
+						if(s.length()==6){
+							if(s.startsWith("6")){
+								s="sh"+s;
+							}else{
+								s="sz"+s;
+							}
 						}
-					}
-					if(s.length()==7){
-						if(s.startsWith("0")){
-							symbol=s.replaceFirst("0", "sz");
-							store.publicPool.put(symbol, null);
+						if(s.length()==7){
+							if(s.startsWith("0")){
+								symbol=s.replaceFirst("0", "sz");
+							}
+							if(s.startsWith("1")){
+								symbol=s.replaceFirst("1", "sh");
+							}
 						}
-						if(s.startsWith("1")){
-							symbol=s.replaceFirst("1", "sh");
-							store.publicPool.put(symbol, null);
-						}
-					}
-					if(s.length()==8){
-						symbol=s;
+					}else if(s.startsWith("sh")||s.startsWith("sz")){
+						
+					}else{
+						symbol=Fetch_AllStock.nameMap.get(symbol);
 					}
 					
 					Stock st=Fetch_AllStock.map.get(symbol);

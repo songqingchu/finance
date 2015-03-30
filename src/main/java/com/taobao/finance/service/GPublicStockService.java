@@ -53,6 +53,14 @@ public class GPublicStockService extends BaseService<GPublicStock>{
 		return l;
 	}
 	
+	
+	public GPublicStock queryStockInPool(String symbol){
+		String hql="FROM GPublicStock WHERE hold=1 and symbol=?";
+		GPublicStock l=this.getDao().findRecordByHql(hql,symbol);
+		this.delete(l);
+		return l;
+	}
+	
 	public void setType(String symbol,String type){
 		String hql="FROM GPublicStock WHERE hold=1 and symbol=?";
 		List<GPublicStock> l=this.getDao().findRecordsByHql(hql,symbol);

@@ -58,7 +58,7 @@ public class SecurityFilter implements HandlerInterceptor{
             Object obj) throws Exception {  
         HttpSession session = request.getSession(true);    
         Object login=session.getAttribute("login");
-        if(!request.toString().contains("loginOut")){
+        if(!request.toString().contains("login")){
         	if(login==null){
         		rememberMe(request);
         	}
