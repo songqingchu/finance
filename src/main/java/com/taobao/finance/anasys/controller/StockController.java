@@ -45,10 +45,12 @@ import com.taobao.finance.common.Store;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
+import com.taobao.finance.entity.GTask;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 import com.taobao.finance.service.GPublicStockService;
+import com.taobao.finance.service.GTaskService;
 import com.taobao.finance.service.ThreadService;
 import com.taobao.finance.util.FetchUtil;
 import com.taobao.finance.util.ThreadUtil;
@@ -67,28 +69,26 @@ public class StockController {
 	
 	@Autowired
 	private GPublicStockService gPublicStockService;
+	@Autowired
+	private GTaskService gTaskService;
 	
 	@RequestMapping(value = "/getToday.do", method = RequestMethod.GET)
 	public String stats(HttpServletRequest request,@RequestParam Boolean force) {
 		logger.info("request:get today data");
-		boolean workday=FetchUtil.checkWorkingDay();
-		if(workday){
-			final Date d=new Date();
-			Integer status=store.getDownloadStatus(d);
-			if(status!=null){
-				if(force!=null&&force==true&&status!=1){
-					store.setDownloading(d);
-					new Thread(){
-						public void run(){
-							store.updateHistory();
-							store.updateTmp();
-							store.setDownloaded(d);
-						}
-					}.start();
-					request.setAttribute("message", "开始下载！");
-					return "choose";
-				}
-				
+
+		if(Store.workingDay){
+			int status=store.getDownloadStatus();
+			if(status==0){
+				store.setDownloading();
+				new Thread(){
+					public void run(){
+						store.updateHistory();
+						store.updateTmp();
+						store.setDownloaded();
+					}
+				}.start();
+				request.setAttribute("message", "开始下载！");
+			}else{
 				if(status==1){
 					request.setAttribute("message", "正在下载中！");
 					return "download";
@@ -97,28 +97,17 @@ public class StockController {
 					request.setAttribute("message", "今日数据已经下载完成！");
 					return "download";
 				}
-			}else{
-				store.setDownloading(d);
-				new Thread(){
-					public void run(){
-						store.updateHistory();
-						store.updateTmp();
-						store.setDownloaded(d);
-					}
-				}.start();
-				request.setAttribute("message", "开始下载！");
 			}
 		}else{
 			if(force){
-				final Date d=new Date();
-				Integer status=store.getDownloadStatus(d);
-				if(status==null){
-					store.setDownloading(d);
+				int status=store.getDownloadStatus();
+				if(status==0){
+					store.setDownloading();
 					new Thread(){
 						public void run(){
 							store.updateHistory();
 							store.updateTmp();
-							store.setDownloaded(d);
+							store.setDownloaded();
 						}
 					}.start();
 					request.setAttribute("message", "开始下载！");
@@ -132,30 +121,31 @@ public class StockController {
 					request.setAttribute("message", "今日数据已经下载完成！");
 					return "download";
 				}			
+			}else{
+				request.setAttribute("workday", Store.workingDay);
+				request.setAttribute("message", "非工作日不用下载！");
 			}
-			request.setAttribute("workday", workday);
-			request.setAttribute("message", "非工作日不用下载！");
 		}
 		return "download";
 	}
 	
 	
+	
+	
 	@RequestMapping(value = "/ananyse.do", method = RequestMethod.GET)
 	public String choose(HttpServletRequest request,@RequestParam Boolean force) {
 		logger.info("request:ananyse");
-		final Date d=new Date();
-		Integer status=store.getChooseStatus(d);
-		if(status!=null){
-			if(force!=null&&force.equals(true)&&status!=1){
-				store.setChoosing(d);
+		if(Store.workingDay){
+			int status=store.getChooseStatus();
+			if(status==0){
+				store.setChoosing();
 				new Thread(){
 					public void run(){
 						store.ananyse();
-						store.setChoosed(d);
+						store.setChoosed();
 					}
 				}.start();
 				request.setAttribute("message", "开始分析！");
-				return "choose";
 			}
 			if(status==1){
 				request.setAttribute("message", "正在分析中！");
@@ -166,29 +156,42 @@ public class StockController {
 				return "choose";
 			}
 		}else{
-			store.setChoosing(d);
-			new Thread(){
-				public void run(){
-					store.ananyse();
-					store.setChoosed(d);
+			if(force){
+				int status=store.getChooseStatus();
+				if(status==0){
+					store.setChoosing();
+					new Thread(){
+						public void run(){
+							store.ananyse();
+							store.setChoosed();
+						}
+					}.start();
+					request.setAttribute("message", "开始分析！");
+					return "choose";
 				}
-			}.start();
-			request.setAttribute("message", "开始分析！");
-			
+				if(status==1){
+					request.setAttribute("message", "正在分析中！");
+					return "choose";
+				}
+				if(status==2){
+					request.setAttribute("message", "今日数据已经分析完成！");
+					return "choose";
+				}
+			}else{
+				request.setAttribute("workday", Store.workingDay);
+				request.setAttribute("message", "非工作日不用分析！");
+			}			
 		}
 		return "choose";
 	}
 	
+	
+	
 	@RequestMapping(value = "/record.do", method = RequestMethod.GET)
 	public String record(HttpServletRequest request) throws IOException, ParseException {
 		logger.info("request:view record");
-		
 		GUser user=(GUser) request.getSession().getAttribute("user");
-		Map<String,Object> m=MockUtil.mockStats(user.getId());
-		
-		
-		boolean working=FetchUtil.checkWorkingDay();
-		List<StatsDO> l=(List<StatsDO>)m.get("data");
+		List<StatsDO> l=MockUtil.getRecords(user.getId());
 		if(l.size()>0){
 			StatsDO d=l.get(l.size()-1);
 			d.setLast(true);
@@ -197,14 +200,14 @@ public class StockController {
 			Integer value=d.getValue();
 			request.setAttribute("lastValue", value);
 			request.setAttribute("lastVRate", lastVRate);
-		}
-		
-		
+		}		
 		request.setAttribute("data", l);
 		request.setAttribute("size", l.size());
-		request.setAttribute("working", working);
 		return "record";
 	}
+	
+	
+	
 	
 	@RequestMapping(value = "/addRecord.do", method = RequestMethod.POST)
 	public String record(HttpServletRequest request,HttpServletResponse response,

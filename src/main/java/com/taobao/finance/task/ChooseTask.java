@@ -21,17 +21,17 @@ public class ChooseTask extends Thread{
 		 */
 		if(workingDay){
 			Date d=new Date();
-			store.setDownloading(d);
+			store.setDownloading();
 			store.updateHistory();
 			store.updateTmp();
-			store.setDownloaded(d);
+			store.setDownloaded();
 			
 			/**
 			 * 分析
 			 */
-			store.setChoosing(d);
+			store.setChoosing();
 			store.ananyse();
-			store.setChoosed(d);
+			store.setChoosed();
 		}
 	}
 }

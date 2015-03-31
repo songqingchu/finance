@@ -182,10 +182,19 @@ public class MockUtil {
 		
 		m.put("data", mine);
 	//	m.put("r", r);
-		
-
 		return m;
 	}
+	
+	
+	
+	
+	public static List<StatsDO> getRecords(Integer id) throws IOException, ParseException{
+		List<StatsDO> mine=readChart(id);
+		return mine;
+	}
+	
+	
+	
 	
 	
 	public static Map<String,Object> mockData2() throws IOException, ParseException{

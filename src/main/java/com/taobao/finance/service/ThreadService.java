@@ -28,7 +28,7 @@ public class ThreadService {
 	CompletionService<Object> con = new ExecutorCompletionService<Object>(service);
 	
 	public  ThreadService(){
-		executeAt15EveryDay();
+		//executeAt15EveryDay();
 	}
 	
 	public  void executeAt15EveryDay() {  

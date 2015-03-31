@@ -1,6 +1,7 @@
 package com.taobao.finance.common;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,28 +24,15 @@ import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
+import com.taobao.finance.entity.GTask;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.service.GPublicStockService;
+import com.taobao.finance.service.GTaskService;
 import com.taobao.finance.service.ThreadService;
 import com.taobao.finance.task.HisDataTask;
 import com.taobao.finance.task.UnformalDataTask;
 import com.taobao.finance.util.FetchUtil;
 import com.taobao.finance.util.ThreadUtil;
-
-/**
- * <p>
- * Description:
- * </p>
- * <p>
- * Copyright: Copyright (c) 2015
- * </p>
- * <p>
- * Company: www.dianwoba.com
- * </p>
- * 
- * @author lijiayang
- * @date 2015年2月13日
- */
 @Component
 @DependsOn("fetchUtil")
 public class Store {
@@ -59,13 +47,22 @@ public class Store {
 	
 	public static Boolean workingDay;
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
+	public static DateFormat DF2 = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
 	public static int DOWNLOAD_STATUS_DOWNLOADING = 1;
 	public static int DOWNLOAD_STATUS_DOWNLOADED = 2;
+	public static int CHOOSEN_STATUS_CHOOSING = 1;
+	public static int CHOOSEN_STATUS_CHOOSEN = 2;
+	public static int downloaded = 0;
+	public static int choosen = 0;
 	
 	@Autowired
 	private ThreadService threadService;
 	
+	@Autowired
+	private GTaskService gTaskService;
+	
+	private GTask today;
 	
 	public Store() {
 		
@@ -73,8 +70,112 @@ public class Store {
 	
 	@PostConstruct
 	public void init(){
+		if(workingDay==null){
+			workingDay=FetchUtil.checkWorkingDay();
+		}
 		publicStock=this.gPublicStockService.queryAll();
 		history=this.gPublicStockService.queryHistory();
+		Thread d=new Thread(){
+			public void run(){
+				try{
+				   while(true){
+					   today=gTaskService.queryLastTask();
+					   
+					   Date d=new Date();
+					   String endDateStr=DF.format(d)+" 15:00:00";
+					   String beginDateStr=DF.format(d)+" 09:30:00";
+					   String beginDateStr2=DF.format(d)+" 09:00:00";
+					   String beginDateStr3=DF.format(d)+" 10:00:00";
+					   Date closeTime=DF2.parse(endDateStr);
+					   Date beginTime=DF2.parse(beginDateStr);
+					   Date beginTime2=DF2.parse(beginDateStr2);
+					   Date beginTime3=DF2.parse(beginDateStr3);
+					   if(d.after(beginTime)){
+						   workingDay=FetchUtil.checkWorkingDay();
+					   }
+					   
+					   if(d.after(beginTime3)&&d.before(beginTime2)){
+						   downloaded=0;
+					   }
+					   
+					   
+					   if(d.after(closeTime)){
+                    	   boolean canChoose=false;
+                    	   if(workingDay){
+                    		   if(today!=null){
+                    			   if(today.getDate().getDate()==d.getDate()){
+                        			   if(today.getDownload()==2){
+                        				   canChoose=true;
+                        			   }
+                        		   }else{
+                        			   canChoose=false;
+                        		   }
+                    		   }else{
+                    			   canChoose=false;
+                    		   }  
+                    	   }
+                    	   
+                    	   if(canChoose){
+    						   choosen=CHOOSEN_STATUS_CHOOSING;
+    						   ananyse();
+    						   choosen=CHOOSEN_STATUS_CHOOSEN;
+    						   today.setChoose((byte)CHOOSEN_STATUS_CHOOSEN);
+   							   gTaskService.update(today);
+    					   }
+					   }
+					   
+					   
+                       if(d.after(closeTime)){
+                    	   boolean canDownload=false;
+                    	   if(workingDay){
+                    		   if(today!=null){
+                    			   if(today.getDate().getDate()==d.getDate()){
+                        			   if(today.getDownload()==1||today.getDownload()==2){
+                        				   canDownload=false;
+                        			   }
+                        		   }else{
+                        			   canDownload=true;
+                        		   }
+                    		   }else{
+                    			   canDownload=true;
+                    		   }
+                    	   }
+                    	   
+                    	   
+                    	   if(canDownload){
+                    		   GTask t=new GTask();
+   							   Date dd=new Date();
+   							   String dstr=DF.format(dd);
+   						   	   try {
+   								  t.setDate(DF.parse(dstr));
+   							   } catch (ParseException e) {
+   							  	  e.printStackTrace();
+   							   }
+   							   t.setDownload(GTask.DOWNLOADING);
+   							   t.setWorking(GTask.WORKING);
+   							   t.setChoose(GTask.NON_CHOOSE);
+   							   t=gTaskService.insert(t);
+   							   downloaded=1;
+   							
+                    		   updateHistory();
+   							   updateTmp();
+   							   ananyse();
+   							
+   							   t.setDownload(GTask.DOWNLOADED);
+   							   gTaskService.update(t);
+   							   downloaded=2;
+                    	   }
+					   }
+					   
+					   Thread.sleep(60*1000*15);
+				   }
+				}catch(Exception e){
+				   e.printStackTrace();
+				}
+			}
+		};
+		d.setName("check_thread");
+		d.start();
 	}
 	
 	@Autowired
@@ -97,6 +198,10 @@ public class Store {
 	
 	public void reloadHistoryStock(){
 		history=this.gPublicStockService.queryHistory();
+	}
+	
+	public void reloadStatus(){
+		//List<GTask> l=this.gTaskService.queryLastTenTask();
 	}
 	
 	
@@ -155,35 +260,32 @@ public class Store {
 		store.put(key, l);
 	}
 
-	public Integer getDownloadStatus(Date d) {
-		String dateStr = DF.format(d);
-		Integer status = download.get(dateStr);
-		return status;
+	public int getDownloadStatus() {
+		return downloaded;
 	}
 
-	public void setDownloading(Date d) {
-		String dateStr = DF.format(d);
-		download.put(dateStr, 1);
+	public void setDownloading() {
+		downloaded=1;
 	}
 
-	public void setDownloaded(Date d) {
-		String dateStr = DF.format(d);
-		download.put(dateStr, 2);
+	public void setDownloaded() {
+		downloaded=2;
 	}
 
-	public Integer getChooseStatus(Date d) {
-		String dateStr = DF.format(d);
-		Integer status = choose.get(dateStr);
-		return status;
+	public int getChooseStatus() {
+		return choosen;
 	}
 
-	public void setChoosing(Date d) {
+	public void status(Date d) {
 		String dateStr = DF.format(d);
 		choose.put(dateStr, 1);
 	}
 
-	public void setChoosed(Date d) {
-		String dateStr = DF.format(d);
-		choose.put(dateStr, 2);
+	public void setChoosed() {
+		choosen=2;
+	}
+	
+	public void setChoosing() {
+		choosen=1;
 	}
 }

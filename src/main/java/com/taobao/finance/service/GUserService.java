@@ -13,6 +13,8 @@ public class GUserService extends BaseService<GUser>{
 
 	@Autowired
 	private GUserDAO gUserDAO;
+	
+	
 	@Autowired
 	public void setDao(GUserDAO gUserDAO) {
 		super.setDao(gUserDAO);
