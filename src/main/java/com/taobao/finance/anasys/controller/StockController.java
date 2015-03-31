@@ -501,75 +501,19 @@ public class StockController {
 	@RequestMapping(value = "/choose.do", method = RequestMethod.GET)
 	public String choose(HttpServletRequest request) {
 		logger.info("request:choose stock");
-		List<Stock> big=null;
-		List<Stock> acvu=null;
-		List<Stock> av5=null;
-		List<Stock> av10=null;
-		List<Stock> tp=null;
-		if(store.containsKey("big")){
-			big=store.get("big");
-		}else{
-			big=new BigTrend_Choose_MultiThread().choose();
-		}
-		
-		if(store.containsKey("acvu")){
-			acvu=store.get("acvu");
-		}else{
-			acvu=new AVCU_Choose_MultiThread().choose();
-		}
-		if(store.containsKey("av5")){
-			av5=store.get("av5");
-		}else{
-			av5=new AV5_Trend_Choose_MultiThread().choose();
-		}
-		if(store.containsKey("av10")){
-			av10=store.get("av10");
-		}else{
-			av10=new AV10_Trend_Choose_MultiThread().choose();
-		}
-		/*if(store.containsKey("tp")){
-			tp=store.get("tp");
-		}else{
-			tp=new TP_Choose_MultiThread().choose();
-		}*/
 
-		if(!store.containsKey("big")){
-			store.put("big", big);
-		}
+		
+		
 		if(!store.containsKey("acvu")){
-			store.put("acvu",acvu );
+			store.ananyse();
 		}
-		if(!store.containsKey("av5")){
-			store.put("av5", av5);
-		}
-		if(!store.containsKey("av10")){
-			store.put("av10",av10 );
-		}
-		if(!store.containsKey("tp")){
-			store.put("tp",tp );
-		}
+	
+		List<String> big=store.get("big");
+		List<String> acvu=store.get("acvu");
+		List<String> av5=store.get("av5");
+		List<String> av10=store.get("av10");
 
-		List<String> bigStr=new ArrayList<String>();
-		List<String> acvuStr=new ArrayList<String>();
-		List<String> av5Str=new ArrayList<String>();
-		List<String> av10Str=new ArrayList<String>();
-		System.out.println("big:"+big.size());
-		System.out.println("acvu:"+big.size());
-		System.out.println("av5:"+big.size());
-		System.out.println("av10:"+big.size());
-		for(Stock s:big){
-			bigStr.add(s.getSymbol());
-		}
-		for(Stock s:acvu){
-			acvuStr.add(s.getSymbol());
-		}
-		for(Stock s:av5){
-			av5Str.add(s.getSymbol());
-		}
-		for(Stock s:av10){
-			av10Str.add(s.getSymbol());
-		}
-		
+
 		
 		int size=0;
 		if(big.size()>size){
@@ -591,16 +535,16 @@ public class StockController {
 		request.setAttribute("acvu", acvu);
 		request.setAttribute("av5", av5);
 		request.setAttribute("av10", av10);
-		request.setAttribute("tp", tp);
+		//request.setAttribute("tp", tp);
 		request.setAttribute("bigSize", big.size());
 		request.setAttribute("acvuSize", acvu.size());
 		request.setAttribute("av5Size", av5.size());
 		request.setAttribute("av10Size", av10.size());
 		
-		request.setAttribute("bigStr", "'"+StringUtils.join(bigStr,"','")+"'");
-		request.setAttribute("acvuStr",  "'"+StringUtils.join(acvuStr,"','")+"'");
-		request.setAttribute("av5Str",  "'"+StringUtils.join(av5Str,"','")+"'");
-		request.setAttribute("av10Str", "'"+ StringUtils.join(av10Str,"','")+"'");
+		request.setAttribute("bigStr", "'"+StringUtils.join(big,"','")+"'");
+		request.setAttribute("acvuStr",  "'"+StringUtils.join(acvu,"','")+"'");
+		request.setAttribute("av5Str",  "'"+StringUtils.join(av5,"','")+"'");
+		request.setAttribute("av10Str", "'"+ StringUtils.join(av10,"','")+"'");
 			
 		return "stockPool";
 	}
@@ -631,14 +575,6 @@ public class StockController {
 		Calendar c=Calendar.getInstance();
 		int hour=c.get(Calendar.HOUR_OF_DAY);
 		int minits=c.get(Calendar.MINUTE);
-		Date d=new Date();
-		String dateStr=DF.format(d);
-		Boolean checkedWorkingDay=store.checkWorkingRecord.get(dateStr);
-		if(checkedWorkingDay==null){
-			Boolean workingDay=FetchUtil.checkWorkingDay();
-			store.workingDay=workingDay;
-			store.checkWorkingRecord.put(dateStr, true);
-		}
 		boolean shi=true;
 		if(hour<9&&hour>=15){
 			shi=false;
@@ -660,14 +596,7 @@ public class StockController {
 		Calendar c=Calendar.getInstance();
 		int hour=c.get(Calendar.HOUR_OF_DAY);
 		int minits=c.get(Calendar.MINUTE);
-		Date d=new Date();
-		String dateStr=DF.format(d);
-		Boolean checkedWorkingDay=store.checkWorkingRecord.get(dateStr);
-		if(checkedWorkingDay==null){
-			Boolean workingDay=FetchUtil.checkWorkingDay();
-			store.workingDay=workingDay;
-			store.checkWorkingRecord.put(dateStr, true);
-		}
+
 		boolean shi=true;
 		if(hour<9&&hour>=15){
 			shi=false;

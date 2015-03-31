@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -182,12 +183,12 @@ public class FetchUtil {
 					Node n=trs.elementAt(i);System.out.println("-==========================================");
 					
 					System.out.println(n.toHtml());
-					if(n.toHtml().contains("公告日期")){
+					if(n.toHtml().contains("鍏憡鏃ユ湡")){
 						l.add(n);
 						String s1=n.getChildren().elementAt(0).getChildren().elementAt(1).getFirstChild().toHtml();
 						System.out.println(s1);
 					}
-					if(n.toHtml().contains("净利润")){
+					if(n.toHtml().contains("鍑�鍒╂鼎")){
 						l.add(n);
 						String s2=n.getChildren().elementAt(1).getFirstChild().toHtml();
 						System.out.println(s2);
@@ -425,6 +426,98 @@ public class FetchUtil {
     	return false;
     }
     
+    public static boolean checkWorkingDayUsusal(){
+        Calendar cal = Calendar.getInstance();
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0){
+        	w = 0;
+        }
+        if(w>=1&&w<=5){
+        	return true;
+        }else{
+        	return false;
+        }
+    }
+    
+    public static boolean checkWorkingDay2(){
+    	String sh="sh000001";
+    	String sz="sz399001";
+    	Stock todaySh = Fetch_SingleStock.fetch(sh);
+    	Stock todaySz = Fetch_SingleStock.fetch(sz);
+    	try {
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	Stock todaySh2 = Fetch_SingleStock.fetch(sh);
+    	Stock todaySz2 = Fetch_SingleStock.fetch(sh);
+    	try {
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	Stock todaySh3 = Fetch_SingleStock.fetch(sh);
+    	Stock todaySz3 = Fetch_SingleStock.fetch(sh);
+    	try {
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	Stock todaySh4 = Fetch_SingleStock.fetch(sh);
+    	Stock todaySz4 = Fetch_SingleStock.fetch(sh);
+    	
+    	if(!todaySh.getStartPrice().equals(todaySh2.getStartPrice())){
+    		return true;
+    	}
+    	if(!todaySh.getEndPrice().equals(todaySh2.getEndPrice())){
+    		return true;
+    	}
+    	if(!todaySz.getStartPrice().equals(todaySz2.getStartPrice())){
+    		return true;
+    	}
+    	if(!todaySz.getEndPrice().equals(todaySz2.getEndPrice())){
+    		return true;
+    	}
+    	
+    	
+    	if(!todaySh.getStartPrice().equals(todaySh3.getStartPrice())){
+    		return true;
+    	}
+    	if(!todaySh.getEndPrice().equals(todaySh3.getEndPrice())){
+    		return true;
+    	}
+    	if(!todaySz.getStartPrice().equals(todaySz3.getStartPrice())){
+    		return true;
+    	}
+    	if(!todaySz.getEndPrice().equals(todaySz3.getEndPrice())){
+    		return true;
+    	}
+    	
+    	if(!todaySh.getStartPrice().equals(todaySh4.getStartPrice())){
+    		return true;
+    	}
+    	if(!todaySh.getEndPrice().equals(todaySh4.getEndPrice())){
+    		return true;
+    	}
+    	if(!todaySz.getStartPrice().equals(todaySz4.getStartPrice())){
+    		return true;
+    	}
+    	if(!todaySz.getEndPrice().equals(todaySz4.getEndPrice())){
+    		return true;
+    	}
+    	return false;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public static Stock getTmp(String symbol){
     	String url=FetchUtil.FILE_STOCK_TMP_BASE+symbol+".txt";
     	String s=FetchUtil.FILE_STOCK_HISTORY_BASE;
@@ -448,7 +541,7 @@ public class FetchUtil {
 
     public static void main(String args[]) throws IOException, ParseException{
 		//checkWorkingDay();
-    	System.out.println("东南网架".getBytes().length);
-		System.out.println("巴安水务".getBytes().length);
+    	System.out.println("涓滃崡缃戞灦".getBytes().length);
+		System.out.println("宸村畨姘村姟".getBytes().length);
 	}
 }

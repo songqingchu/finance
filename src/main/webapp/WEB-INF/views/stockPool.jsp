@@ -44,19 +44,19 @@ text-decoration:none;
 
 <div style="width:200px;height:530px;float:left;overflow-y:auto">
 <c:forEach var="s" items="${acvu}">  
-     <span  class="acvuSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.symbol}</a></span>
+     <span  class="acvuSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s}" class="symbolA" id="${s}">${s}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${big}">  
-   <span style="display:none" class="bigSymbol  symbol"  style="width:50px;float:left;">  <a href="#"  symbol="${s.symbol}" id="${s.symbol}" class="symbolA" >${s.symbol}</a></span>
+   <span style="display:none" class="bigSymbol  symbol"  style="width:50px;float:left;">  <a href="#"  symbol="${s}" id="${s}" class="symbolA" >${s}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av5}">  
-    <span style="display:none" class="av5Symbol  symbol"  style="width:50px;float:left;"> <a href="#"   symbol="${s.symbol}" id="${s.symbol}" class="symbolA">${s.symbol}</a></span>
+    <span style="display:none" class="av5Symbol  symbol"  style="width:50px;float:left;"> <a href="#"   symbol="${s}" id="${s}" class="symbolA">${s}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av10}">  
-    <span style="display:none" class="av10Symbol  symbol"  style="width:50px;float:left;"> <a href="#"  symbol="${s.symbol}" id="${s.symbol}" class="symbolA"   >${s.symbol}</a></span>
+    <span style="display:none" class="av10Symbol  symbol"  style="width:50px;float:left;"> <a href="#"  symbol="${s}" id="${s}" class="symbolA"   >${s}</a></span>
 </c:forEach>
 </div>
 </div>

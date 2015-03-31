@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.concurrent.Callable;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -36,7 +38,7 @@ import com.taobao.finance.util.ThreadUtil;
 @Component
 @DependsOn("fetchUtil")
 public class Store {
-	public Map<String, List<Stock>> store = new HashMap<String, List<Stock>>();
+	public Map<String, List<String>> store = new HashMap<String, List<String>>();
 	public Map<String, Integer> download = new HashMap<String, Integer>();
 	public Map<String, Integer> choose = new HashMap<String, Integer>();
 	public Map<String,Stock> publicPool=new HashMap<String,Stock>();
@@ -45,7 +47,7 @@ public class Store {
 	public List<GPublicStock> history=new ArrayList<GPublicStock>();
 	
 	
-	public static Boolean workingDay;
+	public static Boolean workingDay=null;
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
 	public static DateFormat DF2 = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
@@ -71,9 +73,35 @@ public class Store {
 	@PostConstruct
 	public void init(){
 		if(workingDay==null){
-			workingDay=FetchUtil.checkWorkingDay();
+			workingDay=FetchUtil.checkWorkingDayUsusal();
 		}
 		today=gTaskService.queryLastTask();
+		if(StringUtils.isNoneBlank(today.getAcvu())){
+			String [] ids=StringUtils.split(today.getAcvu(),",");
+			List<String> l=new ArrayList<String>();
+			l.addAll(Arrays.asList(ids));
+			store.put("acvu",l );
+		}
+		if(StringUtils.isNoneBlank(today.getBig())){
+			String [] ids=StringUtils.split(today.getBig(),",");
+			List<String> l=new ArrayList<String>();
+			l.addAll(Arrays.asList(ids));
+			store.put("big",l );
+		}
+		if(StringUtils.isNoneBlank(today.getAv5())){
+			String [] ids=StringUtils.split(today.getAv5(),",");
+			List<String> l=new ArrayList<String>();
+			l.addAll(Arrays.asList(ids));
+			store.put("av5",l );
+		}
+		if(StringUtils.isNoneBlank(today.getAv10())){
+			String [] ids=StringUtils.split(today.getAv10(),",");
+			List<String> l=new ArrayList<String>();
+			l.addAll(Arrays.asList(ids));
+			store.put("av10",l );
+		}
+		
+		
 		if(today!=null){
 			if(workingDay){
 				Date d=new Date();
@@ -103,25 +131,47 @@ public class Store {
 		publicStock=this.gPublicStockService.queryAll();
 		history=this.gPublicStockService.queryHistory();
 		Thread d=new Thread(){
+			@SuppressWarnings("deprecation")
 			public void run(){
 				try{
 				   while(true){
 					   today=gTaskService.queryLastTask();
+					   if(today.getDate().getDate()==new Date().getDate()){
+						   if(today.getWorking()==1){
+							   workingDay=true;
+						   }
+					   }else{
+						   workingDay=false;
+					   }
 					   
 					   Date d=new Date();
 					   String endDateStr=DF.format(d)+" 15:00:00";
 					   String beginDateStr=DF.format(d)+" 09:30:00";
-					   String beginDateStr2=DF.format(d)+" 09:00:00";
 					   String beginDateStr3=DF.format(d)+" 10:00:00";
 					   Date closeTime=DF2.parse(endDateStr);
 					   Date beginTime=DF2.parse(beginDateStr);
-					   Date beginTime2=DF2.parse(beginDateStr2);
 					   Date beginTime3=DF2.parse(beginDateStr3);
-					   if(d.after(beginTime)){
-						   workingDay=FetchUtil.checkWorkingDay();
-					   }
+
 					   
 					   if(d.after(beginTime)&&d.before(beginTime3)){
+						   workingDay=FetchUtil.checkWorkingDay2();
+						   if(workingDay){
+							   if(today.getDate().getDate()!=new Date().getDate()){
+	                    		   GTask t=new GTask();
+	   							   Date dd=new Date();
+	   							   String dstr=DF.format(dd);
+	   						   	   try {
+	   								  t.setDate(DF.parse(dstr));
+	   							   } catch (ParseException e) {
+	   							  	  e.printStackTrace();
+	   							   }
+	   							   t.setDownload(GTask.NON_DOWNLOAD);
+	   							   t.setWorking(GTask.WORKING);
+	   							   t.setChoose(GTask.NON_CHOOSE);
+	   							   t=gTaskService.insert(t);
+						        }
+						   }
+						   
 						   if(workingDay){
 							   downloaded=0;
 						   }
@@ -133,7 +183,7 @@ public class Store {
                     	   if(workingDay){
                     		   if(today!=null){
                     			   if(today.getDate().getDate()==d.getDate()){
-                        			   if(today.getDownload()==2){
+                        			   if(today.getDownload()==2&&today.getChoose()!=2){
                         				   canChoose=true;
                         			   }
                         		   }else{
@@ -172,26 +222,19 @@ public class Store {
                     	   
                     	   
                     	   if(canDownload){
-                    		   GTask t=new GTask();
-   							   Date dd=new Date();
-   							   String dstr=DF.format(dd);
-   						   	   try {
-   								  t.setDate(DF.parse(dstr));
-   							   } catch (ParseException e) {
-   							  	  e.printStackTrace();
-   							   }
-   							   t.setDownload(GTask.DOWNLOADING);
-   							   t.setWorking(GTask.WORKING);
-   							   t.setChoose(GTask.NON_CHOOSE);
-   							   t=gTaskService.insert(t);
+   							   today.setDownload(GTask.DOWNLOADING);
+   							   today.setWorking(GTask.WORKING);
+   							   today.setChoose(GTask.NON_CHOOSE);
+   							   today=gTaskService.update(today);
    							   downloaded=1;
    							
                     		   updateHistory();
    							   updateTmp();
    							   ananyse();
    							
-   							   t.setDownload(GTask.DOWNLOADED);
-   							   gTaskService.update(t);
+   							   today.setDownload(GTask.DOWNLOADED);
+   							   today.setChoose(GTask.CHOOSEN);
+   							   gTaskService.update(today);
    							   downloaded=2;
                     	   }
 					   }
@@ -270,22 +313,70 @@ public class Store {
 		List<Stock> av5 = new AV5_Trend_Choose_MultiThread().choose();
 		List<Stock> av10 = new AV10_Trend_Choose_MultiThread().choose();
 		List<Stock> tp = new TP_Choose_MultiThread().choose();
-		store.put("big", big);
-		store.put("acvu", acvu);
-		store.put("av5", av5);
-		store.put("av10", av10);
-		store.put("tp", tp);
+		
+		List<String> bigs=new ArrayList<String>();
+		for(Stock s:big){
+			bigs.add(s.getSymbol());
+		}
+		
+		List<String> acvus=new ArrayList<String>();
+		for(Stock s:acvu){
+			acvus.add(s.getSymbol());
+		}
+		
+		List<String> av5s=new ArrayList<String>();
+		for(Stock s:av5){
+			av5s.add(s.getSymbol());
+		}
+		
+		List<String> av10s=new ArrayList<String>();
+		for(Stock s:av10){
+			av10s.add(s.getSymbol());
+		}
+		
+		List<String> tps=new ArrayList<String>();
+		for(Stock s:tp){
+			tps.add(s.getSymbol());
+		}
+		
+		if(this.today!=null){
+			GTask t=today;
+			if(bigs.size()>0){
+				t.setBig(StringUtils.join(bigs,","));
+			}
+			if(av5.size()>0){
+				t.setAv5(StringUtils.join(av5s,","));
+			}
+			if(av10.size()>0){
+				t.setAv10(StringUtils.join(av10s,","));
+			}
+			if(tp.size()>0){
+				t.setTp(StringUtils.join(tps,","));
+			}
+			if(acvu.size()>0){
+				t.setAcvu(StringUtils.join(acvus,","));
+			}
+			t.setChoose(GTask.CHOOSEN);
+			gTaskService.update(t);
+		}
+		
+		
+		store.put("big", bigs);
+		store.put("acvu", acvus);
+		store.put("av5", av5s);
+		store.put("av10", av10s);
+		store.put("tp", tps);
 	}
 
 	public boolean containsKey(String key) {
 		return store.containsKey(key);
 	}
 
-	public List<Stock> get(String key) {
+	public List<String> get(String key) {
 		return store.get(key);
 	}
 
-	public void put(String key, List<Stock> l) {
+	public void put(String key, List<String> l) {
 		store.put(key, l);
 	}
 

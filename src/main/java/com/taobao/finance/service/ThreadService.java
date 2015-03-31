@@ -13,11 +13,9 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.taobao.finance.common.Store;
-import com.taobao.finance.task.ChooseTask;
 
 @Component
 public class ThreadService {
@@ -37,11 +35,6 @@ public class ThreadService {
 	    long initDelay  = getTimeMillis("15:10:00") - System.currentTimeMillis();  
 	    initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;  
 	  
-	    executor.scheduleAtFixedRate(  
-	            new ChooseTask(store),  
-	            initDelay,  
-	            oneDay,  
-	            TimeUnit.MILLISECONDS);  
 	}  
 	
 	private static long getTimeMillis(String time) {  
