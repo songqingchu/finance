@@ -86,6 +86,7 @@ text-decoration:none;
    var start=0;
    var total=0;
    var currentSymbol;
+   var currentNode;
    
    $(".choose").on("click",function(){
 	   var id=$(this).attr("id");
@@ -97,6 +98,7 @@ text-decoration:none;
    });
    
    $(".symbolA").on("click",function(){
+	   currentNode=$(this);
 	   var symbol=$(this).attr("symbol");
 	   currentSymbol=symbol;
 	   $(".symbolA").css("background-color","");
@@ -157,12 +159,16 @@ text-decoration:none;
 	    			start=start+40;
 	    		}
 		    }
-		    
-	        if(event.keyCode == 40) {
+	    	
+	    	if(event.keyCode == 40) {
 	        	if(start-20>0){
 	        		start=start-20;
 	        	}
 		    }
+	    	
+	    	
+		    
+	        
 	        var copyMap={};
 	    	copyMap.av5 = base.av5.slice(start);
 	    	copyMap.av10 = base.av10.slice(start);
@@ -183,11 +189,13 @@ text-decoration:none;
 	    if(event.keyCode == 37||event.keyCode == 39){
 	    	if(event.keyCode == 37) {
                var a=$(this).parent().prev();
-               var aa=$(a).children(".first").trigger("click");
+               var aa=$(a).children(".first");
+               $(aa).trigger("click");
 		    }
 	    	if(event.keyCode == 39) {
 	    		var a=$(this).parent().next();
-	    		var aa=$(a).children(".first").trigger("click");
+	    		var aa=$(a).children(".first");
+	    		$(aa).trigger("click");
 		    }
 	    }
    });  
