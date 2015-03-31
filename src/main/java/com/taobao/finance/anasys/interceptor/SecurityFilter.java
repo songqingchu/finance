@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.taobao.finance.common.Store;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.service.GUserService;
 
@@ -28,7 +29,8 @@ public class SecurityFilter implements HandlerInterceptor{
 	
 	@Autowired
 	private GUserService gUserService;
-    
+	@Autowired
+	private Store store;
     
     
     static{
@@ -57,6 +59,34 @@ public class SecurityFilter implements HandlerInterceptor{
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,  
             Object obj) throws Exception {  
         HttpSession session = request.getSession(true);    
+        
+        boolean working=Store.workingDay;
+        int downloaded=Store.downloaded;
+        int choosen=Store.choosen;
+        
+        if(working){
+        	session.setAttribute("isWorking", "开市日");
+        }else{
+        	session.setAttribute("isWorking", "非开市日");
+        }
+        if(downloaded==0){
+        	session.setAttribute("downloaded", "未下载");
+        }else if(downloaded==1){
+        	session.setAttribute("downloaded", "下载中");
+        }else{
+        	session.setAttribute("downloaded", "下载完毕");
+        }
+        
+        if(choosen==0){
+        	session.setAttribute("choosen", "未分析");
+        }else if(choosen==1){
+        	session.setAttribute("choosen", "分析中");
+        }else{
+        	session.setAttribute("choosen", "分析完毕");
+        }
+        
+        
+        
         Object login=session.getAttribute("login");
         if(!request.toString().contains("login")){
         	if(login==null){

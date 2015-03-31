@@ -33,6 +33,10 @@ color:purple;
 <c:if test="${user.userName!= null}">
 ${user.userName},<a href="loginOut.do?force=false">退出</a>  &nbsp;
 </c:if>
+
+<c:if test="${root==true}">
+${sessionScope.isWorking}&nbsp;${sessionScope.downloaded}&nbsp;${sessionScope.choosen}
+</c:if>
 </span>
 <hr style="color:blue;" size="1px">
 </div>

@@ -94,8 +94,10 @@ public class Store {
 						   workingDay=FetchUtil.checkWorkingDay();
 					   }
 					   
-					   if(d.after(beginTime3)&&d.before(beginTime2)){
-						   downloaded=0;
+					   if(d.after(beginTime)&&d.before(beginTime3)){
+						   if(workingDay){
+							   downloaded=0;
+						   }
 					   }
 					   
 					   

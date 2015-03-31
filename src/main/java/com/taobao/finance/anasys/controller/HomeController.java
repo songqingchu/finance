@@ -88,8 +88,7 @@ public class HomeController {
 				if(userName.contains("root")){
 					request.getSession().setAttribute("root", true);
 				}
-			    request.getSession().setAttribute("user", user);
-			    
+			    request.getSession().setAttribute("user", user); 
 			}
 		}
 		if(success){
