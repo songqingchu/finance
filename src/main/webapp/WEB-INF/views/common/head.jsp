@@ -35,7 +35,9 @@ ${user.userName},<a href="loginOut.do?force=false">退出</a>  &nbsp;
 </c:if>
 
 <c:if test="${root==true}">
+<b>
 ${sessionScope.isWorking}&nbsp;${sessionScope.downloaded}&nbsp;${sessionScope.choosen}
+</b>
 </c:if>
 </span>
 <hr style="color:blue;" size="1px">

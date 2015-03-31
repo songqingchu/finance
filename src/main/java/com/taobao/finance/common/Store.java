@@ -73,6 +73,27 @@ public class Store {
 		if(workingDay==null){
 			workingDay=FetchUtil.checkWorkingDay();
 		}
+		today=gTaskService.queryLastTask();
+		if(workingDay){
+			Date d=new Date();
+			if(today.getDate().getDate()==d.getDate()){
+				downloaded=today.getDownload();
+				choosen=today.getChoose();
+			}else{
+				downloaded=0;
+				choosen=0;
+			}
+		}else{
+			Date d=new Date();
+			if(today.getDate().getDate()==d.getDate()){
+				
+			}else{
+				downloaded=today.getDownload();
+				choosen=today.getChoose();
+			}
+		}
+		
+		
 		publicStock=this.gPublicStockService.queryAll();
 		history=this.gPublicStockService.queryHistory();
 		Thread d=new Thread(){
