@@ -8,13 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: www.dianwoba.com</p>
- * @author lijiayang
- * @date   2015Äê3ÔÂ30ÈÕ
- */
 
 @Entity
 @Table(name = "g_task")

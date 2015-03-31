@@ -10,13 +10,7 @@ import com.taobao.finance.dao.GTaskDAO;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GTask;
 
-/**
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: www.dianwoba.com</p>
- * @author lijiayang
- * @date   2015Äê3ÔÂ30ÈÕ
- */
+
 @Component
 public class GTaskService extends BaseService<GTask>{
 
