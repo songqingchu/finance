@@ -74,24 +74,30 @@ public class Store {
 			workingDay=FetchUtil.checkWorkingDay();
 		}
 		today=gTaskService.queryLastTask();
-		if(workingDay){
-			Date d=new Date();
-			if(today.getDate().getDate()==d.getDate()){
-				downloaded=today.getDownload();
-				choosen=today.getChoose();
+		if(today!=null){
+			if(workingDay){
+				Date d=new Date();
+				if(today.getDate().getDate()==d.getDate()){
+					downloaded=today.getDownload();
+					choosen=today.getChoose();
+				}else{
+					downloaded=0;
+					choosen=0;
+				}
 			}else{
-				downloaded=0;
-				choosen=0;
+				Date d=new Date();
+				if(today.getDate().getDate()==d.getDate()){
+					
+				}else{
+					downloaded=today.getDownload();
+					choosen=today.getChoose();
+				}
 			}
 		}else{
-			Date d=new Date();
-			if(today.getDate().getDate()==d.getDate()){
-				
-			}else{
-				downloaded=today.getDownload();
-				choosen=today.getChoose();
-			}
+			downloaded=0;
+			choosen=0;
 		}
+		
 		
 		
 		publicStock=this.gPublicStockService.queryAll();
