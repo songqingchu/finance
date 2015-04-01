@@ -147,7 +147,7 @@ public class Store {
 					   Date d=new Date();
 					   String endDateStr=DF.format(d)+" 15:00:00";
 					   String beginDateStr=DF.format(d)+" 09:30:00";
-					   String beginDateStr3=DF.format(d)+" 10:00:00";
+					   String beginDateStr3=DF.format(d)+" 10:30:00";
 					   Date closeTime=DF2.parse(endDateStr);
 					   Date beginTime=DF2.parse(beginDateStr);
 					   Date beginTime3=DF2.parse(beginDateStr3);
@@ -168,6 +168,7 @@ public class Store {
 	   							   t.setDownload(GTask.NON_DOWNLOAD);
 	   							   t.setWorking(GTask.WORKING);
 	   							   t.setChoose(GTask.NON_CHOOSE);
+	   							   t.setInsDate(new Date());
 	   							   t=gTaskService.insert(t);
 						        }
 						   }
@@ -199,6 +200,7 @@ public class Store {
     						   ananyse();
     						   choosen=CHOOSEN_STATUS_CHOOSEN;
     						   today.setChoose((byte)CHOOSEN_STATUS_CHOOSEN);
+    						   today.setUpDate(new Date());
    							   gTaskService.update(today);
     					   }
 					   }
@@ -357,6 +359,7 @@ public class Store {
 				t.setAcvu(StringUtils.join(acvus,","));
 			}
 			t.setChoose(GTask.CHOOSEN);
+			t.setUpDate(new Date());
 			gTaskService.update(t);
 		}
 		

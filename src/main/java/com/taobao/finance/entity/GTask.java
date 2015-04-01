@@ -23,7 +23,25 @@ public class GTask {
 	private String big;
 	private String tp;
 	private Byte working;
+	private Date insDate;
+	private Date upDate;
 	
+	
+	@Column(name = "ins_tm")
+	public Date getInsDate() {
+		return insDate;
+	}
+	public void setInsDate(Date insDate) {
+		this.insDate = insDate;
+	}
+	
+	@Column(name = "update_tm")
+	public Date getUpDate() {
+		return upDate;
+	}
+	public void setUpDate(Date upDate) {
+		this.upDate = upDate;
+	}
 	public static byte NON_DOWNLOAD=(byte)0;
 	public static byte DOWNLOADING=(byte)1;
 	public static byte DOWNLOADED=(byte)2;
