@@ -138,6 +138,7 @@ public class Store {
 
 				while (true) {
 					try {
+						logger.info("\n\n");
 						logger.info("heart beat check---------------------------------------");
 						today = gTaskService.queryLastTask();
 						if (today.getDate().getDate() == new Date().getDate()) {
@@ -186,7 +187,7 @@ public class Store {
 							}
 						}
 
-						if (d.after(closeTime)) {
+						/*if (d.after(closeTime)) {
 							boolean canChoose = false;
 							if (workingDay) {
 								if (today != null) {
@@ -214,7 +215,7 @@ public class Store {
 								gTaskService.update(today);
 								logger.info("routin choose end");
 							}
-						}
+						}*/
 
 						if (d.after(closeTime)) {
 							boolean canDownload = false;
@@ -242,21 +243,26 @@ public class Store {
 								today.setWorking(GTask.WORKING);
 								today.setChoose(GTask.NON_CHOOSE);
 								today = gTaskService.update(today);
-								downloaded = 1;
-
+								
+								
+								downloaded = DOWNLOAD_STATUS_DOWNLOADING;
 								updateHistory();
 								updateTmp();
+								downloaded = DOWNLOAD_STATUS_DOWNLOADED;
+								
+								choosen = CHOOSEN_STATUS_CHOOSING;
 								ananyse();
-
+								choosen = CHOOSEN_STATUS_CHOOSEN;
+								
 								today.setDownload(GTask.DOWNLOADED);
 								today.setChoose(GTask.CHOOSEN);
 								gTaskService.update(today);
-								downloaded = 2;
+								
 								logger.info("routin download end");
 							}
 						}
 
-						logger.info("\n\n\n\n");
+						
 						Thread.sleep(60 * 1000 * 15);
 					} catch (Exception e) {
 						e.printStackTrace();
