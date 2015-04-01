@@ -78,7 +78,7 @@ public class Store {
 		if (workingDay == null) {
 			workingDay = FetchUtil.checkWorkingDayUsusal();
 		}
-		logger.info("\n\n\n\nsystem start,normal check workingday" + workingDay);
+		logger.info("system start,normal check workingday:" + workingDay);
 		today = gTaskService.queryLastTask();
 		if (StringUtils.isNoneBlank(today.getAcvu())) {
 			String[] ids = StringUtils.split(today.getAcvu(), ",");
@@ -254,6 +254,7 @@ public class Store {
 							}
 						}
 
+						logger.info("\n\n\n\n");
 						Thread.sleep(60 * 1000 * 15);
 					} catch (Exception e) {
 						e.printStackTrace();
