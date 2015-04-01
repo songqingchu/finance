@@ -79,7 +79,7 @@ public class Store {
 		if (workingDay == null) {
 			workingDay = FetchUtil.checkWorkingDayUsusal();
 		}
-		logger.info("system start£¬normal check workingday£º" + workingDay);
+		logger.info("system start,normal check workingday" + workingDay);
 		today = gTaskService.queryLastTask();
 		if (StringUtils.isNoneBlank(today.getAcvu())) {
 			String[] ids = StringUtils.split(today.getAcvu(), ",");
@@ -105,7 +105,7 @@ public class Store {
 			l.addAll(Arrays.asList(ids));
 			store.put("av10", l);
 		}
-		logger.info("system start£¬load anasys result");
+		logger.info("system start,load anasys result");
 
 		if (today != null) {
 			if (workingDay) {
@@ -160,7 +160,7 @@ public class Store {
 						if (d.after(beginTime) && d.before(beginTime3)) {
 
 							workingDay = FetchUtil.checkWorkingDay2();
-							logger.info("routin check workingday£º" + workingDay);
+							logger.info("routin check workingday:" + workingDay);
 							if (workingDay) {
 								today = gTaskService.queryLastTask();
 								if (today.getDate().getDate() != new Date()
