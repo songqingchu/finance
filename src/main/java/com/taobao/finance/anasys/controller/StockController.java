@@ -562,7 +562,9 @@ public class StockController {
 				symbol="sz"+symbol;
 			}
 		}else{
+			logger.info("symbol before:"+symbol);
 			symbol=Fetch_AllStock.nameMap.get(symbol);
+			logger.info("symbol after:"+symbol);
 			logger.info(Fetch_AllStock.nameMap);
 		}
 		
