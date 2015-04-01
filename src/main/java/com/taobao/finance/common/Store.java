@@ -79,7 +79,7 @@ public class Store {
 		if (workingDay == null) {
 			workingDay = FetchUtil.checkWorkingDayUsusal();
 		}
-		logger.info("系统启动，常规检查是否开始日：" + workingDay);
+		logger.info("system start，normal check workingday：" + workingDay);
 		today = gTaskService.queryLastTask();
 		if (StringUtils.isNoneBlank(today.getAcvu())) {
 			String[] ids = StringUtils.split(today.getAcvu(), ",");
@@ -105,7 +105,7 @@ public class Store {
 			l.addAll(Arrays.asList(ids));
 			store.put("av10", l);
 		}
-		logger.info("系统启动，加载分析结果");
+		logger.info("system start，load anasys result");
 
 		if (today != null) {
 			if (workingDay) {
@@ -139,7 +139,7 @@ public class Store {
 
 				while (true) {
 					try {
-						logger.info("心跳检测");
+						logger.info("heart beat check---------------------------------------");
 						today = gTaskService.queryLastTask();
 						if (today.getDate().getDate() == new Date().getDate()) {
 							if (today.getWorking() == 1) {
@@ -160,7 +160,7 @@ public class Store {
 						if (d.after(beginTime) && d.before(beginTime3)) {
 
 							workingDay = FetchUtil.checkWorkingDay2();
-							logger.info("每天例行检查开市状况：" + workingDay);
+							logger.info("routin check workingday：" + workingDay);
 							if (workingDay) {
 								today = gTaskService.queryLastTask();
 								if (today.getDate().getDate() != new Date()
@@ -203,18 +203,18 @@ public class Store {
 								} else {
 									canChoose = false;
 								}
-								logger.info("决定是否需要分析:" + canChoose);
+								logger.info("decide need choose:" + canChoose);
 							}
 
 							if (canChoose) {
-								logger.info("例行分析");
+								logger.info("routin choose begin");
 								choosen = CHOOSEN_STATUS_CHOOSING;
 								ananyse();
 								choosen = CHOOSEN_STATUS_CHOOSEN;
 								today.setChoose((byte) CHOOSEN_STATUS_CHOOSEN);
 								today.setUpDate(new Date());
 								gTaskService.update(today);
-								logger.info("例行分析结束");
+								logger.info("routin choose end");
 							}
 						}
 
@@ -234,11 +234,11 @@ public class Store {
 								} else {
 									canDownload = true;
 								}
-								logger.info("决定是否需要下载:" + canDownload);
+								logger.info("decide need download:" + canDownload);
 							}
 
 							if (canDownload) {
-								logger.info("例行下载");
+								logger.info("routin download begin");
 								today.setDownload(GTask.DOWNLOADING);
 								today.setWorking(GTask.WORKING);
 								today.setChoose(GTask.NON_CHOOSE);
@@ -253,7 +253,7 @@ public class Store {
 								today.setChoose(GTask.CHOOSEN);
 								gTaskService.update(today);
 								downloaded = 2;
-								logger.info("例行下载结束");
+								logger.info("routin download end");
 							}
 						}
 
