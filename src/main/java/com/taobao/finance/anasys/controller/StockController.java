@@ -584,6 +584,7 @@ public class StockController {
 		if(store.downloaded==2){
 			download=true;
 		}
+		logger.info("name to symbol:"+symbol);
 		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay,download);
 		return map;
 	}	
