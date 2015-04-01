@@ -245,13 +245,13 @@ public class MockUtil {
 		return ave;
 	}
 	
-	public static Map<String,Object> mockData3(String symbol,Boolean working,Boolean shi) throws IOException, ParseException{
+	public static Map<String,Object> mockData3(String symbol,Boolean working,Boolean downloaded) throws IOException, ParseException{
 		Map<String,Object> m=new HashMap<String,Object>();
 		
 		List<Stock> l=Hisdata_Base.readHisDataMerge(symbol, null);
 		
 		if(working){
-			if(shi){
+			if(!downloaded){
 				Stock s=Fetch_SingleStock.fetch(symbol);
 				l.add(s);
 			}

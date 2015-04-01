@@ -584,7 +584,11 @@ public class StockController {
 		}
 		
 		List<GPublicStock> his=this.gPublicStockService.queryHistory(symbol);
-		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay,shi);
+		Boolean download=false;
+		if(store.downloaded==2){
+			download=true;
+		}
+		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay,download);
 		return map;
 	}	
 	
