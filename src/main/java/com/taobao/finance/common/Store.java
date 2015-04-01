@@ -178,7 +178,7 @@ public class Store {
 									t.setChoose(GTask.NON_CHOOSE);
 									t.setInsDate(new Date());
 									t = gTaskService.insert(t);
-									logger.info("–¥»Î»ŒŒÒ");
+									logger.info("\n\n\n\ninsert task");
 								}
 							}
 
