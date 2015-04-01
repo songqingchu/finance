@@ -563,6 +563,7 @@ public class StockController {
 			}
 		}else{
 			symbol=Fetch_AllStock.nameMap.get(symbol);
+			logger.info(Fetch_AllStock.nameMap);
 		}
 		
 		
