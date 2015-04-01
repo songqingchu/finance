@@ -156,6 +156,7 @@ public class Store {
 					   if(d.after(beginTime)&&d.before(beginTime3)){
 						   workingDay=FetchUtil.checkWorkingDay2();
 						   if(workingDay){
+							   today=gTaskService.queryLastTask();
 							   if(today.getDate().getDate()!=new Date().getDate()){
 	                    		   GTask t=new GTask();
 	   							   Date dd=new Date();
