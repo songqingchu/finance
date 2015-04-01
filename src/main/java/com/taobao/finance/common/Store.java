@@ -15,6 +15,8 @@ import java.util.concurrent.Callable;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -35,19 +37,20 @@ import com.taobao.finance.task.HisDataTask;
 import com.taobao.finance.task.UnformalDataTask;
 import com.taobao.finance.util.FetchUtil;
 import com.taobao.finance.util.ThreadUtil;
+
 @Component
 @DependsOn("fetchUtil")
 public class Store {
+	private static final Logger logger = LoggerFactory.getLogger("taskLogger");
 	public Map<String, List<String>> store = new HashMap<String, List<String>>();
 	public Map<String, Integer> download = new HashMap<String, Integer>();
 	public Map<String, Integer> choose = new HashMap<String, Integer>();
-	public Map<String,Stock> publicPool=new HashMap<String,Stock>();
+	public Map<String, Stock> publicPool = new HashMap<String, Stock>();
 	public Map<String, Boolean> checkWorkingRecord = new HashMap<String, Boolean>();
-	public List<GPublicStock> publicStock=new ArrayList<GPublicStock>();
-	public List<GPublicStock> history=new ArrayList<GPublicStock>();
-	
-	
-	public static Boolean workingDay=null;
+	public List<GPublicStock> publicStock = new ArrayList<GPublicStock>();
+	public List<GPublicStock> history = new ArrayList<GPublicStock>();
+
+	public static Boolean workingDay = null;
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
 	public static DateFormat DF2 = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
@@ -57,314 +60,323 @@ public class Store {
 	public static int CHOOSEN_STATUS_CHOOSEN = 2;
 	public static int downloaded = 0;
 	public static int choosen = 0;
-	
+
 	@Autowired
 	private ThreadService threadService;
-	
+
 	@Autowired
 	private GTaskService gTaskService;
-	
+
 	private GTask today;
-	
+
 	public Store() {
-		
+
 	}
-	
+
 	@PostConstruct
-	public void init(){
-		if(workingDay==null){
-			workingDay=FetchUtil.checkWorkingDayUsusal();
+	public void init() {
+
+		if (workingDay == null) {
+			workingDay = FetchUtil.checkWorkingDayUsusal();
 		}
-		today=gTaskService.queryLastTask();
-		if(StringUtils.isNoneBlank(today.getAcvu())){
-			String [] ids=StringUtils.split(today.getAcvu(),",");
-			List<String> l=new ArrayList<String>();
+		logger.info("系统启动，常规检查是否开始日：" + workingDay);
+		today = gTaskService.queryLastTask();
+		if (StringUtils.isNoneBlank(today.getAcvu())) {
+			String[] ids = StringUtils.split(today.getAcvu(), ",");
+			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
-			store.put("acvu",l );
+			store.put("acvu", l);
 		}
-		if(StringUtils.isNoneBlank(today.getBig())){
-			String [] ids=StringUtils.split(today.getBig(),",");
-			List<String> l=new ArrayList<String>();
+		if (StringUtils.isNoneBlank(today.getBig())) {
+			String[] ids = StringUtils.split(today.getBig(), ",");
+			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
-			store.put("big",l );
+			store.put("big", l);
 		}
-		if(StringUtils.isNoneBlank(today.getAv5())){
-			String [] ids=StringUtils.split(today.getAv5(),",");
-			List<String> l=new ArrayList<String>();
+		if (StringUtils.isNoneBlank(today.getAv5())) {
+			String[] ids = StringUtils.split(today.getAv5(), ",");
+			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
-			store.put("av5",l );
+			store.put("av5", l);
 		}
-		if(StringUtils.isNoneBlank(today.getAv10())){
-			String [] ids=StringUtils.split(today.getAv10(),",");
-			List<String> l=new ArrayList<String>();
+		if (StringUtils.isNoneBlank(today.getAv10())) {
+			String[] ids = StringUtils.split(today.getAv10(), ",");
+			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
-			store.put("av10",l );
+			store.put("av10", l);
 		}
-		
-		
-		if(today!=null){
-			if(workingDay){
-				Date d=new Date();
-				if(today.getDate().getDate()==d.getDate()){
-					downloaded=today.getDownload();
-					choosen=today.getChoose();
-				}else{
-					downloaded=0;
-					choosen=0;
+		logger.info("系统启动，加载分析结果");
+
+		if (today != null) {
+			if (workingDay) {
+				Date d = new Date();
+				if (today.getDate().getDate() == d.getDate()) {
+					downloaded = today.getDownload();
+					choosen = today.getChoose();
+				} else {
+					downloaded = 0;
+					choosen = 0;
 				}
-			}else{
-				Date d=new Date();
-				if(today.getDate().getDate()==d.getDate()){
-					
-				}else{
-					downloaded=today.getDownload();
-					choosen=today.getChoose();
+			} else {
+				Date d = new Date();
+				if (today.getDate().getDate() == d.getDate()) {
+
+				} else {
+					downloaded = today.getDownload();
+					choosen = today.getChoose();
 				}
 			}
-		}else{
-			downloaded=0;
-			choosen=0;
+		} else {
+			downloaded = 0;
+			choosen = 0;
 		}
-		
-		
-		
-		publicStock=this.gPublicStockService.queryAll();
-		history=this.gPublicStockService.queryHistory();
-		Thread d=new Thread(){
-			@SuppressWarnings("deprecation")
-			public void run(){
-				try{
-				   while(true){
-					   today=gTaskService.queryLastTask();
-					   if(today.getDate().getDate()==new Date().getDate()){
-						   if(today.getWorking()==1){
-							   workingDay=true;
-						   }
-					   }else{
-						   workingDay=false;
-					   }
-					   
-					   Date d=new Date();
-					   String endDateStr=DF.format(d)+" 15:00:00";
-					   String beginDateStr=DF.format(d)+" 09:30:00";
-					   String beginDateStr3=DF.format(d)+" 10:30:00";
-					   Date closeTime=DF2.parse(endDateStr);
-					   Date beginTime=DF2.parse(beginDateStr);
-					   Date beginTime3=DF2.parse(beginDateStr3);
 
-					   
-					   if(d.after(beginTime)&&d.before(beginTime3)){
-						   workingDay=FetchUtil.checkWorkingDay2();
-						   if(workingDay){
-							   today=gTaskService.queryLastTask();
-							   if(today.getDate().getDate()!=new Date().getDate()){
-	                    		   GTask t=new GTask();
-	   							   Date dd=new Date();
-	   							   String dstr=DF.format(dd);
-	   						   	   try {
-	   								  t.setDate(DF.parse(dstr));
-	   							   } catch (ParseException e) {
-	   							  	  e.printStackTrace();
-	   							   }
-	   							   t.setDownload(GTask.NON_DOWNLOAD);
-	   							   t.setWorking(GTask.WORKING);
-	   							   t.setChoose(GTask.NON_CHOOSE);
-	   							   t.setInsDate(new Date());
-	   							   t=gTaskService.insert(t);
-						        }
-						   }
-						   
-						   if(workingDay){
-							   downloaded=0;
-						   }
-					   }
-					   
-					   
-					   if(d.after(closeTime)){
-                    	   boolean canChoose=false;
-                    	   if(workingDay){
-                    		   if(today!=null){
-                    			   if(today.getDate().getDate()==d.getDate()){
-                        			   if(today.getDownload()==2&&today.getChoose()!=2){
-                        				   canChoose=true;
-                        			   }
-                        		   }else{
-                        			   canChoose=false;
-                        		   }
-                    		   }else{
-                    			   canChoose=false;
-                    		   }  
-                    	   }
-                    	   
-                    	   if(canChoose){
-    						   choosen=CHOOSEN_STATUS_CHOOSING;
-    						   ananyse();
-    						   choosen=CHOOSEN_STATUS_CHOOSEN;
-    						   today.setChoose((byte)CHOOSEN_STATUS_CHOOSEN);
-    						   today.setUpDate(new Date());
-   							   gTaskService.update(today);
-    					   }
-					   }
-					   
-					   
-                       if(d.after(closeTime)){
-                    	   boolean canDownload=false;
-                    	   if(workingDay){
-                    		   if(today!=null){
-                    			   if(today.getDate().getDate()==d.getDate()){
-                        			   if(today.getDownload()==1||today.getDownload()==2){
-                        				   canDownload=false;
-                        			   }
-                        		   }else{
-                        			   canDownload=true;
-                        		   }
-                    		   }else{
-                    			   canDownload=true;
-                    		   }
-                    	   }
-                    	   
-                    	   
-                    	   if(canDownload){
-   							   today.setDownload(GTask.DOWNLOADING);
-   							   today.setWorking(GTask.WORKING);
-   							   today.setChoose(GTask.NON_CHOOSE);
-   							   today=gTaskService.update(today);
-   							   downloaded=1;
-   							
-                    		   updateHistory();
-   							   updateTmp();
-   							   ananyse();
-   							
-   							   today.setDownload(GTask.DOWNLOADED);
-   							   today.setChoose(GTask.CHOOSEN);
-   							   gTaskService.update(today);
-   							   downloaded=2;
-                    	   }
-					   }
-					   
-					   Thread.sleep(60*1000*15);
-				   }
-				}catch(Exception e){
-				   e.printStackTrace();
+		publicStock = this.gPublicStockService.queryAll();
+		history = this.gPublicStockService.queryHistory();
+		Thread d = new Thread() {
+			@SuppressWarnings("deprecation")
+			public void run() {
+
+				while (true) {
+					try {
+						logger.info("心跳检测");
+						today = gTaskService.queryLastTask();
+						if (today.getDate().getDate() == new Date().getDate()) {
+							if (today.getWorking() == 1) {
+								workingDay = true;
+							}
+						} else {
+							workingDay = false;
+						}
+
+						Date d = new Date();
+						String endDateStr = DF.format(d) + " 15:00:00";
+						String beginDateStr = DF.format(d) + " 09:30:00";
+						String beginDateStr3 = DF.format(d) + " 10:30:00";
+						Date closeTime = DF2.parse(endDateStr);
+						Date beginTime = DF2.parse(beginDateStr);
+						Date beginTime3 = DF2.parse(beginDateStr3);
+
+						if (d.after(beginTime) && d.before(beginTime3)) {
+
+							workingDay = FetchUtil.checkWorkingDay2();
+							logger.info("每天例行检查开市状况：" + workingDay);
+							if (workingDay) {
+								today = gTaskService.queryLastTask();
+								if (today.getDate().getDate() != new Date()
+										.getDate()) {
+									GTask t = new GTask();
+									Date dd = new Date();
+									String dstr = DF.format(dd);
+									try {
+										t.setDate(DF.parse(dstr));
+									} catch (ParseException e) {
+										e.printStackTrace();
+									}
+									t.setDownload(GTask.NON_DOWNLOAD);
+									t.setWorking(GTask.WORKING);
+									t.setChoose(GTask.NON_CHOOSE);
+									t.setInsDate(new Date());
+									t = gTaskService.insert(t);
+									logger.info("写入任务");
+								}
+							}
+
+							if (workingDay) {
+								downloaded = 0;
+							}
+						}
+
+						if (d.after(closeTime)) {
+							boolean canChoose = false;
+							if (workingDay) {
+								if (today != null) {
+									if (today.getDate().getDate() == d
+											.getDate()) {
+										if (today.getDownload() == 2
+												&& today.getChoose() != 2) {
+											canChoose = true;
+										}
+									} else {
+										canChoose = false;
+									}
+								} else {
+									canChoose = false;
+								}
+								logger.info("决定是否需要分析:" + canChoose);
+							}
+
+							if (canChoose) {
+								logger.info("例行分析");
+								choosen = CHOOSEN_STATUS_CHOOSING;
+								ananyse();
+								choosen = CHOOSEN_STATUS_CHOOSEN;
+								today.setChoose((byte) CHOOSEN_STATUS_CHOOSEN);
+								today.setUpDate(new Date());
+								gTaskService.update(today);
+								logger.info("例行分析结束");
+							}
+						}
+
+						if (d.after(closeTime)) {
+							boolean canDownload = false;
+							if (workingDay) {
+								if (today != null) {
+									if (today.getDate().getDate() == d
+											.getDate()) {
+										if (today.getDownload() == 1
+												|| today.getDownload() == 2) {
+											canDownload = false;
+										}
+									} else {
+										canDownload = true;
+									}
+								} else {
+									canDownload = true;
+								}
+								logger.info("决定是否需要下载:" + canDownload);
+							}
+
+							if (canDownload) {
+								logger.info("例行下载");
+								today.setDownload(GTask.DOWNLOADING);
+								today.setWorking(GTask.WORKING);
+								today.setChoose(GTask.NON_CHOOSE);
+								today = gTaskService.update(today);
+								downloaded = 1;
+
+								updateHistory();
+								updateTmp();
+								ananyse();
+
+								today.setDownload(GTask.DOWNLOADED);
+								today.setChoose(GTask.CHOOSEN);
+								gTaskService.update(today);
+								downloaded = 2;
+								logger.info("例行下载结束");
+							}
+						}
+
+						Thread.sleep(60 * 1000 * 15);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
+
 			}
 		};
 		d.setName("check_thread");
 		d.start();
 	}
-	
+
 	@Autowired
 	private GPublicStockService gPublicStockService;
 
-	
-	public void removeFromPublic(String symbol){
-		List<GPublicStock> l=new ArrayList<GPublicStock>();
-		for(GPublicStock s:this.publicStock){
-			if(!s.getSymbol().equals(symbol)){
+	public void removeFromPublic(String symbol) {
+		List<GPublicStock> l = new ArrayList<GPublicStock>();
+		for (GPublicStock s : this.publicStock) {
+			if (!s.getSymbol().equals(symbol)) {
 				l.add(s);
 			}
 		}
-		this.publicStock=l;
+		this.publicStock = l;
 	}
-	
-	public void reloadPublicStock(){
-		publicStock=this.gPublicStockService.queryAll();
+
+	public void reloadPublicStock() {
+		publicStock = this.gPublicStockService.queryAll();
 	}
-	
-	public void reloadHistoryStock(){
-		history=this.gPublicStockService.queryHistory();
+
+	public void reloadHistoryStock() {
+		history = this.gPublicStockService.queryHistory();
 	}
-	
-	public void reloadStatus(){
-		//List<GTask> l=this.gTaskService.queryLastTenTask();
+
+	public void reloadStatus() {
+		// List<GTask> l=this.gTaskService.queryLastTenTask();
 	}
-	
-	
-	
-	public void updateTmp(){
-		Set<String> s=Fetch_AllStock.map.keySet();
-		List<String> symbolList=new ArrayList<String>();
+
+	public void updateTmp() {
+		Set<String> s = Fetch_AllStock.map.keySet();
+		List<String> symbolList = new ArrayList<String>();
 		symbolList.addAll(s);
-		List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
-		List<Callable<Object>> callList=new ArrayList<Callable<Object>>();
-		for(List<Object> sys:symbolTaskList){
-			UnformalDataTask t=new UnformalDataTask(sys);
+		List<List<Object>> symbolTaskList = ThreadUtil.divide(symbolList, 16);
+		List<Callable<Object>> callList = new ArrayList<Callable<Object>>();
+		for (List<Object> sys : symbolTaskList) {
+			UnformalDataTask t = new UnformalDataTask(sys);
 			callList.add(t);
 		}
-		List<Object> r=threadService.service(callList);
+		List<Object> r = threadService.service(callList);
 		r.size();
 	}
-	
-	public void updateHistory(){
-		Fetch_AllStock.getData();		
-		Set<String> s=Fetch_AllStock.map.keySet();
-		List<String> symbolList=new ArrayList<String>();
+
+	public void updateHistory() {
+		Fetch_AllStock.getData();
+		Set<String> s = Fetch_AllStock.map.keySet();
+		List<String> symbolList = new ArrayList<String>();
 		symbolList.addAll(s);
-		List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
-		List<Callable<Object>> callList=new ArrayList<Callable<Object>>();
-		for(List<Object> sys:symbolTaskList){
-			HisDataTask t=new HisDataTask(sys,false);
+		List<List<Object>> symbolTaskList = ThreadUtil.divide(symbolList, 16);
+		List<Callable<Object>> callList = new ArrayList<Callable<Object>>();
+		for (List<Object> sys : symbolTaskList) {
+			HisDataTask t = new HisDataTask(sys, false);
 			callList.add(t);
 		}
-		List<Object> r=threadService.service(callList);
+		List<Object> r = threadService.service(callList);
 		r.size();
 	}
-	
+
 	public void ananyse() {
 		List<Stock> big = new BigTrend_Choose_MultiThread().choose();
 		List<Stock> acvu = new AVCU_Choose_MultiThread().choose();
 		List<Stock> av5 = new AV5_Trend_Choose_MultiThread().choose();
 		List<Stock> av10 = new AV10_Trend_Choose_MultiThread().choose();
 		List<Stock> tp = new TP_Choose_MultiThread().choose();
-		
-		List<String> bigs=new ArrayList<String>();
-		for(Stock s:big){
+
+		List<String> bigs = new ArrayList<String>();
+		for (Stock s : big) {
 			bigs.add(s.getSymbol());
 		}
-		
-		List<String> acvus=new ArrayList<String>();
-		for(Stock s:acvu){
+
+		List<String> acvus = new ArrayList<String>();
+		for (Stock s : acvu) {
 			acvus.add(s.getSymbol());
 		}
-		
-		List<String> av5s=new ArrayList<String>();
-		for(Stock s:av5){
+
+		List<String> av5s = new ArrayList<String>();
+		for (Stock s : av5) {
 			av5s.add(s.getSymbol());
 		}
-		
-		List<String> av10s=new ArrayList<String>();
-		for(Stock s:av10){
+
+		List<String> av10s = new ArrayList<String>();
+		for (Stock s : av10) {
 			av10s.add(s.getSymbol());
 		}
-		
-		List<String> tps=new ArrayList<String>();
-		for(Stock s:tp){
+
+		List<String> tps = new ArrayList<String>();
+		for (Stock s : tp) {
 			tps.add(s.getSymbol());
 		}
-		
-		if(this.today!=null){
-			GTask t=today;
-			if(bigs.size()>0){
-				t.setBig(StringUtils.join(bigs,","));
+
+		if (this.today != null) {
+			GTask t = today;
+			if (bigs.size() > 0) {
+				t.setBig(StringUtils.join(bigs, ","));
 			}
-			if(av5.size()>0){
-				t.setAv5(StringUtils.join(av5s,","));
+			if (av5.size() > 0) {
+				t.setAv5(StringUtils.join(av5s, ","));
 			}
-			if(av10.size()>0){
-				t.setAv10(StringUtils.join(av10s,","));
+			if (av10.size() > 0) {
+				t.setAv10(StringUtils.join(av10s, ","));
 			}
-			if(tp.size()>0){
-				t.setTp(StringUtils.join(tps,","));
+			if (tp.size() > 0) {
+				t.setTp(StringUtils.join(tps, ","));
 			}
-			if(acvu.size()>0){
-				t.setAcvu(StringUtils.join(acvus,","));
+			if (acvu.size() > 0) {
+				t.setAcvu(StringUtils.join(acvus, ","));
 			}
 			t.setChoose(GTask.CHOOSEN);
 			t.setUpDate(new Date());
 			gTaskService.update(t);
 		}
-		
-		
+
 		store.put("big", bigs);
 		store.put("acvu", acvus);
 		store.put("av5", av5s);
@@ -389,11 +401,11 @@ public class Store {
 	}
 
 	public void setDownloading() {
-		downloaded=1;
+		downloaded = 1;
 	}
 
 	public void setDownloaded() {
-		downloaded=2;
+		downloaded = 2;
 	}
 
 	public int getChooseStatus() {
@@ -406,10 +418,10 @@ public class Store {
 	}
 
 	public void setChoosed() {
-		choosen=2;
+		choosen = 2;
 	}
-	
+
 	public void setChoosing() {
-		choosen=1;
+		choosen = 1;
 	}
 }
