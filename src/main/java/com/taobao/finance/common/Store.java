@@ -190,10 +190,8 @@ public class Store {
 							boolean canChoose = false;
 							if (workingDay) {
 								if (today != null) {
-									if (today.getDate().getDate() == d
-											.getDate()) {
-										if (today.getDownload() == 2
-												&& today.getChoose() != 2) {
+									if (today.getDate().getDate() == d.getDate()) {
+										if (today.getDownload() == 2&& today.getChoose() == 1) {
 											canChoose = true;
 										}
 									} else {
@@ -221,11 +219,11 @@ public class Store {
 							boolean canDownload = false;
 							if (workingDay) {
 								if (today != null) {
-									if (today.getDate().getDate() == d
-											.getDate()) {
-										if (today.getDownload() == 1
-												|| today.getDownload() == 2) {
+									if (today.getDate().getDate() == d.getDate()) {
+										if (today.getDownload() == 1|| today.getDownload() == 2) {
 											canDownload = false;
+										}else{
+											canDownload = true;
 										}
 									} else {
 										canDownload = true;
