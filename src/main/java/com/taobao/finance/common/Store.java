@@ -200,6 +200,7 @@ public class Store {
 								} else {
 									canChoose = false;
 								}
+								logger.info(today);
 								logger.info("decide need choose:" + canChoose);
 							}
 
@@ -231,6 +232,7 @@ public class Store {
 								} else {
 									canDownload = true;
 								}
+								logger.info(today);
 								logger.info("decide need download:" + canDownload);
 							}
 

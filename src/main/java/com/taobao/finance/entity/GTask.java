@@ -27,6 +27,11 @@ public class GTask {
 	private Date upDate;
 	
 	
+	public String toString(){
+		String s="TASK, working:"+working+",download:"+download+",choose:"+choose+",ins:"+insDate+",upd:"+upDate;
+		return s;
+	}
+	
 	@Column(name = "ins_tm")
 	public Date getInsDate() {
 		return insDate;
