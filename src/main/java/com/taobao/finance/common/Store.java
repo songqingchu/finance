@@ -15,8 +15,7 @@ import java.util.concurrent.Callable;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -41,7 +40,7 @@ import com.taobao.finance.util.ThreadUtil;
 @Component
 @DependsOn("fetchUtil")
 public class Store {
-	private static final Logger logger = LoggerFactory.getLogger("taskLogger");
+	private static final Logger logger = Logger.getLogger("taskLogger");
 	public Map<String, List<String>> store = new HashMap<String, List<String>>();
 	public Map<String, Integer> download = new HashMap<String, Integer>();
 	public Map<String, Integer> choose = new HashMap<String, Integer>();
