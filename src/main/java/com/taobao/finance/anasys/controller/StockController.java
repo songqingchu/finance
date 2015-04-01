@@ -553,13 +553,6 @@ public class StockController {
 	@ResponseBody
 	public Map<String, Object> kData(@RequestParam String symbol) throws IOException, ParseException {
 		logger.info("request:get k data");
-		if(symbol.length()==6){
-			if(symbol.startsWith("6")){
-				symbol="sh"+symbol;
-			}else{
-				symbol="sz"+symbol;
-			}
-		}
 		if(symbol.startsWith("sz")||symbol.startsWith("sh")){
 			
 		}else if(symbol.length()==6&&StringUtils.isNumeric(symbol)){
@@ -571,6 +564,9 @@ public class StockController {
 		}else{
 			symbol=Fetch_AllStock.nameMap.get(symbol);
 		}
+		
+		
+		
 		
 		Calendar c=Calendar.getInstance();
 		int hour=c.get(Calendar.HOUR_OF_DAY);
