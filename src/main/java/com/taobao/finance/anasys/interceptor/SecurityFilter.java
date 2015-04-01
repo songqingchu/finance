@@ -58,6 +58,10 @@ public class SecurityFilter implements HandlerInterceptor{
     @Override  
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,  
             Object obj) throws Exception {  
+    	request.setCharacterEncoding("UTF-8");
+    	response.setCharacterEncoding("UTF-8");
+    	
+    	
         HttpSession session = request.getSession(true);    
         
         boolean working=Store.workingDay;
