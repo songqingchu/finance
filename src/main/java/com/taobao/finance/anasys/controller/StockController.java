@@ -31,27 +31,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.taobao.finance.check.impl.Check_AV10;
-import com.taobao.finance.check.impl.Check_AV20;
-import com.taobao.finance.check.impl.Check_AV5;
-import com.taobao.finance.check.impl.Check_AVCU;
-import com.taobao.finance.check.impl.Check_BigTrend;
-import com.taobao.finance.check.impl.Check_TP;
-import com.taobao.finance.choose.local.thread.AV10_Trend_Choose_MultiThread;
-import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
-import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
-import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
-import com.taobao.finance.entity.GTask;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
-import com.taobao.finance.fetch.impl.Fetch_SingleStock;
+import com.taobao.finance.service.DataService;
 import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.GTaskService;
 import com.taobao.finance.service.ThreadService;
+import com.taobao.finance.task.RealTask;
 import com.taobao.finance.util.FetchUtil;
 import com.taobao.finance.util.ThreadUtil;
 
@@ -63,14 +53,14 @@ public class StockController {
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
 	@Autowired
 	private Store store;
-	
 	@Autowired
 	private ThreadService threadService;
-	
 	@Autowired
 	private GPublicStockService gPublicStockService;
 	@Autowired
 	private GTaskService gTaskService;
+	
+	
 	
 	@RequestMapping(value = "/getToday.do", method = RequestMethod.GET)
 	public String stats(HttpServletRequest request,@RequestParam Boolean force) {
@@ -191,7 +181,7 @@ public class StockController {
 	public String record(HttpServletRequest request) throws IOException, ParseException {
 		logger.info("request:view record");
 		GUser user=(GUser) request.getSession().getAttribute("user");
-		List<StatsDO> l=MockUtil.getRecords(user.getId());
+		List<StatsDO> l=DataService.getRecords(user.getId());
 		if(l.size()>0){
 			StatsDO d=l.get(l.size()-1);
 			d.setLast(true);
@@ -205,8 +195,6 @@ public class StockController {
 		request.setAttribute("size", l.size());
 		return "record";
 	}
-	
-	
 	
 	
 	@RequestMapping(value = "/addRecord.do", method = RequestMethod.POST)
@@ -272,10 +260,10 @@ public class StockController {
 			br.write(line+"\n");
 			br.close();
 		}
-		
 		response.sendRedirect(request.getContextPath() + "/record.do");  
 		return null;
 	}
+	
 	
 	
 	@RequestMapping(value = "/delLastLine.do", method = RequestMethod.GET)
@@ -311,17 +299,17 @@ public class StockController {
 	}
 	
 	
+	
 	@RequestMapping(value = "/statsData.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> statsData(HttpServletRequest request) throws IOException, ParseException {
 		logger.info("request:get stats data");
 		GUser user=(GUser) request.getSession().getAttribute("user");
-		if(user!=null){
-			Integer id=user.getId();
-		}
-		Map<String,Object> m=MockUtil.mockStats(user.getId());
+		Map<String,Object> m=DataService.mockStats(user.getId());
 		return m;
 	}
+	
+	
 	
 	@RequestMapping(value = "/stats.do", method = RequestMethod.GET)
 	public String stats(HttpServletRequest request) throws IOException, ParseException {
@@ -336,11 +324,15 @@ public class StockController {
 		return "stats";
 	}
 	
+	
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		response.sendRedirect(request.getContextPath() + "/publicPool.do");  
 		return null;
 	}
+	
+	
 	
 	@RequestMapping(value = "/history.do", method = RequestMethod.GET)
 	public String history(HttpServletRequest request) {
@@ -351,7 +343,7 @@ public class StockController {
 	}
 	
 	
-	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/publicPool.do", method = RequestMethod.GET)
 	public String publicPool(HttpServletRequest request) {
 		logger.info("request:view public pool");
@@ -420,25 +412,6 @@ public class StockController {
 	
 	
 	
-	
-	static class RealTask implements Callable<Object>{
-		public List<Object> l; 
-		public RealTask(List<Object> l){
-			this.l=l;
-		}
-		public Object call(){
-			List<Stock> r=new ArrayList<Stock>();
-			for(Object s:l){
-				Stock st=Fetch_SingleStock.fetch((String)s);
-				if(st!=null){
-					r.add(st);
-				}
-			}
-			return r;
-		}
-	}
-	
-	
 	@RequestMapping(value = "/addPublicPool.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> addPublicPool(@RequestParam String symbols,
@@ -493,17 +466,16 @@ public class StockController {
 		return map;
 	}
 	
+	
 	@RequestMapping(value = "/help.do", method = RequestMethod.GET)
 	public String help(HttpServletRequest request) {
 		return "help";
 	}
 	
+	
 	@RequestMapping(value = "/choose.do", method = RequestMethod.GET)
 	public String choose(HttpServletRequest request) {
 		logger.info("request:choose stock");
-
-		
-		
 		if(!store.containsKey("acvu")){
 			store.ananyse();
 		}
@@ -512,8 +484,6 @@ public class StockController {
 		List<String> acvu=store.get("acvu");
 		List<String> av5=store.get("av5");
 		List<String> av10=store.get("av10");
-
-
 		
 		int size=0;
 		if(big.size()>size){
@@ -528,7 +498,6 @@ public class StockController {
 		if(av10.size()>size){
 			size=av10.size();
 		}
-
 
 		request.setAttribute("size", size);
 		request.setAttribute("big", big);
@@ -549,6 +518,8 @@ public class StockController {
 		return "stockPool";
 	}
 	
+	
+	
 	@RequestMapping(value = "/kData.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> kData(@RequestParam String symbol) throws IOException, ParseException {
@@ -568,29 +539,15 @@ public class StockController {
 			logger.info(Fetch_AllStock.nameMap);
 		}
 		
-		
-		
-		
-		Calendar c=Calendar.getInstance();
-		int hour=c.get(Calendar.HOUR_OF_DAY);
-		int minits=c.get(Calendar.MINUTE);
-		boolean shi=true;
-		if(hour<9&&hour>=15){
-			shi=false;
-		}
-		if(hour==9&&minits<30){
-			shi=false;
-		}
-		
-		List<GPublicStock> his=this.gPublicStockService.queryHistory(symbol);
 		Boolean download=false;
-		if(store.downloaded==2){
+		if(Store.downloaded==2){
 			download=true;
 		}
 		logger.info("name to symbol:"+symbol);
-		Map<String,Object> map=MockUtil.mockData3(symbol,store.workingDay,download);
+		Map<String,Object> map=DataService.getKData(symbol,Store.workingDay,download);
 		return map;
 	}	
+	
 	
 	
 	@RequestMapping(value = "/canonHistory.do", method = RequestMethod.GET)
@@ -610,7 +567,7 @@ public class StockController {
 		}
 		
 		List<GPublicStock> his=this.gPublicStockService.queryHistory(symbol);
-		Map<String,Object> map=MockUtil.canonHistory(symbol,store.workingDay,shi,his);
+		Map<String,Object> map=DataService.canonHistory(symbol,Store.workingDay,shi,his);
 		return map;
 	}	
 	
@@ -624,59 +581,6 @@ public class StockController {
 	}
 	
 	
-	@RequestMapping(value = "/match.do", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> match(@RequestParam String symbol) throws IOException, ParseException {
-		Map<String,Object> map=new HashMap<String,Object>();
-		List<String> bigList=new Check_BigTrend().check(symbol);
-		List<String> acvuList=new Check_AVCU().check(symbol);
-		List<String> av5List=new Check_AV5().check(symbol);
-		List<String> av10List=new Check_AV10().check(symbol);
-		List<String> av20List=new Check_AV20().check(symbol);
-		List<String> tpList=new Check_TP().check(symbol);
-		if(bigList.size()>5){
-			bigList=bigList.subList(0, 4);
-		}
-		if(acvuList.size()>5){
-			acvuList=acvuList.subList(0, 4);
-		}
-		if(av5List.size()>5){
-			av5List=av5List.subList(0, 4);
-		}
-		if(av10List.size()>5){
-			av10List=av10List.subList(0, 4);
-		}
-		if(av20List.size()>5){
-			av20List=av20List.subList(0, 4);
-		}
-		if(tpList.size()>5){
-			tpList=tpList.subList(0, 4);
-		}
-		String big=StringUtils.join(bigList,",&nbsp;&nbsp;");
-		String acvu=StringUtils.join(acvuList,",&nbsp;&nbsp;");
-		String av5=StringUtils.join(av5List,",&nbsp;&nbsp;");
-		String av10=StringUtils.join(av10List,",&nbsp;&nbsp;");
-		String av20=StringUtils.join(av20List,",&nbsp;&nbsp;");
-		String tp=StringUtils.join(tpList,",&nbsp;&nbsp;");
-		
-		map.put("big", big); 
-		map.put("acvu", acvu);    
-		map.put("av5", av5);
-		map.put("av10", av10);
-		map.put("av20", av20); 
-		map.put("tp", tp); 
-		String result="";
-		
-		result+="<b>BIG&nbsp;</b>:"+big+"<br>";
-		result+="<b>ACVU</b>:"+acvu+"<br>";
-		result+="<b>AV5&nbsp;</b>:"+av5+"<br>";
-		result+="<b>AV10</b>:"+av10+"<br>";
-		result+="<b>AV20</b>:"+av20+"<br>";
-		result+="<b>TP&nbsp;&nbsp;</b>:"+tp+"<br> ";
-		
-		map.put("result", result); 
-		return map;
-	}
 	
 	public static void main(String args[]){
 		System.out.println(StringUtils.isNumeric("002333"));

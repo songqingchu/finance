@@ -33,7 +33,7 @@ public class HomeController {
 	
 	
 	
-	@RequestMapping(value = "/bb.json", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/bb.json", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> home2() throws IOException, ParseException {
 		logger.info("requesting home");
@@ -45,7 +45,7 @@ public class HomeController {
 		
 		return map;
 	}
-
+*/
 
 	
 	@RequestMapping(value = "/gotoRegister.do", method = RequestMethod.GET)

@@ -100,20 +100,6 @@
 			}
 		});
 	   
-	   /* 
-	   $.ajax({
-			type : "get",
-			async : true, //同步执行
-			url : "/match.do?symbol="+symbol,
-			dataType : "json", //返回数据形式为json
-			success : function(result) {
-				if (result) {
-                   $("#check_div").html(result.result);
-				}
-			},
-			error : function(errorMsg) {
-			}
-		}); */
    });
    
    $(document).keydown(function(event){ 
