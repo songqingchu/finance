@@ -235,6 +235,7 @@ public class Store {
 							}
 						}
 						logger.info("check        end---------------------------------------");
+						logger.info("\n\n");
 						Thread.sleep(60 * 1000 * 15);
 					} catch (Exception e) {
 						e.printStackTrace();
