@@ -122,6 +122,7 @@ public class StockController {
 	
 	
 	
+	
 	@RequestMapping(value = "/ananyse.do", method = RequestMethod.GET)
 	public String choose(HttpServletRequest request,@RequestParam Boolean force) {
 		logger.info("request:ananyse");

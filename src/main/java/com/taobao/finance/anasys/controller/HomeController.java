@@ -1,12 +1,11 @@
 package com.taobao.finance.anasys.controller;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.taobao.finance.common.Store;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.service.GUserService;
@@ -26,40 +25,12 @@ public class HomeController {
 	private static final Logger logger = Logger.getLogger("fileLogger");
 	@Autowired
 	private Store store;
-	
 	@Autowired
 	private GUserService gUserService;
-	
-	
-	
-	
-/*	@RequestMapping(value = "/bb.json", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> home2() throws IOException, ParseException {
-		logger.info("requesting home");
-		Map<String, Object> map = new HashMap<String, Object>();
-		Map<String,Object> m=MockUtil.mockData2();
-		map.put("series", m.get("date"));
-		map.put("sRate", m.get("sRate"));
-		map.put("r", m.get("r"));
-		
-		return map;
-	}
-*/
-
 	
 	@RequestMapping(value = "/gotoRegister.do", method = RequestMethod.GET)
 	public String gotoRegister() {
 		return "register";
-	}
-
-	
-
-
-	
-	@RequestMapping(value = "/chart.do", method = RequestMethod.GET)
-	public String chart(HttpServletRequest request) {
-		return "c";
 	}
 	
 	@RequestMapping(value = "/security.do", method = RequestMethod.GET)
