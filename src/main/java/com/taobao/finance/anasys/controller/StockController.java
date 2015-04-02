@@ -534,10 +534,10 @@ public class StockController {
 				symbol="sz"+symbol;
 			}
 		}else{
-			logger.info("symbol before:"+symbol);
+			//logger.info("symbol before:"+symbol);
 			symbol=Fetch_AllStock.nameMap.get(symbol);
-			logger.info("symbol after:"+symbol);
-			logger.info(Fetch_AllStock.nameMap);
+			//logger.info("symbol after:"+symbol);
+			//logger.info(Fetch_AllStock.nameMap);
 		}
 		
 		Boolean download=false;
@@ -545,7 +545,7 @@ public class StockController {
 			download=true;
 		}
 		logger.info("name to symbol:"+symbol);
-		Map<String,Object> map=DataService.getKData(symbol,Store.workingDay,download);
+		Map<String,Object> map=DataService.getKData2(symbol,Store.workingDay,download);
 		return map;
 	}	
 	

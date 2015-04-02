@@ -62,6 +62,7 @@ public class Hisdata_Base {
 	
 	public static void save(String code,List<Stock> list){
 		String url=FILE_STOCK_HIS_BASE+code+".txt";
+		//String url="E:\\stock\\history\\"+code+".txt";
 		File f=new File(url);
 		if(!f.exists()){
 			createFile(url);

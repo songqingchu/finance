@@ -4,14 +4,14 @@
 
 
 	<appender name="fileAppender" class="org.apache.log4j.FileAppender">
-		<param name="File" value="${log.dir}/anasys.log" />
+		<param name="File" value="${log.dir}anasys.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
 		</layout>
 	</appender>
 	
 	<appender name="taskAppender" class="org.apache.log4j.FileAppender">
-		<param name="File" value="${log.dir}/task.log" />
+		<param name="File" value="${log.dir}task.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
 		</layout>

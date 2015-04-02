@@ -197,56 +197,35 @@ public class DataService {
 	}
 	
 	
-	
-	
-	
-	/*public static Map<String,Object> mockData2() throws IOException, ParseException{
-		Map<String,Object> m=new HashMap<String,Object>();
-		List<StatsDO> mine=read2();
-		DateFormat df=new SimpleDateFormat("yyyy.MM.dd");
-		Date startDate=df.parse(mine.get(0).getDate());
-
-		
-		List<String> dList=new ArrayList<String>();
-		List<Double> mL=new ArrayList<Double>();
-		List<Double> shL=new ArrayList<Double>();
-		List<Double> szL=new ArrayList<Double>();
-		
-		List<Integer> sRate=new ArrayList<Integer>();
-		List<Integer> r=new ArrayList<Integer>();
-		List<Integer> yRate=new ArrayList<Integer>();
-		List<Integer> back=new ArrayList<Integer>();
-		for(StatsDO s:mine){
-			dList.add(s.getDate());
-			mL.add(s.getV());
-			sRate.add(s.getsRate());
-			r.add(s.getR());
-			yRate.add(s.getyRate());
-			back.add(s.getBack());
-		}
-
-		m.put("date",dList );
-		m.put("mine", mL);
-		m.put("sh", shL);
-		m.put("sz", szL);
-		
-		m.put("sRate",sRate );
-		m.put("yRate", yRate);
-		m.put("r", r);
-		m.put("back", back);
-		return m;
-	}*/
-	
 	public static Float getAve(List<Stock> l, int day, int start) {
-		Float ave = 0F;
-		Float total = 0F;
-		for (int i = start; i >= start - day + 1; i--) {
-			Float s=Float.parseFloat(l.get(i).getEndPrice());
-			total = total + s;
-		}
-		ave = total / day;
-		return ave;
+			Float ave = 0F;
+			Float total = 0F;
+			for (int i = start; i >= start - day + 1; i--) {
+				Float s=Float.parseFloat(l.get(i).getEndPrice());
+				total = total + s;
+			}
+			ave = total / day;
+			return ave;
 	}
+	
+	
+	public static Float getAve2(List<Stock> l, int day, int start) {
+		if(start-day>=-1){
+			Float ave = 0F;
+			Float total = 0F;
+			for (int i = start; i >= start - day + 1; i--) {
+				Float s=Float.parseFloat(l.get(i).getEndPrice());
+				total = total + s;
+			}
+			ave = total / day;
+			return ave;
+		}else{
+			return 0F;
+		}
+		
+	}
+	
+	
 	
 	public static Map<String,Object> getKData(String symbol,Boolean working,Boolean downloaded) throws IOException, ParseException{
 		Map<String,Object> m=new HashMap<String,Object>();
@@ -296,6 +275,128 @@ public class DataService {
 				data[260-i][4]=Float.parseFloat(s.getEndPrice());
 			}
 		}
+	
+		List<String> acvuDate=new Check_AVCU().check(symbol);
+		List<String> av5Date=new Check_AV5().check(symbol);
+		List<String> bigDate=new Check_BigTrend().check(symbol);
+		
+		List<Map<String,Object>> acvuTips=new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> av5Tips=new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> bigTips=new ArrayList<Map<String,Object>>();
+		
+		for(String s:acvuDate){
+			Date d=FetchUtil.FILE_FORMAT.parse(s);
+			Map<String,Object> mm=new HashMap<String, Object>();
+			mm.put("x", d);
+			mm.put("title", "ACVU");
+			acvuTips.add(mm);
+		}
+		for(String s:av5Date){
+			Date d=FetchUtil.FILE_FORMAT.parse(s);
+			Map<String,Object> mm=new HashMap<String, Object>();
+			mm.put("x", d);
+			mm.put("title", "AV5");
+			av5Tips.add(mm);
+		}
+		for(String s:bigDate){
+			Date d=FetchUtil.FILE_FORMAT.parse(s);
+			Map<String,Object> mm=new HashMap<String, Object>();
+			mm.put("x", d);
+			mm.put("title", "BIG");
+			bigTips.add(mm);
+		}
+		
+		
+		if(acvuTips.size()>0){
+			Collections.reverse(acvuTips);
+		}
+		if(av5Tips.size()>0){
+			Collections.reverse(av5Tips);
+		}
+		if(bigTips.size()>0){
+			Collections.reverse(bigTips);
+		}
+		
+		
+
+		m.put("av5",av5 );
+		m.put("av10", av10);
+		m.put("av20", av20);
+		m.put("vol", vol);	
+		m.put("data",data);
+		m.put("acvuTips",acvuTips);
+		m.put("av5Tips",av5Tips);
+		m.put("bigTips",bigTips);
+		
+		Stock s=l.get(l.size()-1);
+		Stock st=Fetch_AllStock.map.get(s.getSymbol());
+		String name=null;
+		if(st!=null){
+			name=st.getName();
+		}else{
+			name=s.getSymbol();
+		}
+		
+		m.put("name", name);
+		m.put("start", s.getStartPriceFloat());
+		m.put("high", s.getHighPriceFloat());
+		m.put("low", s.getLowPriceFloat());
+		m.put("end", s.getEndPriceFloat());
+		return m;
+	}
+	
+	
+	
+	public static Map<String,Object> getKData2(String symbol,Boolean working,Boolean downloaded) throws IOException, ParseException{
+		Map<String,Object> m=new HashMap<String,Object>();
+		List<Stock> l=Hisdata_Base.readHisDataMerge(symbol, null);
+		
+		if(working){
+			if(!downloaded){
+				Stock s=Fetch_SingleStock.fetch(symbol);
+				l.add(s);
+			}
+		}
+
+		int size=l.size();
+		Object[][] av5=new Object[size-1][2];
+		Object[][] av10=new Object[size-1][2];
+		Object[][] av20=new Object[size-1][2];
+		Object[][] data=new Object[size-1][5];
+		Object[][] vol=new Object[size-1][2];
+		
+		
+		
+
+			for (int i = 1; i <=size-1; i++) {
+				if(i==56){
+					l.size();
+				}
+				Stock s=l.get(l.size() - i);
+				Float v5 = getAve2(l, 5, l.size() - i);
+				Float v10 = getAve2(l, 10, l.size() - i);
+				Float v20 = getAve2(l, 20, l.size() - i);
+				
+				Date d=s.getDate()==null?new Date():s.getDate();
+				av5[size-1-i][0]=d;
+				av5[size-1-i][1]=v5;
+				
+				av10[size-1-i][0]=d;
+				av10[size-1-i][1]=v10;
+				
+				av20[size-1-i][0]=d;
+				av20[size-1-i][1]=v20;
+				
+				vol[size-1-i][0]=d;
+				vol[size-1-i][1]=s.getTradeNum();
+				
+				data[size-1-i][0]=d;
+				data[size-1-i][1]=Float.parseFloat(s.getStartPrice());
+				data[size-1-i][2]=Float.parseFloat(s.getLowPrice());
+				data[size-1-i][3]=Float.parseFloat(s.getHighPrice());
+				data[size-1-i][4]=Float.parseFloat(s.getEndPrice());
+			}
+
 	
 		List<String> acvuDate=new Check_AVCU().check(symbol);
 		List<String> av5Date=new Check_AV5().check(symbol);

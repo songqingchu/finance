@@ -75,9 +75,13 @@
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {
-					start=180;
 					base=result;
 					total=base.length;
+					if(total>80){
+						start=total-80;
+					}else{
+						start=0;
+					}
 					
 					var copyMap={};
 			    	copyMap.av5 = base.av5.slice(start);
