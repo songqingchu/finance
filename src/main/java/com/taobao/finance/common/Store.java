@@ -184,6 +184,7 @@ public class Store {
 
 							if (workingDay) {
 								downloaded = 0;
+								choosen=0;
 							}
 						}
 
