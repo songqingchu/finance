@@ -189,35 +189,6 @@ public class Store {
 							}
 						}
 
-						/*if (d.after(closeTime)) {
-							boolean canChoose = false;
-							if (workingDay) {
-								if (today != null) {
-									if (today.getDate().getDate() == d.getDate()) {
-										if (today.getDownload() == 2&& today.getChoose() == 1) {
-											canChoose = true;
-										}
-									} else {
-										canChoose = false;
-									}
-								} else {
-									canChoose = false;
-								}
-								logger.info(today);
-								logger.info("decide need choose:" + canChoose);
-							}
-
-							if (canChoose) {
-								logger.info("routin choose begin");
-								choosen = CHOOSEN_STATUS_CHOOSING;
-								ananyse();
-								choosen = CHOOSEN_STATUS_CHOOSEN;
-								today.setChoose((byte) CHOOSEN_STATUS_CHOOSEN);
-								today.setUpDate(new Date());
-								gTaskService.update(today);
-								logger.info("routin choose end");
-							}
-						}*/
 
 						if (d.after(closeTime)) {
 							boolean canDownload = false;
@@ -244,26 +215,25 @@ public class Store {
 								today.setDownload(GTask.DOWNLOADING);
 								today.setWorking(GTask.WORKING);
 								today.setChoose(GTask.NON_CHOOSE);
-								today = gTaskService.update(today);
-								
+								today = gTaskService.update(today);								
 								
 								downloaded = DOWNLOAD_STATUS_DOWNLOADING;
 								updateHistory();
 								updateTmp();
 								downloaded = DOWNLOAD_STATUS_DOWNLOADED;
+								logger.info("routin download end");								
 								
+								logger.info("routin ananyse begin");
 								choosen = CHOOSEN_STATUS_CHOOSING;
 								ananyse();
-								choosen = CHOOSEN_STATUS_CHOOSEN;
+								choosen = CHOOSEN_STATUS_CHOOSEN;	
+								logger.info("routin ananyse end");
 								
 								today.setDownload(GTask.DOWNLOADED);
 								today.setChoose(GTask.CHOOSEN);
 								gTaskService.update(today);
-								
-								logger.info("routin download end");
 							}
 						}
-
 						
 						Thread.sleep(60 * 1000 * 15);
 					} catch (Exception e) {

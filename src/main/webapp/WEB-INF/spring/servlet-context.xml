@@ -34,8 +34,8 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
-	<bean class="com.taobao.finance.common.Store" scope="singleton">
-	</bean>
+	<!-- <bean class="com.taobao.finance.common.Store" scope="singleton">
+	</bean> -->
 	
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
 	<context:component-scan base-package="com.taobao.finance" />
