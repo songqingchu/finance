@@ -111,7 +111,7 @@ text-decoration:none;
 			success : function(result) {
 				if (result) {
 					base=result;
-					total=base.length;
+					total=base.data.length;
 					if(total>80){
 						start=total-80;
 					}else{
