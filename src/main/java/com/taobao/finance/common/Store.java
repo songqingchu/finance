@@ -78,6 +78,8 @@ public class Store {
 		if (workingDay == null) {
 			workingDay = FetchUtil.checkWorkingDayUsusal();
 		}
+		logger.info("\n\n\n");
+		logger.info("*******************************************************");
 		logger.info("system start,normal check workingday:" + workingDay);
 		today = gTaskService.queryLastTask();
 		if (StringUtils.isNoneBlank(today.getAcvu())) {
@@ -129,7 +131,10 @@ public class Store {
 			downloaded = 0;
 			choosen = 0;
 		}
-
+		logger.info("*******************************************************");
+		
+		
+		
 		publicStock = this.gPublicStockService.queryAll();
 		history = this.gPublicStockService.queryHistory();
 		Thread d = new Thread() {
