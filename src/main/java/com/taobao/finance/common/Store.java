@@ -234,7 +234,7 @@ public class Store {
 								gTaskService.update(today);
 							}
 						}
-						
+						logger.info("check        end---------------------------------------");
 						Thread.sleep(60 * 1000 * 15);
 					} catch (Exception e) {
 						e.printStackTrace();
