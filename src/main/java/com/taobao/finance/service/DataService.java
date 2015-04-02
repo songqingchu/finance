@@ -362,7 +362,7 @@ public class DataService {
 		Object[][] av5=new Object[size-1][2];
 		Object[][] av10=new Object[size-1][2];
 		Object[][] av20=new Object[size-1][2];
-		Object[][] data=new Object[size-1][5];
+		Object[][] data=new Object[size-1][6];
 		Object[][] vol=new Object[size-1][2];
 		
 		
@@ -395,6 +395,9 @@ public class DataService {
 				data[size-1-i][2]=Float.parseFloat(s.getLowPrice());
 				data[size-1-i][3]=Float.parseFloat(s.getHighPrice());
 				data[size-1-i][4]=Float.parseFloat(s.getEndPrice());
+				Stock yesterday=l.get(l.size() - i-1);
+				Float rate=Float.parseFloat(s.getEndPrice())/Float.parseFloat(yesterday.getEndPrice())*100-100;
+				data[size-1-i][5]=rate;
 			}
 
 	

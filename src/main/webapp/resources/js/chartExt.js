@@ -389,14 +389,14 @@ var highStockChart = function(divID,result,crrentData,all){
 			   if(this.y == undefined){
 				   return;
 			   }
-			   /*for(var i =0;i<data.length;i++){
-				   if(this.x == data[i][0]){
-					   zdf = parseFloat(data[i][7]).toFixed(2);
-					   zde = parseFloat(data[i][8]).toFixed(2);
+			   for(var i =0;i<ohlcArray.length;i++){
+				   if(this.x == ohlcArray[i][0]){
+					   zdf = parseFloat(ohlcArray[i][5]).toFixed(2);
+				//	   zde = parseFloat(ohlcArray[i][8]).toFixed(2);
 				//	   hsl = parseFloat(data[i][9]).toFixed(2);
-					   zs = parseFloat(data[i][10]).toFixed(2);
+				//	   zs = parseFloat(ohlcArray[i][10]).toFixed(2);
 				   }
-			   }*/
+			   }
 			   open = this.points[0].point.open.toFixed(2);
 			   high = this.points[0].point.high.toFixed(2);
 			   low = this.points[0].point.low.toFixed(2);
@@ -439,6 +439,7 @@ var highStockChart = function(divID,result,crrentData,all){
     		  }else{
     			  tip += '涨跌幅：<span style="color: #33AA11;">'+zdf+' </span><br/>';
     		  }*/
+    		  tip += "涨幅："+zdf+"%<br/>";
     		  if(y>10000){
     			  tip += "成交量："+(y*0.0001).toFixed(2)+"(亿股)<br/>";
     		  }else{
