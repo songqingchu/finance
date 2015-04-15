@@ -87,4 +87,5 @@ B盈利，您的仓位率为30/(50+20)
 
 
 
+<jsp:include page="common/foot.jsp" flush="true"/>
 </body>

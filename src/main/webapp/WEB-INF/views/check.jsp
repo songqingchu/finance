@@ -35,6 +35,8 @@ text-decoration:none;
 </div>
 </div>
 <div id="container" style="height: 800px;float:left;"></div>
+
+<jsp:include page="common/foot.jsp" flush="true"/>
 </body>
 <script>
    var windowWidth=$(window).width();

@@ -55,6 +55,7 @@ text-decoration:none;
 <div id="check_div" style="float:left;margin-left: 80px"></div>
  -->
 <div id="container" style="height: 800px;float:left;"></div>
+<jsp:include page="common/foot.jsp" flush="true"/>
 </body>
 <script>
    var windowWidth=$(window).width();

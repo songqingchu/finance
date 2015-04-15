@@ -25,6 +25,7 @@
 	 </form>
 	
 	</div>
+<jsp:include page="common/foot.jsp" flush="true"/>
 </body>
 <script>
 

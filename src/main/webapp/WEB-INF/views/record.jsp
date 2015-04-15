@@ -128,6 +128,7 @@ td {
     <a href="#" id="cancelButton">取消</a>&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="stats.do" id="cancelButton">查看图表</a>
 </div>
+<jsp:include page="common/foot.jsp" flush="true"/>
 </body>
 <script>
 var newNode=false; 

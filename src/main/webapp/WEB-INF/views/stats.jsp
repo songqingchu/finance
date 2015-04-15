@@ -547,4 +547,5 @@
 	</script>
 </c:if>
    
+<jsp:include page="common/foot.jsp" flush="true"/>
 </body>

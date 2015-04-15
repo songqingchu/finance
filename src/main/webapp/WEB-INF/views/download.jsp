@@ -8,4 +8,5 @@
 <body>
 <jsp:include page="common/head.jsp" flush="true"/>
 	${message}
+<jsp:include page="common/foot.jsp" flush="true"/>
 </body>

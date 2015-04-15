@@ -4,5 +4,6 @@
 </HEAD>
 <BODY>
 	<h3>Successfully logged out.</h3>
-</BODY>
+<jsp:include page="common/foot.jsp" flush="true"/>
+</body>
 </HTML>

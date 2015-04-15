@@ -66,6 +66,7 @@ text-decoration:none;
 
 
 <div id="container" style="height: 800px;float:left;"></div>
+<jsp:include page="common/foot.jsp" flush="true"/>
 </body>
 <script>
    /* var f='function a(i){if(i>0){return true;}else{ return false;};} a(i)';
