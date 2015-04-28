@@ -128,7 +128,7 @@ public class StockController {
 		logger.info("request:ananyse");
 		if(Store.workingDay){
 			int status=store.getChooseStatus();
-			if(status==0){
+			if(status!=1){
 				store.setChoosing();
 				new Thread(){
 					public void run(){
