@@ -21,14 +21,17 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.log4j.Logger;
+
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.util.FetchUtil;
 import com.taobao.finance.util.ThreadUtil;
 
 public abstract class Local_Choose_MultiThread_Base {
-
+	private static final Logger logger = Logger.getLogger("taskLogger");
 	public List<Stock> choose() {
 		int threadNum = Runtime.getRuntime().availableProcessors();
+		
 		List<List<Stock>> l = ThreadUtil.split(threadNum);
 		ExecutorService service = Executors.newFixedThreadPool(threadNum);
 		CompletionService<List<Stock>> con = new ExecutorCompletionService<List<Stock>>(service);
@@ -38,6 +41,8 @@ public abstract class Local_Choose_MultiThread_Base {
 		}
 		List<Stock> r = new ArrayList<Stock>();
 		int i = 1;
+		logger.info("thread num:"+threadNum);
+		logger.info("task  size:"+ll.size());
 		while (i <= threadNum) {
 			try {
 				r.addAll(con.take().get());
