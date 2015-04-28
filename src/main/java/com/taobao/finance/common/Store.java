@@ -308,10 +308,15 @@ public class Store {
 	}
 
 	public void ananyse() {
+		logger.info("anaysys big trend");
 		List<Stock> big = new BigTrend_Choose_MultiThread().choose();
+		logger.info("anaysys acvu");
 		List<Stock> acvu = new AVCU_Choose_MultiThread().choose();
+		logger.info("anaysys av5");
 		List<Stock> av5 = new AV5_Trend_Choose_MultiThread().choose();
+		logger.info("anaysys av10");
 		List<Stock> av10 = new AV10_Trend_Choose_MultiThread().choose();
+		logger.info("anaysys tp");
 		List<Stock> tp = new TP_Choose_MultiThread().choose();
 
 		List<String> bigs = new ArrayList<String>();
@@ -358,6 +363,7 @@ public class Store {
 			}
 			t.setChoose(GTask.CHOOSEN);
 			t.setUpDate(new Date());
+			logger.info("update anasys result");
 			gTaskService.update(t);
 		}
 
