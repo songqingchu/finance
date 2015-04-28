@@ -136,14 +136,14 @@ public class StockController {
 						store.setChoosed();
 					}
 				}.start();
-				request.setAttribute("message", "开始分析！");
+				request.setAttribute("message", "工作日手动分析,开始分析！");
 			}
 			if(status==1){
-				request.setAttribute("message", "正在分析中！");
+				request.setAttribute("message", "工作日手动分析,正在分析中！");
 				return "choose";
 			}
 			if(status==2){
-				request.setAttribute("message", "今日数据已经分析完成！");
+				request.setAttribute("message", "工作日手动分析,今日数据已经分析完成！");
 				return "choose";
 			}
 		}else{
@@ -157,11 +157,11 @@ public class StockController {
 							store.setChoosed();
 						}
 					}.start();
-					request.setAttribute("message", "开始分析！");
+					request.setAttribute("message", "非公作日强制手动分析,开始分析！");
 					return "choose";
 				}
 				if(status==1){
-					request.setAttribute("message", "正在分析中！");
+					request.setAttribute("message", "非公作日强制手动分析,正在分析中！");
 					return "choose";
 				}
 			}else{
