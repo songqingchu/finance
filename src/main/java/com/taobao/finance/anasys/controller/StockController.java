@@ -149,7 +149,7 @@ public class StockController {
 		}else{
 			if(force){
 				int status=store.getChooseStatus();
-				if(status==0){
+				if(status!=1){
 					store.setChoosing();
 					new Thread(){
 						public void run(){
@@ -162,10 +162,6 @@ public class StockController {
 				}
 				if(status==1){
 					request.setAttribute("message", "正在分析中！");
-					return "choose";
-				}
-				if(status==2){
-					request.setAttribute("message", "今日数据已经分析完成！");
 					return "choose";
 				}
 			}else{
