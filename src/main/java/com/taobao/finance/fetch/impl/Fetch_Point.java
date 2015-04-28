@@ -11,13 +11,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-/**
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: www.dianwoba.com</p>
- * @author lijiayang
- * @date   2015Äê4ÔÂ16ÈÕ
- */
 public class Fetch_Point {
 	public static String url1 = "http://api.map.baidu.com/ag/coord/convert?x=";
 	public static String url2 = "&y=";
