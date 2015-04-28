@@ -308,6 +308,7 @@ public class Store {
 	}
 
 	public void ananyse() {
+		try{
 		logger.info("anaysys big trend");
 		List<Stock> big = new BigTrend_Choose_MultiThread().choose();
 		logger.info("anaysys acvu");
@@ -372,6 +373,10 @@ public class Store {
 		store.put("av5", av5s);
 		store.put("av10", av10s);
 		store.put("tp", tps);
+		}catch(Exception e){
+			logger.info(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public boolean containsKey(String key) {
