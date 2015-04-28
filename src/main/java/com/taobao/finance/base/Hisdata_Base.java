@@ -274,6 +274,9 @@ public class Hisdata_Base {
 		if(!INCLUDE_TODAY){
 			return ll;
 		}
+		if(ll.size()==0){
+			return ll;
+		}
 		Stock s=ll.get(ll.size()-1);
 		
 		File f=new File(url);
