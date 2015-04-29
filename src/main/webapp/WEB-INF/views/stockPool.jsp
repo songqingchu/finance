@@ -179,16 +179,63 @@ text-decoration:none;
 	    	tradeChart(copyMap);
 	    }
 	    if(event.keyCode == 37||event.keyCode == 39){
+	    	var a=null;
 	    	if(event.keyCode == 37) {
-               var a=$(currentNode).parent().prev();
+               a=$(currentNode).parent().prev();
                //var aa=$(a).children(".first");
-               $(a).trigger("click");
+               //$(a).trigger("click");
 		    }
 	    	if(event.keyCode == 39) {
-	    		var a=$(currentNode).parent().next();
+	    		a=$(currentNode).parent().next();
 	    		//var aa=$(a).children(".first");
-	    		$(a).trigger("click");
+	    		//$(a).trigger("click");
 		    }
+	    	
+	    	
+	    	//$(".symbolA").on("click",function(){
+	    		   currentNode=$(a);
+	    		   var symbol=$(a).attr("symbol");
+	    		   currentSymbol=symbol;
+	    		   $(".symbolA").css("background-color","");
+	    		   $(a).css("background-color","green");
+	    		   $.ajax({
+	    				type : "get",
+	    				async : true, //同步执行
+	    				url : "/kData.do?symbol="+symbol,
+	    				dataType : "json", //返回数据形式为json
+	    				success : function(result) {
+	    					if (result) {
+	    						base=result;
+	    						total=base.data.length;
+	    						if(total>80){
+	    							start=total-80;
+	    						}else{
+	    							start=0;
+	    						}
+	    						
+	    						var copyMap={};
+	    				    	copyMap.av5 = base.av5.slice(start);
+	    				    	copyMap.av10 = base.av10.slice(start);
+	    				    	copyMap.av20 = base.av20.slice(start);
+	    				    	copyMap.data = base.data.slice(start);
+	    				    	copyMap.vol = base.vol.slice(start);
+	    				    	copyMap.start=base.start;
+	    				    	copyMap.high=base.high;
+	    				    	copyMap.low=base.low;
+	    				    	copyMap.end=base.end;
+	    				    	copyMap.name=base.name;
+	    				    	copyMap.av5Tips=base.av5Tips;
+	    				    	copyMap.acvuTips=base.acvuTips;
+	    				    	copyMap.bigTips=base.bigTips;
+	    				    	
+	    				    	tradeChart(copyMap);
+	    					}
+	    				},
+	    				error : function(errorMsg) {
+	    				}
+	    			});
+	    		   
+	    	   //});
 	    }
    });  
    
