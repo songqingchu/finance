@@ -181,13 +181,13 @@ text-decoration:none;
 	    if(event.keyCode == 37||event.keyCode == 39){
 	    	if(event.keyCode == 37) {
                var a=$(currentNode).parent().prev();
-               var aa=$(a).children(".first");
-               $(aa).trigger("click");
+               //var aa=$(a).children(".first");
+               $(a).trigger("click");
 		    }
 	    	if(event.keyCode == 39) {
 	    		var a=$(currentNode).parent().next();
-	    		var aa=$(a).children(".first");
-	    		$(aa).trigger("click");
+	    		//var aa=$(a).children(".first");
+	    		$(a).trigger("click");
 		    }
 	    }
    });  
