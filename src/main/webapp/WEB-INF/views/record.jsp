@@ -37,7 +37,7 @@ td {
 <body>
 <jsp:include page="common/head.jsp" flush="true"/>   
 
-<div style="float:left;width:100%;height:500px">
+<div style="float:left;width:100%;">
 <form id="addForm" action="addRecord.do" method="post">
 <input name='lastValue' style='width:80px' type='hidden' value="${lastValue}"></input>
 <input name='lastVRate' style='width:80px' type='hidden' value="${lastVRate}"></input>
