@@ -28,13 +28,20 @@ text-decoration:none;
 <div style="width:300px;float:left;">
 <div style="width:300px;height:360px;float:left;overflow-y:auto;border:1px solid">
 <c:forEach var="s" items="${r}">  
-     <span  class="bigSymbol symbol" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.nameFormat}&nbsp;${s.ratePercent}</a></span>&nbsp;<c:if test="${sessionScope.root==true}">
+     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
+        ${s.nameFormat}&nbsp;${s.ratePercent}
+     </a>
+     
+     <c:if test="${sessionScope.root==true}">
      <a href="/setType.do?symbol=${s.symbol}&type=av5">av5</a>
      <a href="/setType.do?symbol=${s.symbol}&type=acvu">acv</a>
      <a href="/setType.do?symbol=${s.symbol}&type=oth">oth</a>
      <a href="/delFromPublicPool.do?symbol=${s.symbol}">删除</a>
      <a href="/removeFromPublicPool.do?symbol=${s.symbol}">移出</a> 
      </c:if>
+     </span>&nbsp;
+
 </c:forEach>
 </div>
 
@@ -64,11 +71,15 @@ text-decoration:none;
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);
+   
+   var head=$(".head").get(0);
+   var tail=$(".tail").get(0);
 
    var base;
    var start=0;
    var total;
    var currentSymbol;
+   var currentNode=tail;
    
    $(".submitA").on("click",function(){
 	   var symbols=$("#symbolText").val().split("\n");
@@ -93,6 +104,7 @@ text-decoration:none;
    $(".symbolA").on("click",function(){
 	   var symbol=$(this).attr("symbol");
 	   currentSymbol=symbol;
+	   currentNode=this;
 	   $(".symbolA").css("background-color","");
 	   $(this).css("background-color","pink");
 	   
@@ -161,14 +173,70 @@ text-decoration:none;
 	    	tradeChart(copyMap);
 	    }
 	    if(event.keyCode == 37||event.keyCode == 39){
-	    	if(event.keyCode == 37) {
-               var a=$(this).parent().prev();
-               var aa=$(a).children(".first").trigger("click");
+	    	var children=$(currentNode).parent().prev().children();
+	    	var nodeNow=null;
+	        if(event.keyCode == 37) {
+	        	if($(currentNode).hasClass("head")){
+	        		nodeNow=tail;
+	        	}else{
+	        		children=$(currentNode).parent().prev().children();
+	        		nodeNow=children.get(0);
+	        	}
 		    }
 	    	if(event.keyCode == 39) {
-	    		var a=$(this).parent().next();
-	    		var aa=$(a).children(".first").trigger("click");
-		    }
+                if($(currentNode).hasClass("tail")){
+                	nodeNow=head;
+	        	}else{
+	    		    children=$(currentNode).parent().next().children();
+	    		    nodeNow=children.get(0);
+	    		    
+	        	}
+		    } 
+	    	
+	  	   
+	  	   
+	    	var symbol=$(nodeNow).attr("symbol");
+		    currentSymbol=symbol;
+		    currentNode=$(nodeNow);
+		    
+	  	   $(".symbolA").css("background-color","");
+	  	   $(nodeNow).css("background-color","pink");
+	  	   
+	  	   $.ajax({
+	  			type : "get",
+	  			async : true, //同步执行
+	  			url : "/kData.do?symbol="+symbol,
+	  			dataType : "json", //返回数据形式为json
+	  			success : function(result) {
+	  				if (result) {
+	  					base=result;
+	  					total=base.data.length;
+	  					if(total>80){
+	  						start=total-80;
+	  					}else{
+	  						start=0;
+	  					}
+	  					
+	  					var copyMap={};
+	  			    	copyMap.av5 = base.av5.slice(start);
+	  			    	copyMap.av10 = base.av10.slice(start);
+	  			    	copyMap.av20 = base.av20.slice(start);
+	  			    	copyMap.data = base.data.slice(start);
+	  			    	copyMap.vol = base.vol.slice(start);
+	  			    	copyMap.start=base.start;
+	  			    	copyMap.high=base.high;
+	  			    	copyMap.low=base.low;
+	  			    	copyMap.end=base.end;
+	  			    	copyMap.name=base.name;
+	  			    	copyMap.av5Tips=base.av5Tips;
+	  			    	copyMap.acvuTips=base.acvuTips;
+	  			    	copyMap.bigTips=base.bigTips;
+	  			    	tradeChart(copyMap);
+	  				}
+	  			},
+	  			error : function(errorMsg) {
+	  			}
+	  		});
 	    }
    });  
    

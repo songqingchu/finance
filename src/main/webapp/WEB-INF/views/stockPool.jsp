@@ -28,35 +28,35 @@ text-decoration:none;
 <div style="width:200px;float:left;">
 <div style="width:200px;float:left;">
 <span  style="width:80px;float:left;">
-<b><a href="#" id="acvuSymbol" class="choose" style="background-color:green">acvu:</a></b><font size="2">${acvuSize}</font>
+<b><a href="#" id="acvuSymbol" class="choose"  cat="acvuSymbol" style="background-color:green">acvu:</a></b><font size="2">${acvuSize}</font>
 </span>
 <span  style="width:80px;float:left;">
-<b><a href="#" id="bigSymbol"  class="choose">big&nbsp;:</a></b><font size="2">${bigSize}</font>
+<b><a href="#" id="bigSymbol"  class="choose"  cat="bigSymbol" >big&nbsp;:</a></b><font size="2">${bigSize}</font>
 </span>
 <span  style="width:80px;float:left;">
-<b><a href="#" id="av5Symbol" class="choose">av5&nbsp;:</a></b><font size="2">${av5Size}</font>
+<b><a href="#" id="av5Symbol" class="choose"  cat="av5Symbol" >av5&nbsp;:</a></b><font size="2">${av5Size}</font>
 </span>
 <span  style="width:80px;float:left;">
-<b><a href="#" id="av10Symbol"  class="choose">av10:</a></b><font size="2">${av10Size}</font>
+<b><a href="#" id="av10Symbol"  class="choose"  cat="av10Symbol" >av10:</a></b><font size="2">${av10Size}</font>
 </span>
 <br>
 </div>
 
 <div style="width:200px;height:530px;float:left;overflow-y:auto">
 <c:forEach var="s" items="${acvu}">  
-     <span  class="acvuSymbol symbol" style="width:80px;float:left;"><a href="#" symbol="${s}" class="symbolA" id="${s}">${s}</a></span>
+     <span  class="acvuSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"><a href="#" symbol="${s.getSymbol()}" class="symbolA" id="${s.getSymbol()}">${s.getSymbol()}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${big}">  
-   <span style="display:none" class="bigSymbol  symbol"  style="width:50px;float:left;">  <a href="#"  symbol="${s}" id="${s}" class="symbolA" >${s}</a></span>
+   <span style="display:none" class="bigSymbol  symbol ${s.getPosition()}"  style="width:160px;float:left;">  <a href="#"  symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA" >${s.getSymbol()}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av5}">  
-    <span style="display:none" class="av5Symbol  symbol"  style="width:50px;float:left;"> <a href="#"   symbol="${s}" id="${s}" class="symbolA">${s}</a></span>
+    <span style="display:none" class="av5Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"   symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av10}">  
-    <span style="display:none" class="av10Symbol  symbol"  style="width:50px;float:left;"> <a href="#"  symbol="${s}" id="${s}" class="symbolA"   >${s}</a></span>
+    <span style="display:none" class="av10Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"  symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA"   >${s.getSymbol()}</a></span>
 </c:forEach>
 </div>
 </div>
@@ -83,27 +83,36 @@ text-decoration:none;
    var av5=[${av5Str}];
    var av10=[${av10Str}];
    
+   var currentCat="acvuSymbol";
+   
+   var head=$(".head.acvuSymbol").get(0);
+   var tail=$(".tail.acvuSymbol").get(0);
+   
    var base;
    var start=0;
    var total=0;
    var currentSymbol;
-   var currentNode;
+   var currentNode=tail;
    
    $(".choose").on("click",function(){
+	   currentCat=$(this).attr("cat");
+	   head=$(".head."+currentCat).get(0);
+	   tail=$(".tail."+currentCat).get(0);
+	   
 	   var id=$(this).attr("id");
 	   $(".choose").css("background-color","");
 	   $(this).css("background-color","green");
 	   $(".symbol").css("display","none");
 	   var aa=$("."+id);
-	   $("."+id).attr("style","display:block;width:80px;float:left;");
+	   $("."+id).attr("style","display:block;width:160px;float:left;");
    });
    
    $(".symbolA").on("click",function(){
-	   currentNode=$(this);
+	   currentNode=$(this).parent();
 	   var symbol=$(this).attr("symbol");
 	   currentSymbol=symbol;
-	   $(".symbolA").css("background-color","");
-	   $(this).css("background-color","green");
+	   $(".symbol").css("background-color","");
+	   $(currentNode).css("background-color","pink");
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
@@ -179,63 +188,67 @@ text-decoration:none;
 	    	tradeChart(copyMap);
 	    }
 	    if(event.keyCode == 37||event.keyCode == 39){
-	    	var a=null;
-	    	if(event.keyCode == 37) {
-               a=$(currentNode).parent().prev();
-               //var aa=$(a).children(".first");
-               //$(a).trigger("click");
+	    	var nodeNow=null;
+	        if(event.keyCode == 37) {
+	        	if($(currentNode).hasClass("head")){
+	        		nodeNow=tail;
+	        	}else{
+	        		nodeNow=$(currentNode).prev();
+	        	}
 		    }
 	    	if(event.keyCode == 39) {
-	    		a=$(currentNode).parent().next();
-	    		//var aa=$(a).children(".first");
-	    		//$(a).trigger("click");
-		    }
+                if($(currentNode).hasClass("tail")){
+                	nodeNow=head;
+	        	}else{
+	        		nodeNow=$(currentNode).next();
+	        	}
+		    } 
 	    	
-	    	
-	    	//$(".symbolA").on("click",function(){
-	    		   currentNode=$(a);
-	    		   var symbol=$(a).attr("symbol");
-	    		   currentSymbol=symbol;
-	    		   $(".symbolA").css("background-color","");
-	    		   $(a).css("background-color","green");
-	    		   $.ajax({
-	    				type : "get",
-	    				async : true, //同步执行
-	    				url : "/kData.do?symbol="+symbol,
-	    				dataType : "json", //返回数据形式为json
-	    				success : function(result) {
-	    					if (result) {
-	    						base=result;
-	    						total=base.data.length;
-	    						if(total>80){
-	    							start=total-80;
-	    						}else{
-	    							start=0;
-	    						}
-	    						
-	    						var copyMap={};
-	    				    	copyMap.av5 = base.av5.slice(start);
-	    				    	copyMap.av10 = base.av10.slice(start);
-	    				    	copyMap.av20 = base.av20.slice(start);
-	    				    	copyMap.data = base.data.slice(start);
-	    				    	copyMap.vol = base.vol.slice(start);
-	    				    	copyMap.start=base.start;
-	    				    	copyMap.high=base.high;
-	    				    	copyMap.low=base.low;
-	    				    	copyMap.end=base.end;
-	    				    	copyMap.name=base.name;
-	    				    	copyMap.av5Tips=base.av5Tips;
-	    				    	copyMap.acvuTips=base.acvuTips;
-	    				    	copyMap.bigTips=base.bigTips;
-	    				    	
-	    				    	tradeChart(copyMap);
-	    					}
-	    				},
-	    				error : function(errorMsg) {
-	    				}
-	    			});
-	    		   
-	    	   //});
+	  	   
+	  	   
+	    	var symbol=$($(nodeNow).children().get(0)).attr("symbol");
+		    currentSymbol=symbol;
+		    currentNode=$(nodeNow);
+		    
+		    
+	  	   $(".symbol").css("background-color","");
+	  	   $(nodeNow).css("background-color","pink");
+	  	   
+	  	   $.ajax({
+	  			type : "get",
+	  			async : true, //同步执行
+	  			url : "/kData.do?symbol="+symbol,
+	  			dataType : "json", //返回数据形式为json
+	  			success : function(result) {
+	  				if (result) {
+	  					base=result;
+	  					total=base.data.length;
+	  					if(total>80){
+	  						start=total-80;
+	  					}else{
+	  						start=0;
+	  					}
+	  					
+	  					var copyMap={};
+	  			    	copyMap.av5 = base.av5.slice(start);
+	  			    	copyMap.av10 = base.av10.slice(start);
+	  			    	copyMap.av20 = base.av20.slice(start);
+	  			    	copyMap.data = base.data.slice(start);
+	  			    	copyMap.vol = base.vol.slice(start);
+	  			    	copyMap.start=base.start;
+	  			    	copyMap.high=base.high;
+	  			    	copyMap.low=base.low;
+	  			    	copyMap.end=base.end;
+	  			    	copyMap.name=base.name;
+	  			    	copyMap.av5Tips=base.av5Tips;
+	  			    	copyMap.acvuTips=base.acvuTips;
+	  			    	copyMap.bigTips=base.bigTips;
+	  			    	tradeChart(copyMap);
+	  				}
+	  			},
+	  			error : function(errorMsg) {
+	  			}
+	  		});
 	    }
    });  
    

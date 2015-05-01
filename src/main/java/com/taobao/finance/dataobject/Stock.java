@@ -53,7 +53,15 @@ public class Stock implements Comparable<Stock> {
 	private int continueDate;
 	private Boolean chongzhu=false;;
 	private String info;
+	private String position;
 	
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
 	private Long tradeNum;
 	
 	public Long getTradeNum() {

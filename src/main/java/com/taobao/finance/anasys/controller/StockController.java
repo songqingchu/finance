@@ -380,8 +380,8 @@ public class StockController {
 		result.clear();
 		result.addAll(indexs);
 		result.addAll(nonIndexs);
-		
-		
+		result.get(0).setPosition("head");
+		result.get(result.size()-1).setPosition("tail");
 		request.setAttribute("r", result);
 		request.setAttribute("set", set);
 		return "publicPool";
@@ -497,6 +497,49 @@ public class StockController {
 		List<String> av5=store.get("av5");
 		List<String> av10=store.get("av10");
 		
+		
+		List<Stock> bigs=new ArrayList<Stock>();
+		List<Stock> acvus=new ArrayList<Stock>();
+		List<Stock> av5s=new ArrayList<Stock>();
+		List<Stock> av10s=new ArrayList<Stock>();
+		
+		for(String s:big){
+			Stock st=new Stock();
+			st.setSymbol(s);
+			bigs.add(st);
+		}
+		for(String s:acvu){
+			Stock st=new Stock();
+			st.setSymbol(s);
+			acvus.add(st);
+		}
+		for(String s:av5){
+			Stock st=new Stock();
+			st.setSymbol(s);
+			av5s.add(st);
+		}
+		for(String s:av10){
+			Stock st=new Stock();
+			st.setSymbol(s);
+			av10s.add(st);
+		}
+		if(bigs.size()>0){
+			bigs.get(0).setPosition("head");
+			bigs.get(bigs.size()-1).setPosition("tail");
+		}
+		if(acvus.size()>0){
+			acvus.get(0).setPosition("head");
+			acvus.get(acvus.size()-1).setPosition("tail");
+		}
+		if(av5s.size()>0){
+			av5s.get(0).setPosition("head");
+			av5s.get(av5s.size()-1).setPosition("tail");
+		}
+		if(av10s.size()>0){
+			av10s.get(0).setPosition("head");
+			av10s.get(av10s.size()-1).setPosition("tail");
+		}
+			
 		int size=0;
 		if(big.size()>size){
 			size=big.size();
@@ -512,10 +555,10 @@ public class StockController {
 		}
 
 		request.setAttribute("size", size);
-		request.setAttribute("big", big);
-		request.setAttribute("acvu", acvu);
-		request.setAttribute("av5", av5);
-		request.setAttribute("av10", av10);
+		request.setAttribute("big", bigs);
+		request.setAttribute("acvu", acvus);
+		request.setAttribute("av5", av5s);
+		request.setAttribute("av10", av10s);
 		//request.setAttribute("tp", tp);
 		request.setAttribute("bigSize", big.size());
 		request.setAttribute("acvuSize", acvu.size());
