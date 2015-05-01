@@ -138,6 +138,63 @@ text-decoration:none;
    });  
    
    
+   
+   $(document).keydown(function(event){ 
+	    event.stopPropagation(); 
+	    if(event.keyCode == 13){
+	       var symbol=$("#symbolText").attr("value");
+	       var symbols=symbol.split("\n");
+	       if(symbols.length>1){
+	    	   symbol=symbols[symbols.length-1];
+	    	   $("#symbolText").val(symbol);
+	       }
+	 	   currentSymbol=symbol;
+	 	   $(".symbolA").css("background-color","");
+	 	   $(this).css("background-color","pink");
+	 	   
+	 	   $.ajax({
+	 			type : "get",
+	 			async : true, //同步执行
+	 			url : "/kData.do?symbol="+symbol,
+	 			dataType : "json", //返回数据形式为json
+	 			success : function(result) {
+	 				if (result) {
+	 					
+	 					base=result;
+	 					total=base.data.length;
+	 					if(total>80){
+	 						start=total-80;
+	 					}else{
+	 						start=0;
+	 					}
+	 					
+	 					
+	 					
+	 					var copyMap={};
+	 			    	copyMap.av5 = base.av5.slice(start);
+	 			    	copyMap.av10 = base.av10.slice(start);
+	 			    	copyMap.av20 = base.av20.slice(start);
+	 			    	copyMap.data = base.data.slice(start);
+	 			    	copyMap.vol = base.vol.slice(start);
+	 			    	copyMap.start=base.start;
+	 			    	copyMap.high=base.high;
+	 			    	copyMap.low=base.low;
+	 			    	copyMap.end=base.end;
+	 			    	copyMap.name=base.name;
+	 			    	copyMap.av5Tips=base.av5Tips;
+	 			    	copyMap.acvuTips=base.acvuTips;
+	 			    	copyMap.bigTips=base.bigTips;
+	 			    	tradeChart(copyMap);
+	 				}
+	 			},
+	 			error : function(errorMsg) {
+	 			}
+	 		});
+	    }
+  });  
+   
+   
+   
    function tradeChart(all) {
 		var crrentData = [];
 		var retTrade = {
