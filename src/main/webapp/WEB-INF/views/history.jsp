@@ -19,7 +19,7 @@
 <div style="width:200px;float:left;">
 <div style="width:200px;height:360px;float:left;overflow-y:auto;border:1px solid">
 <c:forEach var="s" items="${all}">  
-     <span  class="bigSymbol symbol" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.name}&nbsp;&nbsp;</a></span>&nbsp;&nbsp;<c:if test="${root==true} }"><a href="/removeFromPublicPool.do?symbol=${s.symbol}">删除</a></c:if>
+     <span  class="bigSymbol symbol ${s.getPosition()}" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.name}&nbsp;&nbsp;</a></span>&nbsp;&nbsp;<c:if test="${root==true} }"><a href="/removeFromPublicPool.do?symbol=${s.symbol}">删除</a></c:if>
 </c:forEach>
 </div>
 
@@ -42,8 +42,14 @@
    var start=0;
    var total;
    var currentSymbol;
+   var head=$(".head").get(0);
+   var tail=$(".tail").get(0);
+   
+   var currentSymbol;
+   var currentNode=tail;
    
    $(".submitA").on("click",function(){
+	   
 	   var symbols=$("#symbolText").val().split("\n");
 	   var replace=$(this).attr("replace");
 	   $.ajax({
@@ -65,6 +71,8 @@
    
    $(".symbolA").on("click",function(){
 	   var symbol=$(this).attr("symbol");
+	   currentNode=$(this).parent();
+	   currentSymbol=symbol;
 	   currentSymbol=symbol;
 	   $(".symbolA").css("background-color","");
 	   $(this).css("background-color","pink");
@@ -77,7 +85,7 @@
 			success : function(result) {
 				if (result) {
 					base=result;
-					total=base.length;
+					total=base.data.length;
 					if(total>80){
 						start=total-80;
 					}else{
@@ -134,14 +142,67 @@
 	    	tradeChart(copyMap);
 	    }
 	    if(event.keyCode == 37||event.keyCode == 39){
-	    	if(event.keyCode == 37) {
-               var a=$(this).parent().prev();
-               var aa=$(a).children(".first").trigger("click");
+	    	var nodeNow=null;
+	        if(event.keyCode == 37) {
+	        	if($(currentNode).hasClass("head")){
+	        		nodeNow=tail;
+	        	}else{
+	        		nodeNow=$(currentNode).prev();
+	        	}
 		    }
 	    	if(event.keyCode == 39) {
-	    		var a=$(this).parent().next();
-	    		var aa=$(a).children(".first").trigger("click");
-		    }
+                if($(currentNode).hasClass("tail")){
+                	nodeNow=head;
+	        	}else{
+	        		nodeNow=$(currentNode).next();
+	        	}
+		    } 
+	    	
+	  	   
+	  	   
+	    	var symbol=$($(nodeNow).children().get(0)).attr("symbol");
+		    currentSymbol=symbol;
+		    currentNode=$(nodeNow);
+		    
+		    
+	  	   $(".symbol").css("background-color","");
+	  	   $(nodeNow).css("background-color","pink");
+	  	   
+	  	   $.ajax({
+	  			type : "get",
+	  			async : true, //同步执行
+	  			url : "/kData.do?symbol="+symbol,
+	  			dataType : "json", //返回数据形式为json
+	  			success : function(result) {
+	  				if (result) {
+	  					base=result;
+	  					total=base.data.length;
+	  					if(total>80){
+	  						start=total-80;
+	  					}else{
+	  						start=0;
+	  					}
+	  					
+	  					var copyMap={};
+	  			    	copyMap.av5 = base.av5.slice(start);
+	  			    	copyMap.av10 = base.av10.slice(start);
+	  			    	copyMap.av20 = base.av20.slice(start);
+	  			    	copyMap.data = base.data.slice(start);
+	  			    	copyMap.vol = base.vol.slice(start);
+	  			    	copyMap.start=base.start;
+	  			    	copyMap.high=base.high;
+	  			    	copyMap.low=base.low;
+	  			    	copyMap.end=base.end;
+	  			    	copyMap.name=base.name;
+	  			    	copyMap.av5Tips=base.av5Tips;
+	  			    	copyMap.acvuTips=base.acvuTips;
+	  			    	copyMap.bigTips=base.bigTips;
+	  			    	tradeChart(copyMap);
+	  				}
+	  			},
+	  			error : function(errorMsg) {
+	  			}
+	  		});
 	    }
    });  
    

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * <p>Description: </p>
@@ -26,7 +27,15 @@ public class GPublicStock {
 	private Date removeDate;
 	private Byte hold=1;
 	private String type;
+	private String position;
 	
+	@Transient
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
 	@Column(name = "type")
 	public String getType() {
 		return type;

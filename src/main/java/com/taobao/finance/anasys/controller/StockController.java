@@ -335,6 +335,10 @@ public class StockController {
 	public String history(HttpServletRequest request) {
 		logger.info("request:view public pool");
 		List<GPublicStock> all=store.history;
+		if(all.size()>0){
+			all.get(0).setPosition("head");
+			all.get(all.size()-1).setPosition("tail");
+		}
 		request.setAttribute("all", all);
 		return "history";
 	}
