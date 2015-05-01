@@ -364,9 +364,24 @@ public class StockController {
         	List<Stock> slice=(List<Stock>)l;
         	result.addAll(slice);
         }
-		if(r.size()>0){
-			Collections.sort(result,new Comparator.RateDescComparator());
+        List<Stock> indexs=new ArrayList<Stock>();
+        List<Stock> nonIndexs=new ArrayList<Stock>();
+        for(Stock o1:result){
+        	if(o1.getSymbol().equals("sh000001")||o1.getSymbol().equals("sz399001")||o1.getSymbol().equals("sz399006")||o1.getSymbol().equals("sz399101")){
+        		indexs.add(o1);
+        	}else{
+        		nonIndexs.add(o1);
+        	}
+        }
+		if(nonIndexs.size()>0){
+			Collections.sort(nonIndexs,new Comparator.RateDescComparator());
 		}
+		Collections.sort(indexs,new Comparator.RateDescComparator());
+		result.clear();
+		result.addAll(indexs);
+		result.addAll(nonIndexs);
+		
+		
 		request.setAttribute("r", result);
 		request.setAttribute("set", set);
 		return "publicPool";

@@ -450,32 +450,38 @@ public class FetchUtil {
 			e.printStackTrace();
 		}
     	Stock todaySh2 = Fetch_SingleStock.fetch(sh);
-    	Stock todaySz2 = Fetch_SingleStock.fetch(sh);
+    	Stock todaySz2 = Fetch_SingleStock.fetch(sz);
     	try {
 			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
     	Stock todaySh3 = Fetch_SingleStock.fetch(sh);
-    	Stock todaySz3 = Fetch_SingleStock.fetch(sh);
+    	Stock todaySz3 = Fetch_SingleStock.fetch(sz);
     	try {
 			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
     	Stock todaySh4 = Fetch_SingleStock.fetch(sh);
-    	Stock todaySz4 = Fetch_SingleStock.fetch(sh);
+    	Stock todaySz4 = Fetch_SingleStock.fetch(sz);
     	
     	if(!todaySh.getStartPrice().equals(todaySh2.getStartPrice())){
     		return true;
     	}
-    	if(!todaySh.getEndPrice().equals(todaySh2.getEndPrice())){
+    	if(!todaySh.getEndPrice().equals(todaySh3.getEndPrice())){
+    		return true;
+    	}
+    	if(!todaySh.getEndPrice().equals(todaySh4.getEndPrice())){
     		return true;
     	}
     	if(!todaySz.getStartPrice().equals(todaySz2.getStartPrice())){
     		return true;
     	}
-    	if(!todaySz.getEndPrice().equals(todaySz2.getEndPrice())){
+    	if(!todaySz.getEndPrice().equals(todaySz3.getEndPrice())){
+    		return true;
+    	}
+    	if(!todaySz.getEndPrice().equals(todaySz4.getEndPrice())){
     		return true;
     	}
     	
@@ -540,8 +546,6 @@ public class FetchUtil {
     }
 
     public static void main(String args[]) throws IOException, ParseException{
-		//checkWorkingDay();
-    	System.out.println("涓滃崡缃戞灦".getBytes().length);
-		System.out.println("宸村畨姘村姟".getBytes().length);
+		checkWorkingDay2();
 	}
 }
