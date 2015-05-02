@@ -97,7 +97,7 @@ text-decoration:none;
    var currentSymbol;
    var currentNode=tail;
    
-   var all;
+   var all={};
    $.ajax({
 			type : "get",
 			async : true, //同步执行
@@ -110,6 +110,7 @@ text-decoration:none;
 				}
 			},
 			error : function(errorMsg) {
+				alert(errorMsg);
 			}
    });
    
