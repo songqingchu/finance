@@ -37,6 +37,7 @@ import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 import com.taobao.finance.service.DataService;
 import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.GTaskService;
@@ -496,10 +497,10 @@ public class StockController {
 			store.ananyse();
 		}
 	
-		List<String> big=store.get("big");
-		List<String> acvu=store.get("acvu");
-		List<String> av5=store.get("av5");
-		List<String> av10=store.get("av10");
+		List<String> big=(List<String>)store.get("big");
+		List<String> acvu=(List<String>)store.get("acvu");
+		List<String> av5=(List<String>)store.get("av5");
+		List<String> av10=(List<String>)store.get("av10");
 		
 		
 		List<Stock> bigs=new ArrayList<Stock>();
@@ -510,21 +511,93 @@ public class StockController {
 		for(String s:big){
 			Stock st=new Stock();
 			st.setSymbol(s);
+			Stock stt=store.recent.get(s);
+			if(stt!=null){
+				st.setName(stt.getName());
+				if(stt.getStartPrice().equals("0")){
+					st.setTing(true);
+				}
+				if(stt.getHighPrice().equals("0")){
+					st.setTing(true);
+				}
+				if(stt.getLowPrice().equals("0")){
+					st.setTing(true);
+				}
+				if(stt.getEndPrice().equals("0")){
+					st.setTing(true);
+				}
+			}
+			
 			bigs.add(st);
 		}
 		for(String s:acvu){
 			Stock st=new Stock();
 			st.setSymbol(s);
+			if(s.equals("sh600602")){
+				s.length();
+			}
+			Stock stt=store.recent.get(s);
+			if(stt!=null){
+				st.setName(stt.getName());
+				if(stt.getStartPrice().equals("0.00")){
+					st.setTing(true);
+				}
+				if(stt.getHighPrice().equals("0.00")){
+					st.setTing(true);
+				}
+				if(stt.getLowPrice().equals("0.00")){
+					st.setTing(true);
+				}
+				if(stt.getEndPrice().equals("0.00")){
+					st.setTing(true);
+				}
+			}
+			
 			acvus.add(st);
 		}
 		for(String s:av5){
 			Stock st=new Stock();
 			st.setSymbol(s);
+			
+			Stock stt=store.recent.get(s);
+			if(stt!=null){
+				st.setName(stt.getName());
+				if(stt.getStartPrice().equals("0")){
+					st.setTing(true);
+				}
+				if(stt.getHighPrice().equals("0")){
+					st.setTing(true);
+				}
+				if(stt.getLowPrice().equals("0")){
+					st.setTing(true);
+				}
+				if(stt.getEndPrice().equals("0")){
+					st.setTing(true);
+				}
+			}
+			
 			av5s.add(st);
 		}
 		for(String s:av10){
 			Stock st=new Stock();
 			st.setSymbol(s);
+			
+			Stock stt=store.recent.get(s);
+			if(stt!=null){
+				st.setName(stt.getName());
+				if(stt.getStartPrice().equals("0")){
+					st.setTing(true);
+				}
+				if(stt.getHighPrice().equals("0")){
+					st.setTing(true);
+				}
+				if(stt.getLowPrice().equals("0")){
+					st.setTing(true);
+				}
+				if(stt.getEndPrice().equals("0")){
+					st.setTing(true);
+				}
+			}
 			av10s.add(st);
 		}
 		if(bigs.size()>0){

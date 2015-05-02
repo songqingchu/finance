@@ -308,6 +308,29 @@ public class Hisdata_Base {
 		return ll;
 	}
 	
+	
+public static Stock readTmpData(String code) {
+		
+		String url=FILE_STOCK_TEMP_BASE+code+".txt";
+		File f=new File(url);
+		try {
+			Stock st=null;
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			String line = null;
+			line = br.readLine();
+            if(line != null) {
+			   st=parseTmpData(code, line);
+            }
+			br.close();
+			return st;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static Stock parseHisData(String code,String data){
 		DateFormat format = new SimpleDateFormat("yyyy.MM.dd");
 		Stock s=new Stock();

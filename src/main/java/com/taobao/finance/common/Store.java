@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
+import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.AV10_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
@@ -41,13 +42,14 @@ import com.taobao.finance.util.ThreadUtil;
 @DependsOn("fetchUtil")
 public class Store {
 	private static final Logger logger = Logger.getLogger("taskLogger");
-	public Map<String, List<String>> store = new HashMap<String, List<String>>();
+	public Map<String, Object> store = new HashMap<String, Object>();
 	public Map<String, Integer> download = new HashMap<String, Integer>();
 	public Map<String, Integer> choose = new HashMap<String, Integer>();
 	public Map<String, Stock> publicPool = new HashMap<String, Stock>();
 	public Map<String, Boolean> checkWorkingRecord = new HashMap<String, Boolean>();
 	public List<GPublicStock> publicStock = new ArrayList<GPublicStock>();
 	public List<GPublicStock> history = new ArrayList<GPublicStock>();
+	public Map<String,Stock> recent=new HashMap<String,Stock>();
 
 	public static Boolean workingDay = null;
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
@@ -106,6 +108,15 @@ public class Store {
 			l.addAll(Arrays.asList(ids));
 			store.put("av10", l);
 		}
+		
+		for(String s:Fetch_AllStock.map.keySet()){
+			Stock st=Hisdata_Base.readTmpData(s);
+			if(st!=null){
+				st.setName(Fetch_AllStock.map.get(s).getName());
+				this.recent.put(s,st);
+			}
+		}
+		
 		logger.info("system start,load anasys result");
 
 		if (today != null) {
@@ -373,6 +384,12 @@ public class Store {
 		store.put("av5", av5s);
 		store.put("av10", av10s);
 		store.put("tp", tps);
+		
+		store.put("bigs", big);
+		store.put("acvus", acvu);
+		store.put("av5s", av5);
+		store.put("av10s", av10);
+		store.put("tps", tp);
 		}catch(Exception e){
 			logger.info(e.getMessage());
 			e.printStackTrace();
@@ -383,7 +400,7 @@ public class Store {
 		return store.containsKey(key);
 	}
 
-	public List<String> get(String key) {
+	public Object get(String key) {
 		return store.get(key);
 	}
 

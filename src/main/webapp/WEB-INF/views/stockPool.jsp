@@ -44,19 +44,19 @@ text-decoration:none;
 
 <div style="width:200px;height:530px;float:left;overflow-y:auto">
 <c:forEach var="s" items="${acvu}">  
-     <span  class="acvuSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"><a href="#" symbol="${s.getSymbol()}" class="symbolA" id="${s.getSymbol()}">${s.getSymbol()}</a></span>
+     <span  class="acvuSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"><a href="#" symbol="${s.getSymbol()}" class="symbolA" id="${s.getSymbol()}">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if test="${s.ting==true}"><font color="red"><b>停牌</b></font></c:if></a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${big}">  
-   <span style="display:none" class="bigSymbol  symbol ${s.getPosition()}"  style="width:160px;float:left;">  <a href="#"  symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA" >${s.getSymbol()}</a></span>
+   <span style="display:none" class="bigSymbol  symbol ${s.getPosition()}"  style="width:160px;float:left;">  <a href="#"  symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA" >${s.getSymbol()}&nbsp;${s.getNameFormat()}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av5}">  
-    <span style="display:none" class="av5Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"   symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}</a></span>
+    <span style="display:none" class="av5Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"   symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}&nbsp;${s.getNameFormat()}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av10}">  
-    <span style="display:none" class="av10Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"  symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA"   >${s.getSymbol()}</a></span>
+    <span style="display:none" class="av10Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"  symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA"   >${s.getSymbol()}&nbsp;${s.getNameFormat()}</a></span>
 </c:forEach>
 </div>
 </div>

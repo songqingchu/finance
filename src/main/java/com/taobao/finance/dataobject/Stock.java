@@ -54,7 +54,15 @@ public class Stock implements Comparable<Stock> {
 	private Boolean chongzhu=false;;
 	private String info;
 	private String position;
+	private Boolean ting=false;
 	
+	
+	public Boolean getTing() {
+		return ting;
+	}
+	public void setTing(Boolean ting) {
+		this.ting = ting;
+	}
 	public String getPosition() {
 		return position;
 	}

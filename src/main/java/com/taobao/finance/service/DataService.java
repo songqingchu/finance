@@ -331,6 +331,7 @@ public class DataService {
 			Boolean downloaded) throws IOException, ParseException {
 		Map<String, Object> m = new HashMap<String, Object>();
 		List<Stock> l = Hisdata_Base.readHisDataMerge(symbol, null);
+		
 
 		if (working) {
 			if (!downloaded) {
@@ -339,6 +340,27 @@ public class DataService {
 			}
 		}
 
+		if(l.size()>0){
+			Boolean ting=false;
+			Stock s=l.get(l.size()-1);
+			if(s.getStartPriceFloat()<0.05F){
+				ting=true;
+			}
+			if(s.getHighPriceFloat()<0.05F){
+				ting=true;
+			}
+			if(s.getLowPriceFloat()<0.05F){
+				ting=true;
+			}
+			if(s.getEndPriceFloat()<0.05F){
+				ting=true;
+			}
+			if(ting){
+				l.remove(l.size()-1);
+			}
+			
+		}
+		
 		int size = l.size();
 		Object[][] av5 = new Object[size - 1][2];
 		Object[][] av10 = new Object[size - 1][2];
