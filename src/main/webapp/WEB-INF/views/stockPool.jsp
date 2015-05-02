@@ -153,6 +153,7 @@ text-decoration:none;
    });
    
    $(document).keydown(function(event){ 
+	    event.preventDefault(); 
 	    event.stopPropagation(); 
 	    if(event.keyCode == 38||event.keyCode == 40){
 	    	if(event.keyCode == 38) {
