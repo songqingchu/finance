@@ -138,7 +138,7 @@ text-decoration:none;
 	   var idx=$(this).attr("idx");
 	   
 	   //for(var i=0;i<all.length;i++){
-	   if(all.length>0)	   
+	   if(all.length>0){  
 		   var a=all[idx];
 		   if(a.symbol==symbol){
 			    base=a;
