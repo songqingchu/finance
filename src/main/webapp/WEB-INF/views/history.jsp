@@ -17,7 +17,7 @@
 
    
 <div style="width:200px;float:left;">
-<div style="width:200px;height:360px;float:left;overflow-y:auto;border:1px solid">
+<div style="width:200px;float:left;overflow-y:auto;border:1px solid" id="listDiv">
 <c:forEach var="s" items="${all}">  
      <span  class="bigSymbol symbol ${s.getPosition()}" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.name}&nbsp;&nbsp;</a></span>&nbsp;&nbsp;<c:if test="${root==true} }"><a href="/removeFromPublicPool.do?symbol=${s.symbol}">删除</a></c:if>
 </c:forEach>
@@ -37,7 +37,7 @@
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);
-
+   $("#listDiv").height(h-20);
    var base;
    var start=0;
    var total;

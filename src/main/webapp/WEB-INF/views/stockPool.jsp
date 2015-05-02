@@ -25,7 +25,7 @@ text-decoration:none;
  
 
    
-<div style="width:200px;float:left;">
+<div style="width:200px;float:left;" id="leftDiv">
 <div style="width:200px;float:left;">
 <span  style="width:80px;float:left;">
 <b><a href="#" id="acvuSymbol" class="choose"  cat="acvuSymbol" style="background-color:green">acvu:</a></b><font size="2">${acvuSize}</font>
@@ -42,7 +42,7 @@ text-decoration:none;
 <br>
 </div>
 
-<div style="width:200px;height:530px;float:left;overflow-y:auto">
+<div style="width:200px;float:left;overflow-y:auto" id="listDiv">
 <c:forEach var="s" items="${acvu}">  
      <span  class="acvuSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"><a href="#" symbol="${s.getSymbol()}" class="symbolA" id="${s.getSymbol()}">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if test="${s.ting==true}"><font color="red"><b>停牌</b></font></c:if></a></span>
 </c:forEach>
@@ -78,6 +78,9 @@ text-decoration:none;
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);
+   $("#leftDiv").height(h);
+   $("#listDiv").height(h-50);
+   
    var acvu=[${acvuStr}];
    var great=[${bigStr}];
    var av5=[${av5Str}];

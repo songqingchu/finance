@@ -25,8 +25,8 @@ text-decoration:none;
  
 
    
-<div style="width:300px;float:left;">
-<div style="width:300px;height:360px;float:left;overflow-y:auto;border:1px solid">
+<div style="width:270px;float:left;">
+<div style="width:270px;float:left;overflow-y:auto;border:1px solid" div="listDiv">
 <c:forEach var="s" items="${r}">  
      <span  class="bigSymbol symbol" style="width:280px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
@@ -45,7 +45,7 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:200px;float:left;">
+<div style="width:200px;float:left;" id="addDiv">
 <c:if test="${sessionScope.root==true}">
 <a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
 </c:if>
@@ -58,19 +58,19 @@ text-decoration:none;
 
 </div>
 </div>
-<!-- 
-<div id="check_div" style="float:left;margin-left: 80px"></div>
- -->
 <div id="container" style="height: 800px;float:left;"></div>
 <jsp:include page="common/foot.jsp" flush="true"/>
 </body>
 <script>
    var windowWidth=$(window).width();
    var windowHight=$(window).height();
-   var w=windowWidth-320;
+   var w=windowWidth-290;
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);
+   
+   $("#listDiv").height(h-80);
+   $("#addDiv").height(50);
    
    var head=$(".head").get(0);
    var tail=$(".tail").get(0);
