@@ -25,7 +25,7 @@ text-decoration:none;
  
 
    
-<div style="width:300px;float:left;">
+<div style="width:220px;float:left;">
 <div style="width:200px;float:left;">
 <c:if test="${sessionScope.root==true}">
 <textarea rows="5" cols="20" id="symbolText">
@@ -41,7 +41,7 @@ text-decoration:none;
 <script>
    var windowWidth=$(window).width();
    var windowHight=$(window).height();
-   var w=windowWidth-320;
+   var w=windowWidth-240;
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);
