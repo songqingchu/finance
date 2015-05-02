@@ -682,7 +682,7 @@ public class StockController {
 	
 	@RequestMapping(value = "/getAll.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getAll(@RequestParam String symbol) throws IOException, ParseException {
+	public Map<String, Object> getAll() throws IOException, ParseException {
 		Map<String,Object> map=(Map<String,Object>)store.kdata;
 		return map;
 	}	
