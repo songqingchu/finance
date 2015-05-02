@@ -138,6 +138,7 @@ text-decoration:none;
 	   var idx=$(this).attr("idx");
 	   
 	   //for(var i=0;i<all.length;i++){
+	   if(all.length>0)	   
 		   var a=all[idx];
 		   if(a.symbol==symbol){
 			    base=a;
@@ -165,8 +166,8 @@ text-decoration:none;
 		    	
 		    	tradeChart(copyMap);
 		   }
-	   //}
-	   /* $.ajax({
+	   }else{
+	      $.ajax({
 			type : "get",
 			async : true, //同步执行
 			url : "/kData.do?symbol="+symbol,
@@ -201,8 +202,8 @@ text-decoration:none;
 			},
 			error : function(errorMsg) {
 			}
-		}); */
-	   
+		}); 
+	   }
    });
    
    $(document).keydown(function(event){ 
@@ -268,9 +269,10 @@ text-decoration:none;
 	  	   $(".symbol").css("background-color","");
 	  	   $(nodeNow).css("background-color","pink");
 	  	   
-	  	  var idx=$($(nodeNow).children().get(0)).attr("idx");
+	  	   var idx=$($(nodeNow).children().get(0)).attr("idx");
 	  	   
 	  	   //for(var i=0;i<all.length;i++){
+	  	   if(all.length>0){
 			   var a=all[idx];
 			   if(a.symbol==symbol){
 				    base=a;
@@ -298,9 +300,9 @@ text-decoration:none;
 			    	
 			    	tradeChart(copyMap);
 			   }
-		 //  }
+		   }else{
 	  	 
-	  	   /* $.ajax({
+	  	      $.ajax({
 	  			type : "get",
 	  			async : true, //同步执行
 	  			url : "/kData.do?symbol="+symbol,
@@ -334,7 +336,8 @@ text-decoration:none;
 	  			},
 	  			error : function(errorMsg) {
 	  			}
-	  		}); */
+	  		}); 
+		   }
 	    }
    });  
    
