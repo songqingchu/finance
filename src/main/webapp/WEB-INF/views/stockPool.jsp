@@ -100,7 +100,7 @@ text-decoration:none;
    var all={};
    $.ajax({
 			type : "get",
-			async : false, //同步执行
+			async : true, //同步执行
 			url : "/getAll.do",
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
