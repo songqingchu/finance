@@ -97,6 +97,21 @@ text-decoration:none;
    var currentSymbol;
    var currentNode=tail;
    
+   var all;
+   $.ajax({
+			type : "get",
+			async : true, //同步执行
+			url : "/getAll.do",
+			dataType : "json", //返回数据形式为json
+			success : function(result) {
+				if (result) {
+					all=result;
+				}
+			},
+			error : function(errorMsg) {
+			}
+   });
+   
    $(".choose").on("click",function(){
 	   currentCat=$(this).attr("cat");
 	   head=$(".head."+currentCat).get(0);

@@ -33,8 +33,6 @@ import com.taobao.finance.util.FetchUtil;
 
 @Component
 public class DataService {
-    @Autowired
-	public Store store;
 
 	public static String getSymbol(String symbol) {
 		if (symbol.startsWith("sz") || symbol.startsWith("sh")) {
@@ -295,10 +293,10 @@ public class DataService {
 	}
 
 	public  Map<String, Object> getKData2(String symbol, Boolean working,
-			Boolean downloaded) throws IOException, ParseException {
+			Boolean downloaded,Store store) throws IOException, ParseException {
 		Map<String, Object> m = new HashMap<String, Object>();
 		List<Stock> l =null;
-		if(this.store.hot.containsKey(symbol)){
+		if(store.hot.containsKey(symbol)){
 			l=store.hot.get(symbol);
 		}else{
 		 l = Hisdata_Base.readHisDataMerge(symbol, null);

@@ -675,10 +675,17 @@ public class StockController {
 			download=true;
 		}
 		logger.info("name to symbol:"+symbol);
-		Map<String,Object> map=dataService.getKData2(symbol,Store.workingDay,download);
+		Map<String,Object> map=dataService.getKData2(symbol,Store.workingDay,download,store);
 		return map;
 	}	
 	
+	
+	@RequestMapping(value = "/getAll.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getAll(@RequestParam String symbol) throws IOException, ParseException {
+		Map<String,Object> map=(Map<String,Object>)store.kdata;
+		return map;
+	}	
 	
 	
 	@RequestMapping(value = "/canonHistory.do", method = RequestMethod.GET)

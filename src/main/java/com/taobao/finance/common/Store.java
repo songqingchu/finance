@@ -1,5 +1,6 @@
 package com.taobao.finance.common;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +32,7 @@ import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GTask;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.service.DataService;
 import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.GTaskService;
 import com.taobao.finance.service.ThreadService;
@@ -52,6 +54,7 @@ public class Store {
 	public List<GPublicStock> history = new ArrayList<GPublicStock>();
 	public Map<String,Stock> recent=new HashMap<String,Stock>();
 	public Map<String,List<Stock>> hot=new HashMap<String,List<Stock>>();
+	public Map<String,Object> kdata=new HashMap<String,Object>();
 
 	public static Boolean workingDay = null;
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
@@ -69,6 +72,9 @@ public class Store {
 
 	@Autowired
 	private GTaskService gTaskService;
+	
+	@Autowired
+	private DataService dataService;
 
 	private GTask today;
 
@@ -131,8 +137,25 @@ public class Store {
 				for(int i=l.size()-300;i<l.size();i++){
 					lNew.add(l.get(i));
 				}
+			}else{
+				lNew=l;
 			}
 			hot.put(s, lNew);
+		}
+		
+		for(String s:sSet){			
+			Boolean down=false;
+			if(Store.downloaded==2){
+				down=true;
+			}
+			try {
+				Map<String,Object> m=dataService.getKData2(s, this.workingDay, down, this);
+				this.kdata.put(s, m);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		for(String s:Fetch_AllStock.map.keySet()){
@@ -290,6 +313,8 @@ public class Store {
 		d.start();
 	}
 
+	
+	
 	@Autowired
 	private GPublicStockService gPublicStockService;
 
