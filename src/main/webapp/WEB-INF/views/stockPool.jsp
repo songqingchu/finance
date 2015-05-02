@@ -44,19 +44,19 @@ text-decoration:none;
 
 <div style="width:200px;float:left;overflow-y:auto" id="listDiv">
 <c:forEach var="s" items="${acvu}">  
-     <span  class="acvuSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"><a href="#" symbol="${s.getSymbol()}" class="symbolA" id="${s.getSymbol()}">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if test="${s.ting==true}"><font color="red"><b>停牌</b></font></c:if></a></span>
+     <span  class="acvuSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"><a href="#" idx="${s.getIndex()}" symbol="${s.getSymbol()}" class="symbolA" id="${s.getSymbol()}">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if test="${s.ting==true}"><font color="red"><b>停牌</b></font></c:if></a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${big}">  
-   <span style="display:none" class="bigSymbol  symbol ${s.getPosition()}"  style="width:160px;float:left;">  <a href="#"  symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA" >${s.getSymbol()}&nbsp;${s.getNameFormat()}</a></span>
+   <span style="display:none" class="bigSymbol  symbol ${s.getPosition()}"  style="width:160px;float:left;">  <a href="#"  idx="${s.getIndex()}" symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA" >${s.getSymbol()}&nbsp;${s.getNameFormat()}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av5}">  
-    <span style="display:none" class="av5Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"   symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}&nbsp;${s.getNameFormat()}</a></span>
+    <span style="display:none" class="av5Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"   idx="${s.getIndex()}" symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}&nbsp;${s.getNameFormat()}</a></span>
 </c:forEach>
 
 <c:forEach var="s" items="${av10}">  
-    <span style="display:none" class="av10Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"  symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA"   >${s.getSymbol()}&nbsp;${s.getNameFormat()}</a></span>
+    <span style="display:none" class="av10Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"  idx="${s.getIndex()}" symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA"   >${s.getSymbol()}&nbsp;${s.getNameFormat()}</a></span>
 </c:forEach>
 </div>
 </div>
@@ -132,8 +132,11 @@ text-decoration:none;
 	   $(".symbol").css("background-color","");
 	   $(currentNode).css("background-color","pink");
 	   
-	   for(var i=0;i<all.length;i++){
-		   var a=all[i];
+	   
+	   var idx=$(this).attr("idx");
+	   
+	   //for(var i=0;i<all.length;i++){
+		   var a=all[idx];
 		   if(a.symbol==symbol){
 			    base=a;
 				total=base.data.length;
@@ -160,7 +163,7 @@ text-decoration:none;
 		    	
 		    	tradeChart(copyMap);
 		   }
-	   }
+	   //}
 	   /* $.ajax({
 			type : "get",
 			async : true, //同步执行
@@ -263,8 +266,10 @@ text-decoration:none;
 	  	   $(".symbol").css("background-color","");
 	  	   $(nodeNow).css("background-color","pink");
 	  	   
-	  	   for(var i=0;i<all.length;i++){
-			   var a=all[i];
+	  	  var idx=$($(nodeNow).children().get(0)).attr("idx");
+	  	   
+	  	   //for(var i=0;i<all.length;i++){
+			   var a=all[idx];
 			   if(a.symbol==symbol){
 				    base=a;
 					total=base.data.length;
@@ -291,7 +296,7 @@ text-decoration:none;
 			    	
 			    	tradeChart(copyMap);
 			   }
-		   }
+		 //  }
 	  	 
 	  	   /* $.ajax({
 	  			type : "get",

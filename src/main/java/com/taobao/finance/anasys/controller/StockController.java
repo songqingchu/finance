@@ -602,6 +602,24 @@ public class StockController {
 			}
 			av10s.add(st);
 		}
+		List<Stock> all=new ArrayList<Stock>();
+		all.addAll(acvus);
+		all.addAll(av5s);
+		all.addAll(av10s);
+		all.addAll(bigs);
+		
+		
+		for(int i=0;i<store.kdata2.size();i++){
+			String symbol=(String)store.kdata2.get(i).get("symbol");
+			for(Stock st:all){
+				if(st.getSymbol().equals(symbol)){
+					st.setIndex(i);
+				}
+			}
+		}
+		
+		
+		
 		if(bigs.size()>0){
 			bigs.get(0).setPosition("head");
 			bigs.get(bigs.size()-1).setPosition("tail");

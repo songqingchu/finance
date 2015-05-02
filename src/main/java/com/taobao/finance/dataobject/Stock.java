@@ -24,6 +24,13 @@ public class Stock implements Comparable<Stock> {
 	public void setGoldenDate(Date goldenDate) {
 		this.goldenDate = goldenDate;
 	}
+    private Integer index;
+	public Integer getIndex() {
+		return index;
+	}
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
 
 	private String code;
 	private String name;
