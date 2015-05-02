@@ -16,58 +16,25 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.taobao.finance.anasys.controller.StatsDO;
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.check.impl.Check_AV5;
 import com.taobao.finance.check.impl.Check_AVCU;
 import com.taobao.finance.check.impl.Check_BigTrend;
+import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 import com.taobao.finance.util.FetchUtil;
 
+@Component
 public class DataService {
-
-	/*
-	 * public static Map<String,Object> mockData() throws IOException,
-	 * ParseException{ Map<String,Object> m=new HashMap<String,Object>();
-	 * List<StatsDO> mine=read(); DateFormat df=new
-	 * SimpleDateFormat("yyyy.MM.dd"); Date
-	 * startDate=df.parse(mine.get(0).getDate()); List<StatsDO>
-	 * sh=readIndex(startDate, null, "sh000001"); List<StatsDO>
-	 * sz=readIndex(startDate, null, "sz399001"); List<StatsDO>
-	 * ch=readIndex(startDate, null, "sz399006"); List<StatsDO>
-	 * zh=readIndex(startDate, null, "sz399101");
-	 * 
-	 * 
-	 * List<String> dList=new ArrayList<String>(); List<Double> mL=new
-	 * ArrayList<Double>(); List<Double> shL=new ArrayList<Double>();
-	 * List<Double> szL=new ArrayList<Double>(); List<Double> chL=new
-	 * ArrayList<Double>(); List<Double> zhL=new ArrayList<Double>();
-	 * 
-	 * 
-	 * 
-	 * List<Integer> sRate=new ArrayList<Integer>(); List<Integer> r=new
-	 * ArrayList<Integer>(); List<Integer> yRate=new ArrayList<Integer>();
-	 * List<Integer> back=new ArrayList<Integer>();
-	 * 
-	 * 
-	 * 
-	 * 
-	 * for(StatsDO s:mine){ dList.add(s.getDate()); mL.add(s.getV());
-	 * sRate.add(s.getsRate()); r.add(s.getR()); yRate.add(s.getyRate());
-	 * back.add(s.getBack()); } for(StatsDO s:sh){ shL.add(s.getV()); }
-	 * for(StatsDO s:sz){ szL.add(s.getV()); } for(StatsDO s:ch){
-	 * chL.add(s.getV()); } for(StatsDO s:zh){ zhL.add(s.getV()); }
-	 * 
-	 * m.put("date",dList ); m.put("mine", mL); m.put("sh", shL); m.put("sz",
-	 * szL); m.put("ch", chL); m.put("zh", zhL);
-	 * 
-	 * m.put("sRate",sRate ); m.put("yRate", yRate); m.put("r", r);
-	 * m.put("back", back); return m; }
-	 */
+    @Autowired
+	public Store store;
 
 	public static String getSymbol(String symbol) {
 		if (symbol.startsWith("sz") || symbol.startsWith("sh")) {
@@ -327,11 +294,15 @@ public class DataService {
 		return m;
 	}
 
-	public static Map<String, Object> getKData2(String symbol, Boolean working,
+	public  Map<String, Object> getKData2(String symbol, Boolean working,
 			Boolean downloaded) throws IOException, ParseException {
 		Map<String, Object> m = new HashMap<String, Object>();
-		List<Stock> l = Hisdata_Base.readHisDataMerge(symbol, null);
-		
+		List<Stock> l =null;
+		if(this.store.hot.containsKey(symbol)){
+			l=store.hot.get(symbol);
+		}else{
+		 l = Hisdata_Base.readHisDataMerge(symbol, null);
+		}
 
 		if (working) {
 			if (!downloaded) {

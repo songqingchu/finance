@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +51,7 @@ public class Store {
 	public List<GPublicStock> publicStock = new ArrayList<GPublicStock>();
 	public List<GPublicStock> history = new ArrayList<GPublicStock>();
 	public Map<String,Stock> recent=new HashMap<String,Stock>();
+	public Map<String,List<Stock>> hot=new HashMap<String,List<Stock>>();
 
 	public static Boolean workingDay = null;
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
@@ -84,29 +86,53 @@ public class Store {
 		logger.info("*******************************************************");
 		logger.info("system start,normal check workingday:" + workingDay);
 		today = gTaskService.queryLastTask();
+		Set<String> sSet=new HashSet<String>();
 		if (StringUtils.isNoneBlank(today.getAcvu())) {
 			String[] ids = StringUtils.split(today.getAcvu(), ",");
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("acvu", l);
+			sSet.addAll(l);
 		}
 		if (StringUtils.isNoneBlank(today.getBig())) {
 			String[] ids = StringUtils.split(today.getBig(), ",");
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("big", l);
+			sSet.addAll(l);
 		}
 		if (StringUtils.isNoneBlank(today.getAv5())) {
 			String[] ids = StringUtils.split(today.getAv5(), ",");
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("av5", l);
+			sSet.addAll(l);
 		}
 		if (StringUtils.isNoneBlank(today.getAv10())) {
 			String[] ids = StringUtils.split(today.getAv10(), ",");
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("av10", l);
+			sSet.addAll(l);
+		}
+		
+		for(String s:Fetch_AllStock.map.keySet()){
+			Stock st=Hisdata_Base.readTmpData(s);
+			if(st!=null){
+				st.setName(Fetch_AllStock.map.get(s).getName());
+				this.recent.put(s,st);
+			}
+		}
+		
+		for(String s:sSet){
+			List<Stock> l=Hisdata_Base.readHisDataMerge(s, null);
+			List<Stock> lNew=new ArrayList<Stock>();
+			if(l.size()>300){
+				for(int i=l.size()-300;i<l.size();i++){
+					lNew.add(l.get(i));
+				}
+			}
+			hot.put(s, lNew);
 		}
 		
 		for(String s:Fetch_AllStock.map.keySet()){

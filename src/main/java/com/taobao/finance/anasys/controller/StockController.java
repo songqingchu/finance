@@ -60,6 +60,8 @@ public class StockController {
 	private GPublicStockService gPublicStockService;
 	@Autowired
 	private GTaskService gTaskService;
+	@Autowired
+	private DataService dataService;
 	
 	
 	
@@ -673,7 +675,7 @@ public class StockController {
 			download=true;
 		}
 		logger.info("name to symbol:"+symbol);
-		Map<String,Object> map=DataService.getKData2(symbol,Store.workingDay,download);
+		Map<String,Object> map=dataService.getKData2(symbol,Store.workingDay,download);
 		return map;
 	}	
 	
