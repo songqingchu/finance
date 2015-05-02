@@ -106,6 +106,7 @@ text-decoration:none;
 			success : function(result) {
 				if (result) {
 					all=result;
+					alert("数据加载完毕！");
 				}
 			},
 			error : function(errorMsg) {
