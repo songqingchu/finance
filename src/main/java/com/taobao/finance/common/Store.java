@@ -52,10 +52,10 @@ public class Store {
 	public Map<String, Boolean> checkWorkingRecord = new HashMap<String, Boolean>();
 	public List<GPublicStock> publicStock = new ArrayList<GPublicStock>();
 	public List<GPublicStock> history = new ArrayList<GPublicStock>();
-	public Map<String,Stock> recent=new HashMap<String,Stock>();
-	public Map<String,List<Stock>> hot=new HashMap<String,List<Stock>>();
-	public Map<String,Object> kdata=new HashMap<String,Object>();
-	public List<Map<String,Object>> kdata2=new ArrayList<Map<String,Object>>();
+	public Map<String, Stock> recent = new HashMap<String, Stock>();
+	public Map<String, List<Stock>> hot = new HashMap<String, List<Stock>>();
+	public Map<String, Object> kdata = new HashMap<String, Object>();
+	public List<Map<String, Object>> kdata2 = new ArrayList<Map<String, Object>>();
 
 	public static Boolean workingDay = null;
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
@@ -73,7 +73,7 @@ public class Store {
 
 	@Autowired
 	private GTaskService gTaskService;
-	
+
 	@Autowired
 	private DataService dataService;
 
@@ -81,6 +81,50 @@ public class Store {
 
 	public Store() {
 
+	}
+
+	public void reloadHot(Set<String> sSet) {
+		for (String s : sSet) {
+			List<Stock> l = Hisdata_Base.readHisDataMerge(s, null);
+			List<Stock> lNew = new ArrayList<Stock>();
+			if (l.size() > 300) {
+				for (int i = l.size() - 300; i < l.size(); i++) {
+					lNew.add(l.get(i));
+				}
+			} else {
+				lNew = l;
+			}
+			hot.put(s, lNew);
+		}
+	}
+
+	public void reloadRecent() {
+		for (String s : Fetch_AllStock.map.keySet()) {
+			Stock st = Hisdata_Base.readTmpData(s);
+			if (st != null) {
+				st.setName(Fetch_AllStock.map.get(s).getName());
+				this.recent.put(s, st);
+			}
+		}
+	}
+
+	public void reloadKdata(Set<String> sSet) {
+		for (String s : sSet) {
+			Boolean down = false;
+			if (Store.downloaded == 2) {
+				down = true;
+			}
+			try {
+				Map<String, Object> m = dataService.getKData2(s,
+						this.workingDay, down, this);
+				this.kdata.put(s, m);
+				this.kdata2.add(m);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@PostConstruct
@@ -93,7 +137,7 @@ public class Store {
 		logger.info("*******************************************************");
 		logger.info("system start,normal check workingday:" + workingDay);
 		today = gTaskService.queryLastTask();
-		Set<String> sSet=new HashSet<String>();
+		Set<String> sSet = new HashSet<String>();
 		if (StringUtils.isNoneBlank(today.getAcvu())) {
 			String[] ids = StringUtils.split(today.getAcvu(), ",");
 			List<String> l = new ArrayList<String>();
@@ -122,52 +166,8 @@ public class Store {
 			store.put("av10", l);
 			sSet.addAll(l);
 		}
-		
-		for(String s:Fetch_AllStock.map.keySet()){
-			Stock st=Hisdata_Base.readTmpData(s);
-			if(st!=null){
-				st.setName(Fetch_AllStock.map.get(s).getName());
-				this.recent.put(s,st);
-			}
-		}
-		
-		for(String s:sSet){
-			List<Stock> l=Hisdata_Base.readHisDataMerge(s, null);
-			List<Stock> lNew=new ArrayList<Stock>();
-			if(l.size()>300){
-				for(int i=l.size()-300;i<l.size();i++){
-					lNew.add(l.get(i));
-				}
-			}else{
-				lNew=l;
-			}
-			hot.put(s, lNew);
-		}
-		
-		for(String s:sSet){			
-			Boolean down=false;
-			if(Store.downloaded==2){
-				down=true;
-			}
-			try {
-				Map<String,Object> m=dataService.getKData2(s, this.workingDay, down, this);
-				this.kdata.put(s, m);
-				this.kdata2.add(m);
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		for(String s:Fetch_AllStock.map.keySet()){
-			Stock st=Hisdata_Base.readTmpData(s);
-			if(st!=null){
-				st.setName(Fetch_AllStock.map.get(s).getName());
-				this.recent.put(s,st);
-			}
-		}
-		
+
+
 		logger.info("system start,load anasys result");
 
 		if (today != null) {
@@ -194,9 +194,7 @@ public class Store {
 			choosen = 0;
 		}
 		logger.info("*******************************************************");
-		
-		
-		
+
 		publicStock = this.gPublicStockService.queryAll();
 		history = this.gPublicStockService.queryHistory();
 		Thread d = new Thread() {
@@ -244,7 +242,7 @@ public class Store {
 									t.setWorking(GTask.WORKING);
 									t.setChoose(GTask.NON_CHOOSE);
 									t.setInsDate(new Date());
-									logger.info("now task:"+today);
+									logger.info("now task:" + today);
 									t = gTaskService.insert(t);
 									logger.info("insert task");
 								}
@@ -252,19 +250,20 @@ public class Store {
 
 							if (workingDay) {
 								downloaded = 0;
-								choosen=0;
+								choosen = 0;
 							}
 						}
-
 
 						if (d.after(closeTime)) {
 							boolean canDownload = false;
 							if (workingDay) {
 								if (today != null) {
-									if (today.getDate().getDate() == d.getDate()) {
-										if (today.getDownload() == 1|| today.getDownload() == 2) {
+									if (today.getDate().getDate() == d
+											.getDate()) {
+										if (today.getDownload() == 1
+												|| today.getDownload() == 2) {
 											canDownload = false;
-										}else{
+										} else {
 											canDownload = true;
 										}
 									} else {
@@ -274,7 +273,8 @@ public class Store {
 									canDownload = true;
 								}
 								logger.info(today);
-								logger.info("decide need download:" + canDownload);
+								logger.info("decide need download:"
+										+ canDownload);
 							}
 
 							if (canDownload) {
@@ -282,23 +282,56 @@ public class Store {
 								today.setDownload(GTask.DOWNLOADING);
 								today.setWorking(GTask.WORKING);
 								today.setChoose(GTask.NON_CHOOSE);
-								today = gTaskService.update(today);								
-								
+								today = gTaskService.update(today);
+
 								downloaded = DOWNLOAD_STATUS_DOWNLOADING;
 								updateHistory();
 								updateTmp();
 								downloaded = DOWNLOAD_STATUS_DOWNLOADED;
-								logger.info("routin download end");								
-								
+								logger.info("routin download end");
+
 								logger.info("routin ananyse begin");
 								choosen = CHOOSEN_STATUS_CHOOSING;
 								ananyse();
-								choosen = CHOOSEN_STATUS_CHOOSEN;	
+								choosen = CHOOSEN_STATUS_CHOOSEN;
 								logger.info("routin ananyse end");
-								
+
 								today.setDownload(GTask.DOWNLOADED);
 								today.setChoose(GTask.CHOOSEN);
 								gTaskService.update(today);
+								
+								logger.info("routin reload begin");
+								Set<String> sSet = new HashSet<String>();
+								if (StringUtils.isNoneBlank(today.getAcvu())) {
+									String[] ids = StringUtils.split(today.getAcvu(), ",");
+									List<String> l = new ArrayList<String>();
+									l.addAll(Arrays.asList(ids));
+									sSet.addAll(l);
+								}
+								if (StringUtils.isNoneBlank(today.getBig())) {
+									String[] ids = StringUtils.split(today.getBig(), ",");
+									List<String> l = new ArrayList<String>();
+									l.addAll(Arrays.asList(ids));
+									sSet.addAll(l);
+								}
+								if (StringUtils.isNoneBlank(today.getAv5())) {
+									String[] ids = StringUtils.split(today.getAv5(), ",");
+									List<String> l = new ArrayList<String>();
+									l.addAll(Arrays.asList(ids));
+									sSet.addAll(l);
+								}
+								if (StringUtils.isNoneBlank(today.getAv10())) {
+									String[] ids = StringUtils.split(today.getAv10(), ",");
+									List<String> l = new ArrayList<String>();
+									l.addAll(Arrays.asList(ids));
+									sSet.addAll(l);
+								}
+
+								
+								reloadHot(sSet);
+								reloadKdata(sSet);
+								reloadRecent();
+								logger.info("routin reload begin");
 							}
 						}
 						logger.info("check        end---------------------------------------");
@@ -315,8 +348,6 @@ public class Store {
 		d.start();
 	}
 
-	
-	
 	@Autowired
 	private GPublicStockService gPublicStockService;
 
@@ -372,78 +403,78 @@ public class Store {
 	}
 
 	public void ananyse() {
-		try{
-		logger.info("anaysys big trend");
-		List<Stock> big = new BigTrend_Choose_MultiThread().choose();
-		logger.info("anaysys acvu");
-		List<Stock> acvu = new AVCU_Choose_MultiThread().choose();
-		logger.info("anaysys av5");
-		List<Stock> av5 = new AV5_Trend_Choose_MultiThread().choose();
-		logger.info("anaysys av10");
-		List<Stock> av10 = new AV10_Trend_Choose_MultiThread().choose();
-		logger.info("anaysys tp");
-		List<Stock> tp = new TP_Choose_MultiThread().choose();
+		try {
+			logger.info("anaysys big trend");
+			List<Stock> big = new BigTrend_Choose_MultiThread().choose();
+			logger.info("anaysys acvu");
+			List<Stock> acvu = new AVCU_Choose_MultiThread().choose();
+			logger.info("anaysys av5");
+			List<Stock> av5 = new AV5_Trend_Choose_MultiThread().choose();
+			logger.info("anaysys av10");
+			List<Stock> av10 = new AV10_Trend_Choose_MultiThread().choose();
+			logger.info("anaysys tp");
+			List<Stock> tp = new TP_Choose_MultiThread().choose();
 
-		List<String> bigs = new ArrayList<String>();
-		for (Stock s : big) {
-			bigs.add(s.getSymbol());
-		}
-
-		List<String> acvus = new ArrayList<String>();
-		for (Stock s : acvu) {
-			acvus.add(s.getSymbol());
-		}
-
-		List<String> av5s = new ArrayList<String>();
-		for (Stock s : av5) {
-			av5s.add(s.getSymbol());
-		}
-
-		List<String> av10s = new ArrayList<String>();
-		for (Stock s : av10) {
-			av10s.add(s.getSymbol());
-		}
-
-		List<String> tps = new ArrayList<String>();
-		for (Stock s : tp) {
-			tps.add(s.getSymbol());
-		}
-
-		if (this.today != null) {
-			GTask t = today;
-			if (bigs.size() > 0) {
-				t.setBig(StringUtils.join(bigs, ","));
+			List<String> bigs = new ArrayList<String>();
+			for (Stock s : big) {
+				bigs.add(s.getSymbol());
 			}
-			if (av5.size() > 0) {
-				t.setAv5(StringUtils.join(av5s, ","));
-			}
-			if (av10.size() > 0) {
-				t.setAv10(StringUtils.join(av10s, ","));
-			}
-			if (tp.size() > 0) {
-				t.setTp(StringUtils.join(tps, ","));
-			}
-			if (acvu.size() > 0) {
-				t.setAcvu(StringUtils.join(acvus, ","));
-			}
-			t.setChoose(GTask.CHOOSEN);
-			t.setUpDate(new Date());
-			logger.info("update anasys result");
-			gTaskService.update(t);
-		}
 
-		store.put("big", bigs);
-		store.put("acvu", acvus);
-		store.put("av5", av5s);
-		store.put("av10", av10s);
-		store.put("tp", tps);
-		
-		store.put("bigs", big);
-		store.put("acvus", acvu);
-		store.put("av5s", av5);
-		store.put("av10s", av10);
-		store.put("tps", tp);
-		}catch(Exception e){
+			List<String> acvus = new ArrayList<String>();
+			for (Stock s : acvu) {
+				acvus.add(s.getSymbol());
+			}
+
+			List<String> av5s = new ArrayList<String>();
+			for (Stock s : av5) {
+				av5s.add(s.getSymbol());
+			}
+
+			List<String> av10s = new ArrayList<String>();
+			for (Stock s : av10) {
+				av10s.add(s.getSymbol());
+			}
+
+			List<String> tps = new ArrayList<String>();
+			for (Stock s : tp) {
+				tps.add(s.getSymbol());
+			}
+
+			if (this.today != null) {
+				GTask t = today;
+				if (bigs.size() > 0) {
+					t.setBig(StringUtils.join(bigs, ","));
+				}
+				if (av5.size() > 0) {
+					t.setAv5(StringUtils.join(av5s, ","));
+				}
+				if (av10.size() > 0) {
+					t.setAv10(StringUtils.join(av10s, ","));
+				}
+				if (tp.size() > 0) {
+					t.setTp(StringUtils.join(tps, ","));
+				}
+				if (acvu.size() > 0) {
+					t.setAcvu(StringUtils.join(acvus, ","));
+				}
+				t.setChoose(GTask.CHOOSEN);
+				t.setUpDate(new Date());
+				logger.info("update anasys result");
+				gTaskService.update(t);
+			}
+
+			store.put("big", bigs);
+			store.put("acvu", acvus);
+			store.put("av5", av5s);
+			store.put("av10", av10s);
+			store.put("tp", tps);
+
+			store.put("bigs", big);
+			store.put("acvus", acvu);
+			store.put("av5s", av5);
+			store.put("av10s", av10);
+			store.put("tps", tp);
+		} catch (Exception e) {
 			logger.info(e.getMessage());
 			e.printStackTrace();
 		}
