@@ -167,6 +167,12 @@ public class Store {
 			sSet.addAll(l);
 		}
 
+		reloadHot(sSet);
+		
+		reloadRecent();
+		
+		reloadKdata(sSet);
+		
 
 		logger.info("system start,load anasys result");
 
