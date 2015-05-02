@@ -131,7 +131,37 @@ text-decoration:none;
 	   currentSymbol=symbol;
 	   $(".symbol").css("background-color","");
 	   $(currentNode).css("background-color","pink");
-	   $.ajax({
+	   
+	   for(var i=0;i<all.length;i++){
+		   var a=all[i];
+		   if(a.symbol==symbol){
+			    base=a;
+				total=base.data.length;
+				if(total>80){
+					start=total-80;
+				}else{
+					start=0;
+				}
+				
+				var copyMap={};
+		    	copyMap.av5 = base.av5.slice(start);
+		    	copyMap.av10 = base.av10.slice(start);
+		    	copyMap.av20 = base.av20.slice(start);
+		    	copyMap.data = base.data.slice(start);
+		    	copyMap.vol = base.vol.slice(start);
+		    	copyMap.start=base.start;
+		    	copyMap.high=base.high;
+		    	copyMap.low=base.low;
+		    	copyMap.end=base.end;
+		    	copyMap.name=base.name;
+		    	copyMap.av5Tips=base.av5Tips;
+		    	copyMap.acvuTips=base.acvuTips;
+		    	copyMap.bigTips=base.bigTips;
+		    	
+		    	tradeChart(copyMap);
+		   }
+	   }
+	   /* $.ajax({
 			type : "get",
 			async : true, //同步执行
 			url : "/kData.do?symbol="+symbol,
@@ -166,7 +196,7 @@ text-decoration:none;
 			},
 			error : function(errorMsg) {
 			}
-		});
+		}); */
 	   
    });
    
@@ -233,7 +263,37 @@ text-decoration:none;
 	  	   $(".symbol").css("background-color","");
 	  	   $(nodeNow).css("background-color","pink");
 	  	   
-	  	   $.ajax({
+	  	   for(var i=0;i<all.length;i++){
+			   var a=all[i];
+			   if(a.symbol==symbol){
+				    base=a;
+					total=base.data.length;
+					if(total>80){
+						start=total-80;
+					}else{
+						start=0;
+					}
+					
+					var copyMap={};
+			    	copyMap.av5 = base.av5.slice(start);
+			    	copyMap.av10 = base.av10.slice(start);
+			    	copyMap.av20 = base.av20.slice(start);
+			    	copyMap.data = base.data.slice(start);
+			    	copyMap.vol = base.vol.slice(start);
+			    	copyMap.start=base.start;
+			    	copyMap.high=base.high;
+			    	copyMap.low=base.low;
+			    	copyMap.end=base.end;
+			    	copyMap.name=base.name;
+			    	copyMap.av5Tips=base.av5Tips;
+			    	copyMap.acvuTips=base.acvuTips;
+			    	copyMap.bigTips=base.bigTips;
+			    	
+			    	tradeChart(copyMap);
+			   }
+		   }
+	  	 
+	  	   /* $.ajax({
 	  			type : "get",
 	  			async : true, //同步执行
 	  			url : "/kData.do?symbol="+symbol,
@@ -267,7 +327,7 @@ text-decoration:none;
 	  			},
 	  			error : function(errorMsg) {
 	  			}
-	  		});
+	  		}); */
 	    }
    });  
    

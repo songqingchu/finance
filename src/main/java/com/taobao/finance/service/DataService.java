@@ -409,7 +409,7 @@ public class DataService {
 		if (bigTips.size() > 0) {
 			Collections.reverse(bigTips);
 		}
-
+        m.put("symbol", symbol);
 		m.put("av5", av5);
 		m.put("av10", av10);
 		m.put("av20", av20);

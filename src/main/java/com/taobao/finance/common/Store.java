@@ -55,6 +55,7 @@ public class Store {
 	public Map<String,Stock> recent=new HashMap<String,Stock>();
 	public Map<String,List<Stock>> hot=new HashMap<String,List<Stock>>();
 	public Map<String,Object> kdata=new HashMap<String,Object>();
+	public List<Map<String,Object>> kdata2=new ArrayList<Map<String,Object>>();
 
 	public static Boolean workingDay = null;
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
@@ -151,6 +152,7 @@ public class Store {
 			try {
 				Map<String,Object> m=dataService.getKData2(s, this.workingDay, down, this);
 				this.kdata.put(s, m);
+				this.kdata2.add(m);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ParseException e) {

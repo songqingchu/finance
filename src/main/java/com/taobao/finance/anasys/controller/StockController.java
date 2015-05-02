@@ -682,8 +682,8 @@ public class StockController {
 	
 	@RequestMapping(value = "/getAll.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getAll() throws IOException, ParseException {
-		Map<String,Object> map=(Map<String,Object>)store.kdata;
+	public List<Map<String, Object>> getAll() throws IOException, ParseException {
+		List<Map<String,Object>> map=store.kdata2;
 		return map;
 	}	
 	
