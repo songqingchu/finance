@@ -9,6 +9,7 @@
 <script src="/resources/js/jquery.min.js" type="text/javascript"></script>
 <script src="/resources/js/highstock.js"></script>
 <script src="/resources/js/chartExt.js"></script>
+<script src="/resources/js/layer/layer.js"></script>
 
 <style type="text/css">
 .choose .symbolA{
@@ -69,6 +70,8 @@ text-decoration:none;
 <jsp:include page="common/foot.jsp" flush="true"/>
 </body>
 <script>
+
+
    /* var f='function a(i){if(i>0){return true;}else{ return false;};} a(i)';
    var i=1;
    eval("alert(eval(f))"); */
@@ -98,6 +101,14 @@ text-decoration:none;
    var currentNode=tail;
    
    var all={};
+  // var layer_load = layer.load('加载中...');
+   
+   var index = layer.load(1, {
+	    type:3,
+	    shade: [0.1,'#fff'],//0.1透明度的白色背景
+      title:"加载中"
+	});
+
    $.ajax({
 			type : "get",
 			async : true, //同步执行
@@ -106,7 +117,7 @@ text-decoration:none;
 			success : function(result) {
 				if (result) {
 					all=result;
-					alert("数据加载完毕！");
+					layer.close(index);
 				}
 			},
 			error : function(errorMsg) {
