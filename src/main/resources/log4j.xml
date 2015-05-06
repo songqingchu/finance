@@ -3,14 +3,14 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 
-	<appender name="fileAppender" class="org.apache.log4j.FileAppender">
+	<appender name="fileAppender" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="File" value="${log.dir}anasys.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
 		</layout>
 	</appender>
 	
-	<appender name="taskAppender" class="org.apache.log4j.FileAppender">
+	<appender name="taskAppender" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="File" value="${log.dir}task.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
