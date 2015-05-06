@@ -41,7 +41,6 @@ public abstract class Local_Choose_MultiThread_Base {
 		}
 		List<Stock> r = new ArrayList<Stock>();
 		int i = 1;
-		logger.info("thread num:"+threadNum);
 		logger.info("task  size:"+ll.size());
 		while (i <= threadNum) {
 			try {

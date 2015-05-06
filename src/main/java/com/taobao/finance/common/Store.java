@@ -340,7 +340,7 @@ public class Store {
 								reloadHot(sSet);
 								reloadKdata(sSet);
 								reloadRecent();
-								logger.info("routin reload begin");
+								logger.info("routin reload end");
 							}
 						}
 						logger.info("check        end---------------------------------------");
