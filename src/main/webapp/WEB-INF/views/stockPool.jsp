@@ -48,7 +48,7 @@ a {
 				<span class="acvuSymbol symbol ${s.getPosition()}"
 					style="width: 160px; float: left;"><a href="#"
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}" class="symbolA"
-					id="${s.getSymbol()}">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if
+					id="${s.getSymbol()}">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
 							<font color="red"><b>停牌</b></font>
 						</c:if></a></span>
@@ -59,7 +59,7 @@ a {
 					class="bigSymbol  symbol ${s.getPosition()}"
 					style="width:160px;float:left;"> <a href="#"
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
-					id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if
+					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
 							<font color="red"><b>停牌</b></font>
 						</c:if></a></span>
@@ -70,7 +70,7 @@ a {
 					class="av5Symbol  symbol ${s.getPosition()}"
 					style="width:160px;float:left;"> <a href="#"
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
-					id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if
+					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
 							<font color="red"><b>停牌</b></font>
 						</c:if></a></span>
@@ -81,7 +81,7 @@ a {
 					class="av10Symbol  symbol ${s.getPosition()}"
 					style="width:160px;float:left;"> <a href="#"
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
-					id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if
+					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
 							<font color="red"><b>停牌</b></font>
 						</c:if></a></span>
