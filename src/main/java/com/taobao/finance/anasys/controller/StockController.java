@@ -75,8 +75,7 @@ public class StockController {
 				store.setDownloading();
 				new Thread(){
 					public void run(){
-						store.updateHistory();
-						store.updateTmp();
+						store.download();
 						store.setDownloaded();
 					}
 				}.start();
@@ -98,8 +97,7 @@ public class StockController {
 					store.setDownloading();
 					new Thread(){
 						public void run(){
-							store.updateHistory();
-							store.updateTmp();
+							store.download();
 							store.setDownloaded();
 						}
 					}.start();
@@ -514,18 +512,25 @@ public class StockController {
 				st.setName(stt.getName());
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 			}
-			
 			bigs.add(st);
 		}
 		for(String s:acvu){
@@ -539,15 +544,23 @@ public class StockController {
 				st.setName(stt.getName());
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 			}
 			
@@ -562,15 +575,23 @@ public class StockController {
 				st.setName(stt.getName());
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 			}
 			
@@ -585,15 +606,23 @@ public class StockController {
 				st.setName(stt.getName());
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
+				}else{
+					st.setTing(false);
 				}
 			}
 			av10s.add(st);
@@ -617,18 +646,22 @@ public class StockController {
 		
 		
 		if(bigs.size()>0){
+			Collections.sort(bigs, new Comparator.ChooseComparator());
 			bigs.get(0).setPosition("head");
 			bigs.get(bigs.size()-1).setPosition("tail");
 		}
 		if(acvus.size()>0){
+			Collections.sort(acvus, new Comparator.ChooseComparator());
 			acvus.get(0).setPosition("head");
 			acvus.get(acvus.size()-1).setPosition("tail");
 		}
 		if(av5s.size()>0){
+			Collections.sort(av5s, new Comparator.ChooseComparator());
 			av5s.get(0).setPosition("head");
 			av5s.get(av5s.size()-1).setPosition("tail");
 		}
 		if(av10s.size()>0){
+			Collections.sort(av10s, new Comparator.ChooseComparator());
 			av10s.get(0).setPosition("head");
 			av10s.get(av10s.size()-1).setPosition("tail");
 		}

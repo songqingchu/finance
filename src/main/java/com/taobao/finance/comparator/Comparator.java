@@ -12,11 +12,25 @@ public class Comparator {
 		
 	}
 	public static class RateDescComparator implements java.util.Comparator<Stock>{
-
 		public int compare(Stock o1, Stock o2) {
 			return o1.getRate()-o2.getRate()>0?-1:1;
 		}
-		
+	}
+	
+	
+	public static class ChooseComparator implements java.util.Comparator<Stock>{
+		public int compare(Stock o1, Stock o2) {
+			if(o1.getTing()==true&&o2.getTing()==true){
+				return 1000000;
+			}
+			if(o1.getTing()==true&&o2.getTing()==false){
+				return 1000000;
+			}
+			if(o1.getTing()==false&&o2.getTing()==true){
+				return -1;
+			}
+			return 1;
+		}
 	}
 	
 	public static class HotMonneyComparator implements java.util.Comparator<Stock>{

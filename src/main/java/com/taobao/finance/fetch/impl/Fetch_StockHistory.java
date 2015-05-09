@@ -60,9 +60,7 @@ public class Fetch_StockHistory {
 						"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; QQDownload 1.7; .NET CLR 1.1.4322; CIBA; .NET CLR 2.0.50727)");
 
 		try {
-			System.out.println("request begin==============");
 			client.executeMethod(getMethod);
-			System.out.println("requestend==============");
 	        int statuscode = getMethod.getStatusCode();
 			if ((statuscode == HttpStatus.SC_MOVED_TEMPORARILY) ||
 	            (statuscode == HttpStatus.SC_MOVED_PERMANENTLY) ||
@@ -75,9 +73,7 @@ public class Fetch_StockHistory {
 	                if ((newuri == null) || (newuri.equals("")))
 	                    newuri = "/";
 	                GetMethod redirect = new GetMethod(url_base+newuri+"?code="+code);
-	                System.out.println("\n\nbegin==============");
 	                client.executeMethod(redirect);
-	                System.out.println("end==============");
 	                if (getMethod.getStatusCode() == 200) {
 	    				String jsonStr = getMethod.getResponseBodyAsString();
 	    				code=code.replace("&page=2", "");
@@ -90,10 +86,8 @@ public class Fetch_StockHistory {
 	                System.out.println("Invalid redirect");
 	        }
 			if (getMethod.getStatusCode() == 200) {
-				System.out.println("text begin==============");
 				String jsonStr = getMethod.getResponseBodyAsString();
 				s = FetchUtil.parseStockHistoryFromCompass(jsonStr, code);
-				 System.out.println("text end==============\n\n ");
 			}
 			
 			

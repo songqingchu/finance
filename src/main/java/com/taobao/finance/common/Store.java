@@ -287,60 +287,28 @@ public class Store {
 							}
 
 							if (canDownload) {
-								logger.info("routin download begin");
+								
 								today.setDownload(GTask.DOWNLOADING);
 								today.setWorking(GTask.WORKING);
 								today.setChoose(GTask.NON_CHOOSE);
 								today = gTaskService.update(today);
 
 								downloaded = DOWNLOAD_STATUS_DOWNLOADING;
-								updateHistory();
-								updateTmp();
+								download();
 								downloaded = DOWNLOAD_STATUS_DOWNLOADED;
-								logger.info("routin download end");
+								
 
-								logger.info("routin ananyse begin");
+								
 								choosen = CHOOSEN_STATUS_CHOOSING;
 								ananyse();
 								choosen = CHOOSEN_STATUS_CHOOSEN;
-								logger.info("routin ananyse end");
+								
 
 								today.setDownload(GTask.DOWNLOADED);
 								today.setChoose(GTask.CHOOSEN);
 								gTaskService.update(today);
 								
-								logger.info("routin reload begin");
-								Set<String> sSet = new HashSet<String>();
-								if (StringUtils.isNoneBlank(today.getAcvu())) {
-									String[] ids = StringUtils.split(today.getAcvu(), ",");
-									List<String> l = new ArrayList<String>();
-									l.addAll(Arrays.asList(ids));
-									sSet.addAll(l);
-								}
-								if (StringUtils.isNoneBlank(today.getBig())) {
-									String[] ids = StringUtils.split(today.getBig(), ",");
-									List<String> l = new ArrayList<String>();
-									l.addAll(Arrays.asList(ids));
-									sSet.addAll(l);
-								}
-								if (StringUtils.isNoneBlank(today.getAv5())) {
-									String[] ids = StringUtils.split(today.getAv5(), ",");
-									List<String> l = new ArrayList<String>();
-									l.addAll(Arrays.asList(ids));
-									sSet.addAll(l);
-								}
-								if (StringUtils.isNoneBlank(today.getAv10())) {
-									String[] ids = StringUtils.split(today.getAv10(), ",");
-									List<String> l = new ArrayList<String>();
-									l.addAll(Arrays.asList(ids));
-									sSet.addAll(l);
-								}
-
 								
-								reloadHot(sSet);
-								reloadKdata(sSet);
-								reloadRecent();
-								logger.info("routin reload end");
 							}
 						}
 						logger.info("check        end---------------------------------------");
@@ -410,9 +378,18 @@ public class Store {
 		List<Object> r = threadService.service(callList);
 		r.size();
 	}
+	
+	public void download(){
+		logger.info("routin download begin");
+		updateHistory();
+		updateTmp();
+		logger.info("routin download end");
+	}
 
 	public void ananyse() {
 		try {
+			logger.info("routin ananyse begin");
+			
 			logger.info("anaysys big trend");
 			List<Stock> big = new BigTrend_Choose_MultiThread().choose();
 			logger.info("anaysys acvu");
@@ -424,7 +401,7 @@ public class Store {
 			logger.info("anaysys tp");
 			List<Stock> tp = new TP_Choose_MultiThread().choose();
 			
-			
+			logger.info("routin ananyse end");
 
 			List<String> bigs = new ArrayList<String>();
 			for (Stock s : big) {
@@ -485,6 +462,39 @@ public class Store {
 			store.put("av5s", av5);
 			store.put("av10s", av10);
 			store.put("tps", tp);
+			
+			Set<String> sSet = new HashSet<String>();
+			if (StringUtils.isNoneBlank(today.getAcvu())) {
+				String[] ids = StringUtils.split(today.getAcvu(), ",");
+				List<String> l = new ArrayList<String>();
+				l.addAll(Arrays.asList(ids));
+				sSet.addAll(l);
+			}
+			if (StringUtils.isNoneBlank(today.getBig())) {
+				String[] ids = StringUtils.split(today.getBig(), ",");
+				List<String> l = new ArrayList<String>();
+				l.addAll(Arrays.asList(ids));
+				sSet.addAll(l);
+			}
+			if (StringUtils.isNoneBlank(today.getAv5())) {
+				String[] ids = StringUtils.split(today.getAv5(), ",");
+				List<String> l = new ArrayList<String>();
+				l.addAll(Arrays.asList(ids));
+				sSet.addAll(l);
+			}
+			if (StringUtils.isNoneBlank(today.getAv10())) {
+				String[] ids = StringUtils.split(today.getAv10(), ",");
+				List<String> l = new ArrayList<String>();
+				l.addAll(Arrays.asList(ids));
+				sSet.addAll(l);
+			}
+
+			logger.info("routin reload begin");
+			reloadHot(sSet);
+			reloadKdata(sSet);
+			reloadRecent();
+			logger.info("routin reload end");
+			
 		} catch (Exception e) {
 			logger.info(e.getMessage());
 			e.printStackTrace();

@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
@@ -10,72 +10,101 @@
 
 
 <style type="text/css">
-.choose .symbolA{
-cursor:pointer;
-}
-a{
-text-decoration:none; 
+.choose .symbolA {
+	cursor: pointer;
 }
 
+a {
+	text-decoration: none;
+}
 </style>
 </head>
 <body>
-<jsp:include page="common/head.jsp" flush="true"/>
- 
+	<jsp:include page="common/head.jsp" flush="true" />
 
-   
-<div style="width:180px;float:left;" id="leftDiv">
-<div style="width:180px;float:left;">
-<span  style="width:80px;float:left;">
-<b><a href="#" id="acvuSymbol" class="choose"  cat="acvuSymbol" style="background-color:green">acvu:</a></b><font size="2">${acvuSize}</font>
-</span>
-<span  style="width:80px;float:left;">
-<b><a href="#" id="bigSymbol"  class="choose"  cat="bigSymbol" >big&nbsp;:</a></b><font size="2">${bigSize}</font>
-</span>
-<span  style="width:80px;float:left;">
-<b><a href="#" id="av5Symbol" class="choose"  cat="av5Symbol" >av5&nbsp;:</a></b><font size="2">${av5Size}</font>
-</span>
-<span  style="width:80px;float:left;">
-<b><a href="#" id="av10Symbol"  class="choose"  cat="av10Symbol" >av10:</a></b><font size="2">${av10Size}</font>
-</span>
-<br>
-</div>
 
-<div style="width:180px;float:left;overflow-y:auto;position:relative" id="listDiv">
-<c:forEach var="s" items="${acvu}">  
-     <span  class="acvuSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"><a href="#" idx="${s.getIndex()}" symbol="${s.getSymbol()}" class="symbolA" id="${s.getSymbol()}">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if test="${s.ting==true}"><font color="red"><b>停牌</b></font></c:if></a></span>
-</c:forEach>
 
-<c:forEach var="s" items="${big}">  
-   <span style="display:none" class="bigSymbol  symbol ${s.getPosition()}"  style="width:160px;float:left;">  <a href="#"  idx="${s.getIndex()}" symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA" >${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if test="${s.ting==true}"><font color="red"><b>停牌</b></font></c:if></a></span>
-</c:forEach>
+	<div style="width: 180px; float: left;" id="leftDiv">
+		<div style="width: 180px; float: left;">
+			<span style="width: 80px; float: left;"> <b><a href="#"
+					id="acvuSymbol" class="choose" index="1" cat="acvuSymbol"
+					style="background-color: green">acvu:</a></b><font size="2">${acvuSize}</font>
+			</span> <span style="width: 80px; float: left;"> <b><a href="#"
+					id="bigSymbol" class="choose" index="2" cat="bigSymbol">big&nbsp;:</a></b><font
+				size="2">${bigSize}</font>
+			</span> <span style="width: 80px; float: left;"> <b><a href="#"
+					id="av5Symbol" class="choose" index="3" cat="av5Symbol">av5&nbsp;:</a></b><font
+				size="2">${av5Size}</font>
+			</span> <span style="width: 80px; float: left;"> <b><a href="#"
+					id="av10Symbol" class="choose" index="4" cat="av10Symbol">av10:</a></b><font
+				size="2">${av10Size}</font>
+			</span> <br>
+		</div>
 
-<c:forEach var="s" items="${av5}">  
-    <span style="display:none" class="av5Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"   idx="${s.getIndex()}" symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if test="${s.ting==true}"><font color="red"><b>停牌</b></font></c:if></a></span>
-</c:forEach>
+		<div
+			style="width: 180px; float: left; overflow-y: auto; position: relative"
+			id="listDiv">
+			<c:forEach var="s" items="${acvu}">
+				<span class="acvuSymbol symbol ${s.getPosition()}"
+					style="width: 160px; float: left;"><a href="#"
+					idx="${s.getIndex()}" symbol="${s.getSymbol()}" class="symbolA"
+					id="${s.getSymbol()}">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if
+							test="${s.ting==true}">
+							<font color="red"><b>停牌</b></font>
+						</c:if></a></span>
+			</c:forEach>
 
-<c:forEach var="s" items="${av10}">  
-    <span style="display:none" class="av10Symbol  symbol ${s.getPosition()}"  style="width:160px;float:left;"> <a href="#"  idx="${s.getIndex()}" symbol="${s.getSymbol()}" id="${s.getSymbol()}" class="symbolA"   >${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if test="${s.ting==true}"><font color="red"><b>停牌</b></font></c:if></a></span>
-</c:forEach>
-</div>
-</div>
-<!-- 
+			<c:forEach var="s" items="${big}">
+				<span style="display: none"
+					class="bigSymbol  symbol ${s.getPosition()}"
+					style="width:160px;float:left;"> <a href="#"
+					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
+					id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if
+							test="${s.ting==true}">
+							<font color="red"><b>停牌</b></font>
+						</c:if></a></span>
+			</c:forEach>
+
+			<c:forEach var="s" items="${av5}">
+				<span style="display: none"
+					class="av5Symbol  symbol ${s.getPosition()}"
+					style="width:160px;float:left;"> <a href="#"
+					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
+					id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if
+							test="${s.ting==true}">
+							<font color="red"><b>停牌</b></font>
+						</c:if></a></span>
+			</c:forEach>
+
+			<c:forEach var="s" items="${av10}">
+				<span style="display: none"
+					class="av10Symbol  symbol ${s.getPosition()}"
+					style="width:160px;float:left;"> <a href="#"
+					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
+					id="${s.getSymbol()}" class="symbolA">${s.getSymbol()}&nbsp;${s.getNameFormat()}<c:if
+							test="${s.ting==true}">
+							<font color="red"><b>停牌</b></font>
+						</c:if></a></span>
+			</c:forEach>
+		</div>
+	</div>
+	<!-- 
 <div id="check_div" style="float:left;margin-left: 80px"></div>
  -->
 
 
-<div id="container" style="height: 800px;float:right;"></div>
+	<div id="container" style="height: 800px; float: right;"></div>
 
 
 
 
-<jsp:include page="common/foot.jsp" flush="true"/>
+	<jsp:include page="common/foot.jsp" flush="true" />
 
-<script src="/resources/js/jquery.min.js" type="text/javascript"></script>
-<script src="/resources/js/highstock.js"></script>
-<script src="/resources/js/chartExt.js"></script>
-<script src="/resources/js/layer/layer.js"></script>
-<script>
+	<script src="/resources/js/jquery.min.js" type="text/javascript"></script>
+	<script src="/resources/js/highstock.js"></script>
+	<script src="/resources/js/chartExt.js"></script>
+	<script src="/resources/js/layer/layer.js"></script>
+	<script>
 
 
    /* var f='function a(i){if(i>0){return true;}else{ return false;};} a(i)';
@@ -96,6 +125,7 @@ text-decoration:none;
    var av10=[${av10Str}];
    
    var currentCat="acvuSymbol";
+   var currentCatIndex=1;
    
    var head=$(".head.acvuSymbol").get(0);
    var tail=$(".tail.acvuSymbol").get(0);
@@ -108,6 +138,7 @@ text-decoration:none;
    
    
    var all={};
+   
    
    //loading 图标
    function loadLayer(){
@@ -269,22 +300,59 @@ text-decoration:none;
    $(document).keydown(function(event){ 
 	    event.preventDefault(); 
 	    event.stopPropagation(); 
+	    
+	    if(event.keyCode == 33||event.keyCode == 34){
+	    	if(event.keyCode == 33) {
+               if(currentCatIndex==1){
+            	   currentCatIndex=4
+               }else{
+            	   currentCatIndex--;
+               }
+		    }
+	    	if(event.keyCode == 34) {
+	    	   if(currentCatIndex==4){
+	    		   currentCatIndex=1
+	           }else{
+	        	   currentCatIndex++;
+	           }
+		    }
+	    	
+	    	if(currentCatIndex==1){
+	    		currentCat='acvu';
+	    	}
+            if(currentCatIndex==2){
+            	currentCat='big';
+	    	}
+            if(currentCatIndex==3){
+            	currentCat='av5';
+            }
+            if(currentCatIndex==4){
+            	currentCat='av10';
+            }
+
+	 	   head=$(".head."+currentCat+"Symbol").get(0);
+	 	   tail=$(".tail."+currentCat+"Symbol").get(0);
+	 	   
+
+	 	   $(".choose").css("background-color","");
+	 	   $("#"+currentCat+"Symbol").css("background-color","green");
+	 	   $(".symbol").css("display","none");
+	 	   $("."+currentCat+"Symbol").attr("style","display:block;width:160px;float:left;");
+	 	   
+	 	   currentNode=tail;//切换 	
+	    }	
+	    
 	    if(event.keyCode == 38||event.keyCode == 40){
 	    	if(event.keyCode == 38) {
 	    		if(start+40<total){
 	    			start=start+40;
 	    		}
 		    }
-	    	
 	    	if(event.keyCode == 40) {
 	        	if(start-20>0){
 	        		start=start-20;
 	        	}
 		    }
-	    	
-	    	
-		    
-	        
 	        var copyMap={};
 	    	copyMap.av5 = base.av5.slice(start);
 	    	copyMap.av10 = base.av10.slice(start);
@@ -299,9 +367,11 @@ text-decoration:none;
 	    	copyMap.av5Tips=base.av5Tips;
 	    	copyMap.acvuTips=base.acvuTips;
 	    	copyMap.bigTips=base.bigTips;
-	    	
+
 	    	tradeChart(copyMap);
 	    }
+	    
+	    
 	    if(event.keyCode == 37||event.keyCode == 39){
 	    	var nodeNow=null;
 	        if(event.keyCode == 37) {
@@ -330,21 +400,8 @@ text-decoration:none;
 		    var stop=$("#listDiv").scrollTop();
 		    $("#listDiv").animate({scrollTop:(top+stop)},500);
 		    
-			
-		    
-		    
-		    
-		    
-		    
 		    $(nodeNow).css("background-color","pink").siblings().css("background-color","");
-		    
-		    
-		    
-	  	  
-	  	    
-	  	    
-	  	    
-	  	   
+
 	  	   var idx=$($(nodeNow).children().get(0)).attr("idx");
 	  	   
 	  	 if(all.length>0){
