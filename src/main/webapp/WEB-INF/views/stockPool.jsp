@@ -28,7 +28,7 @@ a {
 		<div style="width: 180px; float: left;">
 			<span style="width: 80px; float: left;"> <b><a href="#"
 					id="acvuSymbol" class="choose" index="1" cat="acvuSymbol"
-					style="background-color: green">acvu:</a></b><font size="2">${acvuSize}</font>
+					style="background-color: red">acvu:</a></b><font size="2">${acvuSize}</font>
 			</span> <span style="width: 80px; float: left;"> <b><a href="#"
 					id="bigSymbol" class="choose" index="2" cat="bigSymbol">big&nbsp;:</a></b><font
 				size="2">${bigSize}</font>
@@ -176,7 +176,7 @@ a {
 	   var symbol=$(this).attr("symbol");
 	   currentSymbol=symbol;
 	   $(".symbol").css("background-color","");
-	   $(currentNode).css("background-color","pink");
+	   $(currentNode).css("background-color","red");
 	   
 	    var idx=$(this).attr("idx");
 	   
@@ -289,7 +289,7 @@ a {
 	   
 	   var id=$(this).attr("id");
 	   $(".choose").css("background-color","");
-	   $(this).css("background-color","green");
+	   $(this).css("background-color","red");
 	   $(".symbol").css("display","none");
 	   var aa=$("."+id);
 	   $("."+id).attr("style","display:block;width:160px;float:left;");
@@ -335,7 +335,7 @@ a {
 	 	   
 
 	 	   $(".choose").css("background-color","");
-	 	   $("#"+currentCat+"Symbol").css("background-color","green");
+	 	   $("#"+currentCat+"Symbol").css("background-color","red");
 	 	   $(".symbol").css("display","none");
 	 	   $("."+currentCat+"Symbol").attr("style","display:block;width:160px;float:left;");
 	 	   
@@ -400,7 +400,7 @@ a {
 		    var stop=$("#listDiv").scrollTop();
 		    $("#listDiv").animate({scrollTop:(top+stop)},500);
 		    
-		    $(nodeNow).css("background-color","pink").siblings().css("background-color","");
+		    $(nodeNow).css("background-color","red").siblings().css("background-color","");
 
 	  	   var idx=$($(nodeNow).children().get(0)).attr("idx");
 	  	   
