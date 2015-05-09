@@ -94,7 +94,7 @@ public class StockController {
 		}else{
 			if(force){
 				int status=store.getDownloadStatus();
-				if(status==0){
+				if(status!=1){
 					store.setDownloading();
 					new Thread(){
 						public void run(){
@@ -108,10 +108,6 @@ public class StockController {
 				}
 				if(status==1){
 					request.setAttribute("message", "正在下载中！");
-					return "download";
-				}
-				if(status==2){
-					request.setAttribute("message", "今日数据已经下载完成！");
 					return "download";
 				}			
 			}else{
@@ -516,16 +512,16 @@ public class StockController {
 			Stock stt=store.recent.get(s);
 			if(stt!=null){
 				st.setName(stt.getName());
-				if(stt.getStartPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getHighPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getLowPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getEndPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
 			}
@@ -541,16 +537,16 @@ public class StockController {
 			Stock stt=store.recent.get(s);
 			if(stt!=null){
 				st.setName(stt.getName());
-				if(stt.getStartPrice().equals("0.00")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getHighPrice().equals("0.00")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getLowPrice().equals("0.00")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getEndPrice().equals("0.00")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
 			}
@@ -564,16 +560,16 @@ public class StockController {
 			Stock stt=store.recent.get(s);
 			if(stt!=null){
 				st.setName(stt.getName());
-				if(stt.getStartPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getHighPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getLowPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getEndPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
 			}
@@ -587,16 +583,16 @@ public class StockController {
 			Stock stt=store.recent.get(s);
 			if(stt!=null){
 				st.setName(stt.getName());
-				if(stt.getStartPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getHighPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getLowPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
-				if(stt.getEndPrice().equals("0")){
+				if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
 					st.setTing(true);
 				}
 			}

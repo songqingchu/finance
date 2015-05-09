@@ -423,6 +423,8 @@ public class Store {
 			List<Stock> av10 = new AV10_Trend_Choose_MultiThread().choose();
 			logger.info("anaysys tp");
 			List<Stock> tp = new TP_Choose_MultiThread().choose();
+			
+			
 
 			List<String> bigs = new ArrayList<String>();
 			for (Stock s : big) {
