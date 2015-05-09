@@ -21,9 +21,9 @@ color:purple;
 <span>     
 <a href="record.do">逐日盯市</a> &nbsp;
 <a href="stats.do">分析图表</a> &nbsp;
-<a href="publicPool.do">公众池</a> &nbsp;
-<a href="history.do">经典K线</a> &nbsp;
-<a href="help.do">新手必读</a> &nbsp;
+<a href="publicPool.do">盯市</a> &nbsp;
+<a href="history.do">经典</a> &nbsp;
+<a href="help.do">新手</a> &nbsp;
 <c:if test="${root==true}">
 <a href="choose.do">模型筛选</a> &nbsp;
 <a href="check.do">检测</a> &nbsp;

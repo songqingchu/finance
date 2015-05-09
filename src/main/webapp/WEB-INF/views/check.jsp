@@ -30,6 +30,7 @@ text-decoration:none;
 <c:if test="${sessionScope.root==true}">
 <textarea rows="5" cols="20" id="symbolText">
 </textarea>
+<br>
 <a href="#" class="submitA" replace="0">检测</a>&nbsp;&nbsp;&nbsp;&nbsp;
 </c:if>
 </div>
