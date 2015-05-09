@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<title>见证你在股市中成长的每一步</title>
+<title>模型复盘结果-赌博者之路</title>
 
 
 

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<title>见证你在股市中成长的每一步</title>
+<title>图表绩效分析-赌博者之路</title>
 <script src="/resources/js/jquery.js"></script> 
 </head>
 <body>
