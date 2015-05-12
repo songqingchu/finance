@@ -20,6 +20,7 @@ public class Comparator {
 	
 	public static class ChooseComparator implements java.util.Comparator<Stock>{
 		public int compare(Stock o1, Stock o2) {
+			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
 			if(o1.getTing()==true&&o2.getTing()==true){
 				return 1000000;
 			}
