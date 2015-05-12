@@ -29,6 +29,9 @@ public class Comparator {
 			if(o1.getTing()==false&&o2.getTing()==true){
 				return -1;
 			}
+			if(o1==o2){
+				return 1;
+			}
 			return 1;
 		}
 	}
