@@ -646,22 +646,22 @@ public class StockController {
 		
 		
 		if(bigs.size()>0){
-			Collections.sort(bigs, new Comparator.ChooseComparator());
+			//Collections.sort(bigs, new Comparator.ChooseComparator());
 			bigs.get(0).setPosition("head");
 			bigs.get(bigs.size()-1).setPosition("tail");
 		}
 		if(acvus.size()>0){
-			Collections.sort(acvus, new Comparator.ChooseComparator());
+			//Collections.sort(acvus, new Comparator.ChooseComparator());
 			acvus.get(0).setPosition("head");
 			acvus.get(acvus.size()-1).setPosition("tail");
 		}
 		if(av5s.size()>0){
-			Collections.sort(av5s, new Comparator.ChooseComparator());
+			//Collections.sort(av5s, new Comparator.ChooseComparator());
 			av5s.get(0).setPosition("head");
 			av5s.get(av5s.size()-1).setPosition("tail");
 		}
 		if(av10s.size()>0){
-			Collections.sort(av10s, new Comparator.ChooseComparator());
+			//Collections.sort(av10s, new Comparator.ChooseComparator());
 			av10s.get(0).setPosition("head");
 			av10s.get(av10s.size()-1).setPosition("tail");
 		}
