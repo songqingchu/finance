@@ -22,8 +22,25 @@ public class GTask {
 	private String acvu;
 	private String big;
 	private String tp;
+	private String cb;
+	private String ratio;
 	private Byte working;
 	private Date insDate;
+	
+	@Column(name = "cb")
+	public String getCb() {
+		return cb;
+	}
+	public void setCb(String cb) {
+		this.cb = cb;
+	}
+	@Column(name = "ratio")
+	public String getRatio() {
+		return ratio;
+	}
+	public void setRatio(String ratio) {
+		this.ratio = ratio;
+	}
 	private Date upDate;
 	
 	

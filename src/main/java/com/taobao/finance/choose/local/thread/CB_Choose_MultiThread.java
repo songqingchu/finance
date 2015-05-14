@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.apache.log4j.Logger;
+
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.base.Local_Choose_MultiThread_Base;
 import com.taobao.finance.dataobject.Stock;
@@ -33,7 +35,7 @@ public class CB_Choose_MultiThread extends Local_Choose_MultiThread_Base{
 
 
 class CB_Task implements Callable<List<Stock>> {
-
+	public static final Logger logger = Logger.getLogger("taskLogger");
 	private List<Stock> l;
 
 	public CB_Task(List<Stock> l) {
@@ -47,10 +49,8 @@ class CB_Task implements Callable<List<Stock>> {
 	@Override
 	public List<Stock> call() throws Exception {
 		List<Stock> l = new ArrayList<Stock>();
+		int i=0;
 		for (Stock s : this.l) {
-			if(s.getCode().equals("002215")){
-				s.get_10changes();
-			}
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if (history == null) {
 				continue;
@@ -59,6 +59,7 @@ class CB_Task implements Callable<List<Stock>> {
 				continue;
 			}
 			boolean match = CheckUtil.checkCB(history);
+			logger.info((i++)+":"+s.getSymbol()+","+match);
 			if (match) {
 				s.setVrate(history.get(history.size() - 1).getVrate());
 				l.add(s);

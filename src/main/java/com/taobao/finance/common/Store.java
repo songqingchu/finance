@@ -26,6 +26,7 @@ import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.AV10_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
+import com.taobao.finance.choose.local.thread.CB_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
 import com.taobao.finance.dataobject.Stock;
@@ -164,6 +165,27 @@ public class Store {
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("av10", l);
+			sSet.addAll(l);
+		}
+		if (StringUtils.isNoneBlank(today.getCb())) {
+			String[] ids = StringUtils.split(today.getCb(), ",");
+			List<String> l = new ArrayList<String>();
+			l.addAll(Arrays.asList(ids));
+			store.put("cb", l);
+			sSet.addAll(l);
+		}
+		if (StringUtils.isNoneBlank(today.getRatio())) {
+			String[] ids = StringUtils.split(today.getRatio(), ",");
+			List<String> l = new ArrayList<String>();
+			l.addAll(Arrays.asList(ids));
+			store.put("ratio", l);
+			sSet.addAll(l);
+		}
+		if (StringUtils.isNoneBlank(today.getTp())) {
+			String[] ids = StringUtils.split(today.getTp(), ",");
+			List<String> l = new ArrayList<String>();
+			l.addAll(Arrays.asList(ids));
+			store.put("tp", l);
 			sSet.addAll(l);
 		}
 
@@ -400,7 +422,12 @@ public class Store {
 			List<Stock> av10 = new AV10_Trend_Choose_MultiThread().choose();
 			logger.info("anaysys tp");
 			List<Stock> tp = new TP_Choose_MultiThread().choose();
+			logger.info("anaysys cb");
+			List<Stock> cb = new CB_Choose_MultiThread().choose();
 			
+			List<Stock> ratio =new ArrayList<Stock>(); 
+					
+					
 			logger.info("routin ananyse end");
 
 			List<String> bigs = new ArrayList<String>();
@@ -427,6 +454,16 @@ public class Store {
 			for (Stock s : tp) {
 				tps.add(s.getSymbol());
 			}
+			
+			List<String> cbs = new ArrayList<String>();
+			for (Stock s : cb) {
+				cbs.add(s.getSymbol());
+			}
+			
+			List<String> ratios = new ArrayList<String>();
+			/*for (Stock s : cb) {
+				cbs.add(s.getSymbol());
+			}*/
 
 			if (this.today != null) {
 				GTask t = today;
@@ -445,6 +482,13 @@ public class Store {
 				if (acvu.size() > 0) {
 					t.setAcvu(StringUtils.join(acvus, ","));
 				}
+				if (cbs.size() > 0) {
+					t.setCb(StringUtils.join(cbs, ","));
+				}
+				if (ratios.size() > 0) {
+					t.setCb(StringUtils.join(ratios, ","));
+				}
+				
 				t.setChoose(GTask.CHOOSEN);
 				t.setUpDate(new Date());
 				logger.info("update anasys result");
@@ -456,12 +500,16 @@ public class Store {
 			store.put("av5", av5s);
 			store.put("av10", av10s);
 			store.put("tp", tps);
+			store.put("cb", cbs);
+			store.put("ratio", ratios);
 
 			store.put("bigs", big);
 			store.put("acvus", acvu);
 			store.put("av5s", av5);
 			store.put("av10s", av10);
 			store.put("tps", tp);
+			store.put("cbs", cb);
+			store.put("ratios", ratio);
 			
 			Set<String> sSet = new HashSet<String>();
 			if (StringUtils.isNoneBlank(today.getAcvu())) {
@@ -484,6 +532,24 @@ public class Store {
 			}
 			if (StringUtils.isNoneBlank(today.getAv10())) {
 				String[] ids = StringUtils.split(today.getAv10(), ",");
+				List<String> l = new ArrayList<String>();
+				l.addAll(Arrays.asList(ids));
+				sSet.addAll(l);
+			}
+			if (StringUtils.isNoneBlank(today.getCb())) {
+				String[] ids = StringUtils.split(today.getCb(), ",");
+				List<String> l = new ArrayList<String>();
+				l.addAll(Arrays.asList(ids));
+				sSet.addAll(l);
+			}
+			if (StringUtils.isNoneBlank(today.getTp())) {
+				String[] ids = StringUtils.split(today.getTp(), ",");
+				List<String> l = new ArrayList<String>();
+				l.addAll(Arrays.asList(ids));
+				sSet.addAll(l);
+			}
+			if (StringUtils.isNoneBlank(today.getRatio())) {
+				String[] ids = StringUtils.split(today.getRatio(), ",");
 				List<String> l = new ArrayList<String>();
 				l.addAll(Arrays.asList(ids));
 				sSet.addAll(l);

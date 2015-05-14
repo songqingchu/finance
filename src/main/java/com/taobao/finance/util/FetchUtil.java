@@ -13,6 +13,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
+import org.htmlparser.filters.AndFilter;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.util.NodeList;
@@ -27,6 +30,7 @@ import org.htmlparser.util.NodeList;
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.dataobject.Tick;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock;
 
 public class FetchUtil {
@@ -199,6 +203,79 @@ public class FetchUtil {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	
+	public static List<Tick> parseZhubi(String s, String code,String dateStr,String filter)
+			throws Exception {
+		List<Tick> l=new ArrayList<Tick>();
+		try {
+			Parser parser = new Parser(s);
+			NodeList nodes = parser.parse(new AndFilter(new HasAttributeFilter( "id", "datatbl" ),new HasAttributeFilter( "class", "datatbl" )));
+			NodeList trs=nodes.elementAt(0).getChildren();
+            
+			boolean firstTr=true;
+			if (trs.size() > 0) {
+				int size=trs.size();;
+				for(int i=0;i<size;i++){
+					Node n=trs.elementAt(i);
+					boolean containsTr=false;
+					containsTr=n.toHtml().contains("<tr");
+					if(containsTr&&firstTr){
+						firstTr=false;
+						continue;
+					}
+					if(containsTr){
+						if(!firstTr){
+							NodeList tds =n.getChildren();
+							if(tds.size()>6){
+								List<Node> ll=new ArrayList<Node>();
+								for(int j=0;j<tds.size();j++){
+									if(tds.elementAt(j).toHtml().contains("<th")||tds.elementAt(j).toHtml().contains("<td")){
+										ll.add(tds.elementAt(j));
+									}
+								}
+								
+								String time=ll.get(0).getChildren().elementAt(0).getText();
+								String price=ll.get(1).getChildren().elementAt(0).getText();
+								String rate=ll.get(2).getChildren().elementAt(0).getText();
+								String d=ll.get(3).getChildren().elementAt(0).getText();
+								String num=ll.get(4).getChildren().elementAt(0).getText();
+								
+								if(filter!=null){
+									SimpleDateFormat df2=new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+									if(!df2.parse(dateStr+" "+time).after(df2.parse(filter))){
+										continue;
+									}
+								}
+								
+								rate=rate.replace("%", "");
+								rate=rate.replace("+", "");
+								if(d.equals("--")){
+									d="0";
+								}
+								d=d.replace("+", "");
+								
+								Tick t=new Tick();
+								t.setSymbol(code);
+								t.setPriceStr(price);
+								t.setTimeStr(dateStr+" "+time);
+								t.setRateStr(rate);
+								t.setdStr(d);
+								t.setNum(Integer.parseInt(num));
+								l.add(t);
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(l.size()>0){
+			Collections.reverse(l);
+		}
+		return l;
 	}
 	
 

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.apache.log4j.Logger;
+
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.base.Local_Choose_MultiThread_Base;
 import com.taobao.finance.dataobject.Stock;
@@ -34,7 +36,7 @@ public class AV10_Trend_Choose_MultiThread extends Local_Choose_MultiThread_Base
 
 
 class AV10_Trend_Task implements Callable<List<Stock>> {
-
+	public static final Logger logger = Logger.getLogger("taskLogger");
 	private List<Stock> l;
 
 	public AV10_Trend_Task(List<Stock> l) {
@@ -49,10 +51,6 @@ class AV10_Trend_Task implements Callable<List<Stock>> {
 		List<Stock> l = new ArrayList<Stock>();
 		int i=0;
 		for (Stock s : this.l) {
-			System.out.println(i++);
-			if(s.getCode().equals("000096")){
-				s.get_10changes();
-			}
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if (history == null) {
 				continue;
@@ -61,6 +59,7 @@ class AV10_Trend_Task implements Callable<List<Stock>> {
 				continue;
 			}
 			boolean match = CheckUtil.checkAV10XRate(history);
+			logger.info((i++)+":"+s.getSymbol()+","+match);
 			if (match) {
 				s.setVrate(history.get(history.size() - 1).getVrate());
 				l.add(s);

@@ -28,7 +28,7 @@ import com.taobao.finance.util.FetchUtil;
 import com.taobao.finance.util.ThreadUtil;
 
 public abstract class Local_Choose_MultiThread_Base {
-	private static final Logger logger = Logger.getLogger("taskLogger");
+	public static final Logger logger = Logger.getLogger("taskLogger");
 	public List<Stock> choose() {
 		int threadNum = Runtime.getRuntime().availableProcessors();
 		

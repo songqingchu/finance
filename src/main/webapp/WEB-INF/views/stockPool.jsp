@@ -38,7 +38,20 @@ a {
 			</span> <span style="width: 80px; float: left;"> <b><a href="#"
 					id="av10Symbol" class="choose" index="4" cat="av10Symbol">av10:</a></b><font
 				size="2">${av10Size}</font>
-			</span> <br>
+			</span> 
+			</span> <span style="width: 80px; float: left;"> <b><a href="#"
+					id="tpSymbol" class="choose" index="4" cat="tpSymbol">tp:</a></b><font
+				size="2">${av10Size}</font>
+			</span> 
+			</span> <span style="width: 80px; float: left;"> <b><a href="#"
+					id="cbSymbol" class="choose" index="4" cat="cbSymbol">cb:</a></b><font
+				size="2">${av10Size}</font>
+			</span> 
+			</span> <span style="width: 80px; float: left;"> <b><a href="#"
+					id="ratioSymbol" class="choose" index="4" cat="ratioSymbol">ratio:</a></b><font
+				size="2">${av10Size}</font>
+			</span> 
+			<br>
 		</div>
 
 		<div
@@ -86,6 +99,8 @@ a {
 							<font color="red"><b>停牌</b></font>
 						</c:if></a></span>
 			</c:forEach>
+			
+			
 		</div>
 	</div>
 	<!-- 

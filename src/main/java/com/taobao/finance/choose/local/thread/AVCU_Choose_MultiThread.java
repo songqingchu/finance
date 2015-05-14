@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.apache.log4j.Logger;
+
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.base.Local_Choose_MultiThread_Base;
 import com.taobao.finance.dataobject.Stock;
@@ -35,7 +37,8 @@ public class AVCU_Choose_MultiThread extends Local_Choose_MultiThread_Base{
 }
 
 class AVCU_Task implements Callable<List<Stock>> {
-
+	public static final Logger logger = Logger.getLogger("taskLogger");
+	
 	private List<Stock> l;
 
 	public AVCU_Task(List<Stock> l) {
@@ -51,10 +54,8 @@ class AVCU_Task implements Callable<List<Stock>> {
 
 	public List<Stock> call() throws Exception {
 		List<Stock> l = new ArrayList<Stock>();
+		int i=0;
 		for (Stock s : this.l) {
-			if(s.getCode().equals("601633")){
-				s.get_10changes();
-			}
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if (history == null) {
 				continue;
@@ -63,6 +64,7 @@ class AVCU_Task implements Callable<List<Stock>> {
 				continue;
 			}
 			boolean match = CheckUtil.checkAVCU(history);
+			logger.info((i++)+":"+s.getSymbol()+","+match);
 			if (match) {
 				s.setVrate(history.get(history.size() - 1).getVrate());
 				l.add(s);
