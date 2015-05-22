@@ -14,13 +14,6 @@ import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.dataobject.Tick;
 import com.taobao.finance.util.FetchUtil;
 
-/**
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: www.dianwoba.com</p>
- * @author lijiayang
- * @date   2015Äê5ÔÂ13ÈÕ
- */
 public class Fetch_Zhubi {
 	public static String url = "http://vip.stock.finance.sina.com.cn/quotes_service/view/vMS_tradedetail.php?symbol=";
 	public static String getUrl(String stock) {

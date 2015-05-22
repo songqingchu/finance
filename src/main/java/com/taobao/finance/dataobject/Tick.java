@@ -2,13 +2,7 @@ package com.taobao.finance.dataobject;
 
 import java.util.Date;
 
-/**
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: www.dianwoba.com</p>
- * @author lijiayang
- * @date   2015Äê5ÔÂ14ÈÕ
- */
+
 public class Tick {
 
 	private String timeStr;
