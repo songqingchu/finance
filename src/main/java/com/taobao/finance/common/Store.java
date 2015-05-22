@@ -290,7 +290,7 @@ public class Store {
         
         logger.info("system start:    load tmp data");
 		reloadRecent();
-		logger.info("system start:    load tmp data\n");
+		logger.info("system start:    load tmp data end\n");
 		
 		logger.info("system start:    ananyse model mark");
 		reloadKdata(sSet);
