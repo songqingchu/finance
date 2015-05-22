@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.mapping.Fetchable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -388,7 +389,12 @@ public class Store {
 								today.setWorking(GTask.WORKING);
 								today.setChoose(GTask.NON_CHOOSE);
 								today = gTaskService.update(today);
-
+								
+								logger.info("update all stock name begin");
+								Fetch_AllStock.getData();
+								logger.info("update all stock name end");
+								
+								
 								downloaded = DOWNLOAD_STATUS_DOWNLOADING;
 								download();
 								downloaded = DOWNLOAD_STATUS_DOWNLOADED;
