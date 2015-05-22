@@ -48,14 +48,14 @@ public class DataService {
 		}
 		return symbol;
 	}
-	
+
 	public static String getName(String symbol) {
-		String name=null;
-		Stock s=Fetch_AllStock.map.get(symbol);
-		if(s==null){
+		String name = null;
+		Stock s = Fetch_AllStock.map.get(symbol);
+		if (s == null) {
 			return null;
 		}
-		name=s.getName();
+		name = s.getName();
 		return name;
 	}
 
@@ -292,44 +292,54 @@ public class DataService {
 		return m;
 	}
 
-	public  Map<String, Object> getKData2(String symbol, Boolean working,
-			Boolean downloaded,Store store) throws IOException, ParseException {
+	public Map<String, Object> getKData2(String symbol, Boolean working,
+			Boolean downloaded, Store store) throws IOException, ParseException {
 		Map<String, Object> m = new HashMap<String, Object>();
-		List<Stock> l =null;
-		if(store.hot.containsKey(symbol)){
-			l=store.hot.get(symbol);
-		}else{
-		 l = Hisdata_Base.readHisDataMerge(symbol, null);
+		List<Stock> l = null;
+		if (store.hot.containsKey(symbol)) {
+			l = store.hot.get(symbol);
+		} else {
+			l = Hisdata_Base.readHisDataMerge(symbol, null);
 		}
 
 		if (working) {
 			if (!downloaded) {
 				Stock s = Fetch_SingleStock.fetch(symbol);
-				l.add(s);
+				if(s!=null){
+					l.add(s);
+				}
 			}
 		}
 
-		if(l.size()>0){
-			Boolean ting=false;
-			Stock s=l.get(l.size()-1);
-			if(s.getStartPriceFloat()<0.05F){
-				ting=true;
+		if (l.size() > 0) {
+			Boolean ting = false;
+			Stock s = l.get(l.size() - 1);
+			if (s.getStartPrice() != null) {
+				if (s.getStartPriceFloat() < 0.05F) {
+					ting = true;
+				}
 			}
-			if(s.getHighPriceFloat()<0.05F){
-				ting=true;
+			if (s.getHighPrice() != null) {
+				if (s.getHighPriceFloat() < 0.05F) {
+					ting = true;
+				}
 			}
-			if(s.getLowPriceFloat()<0.05F){
-				ting=true;
+			if (s.getLowPrice() != null) {
+				if (s.getLowPriceFloat() < 0.05F) {
+					ting = true;
+				}
 			}
-			if(s.getEndPriceFloat()<0.05F){
-				ting=true;
-			}
-			if(ting){
-				l.remove(l.size()-1);
+			if (s.getEndPrice() != null) {
+				if (s.getEndPriceFloat() < 0.05F) {
+					ting = true;
+				}
 			}
 			
+			if (ting) {
+				l.remove(l.size() - 1);
+			}
 		}
-		
+
 		int size = l.size();
 		Object[][] av5 = new Object[size - 1][2];
 		Object[][] av10 = new Object[size - 1][2];
@@ -409,7 +419,7 @@ public class DataService {
 		if (bigTips.size() > 0) {
 			Collections.reverse(bigTips);
 		}
-        m.put("symbol", symbol);
+		m.put("symbol", symbol);
 		m.put("av5", av5);
 		m.put("av10", av10);
 		m.put("av20", av20);
@@ -450,46 +460,44 @@ public class DataService {
 			}
 		}
 
-		int size=l.size();
-		
+		int size = l.size();
+
 		Object[][] av5 = new Object[size - 1][2];
 		Object[][] av10 = new Object[size - 1][2];
 		Object[][] av20 = new Object[size - 1][2];
 		Object[][] data = new Object[size - 1][6];
 		Object[][] vol = new Object[size - 1][2];
-        
-		
+
 		for (int i = 1; i <= size - 1; i++) {
-				Stock s = l.get(l.size() - i);
-				Float v5 = getAve2(l, 5, l.size() - i);
-				Float v10 = getAve2(l, 10, l.size() - i);
-				Float v20 = getAve2(l, 20, l.size() - i);
+			Stock s = l.get(l.size() - i);
+			Float v5 = getAve2(l, 5, l.size() - i);
+			Float v10 = getAve2(l, 10, l.size() - i);
+			Float v20 = getAve2(l, 20, l.size() - i);
 
-				Date d = s.getDate() == null ? new Date() : s.getDate();
-				av5[size - 1 - i][0] = d;
-				av5[size - 1 - i][1] = v5;
+			Date d = s.getDate() == null ? new Date() : s.getDate();
+			av5[size - 1 - i][0] = d;
+			av5[size - 1 - i][1] = v5;
 
-				av10[size - 1 - i][0] = d;
-				av10[size - 1 - i][1] = v10;
+			av10[size - 1 - i][0] = d;
+			av10[size - 1 - i][1] = v10;
 
-				av20[size - 1 - i][0] = d;
-				av20[size - 1 - i][1] = v20;
+			av20[size - 1 - i][0] = d;
+			av20[size - 1 - i][1] = v20;
 
-				vol[size - 1 - i][0] = d;
-				vol[size - 1 - i][1] = s.getTradeNum();
+			vol[size - 1 - i][0] = d;
+			vol[size - 1 - i][1] = s.getTradeNum();
 
-				data[size - 1 - i][0] = d;
-				data[size - 1 - i][1] = Float.parseFloat(s.getStartPrice());
-				data[size - 1 - i][2] = Float.parseFloat(s.getLowPrice());
-				data[size - 1 - i][3] = Float.parseFloat(s.getHighPrice());
-				data[size - 1 - i][4] = Float.parseFloat(s.getEndPrice());
-				
-				Stock yesterday = l.get(l.size() - i - 1);
-				Float rate = Float.parseFloat(s.getEndPrice())
-						/ Float.parseFloat(yesterday.getEndPrice()) * 100 - 100;
-				data[size - 1-i][5] = rate;
-			}
-		
+			data[size - 1 - i][0] = d;
+			data[size - 1 - i][1] = Float.parseFloat(s.getStartPrice());
+			data[size - 1 - i][2] = Float.parseFloat(s.getLowPrice());
+			data[size - 1 - i][3] = Float.parseFloat(s.getHighPrice());
+			data[size - 1 - i][4] = Float.parseFloat(s.getEndPrice());
+
+			Stock yesterday = l.get(l.size() - i - 1);
+			Float rate = Float.parseFloat(s.getEndPrice())
+					/ Float.parseFloat(yesterday.getEndPrice()) * 100 - 100;
+			data[size - 1 - i][5] = rate;
+		}
 
 		List<String> acvuDate = new Check_AVCU().check(symbol);
 		List<String> av5Date = new Check_AV5().check(symbol);
@@ -499,16 +507,16 @@ public class DataService {
 		List<Map<String, Object>> av5Tips = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> bigTips = new ArrayList<Map<String, Object>>();
 
-		Stock start=null;
-		Date dd=new Date();
+		Stock start = null;
+		Date dd = new Date();
 		for (String s : acvuDate) {
 			Date d = FetchUtil.FILE_FORMAT.parse(s);
 			for (GPublicStock st : his) {
 				if ((!d.before(st.getAddDate()) && (!d
 						.after(st.getRemoveDate())))
 						&& st.getType().equals("acvu")) {
-					if(d.before(dd)){
-						dd=d;
+					if (d.before(dd)) {
+						dd = d;
 					}
 					Map<String, Object> mm = new HashMap<String, Object>();
 					mm.put("x", d);
@@ -524,8 +532,8 @@ public class DataService {
 				if ((!d.before(st.getAddDate()) && (!d
 						.after(st.getRemoveDate())))
 						&& st.getType().equals("av5")) {
-					if(d.before(dd)){
-						dd=d;
+					if (d.before(dd)) {
+						dd = d;
 					}
 					Map<String, Object> mm = new HashMap<String, Object>();
 					mm.put("x", d);
@@ -541,8 +549,8 @@ public class DataService {
 				if ((!d.before(st.getAddDate()) && (!d
 						.after(st.getRemoveDate())))
 						&& st.getType().equals("oth")) {
-					if(d.before(dd)){
-						dd=d;
+					if (d.before(dd)) {
+						dd = d;
 					}
 					Map<String, Object> mm = new HashMap<String, Object>();
 					mm.put("x", d);
@@ -579,19 +587,19 @@ public class DataService {
 		} else {
 			name = s.getSymbol();
 		}
-		int startIndex=0;
-		Stock startStock=null;
-		for(Stock stock:l){
-			if(stock.getDate()!=null){
-				if(stock.getDate().before(dd)){
-					startStock=stock;
+		int startIndex = 0;
+		Stock startStock = null;
+		for (Stock stock : l) {
+			if (stock.getDate() != null) {
+				if (stock.getDate().before(dd)) {
+					startStock = stock;
 				}
 			}
 		}
-		if(startStock!=null){
-			startIndex=l.indexOf(startStock);
-			if(startIndex-60>0){
-				startIndex=startIndex-60;
+		if (startStock != null) {
+			startIndex = l.indexOf(startStock);
+			if (startIndex - 60 > 0) {
+				startIndex = startIndex - 60;
 			}
 		}
 		m.put("startIndex", startIndex);

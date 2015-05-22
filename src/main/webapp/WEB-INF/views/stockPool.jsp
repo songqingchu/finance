@@ -41,15 +41,15 @@ a {
 			</span> 
 			</span> <span style="width: 80px; float: left;"> <b><a href="#"
 					id="tpSymbol" class="choose" index="4" cat="tpSymbol">tp:</a></b><font
-				size="2">${av10Size}</font>
+				size="2">${tpSize}</font>
 			</span> 
 			</span> <span style="width: 80px; float: left;"> <b><a href="#"
 					id="cbSymbol" class="choose" index="4" cat="cbSymbol">cb:</a></b><font
-				size="2">${av10Size}</font>
+				size="2">${cbSize}</font>
 			</span> 
 			</span> <span style="width: 80px; float: left;"> <b><a href="#"
 					id="ratioSymbol" class="choose" index="4" cat="ratioSymbol">ratio:</a></b><font
-				size="2">${av10Size}</font>
+				size="2">${ratioSize}</font>
 			</span> 
 			<br>
 		</div>
@@ -100,7 +100,41 @@ a {
 						</c:if></a></span>
 			</c:forEach>
 			
+			<c:forEach var="s" items="${tp}">
+				<span style="display: none"
+					class="tpSymbol  symbol ${s.getPosition()}"
+					style="width:160px;float:left;"> <a href="#"
+					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
+					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
+							test="${s.ting==true}">
+							<font color="red"><b>停牌</b></font>
+						</c:if></a></span>
+			</c:forEach>
 			
+		
+			<c:forEach var="s" items="${cb}">
+				<span style="display: none"
+					class="cbSymbol  symbol ${s.getPosition()}"
+					style="width:160px;float:left;"> <a href="#"
+					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
+					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
+							test="${s.ting==true}">
+							<font color="red"><b>停牌</b></font>
+						</c:if></a></span>
+			</c:forEach>
+			
+			
+			<c:forEach var="s" items="${ratio}">
+				<span style="display: none"
+					class="ratioSymbol  symbol ${s.getPosition()}"
+					style="width:160px;float:left;"> <a href="#"
+					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
+					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
+							test="${s.ting==true}">
+							<font color="red"><b>停牌</b></font>
+						</c:if></a></span>
+			</c:forEach>
+
 		</div>
 	</div>
 	<!-- 
@@ -132,7 +166,7 @@ a {
    $("#container").width(w);
    $("#container").height(h);
    $("#leftDiv").height(h);
-   $("#listDiv").height(h-50);
+   $("#listDiv").height(h-100);
    
    var acvu=[${acvuStr}];
    var great=[${bigStr}];
@@ -319,13 +353,13 @@ a {
 	    if(event.keyCode == 33||event.keyCode == 34){
 	    	if(event.keyCode == 33) {
                if(currentCatIndex==1){
-            	   currentCatIndex=4
+            	   currentCatIndex=7
                }else{
             	   currentCatIndex--;
                }
 		    }
 	    	if(event.keyCode == 34) {
-	    	   if(currentCatIndex==4){
+	    	   if(currentCatIndex==7){
 	    		   currentCatIndex=1
 	           }else{
 	        	   currentCatIndex++;
@@ -343,6 +377,15 @@ a {
             }
             if(currentCatIndex==4){
             	currentCat='av10';
+            }
+            if(currentCatIndex==5){
+            	currentCat='tp';
+	    	}
+            if(currentCatIndex==6){
+            	currentCat='cb';
+            }
+            if(currentCatIndex==7){
+            	currentCat='ratio';
             }
 
 	 	   head=$(".head."+currentCat+"Symbol").get(0);

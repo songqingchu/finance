@@ -58,7 +58,7 @@ class CB_Task implements Callable<List<Stock>> {
 			if (history.size() < 2) {
 				continue;
 			}
-			boolean match = CheckUtil.checkCB(history);
+			boolean match = CheckUtil.checkCB2(history);
 			logger.info((i++)+":"+s.getSymbol()+","+match);
 			if (match) {
 				s.setVrate(history.get(history.size() - 1).getVrate());

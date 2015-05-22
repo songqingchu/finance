@@ -138,57 +138,123 @@ public class Store {
 		logger.info("*******************************************************");
 		logger.info("system start,normal check workingday:" + workingDay);
 		today = gTaskService.queryLastTask();
+		GTask lastDay=gTaskService.queryLast2Task();
+
 		Set<String> sSet = new HashSet<String>();
-		if (StringUtils.isNoneBlank(today.getAcvu())) {
-			String[] ids = StringUtils.split(today.getAcvu(), ",");
+		
+		String[] ids =null;
+		if (StringUtils.isNotBlank(today.getAcvu())) {
+			ids = StringUtils.split(today.getAcvu(), ",");
+		}else{
+			ids = StringUtils.split(lastDay.getAcvu(), ",");
+		}
+		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("acvu", l);
 			sSet.addAll(l);
+		}else{
+			store.put("acvu", new ArrayList<String>());
 		}
-		if (StringUtils.isNoneBlank(today.getBig())) {
-			String[] ids = StringUtils.split(today.getBig(), ",");
+		
+		
+		
+		ids =null;
+		if (StringUtils.isNotBlank(today.getBig())) {
+			ids = StringUtils.split(today.getBig(), ",");
+		}else{
+			ids = StringUtils.split(lastDay.getBig(), ",");
+		}
+		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("big", l);
 			sSet.addAll(l);
+		}else{
+			store.put("big", new ArrayList<String>());
 		}
-		if (StringUtils.isNoneBlank(today.getAv5())) {
-			String[] ids = StringUtils.split(today.getAv5(), ",");
+		
+		
+		
+		
+		ids =null;
+		if (StringUtils.isNotBlank(today.getAv5())) {
+			ids = StringUtils.split(today.getAv5(), ",");
+		}else{
+			ids = StringUtils.split(lastDay.getAv5(), ",");
+		}
+		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("av5", l);
 			sSet.addAll(l);
+		}else{
+			store.put("av5", new ArrayList<String>());
 		}
-		if (StringUtils.isNoneBlank(today.getAv10())) {
-			String[] ids = StringUtils.split(today.getAv10(), ",");
+		
+		ids =null;
+		if (StringUtils.isNotBlank(today.getAv10())) {
+			ids = StringUtils.split(today.getAv10(), ",");
+		}else{
+			ids = StringUtils.split(lastDay.getAv10(), ",");
+		}
+		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("av10", l);
 			sSet.addAll(l);
+		}else{
+			store.put("av10", new ArrayList<String>());
 		}
-		if (StringUtils.isNoneBlank(today.getCb())) {
-			String[] ids = StringUtils.split(today.getCb(), ",");
+		
+		
+		ids =null;
+		if (StringUtils.isNotBlank(today.getCb())) {
+			ids = StringUtils.split(today.getCb(), ",");
+		}else{
+			ids = StringUtils.split(lastDay.getCb(), ",");
+		}
+		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("cb", l);
 			sSet.addAll(l);
+		}else{
+			store.put("cb", new ArrayList<String>());
 		}
-		if (StringUtils.isNoneBlank(today.getRatio())) {
-			String[] ids = StringUtils.split(today.getRatio(), ",");
+		
+		
+		ids =null;
+		if (StringUtils.isNotBlank(today.getRatio())) {
+			ids = StringUtils.split(today.getRatio(), ",");
+		}else{
+			ids = StringUtils.split(lastDay.getRatio(), ",");
+		}
+		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("ratio", l);
 			sSet.addAll(l);
+		}else{
+			store.put("ratio", new ArrayList<String>());
 		}
-		if (StringUtils.isNoneBlank(today.getTp())) {
-			String[] ids = StringUtils.split(today.getTp(), ",");
+		
+		
+		ids =null;
+		if (StringUtils.isNotBlank(today.getTp())) {
+			ids = StringUtils.split(today.getTp(), ",");
+		}else{
+			ids = StringUtils.split(lastDay.getTp(), ",");
+		}
+		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			l.addAll(Arrays.asList(ids));
 			store.put("tp", l);
 			sSet.addAll(l);
+		}else{
+			store.put("tp", new ArrayList<String>());
 		}
-
+		
 		
 		
 

@@ -398,13 +398,15 @@ public class FetchUtil {
 			String line = null;
 			line = br.readLine();
 			while (line != null) {
-				String data[] = line.split("\t");
-				Stock s = new Stock();
-				s.setSymbol(data[0]);
-				if (data.length > 1) {
-					s.setName(data[1]);
+				if(StringUtils.isNotBlank(line)){
+					String data[] = line.split("\t");
+					Stock s = new Stock();
+					s.setSymbol(data[0]);
+					if (data.length > 1) {
+						s.setName(data[1]);
+					}
+					map.put(data[0], s);
 				}
-				map.put(data[0], s);
 				line = br.readLine();
 			}
 			br.close();

@@ -289,6 +289,55 @@ public class CheckUtil {
 		}
 		return false;
 	}
+	
+	public static boolean checkCB2(List<Stock> l) {
+		if (l.size() < 90) {
+			return false;
+		}
+		int size = l.size();
+		List<Float> rList=new ArrayList<Float>();
+		for(int i=size-90;i<l.size();i++){
+			Stock today = l.get(size - i - 1);
+			Stock tomorrow = l.get(size - i);
+			Float t1End = Float.parseFloat(today.getEndPrice());
+			Float t2End = Float.parseFloat(tomorrow.getEndPrice());
+			rList.add(t2End/t1End);
+		}
+		int size2=rList.size();
+		boolean prevGood=false;
+		int continueCount=0;
+		for(int i=0;i<size2;i++){
+			Float r=rList.get(i);
+			if(r>9.96F){
+				prevGood=true;
+			}else{
+				prevGood=false;
+				continueCount=0;
+			}
+			if(prevGood){
+				continueCount++;
+				if(continueCount>=4){
+					return true;
+				}
+			}			
+		}
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 	public static boolean checkBV(Stock today, Stock tomorow) {
@@ -691,7 +740,7 @@ public class CheckUtil {
 
 
 	/**
-	 * 超级趋势
+	 * 瓒呯骇瓒嬪娍
 	 * @param l
 	 * @return
 	 */
@@ -772,7 +821,7 @@ public class CheckUtil {
 	
 	
 	/**
-	 * 超级趋势
+	 * 瓒呯骇瓒嬪娍
 	 * @param l
 	 * @return
 	 */
@@ -876,12 +925,12 @@ public class CheckUtil {
 				continueCount10++;
 			}
 		}
-		//10日线朝上天数
+		//10鏃ョ嚎鏈濅笂澶╂暟
 		if (continueCount10 < 16) {
 			return false;
 		}
 
-		//10线不要陡增陡降
+		//10绾夸笉瑕侀櫋澧為櫋闄�
 		for (int i = 0; i < 20; i++) {
 			Float r2 = (av10.get(i) - av10.get(i + 5)) / 5;
 			Float p = r2 / r;
@@ -1114,14 +1163,14 @@ public class CheckUtil {
 	}
 
 	/**
-	 * AVCU用于发现起涨的早期阶段，以四日形态为特征
-	 * 1   十日涨幅不大于20
-	 * 2   股价应比倒数第四日，倒数第二日高
-	 * 3 4日涨幅不小2
-	 * 3   单日涨幅不能大于5，不能小于2
-	 * 4  上涨日期不能小于3
-	 * 5  下跌日期不能大于1
-	 * 6  四日涨幅不能大于8
+	 * AVCU鐢ㄤ簬鍙戠幇璧锋定鐨勬棭鏈熼樁娈碉紝浠ュ洓鏃ュ舰鎬佷负鐗瑰緛
+	 * 1   鍗佹棩娑ㄥ箙涓嶅ぇ浜�20
+	 * 2   鑲′环搴旀瘮鍊掓暟绗洓鏃ワ紝鍊掓暟绗簩鏃ラ珮
+	 * 3 4鏃ユ定骞呬笉灏�2
+	 * 3   鍗曟棩娑ㄥ箙涓嶈兘澶т簬5锛屼笉鑳藉皬浜�2
+	 * 4  涓婃定鏃ユ湡涓嶈兘灏忎簬3
+	 * 5  涓嬭穼鏃ユ湡涓嶈兘澶т簬1
+	 * 6  鍥涙棩娑ㄥ箙涓嶈兘澶т簬8
 	 * @param l
 	 * @return
 	 */
@@ -1534,7 +1583,7 @@ public class CheckUtil {
 	}
 
 	/**
-	 * ���ƽ���
+	 * 锟斤拷锟狡斤拷锟斤拷
 	 * 
 	 * @param l
 	 * @return
@@ -1592,7 +1641,7 @@ public class CheckUtil {
 		}
 
 		/**
-		 * ����
+		 * 锟斤拷锟斤拷
 		 */
 		if (!(v1 > v2 && v1 > v3)) {
 			return false;
@@ -1601,7 +1650,7 @@ public class CheckUtil {
 		Float rr2 = v1.floatValue() / v3.floatValue();
 
 		/**
-		 * ������������3
+		 * 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷3
 		 */
 		if (r1 < 1.05) {
 			return false;
@@ -1617,7 +1666,7 @@ public class CheckUtil {
 	}
 
 	/**
-	 * �����������
+	 * 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟�
 	 * 
 	 * @param l
 	 * @return

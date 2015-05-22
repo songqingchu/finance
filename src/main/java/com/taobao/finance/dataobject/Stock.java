@@ -435,7 +435,7 @@ public class Stock implements Comparable<Stock> {
 	
 	public String getRongquanString(){
 		if(isRongquan){
-			return "��ȯ";
+			return "锟斤拷券";
 		}else{
 			return "";
 		}
@@ -695,6 +695,9 @@ public class Stock implements Comparable<Stock> {
 	}
 	
 	public String getNameFormat() {
+		if(name==null){
+			return "请检查";
+		}
 		if(name.getBytes().length==7){
 			name=name+"&nbsp;&nbsp;&nbsp";
 		}
@@ -904,11 +907,11 @@ public class Stock implements Comparable<Stock> {
 		if (isStrictHarden()) {
 			return this.getSymbol() + "\t" + this.getName()
 			+"\t"+this.getRateString() + "\t"
-					+ this.getHardenTimes() + "\t������ͣ";
+					+ this.getHardenTimes() + "\t锟斤拷锟斤拷锟斤拷停";
 		} else {
 			return this.getSymbol() + "\t" + this.getName()
 			+"\t"+ this.getRateString() + "\t"
-					+ this.getHardenTimes() + "\t��";
+					+ this.getHardenTimes() + "\t锟斤拷";
 		}
 
 	}
@@ -936,7 +939,7 @@ public class Stock implements Comparable<Stock> {
 	}
 	
 	public static void mian(String args[]){
-		System.out.println("中".getBytes().length);
+		System.out.println("涓�".getBytes().length);
 		System.out.println("A".getBytes().length);
 	}
 }

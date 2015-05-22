@@ -821,9 +821,9 @@ public class StockController {
 		request.setAttribute("acvu", acvus);
 		request.setAttribute("av5", av5s);
 		request.setAttribute("av10", av10s);
-		request.setAttribute("cb", cb);
-		request.setAttribute("tp", tp);
-		request.setAttribute("ratio", ratio);
+		request.setAttribute("cb", cbs);
+		request.setAttribute("tp", tps);
+		request.setAttribute("ratio", ratios);
 		
 		request.setAttribute("bigSize", big.size());
 		request.setAttribute("acvuSize", acvu.size());

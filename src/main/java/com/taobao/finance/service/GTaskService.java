@@ -32,5 +32,14 @@ public class GTaskService extends BaseService<GTask>{
 		return l;
 	}
 	
+	public GTask queryLast2Task(){
+		String hql="select * FROM g_task order by date desc limit 2";
+		List<GTask> l=this.getDao().findRecordsBySql(hql,new Object[]{});
+		if(l.size()==2){
+			return l.get(1);
+		}
+		return null;
+	}
+	
 
 }
