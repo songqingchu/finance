@@ -59,9 +59,9 @@ public class Fetch_Zhubi {
 			}else{
 				date=r.get(r.size()-1).getTimeStr();
 			} 
-			System.out.println("下载Tick数据");
+			System.out.println("download Tick");
 			List<Tick> l=fetch("sz300019",date);
-			System.out.println("下载Tick数据结束:"+l.size()+","+r.size());
+			System.out.println("download Tick end:"+l.size()+","+r.size());
 			merge(r,l);
 			check(r);
 			try {
@@ -77,8 +77,7 @@ public class Fetch_Zhubi {
 	}
 	
     public void check(List<Tick> all){
-		System.out.println("分析序列");
-		System.out.println("分析序列结束\n");
+
 	}
 	
 	public static void main(String args[]) {
