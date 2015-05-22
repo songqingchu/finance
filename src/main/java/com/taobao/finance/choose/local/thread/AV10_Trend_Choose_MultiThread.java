@@ -59,7 +59,7 @@ class AV10_Trend_Task implements Callable<List<Stock>> {
 				continue;
 			}
 			boolean match = CheckUtil.checkAV10XRate(history);
-			logger.info((i++)+":"+s.getSymbol()+","+match);
+			//logger.info((i++)+":"+s.getSymbol()+","+match);
 			if (match) {
 				s.setVrate(history.get(history.size() - 1).getVrate());
 				l.add(s);
