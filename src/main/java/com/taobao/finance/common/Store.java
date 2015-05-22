@@ -136,7 +136,7 @@ public class Store {
 		}
 		logger.info("\n\n\n");
 		logger.info("*******************************************************");
-		logger.info("system start,normal check workingday:" + workingDay);
+		logger.info("system start:    normal check workingday:" + workingDay);
 		today = gTaskService.queryLastTask();
 		GTask lastDay=gTaskService.queryLast2Task();
 
@@ -258,7 +258,7 @@ public class Store {
 		
 		
 
-		logger.info("system start,load anasys result");
+		logger.info("system start:    load anasys result");
 
 		if (today != null) {
 			if (workingDay) {
@@ -284,12 +284,19 @@ public class Store {
 			choosen = 0;
 		}
 		
+		logger.info("system start:    load hot kdata");
         reloadHot(sSet);
-		
+        logger.info("system start:    load hot kdata end\n");
+        
+        logger.info("system start:    load tmp data");
 		reloadRecent();
+		logger.info("system start:    load tmp data\n");
 		
+		logger.info("system start:    ananyse model mark");
 		reloadKdata(sSet);
+		logger.info("system start:    ananyse model mark end\n");
 		
+		logger.info("system start:    system start end" );
 		logger.info("*******************************************************");
 
 		publicStock = this.gPublicStockService.queryAll();
@@ -301,7 +308,8 @@ public class Store {
 				while (true) {
 					try {
 						logger.info("\n\n");
-						logger.info("heart beat check---------------------------------------");
+						logger.info("----------------------------------------------------------");
+						logger.info("heart beat check:         start");
 						today = gTaskService.queryLastTask();
 						if (today.getDate().getDate() == new Date().getDate()) {
 							if (today.getWorking() == 1) {
@@ -322,7 +330,7 @@ public class Store {
 						if (d.after(beginTime) && d.before(beginTime3)) {
 
 							workingDay = FetchUtil.checkWorkingDay2();
-							logger.info("routin check workingday:" + workingDay);
+							logger.info("heart beat check:         workingday," + workingDay);
 							if (workingDay) {
 								today = gTaskService.queryLastTask();
 								if (today.getDate().getDate() != new Date()
@@ -339,9 +347,9 @@ public class Store {
 									t.setWorking(GTask.WORKING);
 									t.setChoose(GTask.NON_CHOOSE);
 									t.setInsDate(new Date());
-									logger.info("now task:" + today);
+									logger.info("heart beat check:         now task," + today);
 									t = gTaskService.insert(t);
-									logger.info("insert task");
+									logger.info("heart beat check:         insert task");
 								}
 							}
 
@@ -369,8 +377,8 @@ public class Store {
 								} else {
 									canDownload = true;
 								}
-								logger.info(today);
-								logger.info("decide need download:"
+								logger.info("heart beat check:         "+today);
+								logger.info("heart beat check:         decide need download:"
 										+ canDownload);
 							}
 
@@ -399,7 +407,8 @@ public class Store {
 								
 							}
 						}
-						logger.info("check        end---------------------------------------");
+						logger.info("heart beat check:         end");
+						logger.info("----------------------------------------------------------");
 						logger.info("\n\n");
 						Thread.sleep(60 * 1000 * 15);
 					} catch (Exception e) {
@@ -471,7 +480,7 @@ public class Store {
 		logger.info("routin download begin");
 		updateHistory();
 		updateTmp();
-		logger.info("routin download end");
+		logger.info("routin download end\n");
 	}
 
 	public void ananyse() {
@@ -494,7 +503,7 @@ public class Store {
 			List<Stock> ratio =new ArrayList<Stock>(); 
 					
 					
-			logger.info("routin ananyse end");
+			logger.info("routin ananyse end\n");
 
 			List<String> bigs = new ArrayList<String>();
 			for (Stock s : big) {
@@ -557,7 +566,7 @@ public class Store {
 				
 				t.setChoose(GTask.CHOOSEN);
 				t.setUpDate(new Date());
-				logger.info("update anasys result");
+				logger.info("update anasys result\n");
 				gTaskService.update(t);
 			}
 
@@ -625,7 +634,7 @@ public class Store {
 			reloadHot(sSet);
 			reloadKdata(sSet);
 			reloadRecent();
-			logger.info("routin reload end");
+			logger.info("routin reload end\n");
 			
 		} catch (Exception e) {
 			logger.info(e.getMessage());
