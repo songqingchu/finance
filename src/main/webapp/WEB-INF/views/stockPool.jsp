@@ -458,7 +458,7 @@ a {
 		    var stop=$("#listDiv").scrollTop();
 		    $("#listDiv").animate({scrollTop:(top+stop)},500);
 		    
-		    $(nodeNow).css("background-color","red").siblings().css("background-color","");
+		    $(nodeNow).css("background-color","green").siblings().css("background-color","");
 
 	  	   var idx=$($(nodeNow).children().get(0)).attr("idx");
 	  	   
