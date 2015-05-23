@@ -501,6 +501,7 @@ public class StockController {
 		List<String> cb=(List<String>)store.get("cb");
 		List<String> ratio=(List<String>)store.get("ratio");
 		List<String> tp=(List<String>)store.get("tp");
+		List<String> cb2=(List<String>)store.get("cb2");
 		
 		
 		List<Stock> bigs=new ArrayList<Stock>();
@@ -510,6 +511,7 @@ public class StockController {
 		List<Stock> cbs=new ArrayList<Stock>();
 		List<Stock> ratios=new ArrayList<Stock>();
 		List<Stock> tps=new ArrayList<Stock>();
+		List<Stock> cb2s=new ArrayList<Stock>();
 		
 		for(String s:big){
 			Stock st=new Stock();
@@ -731,7 +733,38 @@ public class StockController {
 				tps.add(st);
 			}
 		}
-		
+		if(cb2!=null){
+			for(String s:cb2){
+				Stock st=new Stock();
+				st.setSymbol(s);
+				
+				Stock stt=store.recent.get(s);
+				if(stt!=null){
+					st.setName(stt.getName());
+					if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
+						st.setTing(true);
+					}else{
+						st.setTing(false);
+					}
+					if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
+						st.setTing(true);
+					}else{
+						st.setTing(false);
+					}
+					if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
+						st.setTing(true);
+					}else{
+						st.setTing(false);
+					}
+					if(stt.getStartPrice().equals("0")||stt.getStartPrice().equals("0.00")){
+						st.setTing(true);
+					}else{
+						st.setTing(false);
+					}
+				}
+				cb2s.add(st);
+			}
+		}
 		
 		
 		
@@ -743,6 +776,7 @@ public class StockController {
 		all.addAll(cbs);
 		all.addAll(ratios);
 		all.addAll(tps);
+		all.addAll(cb2s);
 		
 		
 		
@@ -782,6 +816,11 @@ public class StockController {
 			cbs.get(0).setPosition("head");
 			cbs.get(cbs.size()-1).setPosition("tail");
 		}
+		if(cb2s.size()>0){
+			//Collections.sort(acvus, new Comparator.ChooseComparator());
+			cb2s.get(0).setPosition("head");
+			cb2s.get(cbs.size()-1).setPosition("tail");
+		}
 		if(ratios.size()>0){
 			//Collections.sort(av5s, new Comparator.ChooseComparator());
 			ratios.get(0).setPosition("head");
@@ -809,6 +848,9 @@ public class StockController {
 		if(cb.size()>size){
 			size=cb.size();
 		}
+		if(cb2.size()>size){
+			size=cb2.size();
+		}
 		if(ratio.size()>size){
 			size=ratio.size();
 		}
@@ -822,6 +864,7 @@ public class StockController {
 		request.setAttribute("av5", av5s);
 		request.setAttribute("av10", av10s);
 		request.setAttribute("cb", cbs);
+		request.setAttribute("cb2", cb2s);
 		request.setAttribute("tp", tps);
 		request.setAttribute("ratio", ratios);
 		
@@ -830,14 +873,17 @@ public class StockController {
 		request.setAttribute("av5Size", av5.size());
 		request.setAttribute("av10Size", av10.size());
 		request.setAttribute("cbSize", cb.size());
+		request.setAttribute("cb2Size", cb2.size());
 		request.setAttribute("ratioSize", ratio.size());
 		request.setAttribute("tpSize", tp.size());
+		request.setAttribute("cb2Size", cb2.size());
 		
 		request.setAttribute("bigStr", "'"+StringUtils.join(big,"','")+"'");
 		request.setAttribute("acvuStr",  "'"+StringUtils.join(acvu,"','")+"'");
 		request.setAttribute("av5Str",  "'"+StringUtils.join(av5,"','")+"'");
 		request.setAttribute("av10Str", "'"+ StringUtils.join(av10,"','")+"'");
 		request.setAttribute("cbStr",  "'"+StringUtils.join(cb,"','")+"'");
+		request.setAttribute("cb2Str",  "'"+StringUtils.join(cb2,"','")+"'");
 		request.setAttribute("ratioStr",  "'"+StringUtils.join(ratio,"','")+"'");
 		request.setAttribute("tpStr", "'"+ StringUtils.join(tp,"','")+"'");
 		

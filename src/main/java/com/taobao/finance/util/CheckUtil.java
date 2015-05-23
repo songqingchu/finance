@@ -326,7 +326,41 @@ public class CheckUtil {
 	
 	
 	
-	
+	public static boolean checkCB3(List<Stock> l) {
+		if (l.size() < 90) {
+			return false;
+		}
+		int size = l.size();
+		List<Float> rList=new ArrayList<Float>();
+		for(int i=size-90;i<l.size();i++){
+			Stock today = l.get(size - i - 1);
+			Stock tomorrow = l.get(size - i);
+			Float t1End = Float.parseFloat(today.getEndPrice());
+			Float t2End = Float.parseFloat(tomorrow.getEndPrice());
+			rList.add(t2End/t1End);
+		}
+		int size2=rList.size();
+		boolean prevGood=false;
+		int continueCount=0;
+		for(int i=0;i<size2;i++){
+			Float r=rList.get(i);
+			if(r>9.96F){
+				prevGood=true;
+			}else{
+				prevGood=false;
+				continueCount=0;
+			}
+			if(prevGood){
+				continueCount++;
+				if(continueCount>=4){
+					if(i>=size-20){
+						return true;
+					}
+				}
+			}			
+		}
+		return false;
+	}
 	
 	
 	

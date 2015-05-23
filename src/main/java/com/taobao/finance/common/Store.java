@@ -27,6 +27,7 @@ import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.AV10_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
+import com.taobao.finance.choose.local.thread.CB2_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.CB_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
@@ -254,6 +255,21 @@ public class Store {
 			sSet.addAll(l);
 		}else{
 			store.put("tp", new ArrayList<String>());
+		}
+		
+		ids =null;
+		if (StringUtils.isNotBlank(today.getCb2())) {
+			ids = StringUtils.split(today.getCb2(), ",");
+		}else{
+			ids = StringUtils.split(lastDay.getCb2(), ",");
+		}
+		if(ids!=null){
+			List<String> l = new ArrayList<String>();
+			l.addAll(Arrays.asList(ids));
+			store.put("cb2", l);
+			sSet.addAll(l);
+		}else{
+			store.put("cb2", new ArrayList<String>());
 		}
 		
 		
@@ -505,6 +521,8 @@ public class Store {
 			List<Stock> tp = new TP_Choose_MultiThread().choose();
 			logger.info("anaysys cb");
 			List<Stock> cb = new CB_Choose_MultiThread().choose();
+			logger.info("anaysys cb2");
+			List<Stock> cb2 = new CB2_Choose_MultiThread().choose();
 			
 			List<Stock> ratio =new ArrayList<Stock>(); 
 					
@@ -541,6 +559,11 @@ public class Store {
 				cbs.add(s.getSymbol());
 			}
 			
+			List<String> cb2s = new ArrayList<String>();
+			for (Stock s : cb2) {
+				cb2s.add(s.getSymbol());
+			}
+			
 			List<String> ratios = new ArrayList<String>();
 			/*for (Stock s : cb) {
 				cbs.add(s.getSymbol());
@@ -566,6 +589,9 @@ public class Store {
 				if (cbs.size() > 0) {
 					t.setCb(StringUtils.join(cbs, ","));
 				}
+				if (cb2s.size() > 0) {
+					t.setCb2(StringUtils.join(cb2s, ","));
+				}
 				if (ratios.size() > 0) {
 					t.setCb(StringUtils.join(ratios, ","));
 				}
@@ -582,6 +608,7 @@ public class Store {
 			store.put("av10", av10s);
 			store.put("tp", tps);
 			store.put("cb", cbs);
+			store.put("cb2", cb2s);
 			store.put("ratio", ratios);
 
 			store.put("bigs", big);
@@ -590,6 +617,7 @@ public class Store {
 			store.put("av10s", av10);
 			store.put("tps", tp);
 			store.put("cbs", cb);
+			store.put("cb2s", cb2);
 			store.put("ratios", ratio);
 			
 			Set<String> sSet = new HashSet<String>();
@@ -619,6 +647,12 @@ public class Store {
 			}
 			if (StringUtils.isNoneBlank(today.getCb())) {
 				String[] ids = StringUtils.split(today.getCb(), ",");
+				List<String> l = new ArrayList<String>();
+				l.addAll(Arrays.asList(ids));
+				sSet.addAll(l);
+			}
+			if (StringUtils.isNoneBlank(today.getCb2())) {
+				String[] ids = StringUtils.split(today.getCb2(), ",");
 				List<String> l = new ArrayList<String>();
 				l.addAll(Arrays.asList(ids));
 				sSet.addAll(l);

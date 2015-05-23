@@ -23,10 +23,18 @@ public class GTask {
 	private String big;
 	private String tp;
 	private String cb;
+	private String cb2;
 	private String ratio;
 	private Byte working;
 	private Date insDate;
 	
+	@Column(name = "cb2")
+	public String getCb2() {
+		return cb2;
+	}
+	public void setCb2(String cb2) {
+		this.cb2 = cb2;
+	}
 	@Column(name = "cb")
 	public String getCb() {
 		return cb;

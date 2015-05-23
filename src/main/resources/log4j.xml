@@ -2,7 +2,15 @@
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-
+    <appender name="consoleAppender"   
+        class="org.apache.log4j.ConsoleAppender">  
+        <param name="Threshold" value="info"></param>  
+        <layout class="org.apache.log4j.TTCCLayout">  
+            <param name="ConversionPattern" value="TTCCLayout"></param>  
+        </layout>  
+    </appender>  
+    
+    
 	<appender name="fileAppender" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="File" value="${log.dir}anasys.log" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -64,6 +72,8 @@
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="fileAppender" />
+		<appender-ref ref="consoleAppender" />
+		console
 	</root>
 
 </log4j:configuration>

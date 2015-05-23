@@ -51,6 +51,10 @@ a {
 					id="ratioSymbol" class="choose" index="4" cat="ratioSymbol">ratio:</a></b><font
 				size="2">${ratioSize}</font>
 			</span> 
+			</span> <span style="width: 80px; float: left;"> <b><a href="#"
+					id="cb2Symbol" class="choose" index="4" cat="cbSymbol">cb2:</a></b><font
+				size="2">${cb2Size}</font>
+			</span> 
 			<br>
 		</div>
 
@@ -125,6 +129,17 @@ a {
 			
 			
 			<c:forEach var="s" items="${ratio}">
+				<span style="display: none"
+					class="ratioSymbol  symbol ${s.getPosition()}"
+					style="width:160px;float:left;"> <a href="#"
+					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
+					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
+							test="${s.ting==true}">
+							<font color="red"><b>停牌</b></font>
+						</c:if></a></span>
+			</c:forEach>
+			
+			<c:forEach var="s" items="${cb2}">
 				<span style="display: none"
 					class="ratioSymbol  symbol ${s.getPosition()}"
 					style="width:160px;float:left;"> <a href="#"
@@ -353,13 +368,13 @@ a {
 	    if(event.keyCode == 33||event.keyCode == 34){
 	    	if(event.keyCode == 33) {
                if(currentCatIndex==1){
-            	   currentCatIndex=7
+            	   currentCatIndex=8
                }else{
             	   currentCatIndex--;
                }
 		    }
 	    	if(event.keyCode == 34) {
-	    	   if(currentCatIndex==7){
+	    	   if(currentCatIndex==8){
 	    		   currentCatIndex=1
 	           }else{
 	        	   currentCatIndex++;
@@ -386,6 +401,9 @@ a {
             }
             if(currentCatIndex==7){
             	currentCat='ratio';
+            }
+            if(currentCatIndex==8){
+            	currentCat='cb2';
             }
 
 	 	   head=$(".head."+currentCat+"Symbol").get(0);
