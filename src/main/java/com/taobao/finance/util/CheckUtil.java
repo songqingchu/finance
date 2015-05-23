@@ -291,14 +291,14 @@ public class CheckUtil {
 	}
 	
 	public static boolean checkCB2(List<Stock> l) {
-		if (l.size() < 90) {
+		if (l.size() < 91) {
 			return false;
 		}
 		int size = l.size();
 		List<Float> rList=new ArrayList<Float>();
 		for(int i=size-90;i<l.size();i++){
-			Stock today = l.get(size - i - 1);
-			Stock tomorrow = l.get(size - i);
+			Stock today = l.get(i-1);
+			Stock tomorrow = l.get(i);
 			Float t1End = Float.parseFloat(today.getEndPrice());
 			Float t2End = Float.parseFloat(tomorrow.getEndPrice());
 			rList.add(t2End/t1End);
@@ -308,7 +308,7 @@ public class CheckUtil {
 		int continueCount=0;
 		for(int i=0;i<size2;i++){
 			Float r=rList.get(i);
-			if(r>9.96F){
+			if(r>1.097F){
 				prevGood=true;
 			}else{
 				prevGood=false;
@@ -327,14 +327,14 @@ public class CheckUtil {
 	
 	
 	public static boolean checkCB3(List<Stock> l) {
-		if (l.size() < 90) {
+		if (l.size() < 91) {
 			return false;
 		}
 		int size = l.size();
 		List<Float> rList=new ArrayList<Float>();
 		for(int i=size-90;i<l.size();i++){
-			Stock today = l.get(size - i - 1);
-			Stock tomorrow = l.get(size - i);
+			Stock today = l.get(i-1);
+			Stock tomorrow = l.get(i);
 			Float t1End = Float.parseFloat(today.getEndPrice());
 			Float t2End = Float.parseFloat(tomorrow.getEndPrice());
 			rList.add(t2End/t1End);
@@ -344,7 +344,10 @@ public class CheckUtil {
 		int continueCount=0;
 		for(int i=0;i<size2;i++){
 			Float r=rList.get(i);
-			if(r>9.96F){
+			if(i==84){
+				rList.size();
+			}
+			if(r>1.097F){
 				prevGood=true;
 			}else{
 				prevGood=false;
@@ -353,7 +356,7 @@ public class CheckUtil {
 			if(prevGood){
 				continueCount++;
 				if(continueCount>=4){
-					if(i>=size-20){
+					if(i>=70){
 						return true;
 					}
 				}

@@ -51,6 +51,9 @@ class CB2_Task implements Callable<List<Stock>> {
 		List<Stock> l = new ArrayList<Stock>();
 		int i=0;
 		for (Stock s : this.l) {
+			if(s.getSymbol().contains("300126")){
+				s.get_10changes();
+			}
 			List<Stock> history = prepareData(s.getSymbol(), null);
 			if (history == null) {
 				continue;

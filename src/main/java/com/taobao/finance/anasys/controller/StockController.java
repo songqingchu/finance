@@ -819,7 +819,7 @@ public class StockController {
 		if(cb2s.size()>0){
 			//Collections.sort(acvus, new Comparator.ChooseComparator());
 			cb2s.get(0).setPosition("head");
-			cb2s.get(cbs.size()-1).setPosition("tail");
+			cb2s.get(cb2s.size()-1).setPosition("tail");
 		}
 		if(ratios.size()>0){
 			//Collections.sort(av5s, new Comparator.ChooseComparator());

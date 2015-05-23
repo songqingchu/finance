@@ -52,7 +52,7 @@ a {
 				size="2">${ratioSize}</font>
 			</span> 
 			</span> <span style="width: 80px; float: left;"> <b><a href="#"
-					id="cb2Symbol" class="choose" index="4" cat="cbSymbol">cb2:</a></b><font
+					id="cb2Symbol" class="choose" index="4" cat="cb2Symbol">cb2:</a></b><font
 				size="2">${cb2Size}</font>
 			</span> 
 			<br>
@@ -141,7 +141,7 @@ a {
 			
 			<c:forEach var="s" items="${cb2}">
 				<span style="display: none"
-					class="ratioSymbol  symbol ${s.getPosition()}"
+					class="cb2Symbol  symbol ${s.getPosition()}"
 					style="width:160px;float:left;"> <a href="#"
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
 					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
