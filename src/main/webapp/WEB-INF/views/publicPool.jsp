@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<title>钉市-赌博者之路</title>
+<title>盯市</title>
 <script src="/resources/js/jquery.min.js" type="text/javascript"></script>
 <script src="/resources/js/highstock.js"></script>
 <script src="/resources/js/chartExt.js"></script>
@@ -236,7 +236,7 @@ text-decoration:none;
    }
    
    if(realTime==1){
-	   setTimeout('myrefresh()',interval*10000);  
+	   setTimeout('myrefresh()',interval);  
 	   $(".operate").hide();
 	   //$(".listClass").width(160);
 	   $("#addDiv").show();

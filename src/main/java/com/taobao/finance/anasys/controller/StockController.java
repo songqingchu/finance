@@ -534,6 +534,199 @@ public class StockController {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/operate.do", method = RequestMethod.GET)
+	public String operate(HttpServletRequest request) {
+		logger.info("request:view public pool");
+		List<GPublicStock> all=store.publicStock;
+		
+		List<GPublicStock> acvu=new ArrayList<GPublicStock>();
+		List<GPublicStock> av5=new ArrayList<GPublicStock>();
+		List<GPublicStock> av10=new ArrayList<GPublicStock>();
+		List<GPublicStock> big=new ArrayList<GPublicStock>();
+		List<GPublicStock> tp=new ArrayList<GPublicStock>();
+		List<GPublicStock> ratio=new ArrayList<GPublicStock>();
+		List<GPublicStock> cb=new ArrayList<GPublicStock>();
+		List<GPublicStock> other=new ArrayList<GPublicStock>();
+		
+		//Set<String> s=store.publicPool.keySet();
+		Set<String> set=new HashSet<String>();
+		List<String> symbolList=new ArrayList<String>();
+	
+		for(GPublicStock s:all){
+		    String type=s.getType();
+		    if(type==null){
+		    	String symbol=s.getSymbol();
+		    	if(!(symbol.equals("sh000001"))&&!(symbol.equals("sz399001"))&&!(symbol.equals("sz399006"))&&!(symbol.equals("sz399101"))){
+		    		other.add(s);
+		    	}
+		    }else{
+		    	if(type.equals("acvu")){
+		    		acvu.add(s);
+		    	}
+		    	if(type.equals("av5")){
+		    		av5.add(s);
+		    	}
+		    	if(type.equals("av10")){
+		    		av10.add(s);
+		    	}
+		    	if(type.equals("big")){
+		    		big.add(s);
+		    	}
+		    	if(type.equals("tp")){
+		    		tp.add(s);
+		    	}
+		    	if(type.equals("ratio")){
+		    		ratio.add(s);
+		    	}
+		    	if(type.equals("cb")){
+		    		cb.add(s);
+		    	}
+		    }
+			symbolList.add(s.getSymbol());
+		}
+		set.addAll(symbolList);
+		List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
+		List<Callable<Object>> callList=new ArrayList<Callable<Object>>();
+		for(List<Object> sys:symbolTaskList){
+			callList.add(new RealTask(sys));
+		}
+        List<Object> r=threadService.service(callList);		
+        List<Stock> result=new ArrayList<Stock>();
+        for(Object l:r){
+        	List<Stock> slice=(List<Stock>)l;
+        	result.addAll(slice);
+        }
+        
+        Map<String,Stock> allR=new HashMap<String,Stock>();
+        for(Stock s:result){
+        	allR.put(s.getSymbol(), s);
+        }
+        List<Stock> acvus=new ArrayList<Stock>();
+		List<Stock> av5s=new ArrayList<Stock>();
+		List<Stock> av10s=new ArrayList<Stock>();
+		List<Stock> bigs=new ArrayList<Stock>();
+		List<Stock> tps=new ArrayList<Stock>();
+		List<Stock> ratios=new ArrayList<Stock>();
+		List<Stock> cbs=new ArrayList<Stock>();
+
+		acvu.addAll(other);
+		
+		for(GPublicStock s:acvu){
+			Stock st=allR.get(s.getSymbol());
+			if(st!=null){
+				acvus.add(st);
+			}
+		}
+		for(GPublicStock s:av5){
+			Stock st=allR.get(s.getSymbol());
+			if(st!=null){
+				av5s.add(st);
+			}
+		}
+		for(GPublicStock s:av10){
+			Stock st=allR.get(s.getSymbol());
+			if(st!=null){
+				av10s.add(st);
+			}
+		}
+		for(GPublicStock s:big){
+			Stock st=allR.get(s.getSymbol());
+			if(st!=null){
+				bigs.add(st);
+			}
+		}
+		for(GPublicStock s:tp){
+			Stock st=allR.get(s.getSymbol());
+			if(st!=null){
+				tps.add(st);
+			}
+		}
+		for(GPublicStock s:ratio){
+			Stock st=allR.get(s.getSymbol());
+			if(st!=null){
+				ratios.add(st);
+			}
+		}
+		for(GPublicStock s:cb){
+			Stock st=allR.get(s.getSymbol());
+			if(st!=null){
+				cbs.add(st);
+			}
+		}
+        
+        
+        
+        List<Stock> indexs=new ArrayList<Stock>();
+        //List<Stock> nonIndexs=new ArrayList<Stock>();
+        for(Stock o1:result){
+        	if(o1.getSymbol().equals("sh000001")||o1.getSymbol().equals("sz399001")||o1.getSymbol().equals("sz399006")||o1.getSymbol().equals("sz399101")){
+        		indexs.add(o1);
+        	}/*else{
+        		nonIndexs.add(o1);
+        	}*/
+        }
+		/*if(nonIndexs.size()>0){
+			Collections.sort(nonIndexs,new Comparator.RateDescComparator());
+		}
+		*/
+		
+		if(indexs.size()>0){
+			Collections.sort(indexs,new Comparator.RateDescComparator());
+		}
+		if(acvus.size()>0){
+			Collections.sort(acvus,new Comparator.RateDescComparator());
+		}
+		if(av5s.size()>0){
+			Collections.sort(av5s,new Comparator.RateDescComparator());
+		}
+		if(av10s.size()>0){
+			Collections.sort(av10s,new Comparator.RateDescComparator());
+		}
+		if(bigs.size()>0){
+			Collections.sort(bigs,new Comparator.RateDescComparator());
+		}
+		if(ratios.size()>0){
+			Collections.sort(ratios,new Comparator.RateDescComparator());
+		}
+		if(tps.size()>0){
+			Collections.sort(tps,new Comparator.RateDescComparator());
+		}
+		if(cbs.size()>0){
+			Collections.sort(cbs,new Comparator.RateDescComparator());
+		}
+		
+		
+		
+		result.clear();
+		result.addAll(indexs);
+		result.addAll(acvus);
+		result.get(0).setPosition("head");
+		result.get(result.size()-1).setPosition("tail");
+		
+		
+		
+		request.setAttribute("acvu", result);
+		request.setAttribute("av5", av5s);
+		request.setAttribute("av10", av10s);
+		request.setAttribute("big", bigs);
+		request.setAttribute("tp", tps);
+		request.setAttribute("ratio", ratios);
+		request.setAttribute("cb", cbs);
+		request.setAttribute("set", set);
+		
+		request.setAttribute("acvuSize", result.size());
+		request.setAttribute("av5Size", av5s.size());
+		request.setAttribute("av10Size", av10s.size());
+		request.setAttribute("bigSize", bigs.size());
+		request.setAttribute("tpSize", tps.size());
+		request.setAttribute("ratioSize", ratios.size());
+		request.setAttribute("cbSize", cbs.size());
+		request.setAttribute("set", set);
+		return "operate";
+	}
+	
+	
 	@RequestMapping(value = "/check.do", method = RequestMethod.GET)
 	public String check(HttpServletRequest request) {
 		logger.info("request:check");

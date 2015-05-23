@@ -22,6 +22,7 @@ color:purple;
 <a href="record.do">逐日盯市</a> &nbsp;
 <a href="stats.do">分析图表</a> &nbsp;
 <a href="publicPool.do">盯市</a> &nbsp;
+<a href="operate.do">操作</a> &nbsp;
 <a href="history.do">经典</a> &nbsp;
 <a href="help.do">新手</a> &nbsp;
 <c:if test="${root==true}">
