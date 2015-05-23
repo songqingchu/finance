@@ -26,11 +26,11 @@ text-decoration:none;
 
    
 <div style="width:100%;float:left;" id="list">
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="listDiv" class="listClass">
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="listDiv" class="listClass"  id="acvuDiv">
 <b>ACVU</b><br><br>
 
 <c:forEach var="s" items="${acvu}">  
-     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <span  class="acvuSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercent}
      </a>
@@ -47,10 +47,10 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="av5" class="listClass">
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="av5" class="listClass"  id="av5Div">
 <b>AV5</b><br><br>
 <c:forEach var="s" items="${av5}">  
-     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <span  class="av5Symbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercent}
      </a>
@@ -67,10 +67,10 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="av10" class="listClass">
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="av10" class="listClass"  id="av10Div">
 <b>AV10</b><br><br>
 <c:forEach var="s" items="${av10}">  
-     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <span  class="av10Symbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercent}
      </a>
@@ -87,10 +87,10 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="tp" class="listClass">
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="tp" class="listClass"  id="bigDiv">
 <b>BIG</b><br><br>
 <c:forEach var="s" items="${big}">  
-     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <span  class="bigSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercent}
      </a>
@@ -107,10 +107,10 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="cb" class="listClass">
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="cb" class="listClass"  id="tpDiv">
 <b>TP</b><br><br>
 <c:forEach var="s" items="${tp}">  
-     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <span  class="tpSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercent}
      </a>
@@ -128,10 +128,10 @@ text-decoration:none;
 </div>
 
 
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="cb" class="listClass">
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="cb" class="listClass"  id="cbDiv">
 <b>CB</b><br><br>
 <c:forEach var="s" items="${cb}">  
-     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <span  class="cbSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercent}
      </a>
@@ -153,7 +153,7 @@ text-decoration:none;
 <a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
 </c:if>
 <a href="publicPool.do" >刷新</a>&nbsp;&nbsp;&nbsp;&nbsp;<br>
-<a href="publicPool.do?realTime=1" id="realTime">实时模式</a>&nbsp;&nbsp;
+<a href="publicPool.do?realTime=1&interval=5000" id="realTime">实时模式</a>&nbsp;&nbsp;
 <a href="publicPool.do?realTime=0" id="realTime">静态模式</a><br>
 <a href="publicPool.do?realTime=1&interval=1000" id="realTime">1秒</a>&nbsp;
 <a href="publicPool.do?realTime=1&interval=2000" id="realTime">2秒</a>&nbsp;
@@ -193,6 +193,26 @@ text-decoration:none;
    var currentSymbol;
    var currentNode=tail;
    
+   var acvuSize=${acvuSize};
+   var av5Size=${av5Size};
+   var av10Size=${av10Size};
+   var bigSize=${bigSize};
+   var tpSize=${tpSize};
+   var ratioSize=${ratioSize};
+   var cbSize=${cbSize};
+   
+   setWidth('acvuDiv',acvuSize);
+   setWidth('av5Div',av5Size);
+   setWidth('av10Div',av10Size);
+   setWidth('bigDiv',bigSize);
+   setWidth('tpDiv',tpSize);
+   //setWidth('ratio',acvuSize);
+   setWidth('cbDiv',cbSize);
+   
+   function setWidth(id,size){
+	   var a=Math.floor(size/30)+1;
+	   $("#"+id).width(a*160);
+   }
    
    function getParam(name)
    {
@@ -216,9 +236,9 @@ text-decoration:none;
    }
    
    if(realTime==1){
-	   setTimeout('myrefresh()',interval);  
+	   setTimeout('myrefresh()',interval*10000);  
 	   $(".operate").hide();
-	   $(".listClass").width(160);
+	   //$(".listClass").width(160);
 	   $("#addDiv").show();
 	   
    }else{

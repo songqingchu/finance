@@ -521,6 +521,15 @@ public class StockController {
 		request.setAttribute("ratio", ratios);
 		request.setAttribute("cb", cbs);
 		request.setAttribute("set", set);
+		
+		request.setAttribute("acvuSize", result.size());
+		request.setAttribute("av5Size", av5s.size());
+		request.setAttribute("av10Size", av10s.size());
+		request.setAttribute("bigSize", bigs.size());
+		request.setAttribute("tpSize", tps.size());
+		request.setAttribute("ratioSize", ratios.size());
+		request.setAttribute("cbSize", cbs.size());
+		request.setAttribute("set", set);
 		return "publicPool";
 	}
 	
