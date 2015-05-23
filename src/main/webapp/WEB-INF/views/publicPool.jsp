@@ -25,40 +25,151 @@ text-decoration:none;
  
 
    
-<div style="width:270px;float:left;">
-<div style="width:270px;float:left;overflow-y:auto;border:1px solid" div="listDiv">
-<c:forEach var="s" items="${r}">  
+<div style="width:100%;float:left;" id="list">
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="listDiv" class="listClass">
+<b>ACVU</b><br><br>
+
+<c:forEach var="s" items="${acvu}">  
+     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
+        ${s.nameFormat}&nbsp;${s.ratePercent}
+     </a>
+     
+     <c:if test="${sessionScope.root==true}">
+     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
+     </c:if>
+     </span>
+
+</c:forEach>
+</div>
+
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="av5" class="listClass">
+<b>AV5</b><br><br>
+<c:forEach var="s" items="${av5}">  
      <span  class="bigSymbol symbol" style="width:280px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercent}
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth">oth</a>
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}">移出</a> 
+     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
      </c:if>
-     </span>&nbsp;
+     </span>
 
 </c:forEach>
 </div>
 
-<div style="width:200px;float:left;" id="addDiv">
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="av10" class="listClass">
+<b>AV10</b><br><br>
+<c:forEach var="s" items="${av10}">  
+     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
+        ${s.nameFormat}&nbsp;${s.ratePercent}
+     </a>
+     
+     <c:if test="${sessionScope.root==true}">
+     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
+     </c:if>
+     </span>
+
+</c:forEach>
+</div>
+
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="tp" class="listClass">
+<b>BIG</b><br><br>
+<c:forEach var="s" items="${big}">  
+     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
+        ${s.nameFormat}&nbsp;${s.ratePercent}
+     </a>
+     
+     <c:if test="${sessionScope.root==true}">
+     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
+     </c:if>
+     </span>
+
+</c:forEach>
+</div>
+
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="cb" class="listClass">
+<b>TP</b><br><br>
+<c:forEach var="s" items="${tp}">  
+     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
+        ${s.nameFormat}&nbsp;${s.ratePercent}
+     </a>
+     
+     <c:if test="${sessionScope.root==true}">
+     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a>  
+     </c:if>
+     </span>
+
+</c:forEach>
+</div>
+
+
+<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="cb" class="listClass">
+<b>CB</b><br><br>
+<c:forEach var="s" items="${cb}">  
+     <span  class="bigSymbol symbol" style="width:280px;float:left;">
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
+        ${s.nameFormat}&nbsp;${s.ratePercent}
+     </a>
+     
+     <c:if test="${sessionScope.root==true}">
+     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
+     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
+     </c:if>
+     </span>
+
+</c:forEach>
+</div>
+
+<div style="width:200px;float:left;margin-left: 10px" id="addDiv"  class="listClass">
 <c:if test="${sessionScope.root==true}">
 <a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
 </c:if>
-<a href="publicPool.do" >刷新</a>
-<br>
+<a href="publicPool.do" >刷新</a>&nbsp;&nbsp;&nbsp;&nbsp;<br>
+<a href="publicPool.do?realTime=1" id="realTime">实时模式</a>&nbsp;&nbsp;
+<a href="publicPool.do?realTime=0" id="realTime">静态模式</a><br>
+<a href="publicPool.do?realTime=1&interval=1000" id="realTime">1秒</a>&nbsp;
+<a href="publicPool.do?realTime=1&interval=2000" id="realTime">2秒</a>&nbsp;
+<a href="publicPool.do?realTime=1&interval=2500" id="realTime">2.5秒</a>&nbsp;
+<a href="publicPool.do?realTime=1&interval=3000" id="realTime">3秒</a>&nbsp;
+<a href="publicPool.do?realTime=1&interval=5000" id="realTime">5秒</a><br>
 <c:if test="${root==true}">
 <textarea rows="5" cols="20" id="symbolText">
 </textarea>
 </c:if>
 
 </div>
+<br>
+
 </div>
-<div id="container" style="height: 800px;float:left;"></div>
+<div id="container" style="height: 800px;float:left;display:none"></div>
 <jsp:include page="common/foot.jsp" flush="true"/>
 </body>
 <script>
@@ -68,6 +179,7 @@ text-decoration:none;
    var h=windowHight*0.8;
    $("#container").width(w);
    $("#container").height(h);
+   $("#list").height(h);
    
    $("#listDiv").height(h-80);
    $("#addDiv").height(50);
@@ -80,6 +192,42 @@ text-decoration:none;
    var total;
    var currentSymbol;
    var currentNode=tail;
+   
+   
+   function getParam(name)
+   {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+   }
+
+   var realTime=1;
+   var interval=1000;
+   if(getParam("realTime")){
+	   realTime=getParam("realTime");
+   }
+   if(getParam("interval")){
+	   interval=getParam("interval");
+   }
+   
+   
+   function myrefresh(){
+	   window.location.reload();
+   }
+   
+   if(realTime==1){
+	   setTimeout('myrefresh()',interval);  
+	   $(".operate").hide();
+	   $(".listClass").width(160);
+	   $("#addDiv").show();
+	   
+   }else{
+	   $(".operate").show();
+	   $(".listClass").width(270);
+	   $("#addDiv").show();
+   }
+   
+   
    
    $(".submitA").on("click",function(){
 	   var symbols=$("#symbolText").val().split("\n");
@@ -102,12 +250,17 @@ text-decoration:none;
    
    
    $(".symbolA").on("click",function(){
+	   $("#container").show();
 	   var symbol=$(this).attr("symbol");
 	   currentSymbol=symbol;
 	   currentNode=this;
 	   $(".symbolA").css("background-color","");
 	   $(this).css("background-color","pink");
 	   
+	   $(".listClass").hide();
+	   $("#addDiv").show();
+	   $(this).parent().parent().show();
+	   $("#list").width(270);
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行

@@ -54,6 +54,7 @@ public class Store {
 	public Map<String, Stock> publicPool = new HashMap<String, Stock>();
 	public Map<String, Boolean> checkWorkingRecord = new HashMap<String, Boolean>();
 	public List<GPublicStock> publicStock = new ArrayList<GPublicStock>();
+	public Map<String,GPublicStock> publicStockMap = new HashMap<String,GPublicStock>();
 	public List<GPublicStock> history = new ArrayList<GPublicStock>();
 	public Map<String, Stock> recent = new HashMap<String, Stock>();
 	public Map<String, List<Stock>> hot = new HashMap<String, List<Stock>>();
@@ -459,6 +460,12 @@ public class Store {
 
 	public void reloadPublicStock() {
 		publicStock = this.gPublicStockService.queryAll();
+		if(publicStock!=null){
+			publicStockMap.clear();
+			for(GPublicStock g:publicStock){
+				publicStockMap.put(g.getSymbol(), g);
+			}
+		}
 	}
 
 	public void reloadHistoryStock() {

@@ -62,8 +62,8 @@ a {
 			style="width: 180px; float: left; overflow-y: auto; position: relative"
 			id="listDiv">
 			<c:forEach var="s" items="${acvu}">
-				<span class="acvuSymbol symbol ${s.getPosition()}"
-					style="width: 160px; float: left;"><a href="#"
+				<span class="acvuSymbol symbol ${s.getPosition()}" type="acvu"  symbol="${s.getSymbol()}" 
+					style="width: 160px; float: left;"><a href="#" type="acvu" 
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}" class="symbolA"
 					id="${s.getSymbol()}">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
@@ -73,8 +73,8 @@ a {
 
 			<c:forEach var="s" items="${big}">
 				<span style="display: none"
-					class="bigSymbol  symbol ${s.getPosition()}"
-					style="width:160px;float:left;"> <a href="#"
+					class="bigSymbol  symbol ${s.getPosition()}" type="big"  symbol="${s.getSymbol()}" 
+					style="width:160px;float:left;"> <a href="#" type="big" 
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
 					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
@@ -84,8 +84,8 @@ a {
 
 			<c:forEach var="s" items="${av5}">
 				<span style="display: none"
-					class="av5Symbol  symbol ${s.getPosition()}"
-					style="width:160px;float:left;"> <a href="#"
+					class="av5Symbol  symbol ${s.getPosition()}" type="av5"  symbol="${s.getSymbol()}" 
+					style="width:160px;float:left;"> <a href="#" type="av5" 
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
 					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
@@ -95,8 +95,8 @@ a {
 
 			<c:forEach var="s" items="${av10}">
 				<span style="display: none"
-					class="av10Symbol  symbol ${s.getPosition()}"
-					style="width:160px;float:left;"> <a href="#"
+					class="av10Symbol  symbol ${s.getPosition()}" type="av10"  symbol="${s.getSymbol()}" 
+					style="width:160px;float:left;"> <a href="#" type="av10" 
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
 					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
@@ -106,8 +106,8 @@ a {
 			
 			<c:forEach var="s" items="${tp}">
 				<span style="display: none"
-					class="tpSymbol  symbol ${s.getPosition()}"
-					style="width:160px;float:left;"> <a href="#"
+					class="tpSymbol  symbol ${s.getPosition()}" type="tp"  symbol="${s.getSymbol()}" 
+					style="width:160px;float:left;"> <a href="#" type="tp" 
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
 					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
@@ -118,8 +118,8 @@ a {
 		
 			<c:forEach var="s" items="${cb}">
 				<span style="display: none"
-					class="cbSymbol  symbol ${s.getPosition()}"
-					style="width:160px;float:left;"> <a href="#"
+					class="cbSymbol  symbol ${s.getPosition()}" type="cb"  symbol="${s.getSymbol()}" 
+					style="width:160px;float:left;"> <a href="#" type="cb" 
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
 					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
@@ -130,8 +130,8 @@ a {
 			
 			<c:forEach var="s" items="${ratio}">
 				<span style="display: none"
-					class="ratioSymbol  symbol ${s.getPosition()}"
-					style="width:160px;float:left;"> <a href="#"
+					class="ratioSymbol  symbol ${s.getPosition()}" type="ratio"  symbol="${s.getSymbol()}" 
+					style="width:160px;float:left;"> <a href="#" type="ratio" 
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
 					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
@@ -141,8 +141,8 @@ a {
 			
 			<c:forEach var="s" items="${cb2}">
 				<span style="display: none"
-					class="cb2Symbol  symbol ${s.getPosition()}"
-					style="width:160px;float:left;"> <a href="#"
+					class="cb2Symbol  symbol ${s.getPosition()}" type="cb"  symbol="${s.getSymbol()}" 
+					style="width:160px;float:left;"> <a href="#" type="cb" 
 					idx="${s.getIndex()}" symbol="${s.getSymbol()}"
 					id="${s.getSymbol()}" class="symbolA">${s.getCode()}&nbsp;${s.getNameFormat()}<c:if
 							test="${s.ting==true}">
@@ -203,6 +203,19 @@ a {
    
    var all={};
    
+   
+   
+   function getParam(name)
+   {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+   }
+
+   var scope=7;
+   if(getParam("scope")){
+   scope=getParam("scope");
+   }
    
    //loading 图标
    function loadLayer(){
@@ -364,7 +377,27 @@ a {
    $(document).keydown(function(event){ 
 	    event.preventDefault(); 
 	    event.stopPropagation(); 
-	    
+	    if(event.keyCode == 17){
+	    	var symbol=$(currentNode).attr("symbol");
+	    	var type=$(currentNode).attr("type");
+	    	
+	    	$.ajax({
+	 			type : "get",
+	 			url : "/addPublicPool.do?replace=false&symbols="+symbol+"-"+type,
+	 			dataType : "json", //返回数据形式为json
+	 			beforeSend: function(){
+	 				loadLayer();	
+	 			},
+	 			success : function(result) {
+	 				if (result) {
+	 					layer.closeAll();
+	 				}
+	 			},
+	 			error : function(errorMsg) {
+	 				alert(errorMsg);
+	 			}
+	    });
+	    }
 	    if(event.keyCode == 33||event.keyCode == 34){
 	    	if(event.keyCode == 33) {
                if(currentCatIndex==1){

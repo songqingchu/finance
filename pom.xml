@@ -408,7 +408,6 @@
 					<contextPath>/</contextPath>
 					<contextXml>${project.basedir}/src/main/resources/jetty-context.xml</contextXml>
 					<scanIntervalSeconds>30</scanIntervalSeconds>
-					<reload>automatic</reload>
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
 							<port>80</port>
