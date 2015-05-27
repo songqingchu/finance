@@ -236,7 +236,7 @@ text-decoration:none;
    }
    
    if(realTime==1){
-	   setTimeout('myrefresh()',interval);  
+	   //setTimeout('myrefresh()',interval);  
 	   $(".operate").hide();
 	   //$(".listClass").width(160);
 	   $("#addDiv").show();
@@ -311,6 +311,8 @@ text-decoration:none;
 			    	copyMap.acvuTips=base.acvuTips;
 			    	copyMap.bigTips=base.bigTips;
 			    	tradeChart(copyMap);
+			    	
+			    	setTimeout('myrefresh()',5000);  
 				}
 			},
 			error : function(errorMsg) {

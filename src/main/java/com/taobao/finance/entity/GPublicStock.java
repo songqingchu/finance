@@ -21,7 +21,7 @@ public class GPublicStock {
 	private Byte hold=1;
 	private String type;
 	private String position;
-	private Byte concern;
+	private Byte concern=0;
 	
 	@Transient
 	public String getPosition() {

@@ -260,25 +260,25 @@ text-decoration:none;
    
    
    $(".symbolA").on("click",function(){
-	   $("#container").show();
+	  // $("#container").show();
 	   var symbol=$(this).attr("symbol");
-	   currentSymbol=symbol;
-	   currentNode=this;
-	   $(".symbolA").css("background-color","");
-	   $(this).css("background-color","pink");
+	 //  currentSymbol=symbol;
+	 //  currentNode=this;
+	 //  $(".symbolA").css("background-color","");
+	 // $(this).css("background-color","red");
 	   
-	   $(".listClass").hide();
-	   $("#addDiv").show();
-	   $(this).parent().parent().show();
-	   $("#list").width(270);
+	 //  $(".listClass").hide();
+	 //  $("#addDiv").show();
+	 //  $(this).parent().parent().show();
+	 //  $("#list").width(270);
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
-			url : "/kData.do?symbol="+symbol,
+			url : "/setConcern.do?symbol="+symbol,
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {
-					base=result;
+					/* base=result;
 					total=base.data.length;
 					if(total>80){
 						start=total-80;
@@ -300,15 +300,14 @@ text-decoration:none;
 			    	copyMap.av5Tips=base.av5Tips;
 			    	copyMap.acvuTips=base.acvuTips;
 			    	copyMap.bigTips=base.bigTips;
-			    	tradeChart(copyMap);
+			    	tradeChart(copyMap); */
 				}
 			},
 			error : function(errorMsg) {
 			}
-		});
-	   
+		}); 
    });
-   
+   /* 
    $(document).keydown(function(event){ 
 	    event.stopPropagation(); 
 	    if(event.keyCode == 38||event.keyCode == 40){
@@ -401,7 +400,7 @@ text-decoration:none;
 	  			}
 	  		});
 	    }
-   });  
+   });   */
    
    
    function tradeChart(all) {

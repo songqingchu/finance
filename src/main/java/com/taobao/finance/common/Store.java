@@ -87,6 +87,16 @@ public class Store {
 
 	}
 
+	
+	public void reloadPublicPool(){
+		logger.info("reload public pool");
+		publicStock = this.gPublicStockService.queryAll();
+		publicStockMap.clear();
+		for(GPublicStock p:publicStock){
+			publicStockMap.put(p.getSymbol(), p);
+		}
+		logger.info("reload public pool end\n");
+	}
 	public void reloadHot(Set<String> sSet) {
 		logger.info("reload k-data");
 		hot.clear();
@@ -326,7 +336,7 @@ public class Store {
 		logger.info("system start:    system start end" );
 		logger.info("*******************************************************");
 
-		publicStock = this.gPublicStockService.queryAll();
+		reloadPublicPool();
 		history = this.gPublicStockService.queryHistory();
 		Thread d = new Thread() {
 			@SuppressWarnings("deprecation")

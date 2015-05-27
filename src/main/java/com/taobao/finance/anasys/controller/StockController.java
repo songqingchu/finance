@@ -422,42 +422,77 @@ public class StockController {
 		for(GPublicStock s:acvu){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				acvus.add(st);
 			}
 		}
 		for(GPublicStock s:av5){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				av5s.add(st);
 			}
 		}
 		for(GPublicStock s:av10){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				av10s.add(st);
 			}
 		}
 		for(GPublicStock s:big){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				bigs.add(st);
 			}
 		}
 		for(GPublicStock s:tp){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				tps.add(st);
 			}
 		}
 		for(GPublicStock s:ratio){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				ratios.add(st);
 			}
 		}
 		for(GPublicStock s:cb){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				cbs.add(st);
 			}
 		}
@@ -512,7 +547,7 @@ public class StockController {
 		result.get(result.size()-1).setPosition("tail");
 		
 		
-		
+		request.setAttribute("pool", store.publicStockMap);
 		request.setAttribute("acvu", result);
 		request.setAttribute("av5", av5s);
 		request.setAttribute("av10", av10s);
@@ -762,6 +797,28 @@ public class StockController {
 	}
 	
 	
+	@RequestMapping(value = "/setConcern.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> setConcern(@RequestParam String symbol){
+		logger.info("request:set concern");
+		Map<String,Object> m=new HashMap<String,Object>();
+		if(symbol!=null){
+			GPublicStock st=store.publicStockMap.get(symbol);
+			if(st!=null){
+				if(st.getConcern()==null){
+					st.setConcern((byte)1);
+				}else{
+					if(st.getConcern()==1){
+						st.setConcern((byte)0);
+					}else{
+						st.setConcern((byte)1);
+					}
+				}
+				this.gPublicStockService.update(st);
+			}
+		}
+		return m;
+	}
 	
 	@RequestMapping(value = "/addPublicPool.do", method = RequestMethod.GET)
 	@ResponseBody
