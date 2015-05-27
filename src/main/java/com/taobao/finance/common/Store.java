@@ -88,6 +88,8 @@ public class Store {
 	}
 
 	public void reloadHot(Set<String> sSet) {
+		logger.info("reload k-data");
+		hot.clear();
 		for (String s : sSet) {
 			List<Stock> l = Hisdata_Base.readHisDataMerge(s, null);
 			List<Stock> lNew = new ArrayList<Stock>();
@@ -100,9 +102,11 @@ public class Store {
 			}
 			hot.put(s, lNew);
 		}
+		logger.info("reload k-data end\n");
 	}
 
 	public void reloadRecent() {
+		logger.info("reload tmp-data");
 		for (String s : Fetch_AllStock.map.keySet()) {
 			Stock st = Hisdata_Base.readTmpData(s);
 			if (st != null) {
@@ -110,9 +114,13 @@ public class Store {
 				this.recent.put(s, st);
 			}
 		}
+		logger.info("reload tmp-data end\n");
 	}
 
 	public void reloadKdata(Set<String> sSet) {
+		logger.info("reload symbols");
+		this.kdata.clear();
+		this.kdata2.clear();
 		for (String s : sSet) {
 			Boolean down = false;
 			if (Store.downloaded == 2) {
@@ -129,6 +137,7 @@ public class Store {
 				e.printStackTrace();
 			}
 		}
+		logger.info("reload symbols end\n");
 	}
 
 	@PostConstruct
@@ -604,6 +613,7 @@ public class Store {
 				}
 				
 				t.setChoose(GTask.CHOOSEN);
+				t.setDownload(GTask.DOWNLOADED);
 				t.setUpDate(new Date());
 				logger.info("update anasys result\n");
 				gTaskService.update(t);

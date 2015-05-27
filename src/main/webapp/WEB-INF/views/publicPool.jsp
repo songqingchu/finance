@@ -148,26 +148,16 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:200px;float:left;margin-left: 10px" id="addDiv"  class="listClass">
-<c:if test="${sessionScope.root==true}">
-<a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
-</c:if>
-<a href="publicPool.do" >刷新</a>&nbsp;&nbsp;&nbsp;&nbsp;<br>
-<a href="publicPool.do?realTime=1&interval=5000" id="realTime">实时模式</a>&nbsp;&nbsp;
-<a href="publicPool.do?realTime=0" id="realTime">静态模式</a><br>
+<br>
+
+</div>
+
+<div style="width:200px;clear:left;margin-left: 10px" id="addDiv"  class="listClass">
 <a href="publicPool.do?realTime=1&interval=1000" id="realTime">1秒</a>&nbsp;
 <a href="publicPool.do?realTime=1&interval=2000" id="realTime">2秒</a>&nbsp;
 <a href="publicPool.do?realTime=1&interval=2500" id="realTime">2.5秒</a>&nbsp;
 <a href="publicPool.do?realTime=1&interval=3000" id="realTime">3秒</a>&nbsp;
 <a href="publicPool.do?realTime=1&interval=5000" id="realTime">5秒</a><br>
-<c:if test="${root==true}">
-<textarea rows="5" cols="20" id="symbolText">
-</textarea>
-</c:if>
-
-</div>
-<br>
-
 </div>
 <div id="container" style="height: 800px;float:left;display:none"></div>
 <jsp:include page="common/foot.jsp" flush="true"/>

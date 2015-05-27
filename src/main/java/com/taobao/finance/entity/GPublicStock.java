@@ -9,13 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-/**
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2015</p>
- * <p>Company: www.dianwoba.com</p>
- * @author lijiayang
- * @date   2015年3月28日
- */
 
 @Entity
 @Table(name = "public_stock")
@@ -28,10 +21,19 @@ public class GPublicStock {
 	private Byte hold=1;
 	private String type;
 	private String position;
+	private Byte concern;
 	
 	@Transient
 	public String getPosition() {
 		return position;
+	}
+	
+	@Column(name = "concern")
+	public Byte getConcern() {
+		return concern;
+	}
+	public void setConcern(Byte concern) {
+		this.concern = concern;
 	}
 	public void setPosition(String position) {
 		this.position = position;
