@@ -553,6 +553,24 @@ public class Stock implements Comparable<Stock> {
 		}
 	}
 	
+	public String getRatePercentHighLight() {
+		if(rate!=null){
+			if(rate<-0.99){
+				return "<font color=red><b>&nbsp;&nbsp;停牌</b></font>";
+			}
+			if(rate<-0.06){
+				String s=FetchUtil.formatRatePercent(rate);
+				s="<font color=blue><b>"+s+"</b></font>";
+				return s;
+			}else{
+				return FetchUtil.formatRatePercent(rate);
+			}
+			
+		}else{
+			return "";
+		}
+	}
+	
 	public String getRealRatePercent() {
 		if(rate!=null){
 			return FetchUtil.formatRatePercent(realRate);

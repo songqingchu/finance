@@ -32,7 +32,7 @@ text-decoration:none;
 <c:forEach var="s" items="${acvu}">  
      <span  class="acvuSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -52,7 +52,7 @@ text-decoration:none;
 <c:forEach var="s" items="${av5}">  
      <span  class="av5Symbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -72,7 +72,7 @@ text-decoration:none;
 <c:forEach var="s" items="${av10}">  
      <span  class="av10Symbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -92,7 +92,7 @@ text-decoration:none;
 <c:forEach var="s" items="${big}">  
      <span  class="bigSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -112,7 +112,7 @@ text-decoration:none;
 <c:forEach var="s" items="${tp}">  
      <span  class="tpSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -133,7 +133,7 @@ text-decoration:none;
 <c:forEach var="s" items="${cb}">  
      <span  class="cbSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">

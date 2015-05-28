@@ -12,7 +12,7 @@ import com.taobao.finance.util.FetchUtil;
  * ����symbolץȡstock������������Ϣ
  * @author songhong.ljy
  */
-public class Fetch_SingleStock {
+public class Fetch_SingleStock_Sina {
 
 	public static String url = "http://hq.sinajs.cn/list=";
 

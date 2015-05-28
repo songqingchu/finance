@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
-import com.taobao.finance.fetch.impl.Fetch_SingleStock;
+import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 import com.taobao.finance.fetch.impl.Fetch_StockHistory;
 import com.taobao.finance.service.ThreadService;
 import com.taobao.finance.util.FetchUtil;
@@ -499,7 +499,7 @@ public static Stock readTmpData(String code) {
 				if(s.contains("600060")){
 					s.length();
 				}
-				Stock today = Fetch_SingleStock.fetch(s);
+				Stock today = Fetch_SingleStock_Sina.fetch(s);
 	    		if(today==null){
 	    			continue;
 	    		}

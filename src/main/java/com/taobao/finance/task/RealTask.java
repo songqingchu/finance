@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import com.taobao.finance.dataobject.Stock;
-import com.taobao.finance.fetch.impl.Fetch_SingleStock;
+import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
+import com.taobao.finance.fetch.impl.Fetch_SingleStock_THS;
 
 
 public class RealTask implements Callable<Object>{
@@ -16,7 +17,8 @@ public class RealTask implements Callable<Object>{
 	public Object call(){
 		List<Stock> r=new ArrayList<Stock>();
 		for(Object s:l){
-			Stock st=Fetch_SingleStock.fetch((String)s);
+			Stock st=Fetch_SingleStock_Sina.fetch((String)s);
+			//Stock st=Fetch_SingleStock_THS.fetch((String)s);
 			if(st!=null){
 				r.add(st);
 			}

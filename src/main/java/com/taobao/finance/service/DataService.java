@@ -28,7 +28,7 @@ import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
-import com.taobao.finance.fetch.impl.Fetch_SingleStock;
+import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 import com.taobao.finance.util.FetchUtil;
 
 @Component
@@ -187,7 +187,7 @@ public class DataService {
 
 		if (working) {
 			if (!downloaded) {
-				Stock s = Fetch_SingleStock.fetch(symbol);
+				Stock s = Fetch_SingleStock_Sina.fetch(symbol);
 				l.add(s);
 			}
 		}
@@ -304,7 +304,7 @@ public class DataService {
 
 		if (working) {
 			if (!downloaded) {
-				Stock s = Fetch_SingleStock.fetch(symbol);
+				Stock s = Fetch_SingleStock_Sina.fetch(symbol);
 				if(s!=null){
 					l.add(s);
 				}
@@ -455,7 +455,7 @@ public class DataService {
 
 		if (working) {
 			if (shi) {
-				Stock s = Fetch_SingleStock.fetch(symbol);
+				Stock s = Fetch_SingleStock_Sina.fetch(symbol);
 				l.add(s);
 			}
 		}
