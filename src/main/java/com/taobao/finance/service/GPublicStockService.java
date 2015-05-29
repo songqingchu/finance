@@ -12,7 +12,7 @@ import com.taobao.finance.entity.GPublicStock;
  * <p>Copyright: Copyright (c) 2015</p>
  * <p>Company: www.dianwoba.com</p>
  * @author lijiayang
- * @date   2015年3月28日
+ * @date   2015骞�3鏈�28鏃�
  */
 @Component
 public class GPublicStockService extends BaseService<GPublicStock>{
@@ -57,7 +57,7 @@ public class GPublicStockService extends BaseService<GPublicStock>{
 	public GPublicStock queryStockInPool(String symbol){
 		String hql="FROM GPublicStock WHERE hold=1 and symbol=?";
 		GPublicStock l=this.getDao().findRecordByHql(hql,symbol);
-		this.delete(l);
+		//this.delete(l);
 		return l;
 	}
 	

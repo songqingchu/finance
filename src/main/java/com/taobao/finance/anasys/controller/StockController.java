@@ -398,8 +398,12 @@ public class StockController {
 		for(List<Object> sys:symbolTaskList){
 			callList.add(new RealTask(sys));
 		}
-        List<Object> r=threadService.service(callList);		
+		long start=System.currentTimeMillis();
+        List<Object> r=threadService.service(callList);	
+        long end=System.currentTimeMillis();
+        logger.info("获取实时行情耗时："+(end-start)+"毫秒");
         List<Stock> result=new ArrayList<Stock>();
+        
         for(Object l:r){
         	List<Stock> slice=(List<Stock>)l;
         	result.addAll(slice);
@@ -797,6 +801,7 @@ public class StockController {
 		logger.info("request:remove from public pool");
         GPublicStock ps=this.gPublicStockService.queryStockInPool(symbol);
         if(ps!=null){
+        	this.gPublicStockService.delete(ps);
         	//this.store.removeFromPublic(symbol);
         	this.store.reloadPublicStock();
         }
@@ -873,7 +878,7 @@ public class StockController {
 					}else if(s.startsWith("sh")||s.startsWith("sz")){
 						
 					}else{
-						symbol=Fetch_AllStock.nameMap.get(s);
+						symbol=Fetch_AllStock.nameMap.get(symbol);
 					}
 					
 					Stock st=Fetch_AllStock.map.get(symbol);

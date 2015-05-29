@@ -7,6 +7,7 @@ encoding//src/main/java/com/taobao/finance/anasys/interceptor/SecurityFilter.jav
 encoding//src/main/java/com/taobao/finance/base/Hisdata_Base.java=UTF-8
 encoding//src/main/java/com/taobao/finance/dataobject/Stock.java=UTF-8
 encoding//src/main/java/com/taobao/finance/service/DataService.java=UTF-8
+encoding//src/main/java/com/taobao/finance/service/GPublicStockService.java=UTF-8
 encoding//src/main/java/com/taobao/finance/util/CheckUtil.java=UTF-8
 encoding//src/main/java/com/taobao/finance/util/FetchUtil.java=UTF-8
 encoding//src/main/resources=UTF-8

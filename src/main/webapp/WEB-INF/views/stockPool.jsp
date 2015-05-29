@@ -115,7 +115,6 @@ a {
 						</c:if></a></span>
 			</c:forEach>
 			
-		
 			<c:forEach var="s" items="${cb}">
 				<span style="display: none"
 					class="cbSymbol  symbol ${s.getPosition()}" type="cb"  symbol="${s.getSymbol()}" 
@@ -126,8 +125,7 @@ a {
 							<font color="red"><b>停牌</b></font>
 						</c:if></a></span>
 			</c:forEach>
-			
-			
+				
 			<c:forEach var="s" items="${ratio}">
 				<span style="display: none"
 					class="ratioSymbol  symbol ${s.getPosition()}" type="ratio"  symbol="${s.getSymbol()}" 

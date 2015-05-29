@@ -32,13 +32,10 @@ text-decoration:none;
 <c:forEach var="s" items="${acvu}">  
      <span  class="acvuSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
      <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
      <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
      </c:if>
@@ -52,13 +49,10 @@ text-decoration:none;
 <c:forEach var="s" items="${av5}">  
      <span  class="av5Symbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
      <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
      <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
      </c:if>
@@ -72,13 +66,10 @@ text-decoration:none;
 <c:forEach var="s" items="${av10}">  
      <span  class="av10Symbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
      <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
      <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
      </c:if>
@@ -92,13 +83,10 @@ text-decoration:none;
 <c:forEach var="s" items="${big}">  
      <span  class="bigSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
      <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
      <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
      </c:if>
@@ -112,13 +100,10 @@ text-decoration:none;
 <c:forEach var="s" items="${tp}">  
      <span  class="tpSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
      <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
      <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a>  
      </c:if>
@@ -133,13 +118,10 @@ text-decoration:none;
 <c:forEach var="s" items="${cb}">  
      <span  class="cbSymbol symbol" style="width:160px;float:left;">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercent}
+        ${s.nameFormat}&nbsp;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
      <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
      <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
      </c:if>
@@ -149,21 +131,35 @@ text-decoration:none;
 </div>
 
 <div style="width:200px;float:left;margin-left: 10px" id="addDiv"  class="listClass">
-<c:if test="${sessionScope.root==true}">
-<a href="#" class="submitA" replace="0">提交</a>&nbsp;&nbsp;&nbsp;&nbsp;
-</c:if>
-<a href="publicPool.do" >刷新</a>&nbsp;&nbsp;&nbsp;&nbsp;<br>
-<a href="publicPool.do?realTime=1&interval=5000" id="realTime">实时模式</a>&nbsp;&nbsp;
-<a href="publicPool.do?realTime=0" id="realTime">静态模式</a><br>
-<a href="publicPool.do?realTime=1&interval=1000" id="realTime">1秒</a>&nbsp;
-<a href="publicPool.do?realTime=1&interval=2000" id="realTime">2秒</a>&nbsp;
-<a href="publicPool.do?realTime=1&interval=2500" id="realTime">2.5秒</a>&nbsp;
-<a href="publicPool.do?realTime=1&interval=3000" id="realTime">3秒</a>&nbsp;
-<a href="publicPool.do?realTime=1&interval=5000" id="realTime">5秒</a><br>
+
 <c:if test="${root==true}">
 <textarea rows="5" cols="20" id="symbolText">
 </textarea>
 </c:if>
+<c:if test="${sessionScope.root==true}">
+<a href="#" class="submitA" replace="0" type="acvu"><b>acvu</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+</c:if>
+<c:if test="${sessionScope.root==true}">
+<a href="#" class="submitA" replace="0" type="av5"><b>av5</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+</c:if>
+<c:if test="${sessionScope.root==true}">
+<a href="#" class="submitA" replace="0" type="av10"><b>av10</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+</c:if>
+<c:if test="${sessionScope.root==true}">
+<a href="#" class="submitA" replace="0" type="big"><b>big</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+</c:if>
+<c:if test="${sessionScope.root==true}">
+<a href="#" class="submitA" replace="0" type="tp"><b>tp</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+</c:if>
+<c:if test="${sessionScope.root==true}">
+<a href="#" class="submitA" replace="0" type="cb"><b>cb</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+</c:if>
+<c:if test="${sessionScope.root==true}">
+<a href="#" class="submitA" replace="0" type="ratio"><b>ratio</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+</c:if>
+<a href="publicPool.do" >刷新</a>&nbsp;&nbsp;&nbsp;&nbsp;<br>
+
+
 
 </div>
 <br>
@@ -235,27 +231,32 @@ text-decoration:none;
 	   window.location.reload();
    }
    
-   if(realTime==1){
+  /*  if(realTime==1){
 	   //setTimeout('myrefresh()',interval);  
 	   $(".operate").hide();
 	   //$(".listClass").width(160);
 	   $("#addDiv").show();
 	   
-   }else{
+   }else{ */
 	   $(".operate").show();
-	   $(".listClass").width(270);
+	  // $(".listClass").width(160);
 	   $("#addDiv").show();
-   }
+   //}
    
    
    
    $(".submitA").on("click",function(){
-	   var symbols=$("#symbolText").val().split("\n");
+	   //var symbols=$("#symbolText").val().split("\n");
+	   var symbols=$("#symbolText").val();
 	   var replace=$(this).attr("replace");
+	   
+	  // var symbol=$(currentNode).attr("symbol");
+   	   var type=$(this).attr("type");
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
-			url : "/addPublicPool.do?symbols="+symbols+"&replace="+replace,
+			//"/addPublicPool.do?replace=false&symbols="+symbol+"-"+type,
+			url : "/addPublicPool.do?symbols="+symbols+"-"+type+"&replace=false",
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {

@@ -34,14 +34,6 @@ text-decoration:none;
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
-     
-     <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
-     </c:if>
      </span>
 
 </c:forEach>
@@ -54,14 +46,6 @@ text-decoration:none;
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
-     
-     <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
-     </c:if>
      </span>
 
 </c:forEach>
@@ -74,14 +58,6 @@ text-decoration:none;
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
-     
-     <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
-     </c:if>
      </span>
 
 </c:forEach>
@@ -94,14 +70,6 @@ text-decoration:none;
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
-     
-     <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
-     </c:if>
      </span>
 
 </c:forEach>
@@ -114,14 +82,6 @@ text-decoration:none;
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
-     
-     <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a>  
-     </c:if>
      </span>
 
 </c:forEach>
@@ -135,14 +95,6 @@ text-decoration:none;
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
         ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
-     
-     <c:if test="${sessionScope.root==true}">
-     <a href="/setType.do?symbol=${s.symbol}&type=av5" class="operate">av5</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=acvu" class="operate">acv</a>
-     <a href="/setType.do?symbol=${s.symbol}&type=oth" class="operate">oth</a>
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
-     </c:if>
      </span>
 
 </c:forEach>
@@ -157,7 +109,8 @@ text-decoration:none;
 <a href="publicPool.do?realTime=1&interval=2000" id="realTime">2秒</a>&nbsp;
 <a href="publicPool.do?realTime=1&interval=2500" id="realTime">2.5秒</a>&nbsp;
 <a href="publicPool.do?realTime=1&interval=3000" id="realTime">3秒</a>&nbsp;
-<a href="publicPool.do?realTime=1&interval=5000" id="realTime">5秒</a><br>
+<a href="publicPool.do?realTime=1&interval=5000" id="realTime">5秒</a><br>&nbsp;
+<a href="publicPool.do?realTime=1&interval=50000000000" id="realTime">静态</a><br>
 </div>
 <div id="container" style="height: 800px;float:left;display:none"></div>
 <jsp:include page="common/foot.jsp" flush="true"/>
