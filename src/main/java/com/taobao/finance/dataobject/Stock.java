@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.taobao.finance.util.FetchUtil;
 
 public class Stock implements Comparable<Stock> {
@@ -71,6 +73,9 @@ public class Stock implements Comparable<Stock> {
 		this.ting = ting;
 	}
 	public String getPosition() {
+		if(StringUtils.isBlank(position)){
+			return "";
+		}
 		return position;
 	}
 	public void setPosition(String position) {

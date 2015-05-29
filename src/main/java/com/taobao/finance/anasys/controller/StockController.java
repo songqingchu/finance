@@ -745,6 +745,38 @@ public class StockController {
 		
 		
 		
+		if(bigs.size()>0){
+			bigs.get(0).setPosition(bigs.get(0).getPosition()+"head");
+			bigs.get(bigs.size()-1).setPosition(bigs.get(0).getPosition()+" tail");
+		}
+		if(acvus.size()>0){
+			acvus.get(0).setPosition(acvus.get(0).getPosition()+"head");
+			acvus.get(bigs.size()-1).setPosition(acvus.get(0).getPosition()+" tail");
+		}
+		if(av5s.size()>0){
+			av5s.get(0).setPosition(av5s.get(0).getPosition()+"head");
+			av5s.get(bigs.size()-1).setPosition(av5s.get(0).getPosition()+" tail");
+		}
+		if(av10s.size()>0){
+			av10s.get(0).setPosition(av10s.get(0).getPosition()+"head");
+			av10s.get(bigs.size()-1).setPosition(av10s.get(0).getPosition()+" tail");
+		}
+		if(cbs.size()>0){
+			cbs.get(0).setPosition(cbs.get(0).getPosition()+"head");
+			cbs.get(bigs.size()-1).setPosition(cbs.get(0).getPosition()+" tail");
+		}
+		if(ratios.size()>0){
+			ratios.get(0).setPosition(ratios.get(0).getPosition()+"head");
+			ratios.get(bigs.size()-1).setPosition(ratios.get(0).getPosition()+" tail");
+		}
+		if(tps.size()>0){
+			tps.get(0).setPosition(tps.get(0).getPosition()+"head");
+			tps.get(bigs.size()-1).setPosition(tps.get(0).getPosition()+" tail");
+		}
+		
+		
+		
+		
 		result.clear();
 		result.addAll(indexs);
 		result.addAll(acvus);

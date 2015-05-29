@@ -30,7 +30,7 @@ text-decoration:none;
 <b>ACVU</b><br><br>
 
 <c:forEach var="s" items="${acvu}">  
-     <span  class="acvuSymbol symbol" style="width:160px;float:left;">
+     <span  class="acvuSymbol symbol  ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;
      </a>
@@ -47,8 +47,8 @@ text-decoration:none;
 <div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="av5" class="listClass"  id="av5Div">
 <b>AV5</b><br><br>
 <c:forEach var="s" items="${av5}">  
-     <span  class="av5Symbol symbol" style="width:160px;float:left;">
-     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
+     <span  class="av5Symbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;
      </a>
      
@@ -64,7 +64,7 @@ text-decoration:none;
 <div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="av10" class="listClass"  id="av10Div">
 <b>AV10</b><br><br>
 <c:forEach var="s" items="${av10}">  
-     <span  class="av10Symbol symbol" style="width:160px;float:left;">
+     <span  class="av10Symbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;
      </a>
@@ -81,7 +81,7 @@ text-decoration:none;
 <div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="tp" class="listClass"  id="bigDiv">
 <b>BIG</b><br><br>
 <c:forEach var="s" items="${big}">  
-     <span  class="bigSymbol symbol" style="width:160px;float:left;">
+     <span  class="bigSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;
      </a>
@@ -98,8 +98,8 @@ text-decoration:none;
 <div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="cb" class="listClass"  id="tpDiv">
 <b>TP</b><br><br>
 <c:forEach var="s" items="${tp}">  
-     <span  class="tpSymbol symbol" style="width:160px;float:left;">
-     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
+     <span  class="tpSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
         ${s.nameFormat}&nbsp;
      </a>
      
@@ -116,7 +116,7 @@ text-decoration:none;
 <div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="cb" class="listClass"  id="cbDiv">
 <b>CB</b><br><br>
 <c:forEach var="s" items="${cb}">  
-     <span  class="cbSymbol symbol" style="width:160px;float:left;">
+     <span  class="cbSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}" >
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
         ${s.nameFormat}&nbsp;
      </a>
@@ -173,7 +173,7 @@ text-decoration:none;
    var windowHight=$(window).height();
    var w=windowWidth-290;
    var h=windowHight*0.8;
-   $("#container").width(w);
+   $("#container").width(w-20);
    $("#container").height(h);
    $("#list").height(h);
    
@@ -196,6 +196,8 @@ text-decoration:none;
    var tpSize=${tpSize};
    var ratioSize=${ratioSize};
    var cbSize=${cbSize};
+   
+   var currentCatIndex=1;
    
    setWidth('acvuDiv',acvuSize);
    setWidth('av5Div',av5Size);
@@ -316,7 +318,7 @@ text-decoration:none;
 			    	copyMap.bigTips=base.bigTips;
 			    	tradeChart(copyMap);
 			    	
-			    	setTimeout('myrefresh()',5000);  
+			    	//setTimeout('myrefresh()',5000);  
 				}
 			},
 			error : function(errorMsg) {
@@ -327,6 +329,67 @@ text-decoration:none;
    
    $(document).keydown(function(event){ 
 	    event.stopPropagation(); 
+	    
+	    if(event.keyCode == 33||event.keyCode == 34){
+	    	if(event.keyCode == 33) {
+               if(currentCatIndex==1){
+            	   currentCatIndex=8
+               }else{
+            	   currentCatIndex--;
+               }
+		    }
+	    	if(event.keyCode == 34) {
+	    	   if(currentCatIndex==8){
+	    		   currentCatIndex=1
+	           }else{
+	        	   currentCatIndex++;
+	           }
+		    }
+	    	
+	    	if(currentCatIndex==1){
+	    		currentCat='acvu';
+	    	}
+            if(currentCatIndex==2){
+            	currentCat='big';
+	    	}
+            if(currentCatIndex==3){
+            	currentCat='av5';
+            }
+            if(currentCatIndex==4){
+            	currentCat='av10';
+            }
+            if(currentCatIndex==5){
+            	currentCat='tp';
+	    	}
+            if(currentCatIndex==6){
+            	currentCat='cb';
+            }
+            if(currentCatIndex==7){
+            	currentCat='ratio';
+            }
+            if(currentCatIndex==8){
+            	currentCat='cb2';
+            }
+
+	 	   head=$(".head."+currentCat+"Symbol").get(0);
+	 	   tail=$(".tail."+currentCat+"Symbol").get(0);
+	 	   
+
+	 	   $(".choose").css("background-color","");
+	 	   $("#"+currentCat+"Symbol").css("background-color","red");
+	 	   $(".symbol").css("display","none");
+	 	   $("."+currentCat+"Symbol").attr("style","display:block;width:160px;float:left;");
+	 	  
+	 	   $(".listClass").hide();
+	 	   $("#addDiv").show();
+		   $("#container").show();
+		   $("#"+currentCat+"Div").show();
+		    
+		    
+	 	   currentNode=tail;//切换 	
+	    }
+	    
+	    
 	    if(event.keyCode == 38||event.keyCode == 40){
 	    	if(event.keyCode == 38) {
 		    	start=start+40;
@@ -380,7 +443,7 @@ text-decoration:none;
 		    
 	  	   $(".symbolA").css("background-color","");
 	  	   $(nodeNow).css("background-color","pink");
-	  	   
+	  	 
 	  	   $.ajax({
 	  			type : "get",
 	  			async : true, //同步执行
@@ -410,6 +473,12 @@ text-decoration:none;
 	  			    	copyMap.av5Tips=base.av5Tips;
 	  			    	copyMap.acvuTips=base.acvuTips;
 	  			    	copyMap.bigTips=base.bigTips;
+	  			    	$("#list").width(270);
+	  			    	$(".listClass").hide();
+	  				    $(currentNode).parent().parent().show();
+	  				    $("#container").show();
+	  			 	    $("#addDiv").show();
+	  			 	    $("#"+currentCat+"Div").show();
 	  			    	tradeChart(copyMap);
 	  				}
 	  			},
