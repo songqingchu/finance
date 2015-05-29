@@ -805,7 +805,7 @@ public class StockController {
         	//this.store.removeFromPublic(symbol);
         	this.store.reloadPublicStock();
         }
-        response.sendRedirect(request.getContextPath() + "/publicPool.do");  
+        response.sendRedirect(request.getContextPath() + "/operate.do");  
 		return null;
 	}
 	
