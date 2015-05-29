@@ -157,7 +157,7 @@ text-decoration:none;
 <c:if test="${sessionScope.root==true}">
 <a href="#" class="submitA" replace="0" type="ratio"><b>ratio</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
 </c:if>
-<a href="publicPool.do" >刷新</a>&nbsp;&nbsp;&nbsp;&nbsp;<br>
+<a href="#" id="refreshA">刷新</a>&nbsp;&nbsp;&nbsp;&nbsp;<br>
 
 
 
@@ -244,6 +244,9 @@ text-decoration:none;
    //}
    
    
+   $("#refreshA").on("click",function(){
+	   location.reload();
+   });
    
    $(".submitA").on("click",function(){
 	   //var symbols=$("#symbolText").val().split("\n");

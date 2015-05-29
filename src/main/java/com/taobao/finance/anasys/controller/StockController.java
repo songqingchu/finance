@@ -802,7 +802,6 @@ public class StockController {
         GPublicStock ps=this.gPublicStockService.queryStockInPool(symbol);
         if(ps!=null){
         	this.gPublicStockService.delete(ps);
-        	//this.store.removeFromPublic(symbol);
         	this.store.reloadPublicStock();
         }
         response.sendRedirect(request.getContextPath() + "/operate.do");  
