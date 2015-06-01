@@ -197,6 +197,7 @@ text-decoration:none;
    var ratioSize=${ratioSize};
    var cbSize=${cbSize};
    
+   var currentCat="acvu";
    var currentCatIndex=1;
    
    setWidth('acvuDiv',acvuSize);
@@ -284,6 +285,7 @@ text-decoration:none;
 	   $(this).css("background-color","pink");
 	   
 	   $(".listClass").hide();
+	   $("#"+currentCat+"Div").show();
 	   $("#addDiv").show();
 	   $(this).parent().parent().show();
 	   $("#list").width(270);
@@ -386,7 +388,8 @@ text-decoration:none;
 		   $("#"+currentCat+"Div").show();
 		    
 		    
-	 	   currentNode=tail;//切换 	
+	 	  // currentNode=tail;//切换 
+	 	   currentNode=$(tail).children().get(0);
 	    }
 	    
 	    
@@ -421,17 +424,19 @@ text-decoration:none;
 	        	if($(currentNode).hasClass("head")){
 	        		nodeNow=tail;
 	        	}else{
-	        		children=$(currentNode).parent().prev().children();
-	        		nodeNow=children.get(0);
+	        		//children=$(currentNode).parent().prev().children();
+	        		//nodeNow=children.get(0);
+	        		
+	        		nodeNow=$(currentNode).prev();
 	        	}
 		    }
 	    	if(event.keyCode == 39) {
                 if($(currentNode).hasClass("tail")){
                 	nodeNow=head;
 	        	}else{
-	    		    children=$(currentNode).parent().next().children();
-	    		    nodeNow=children.get(0);
-	    		    
+	    		    //children=$(currentNode).parent().next().children();
+	    		    //nodeNow=children.get(0);
+	        		nodeNow=$(currentNode).next();
 	        	}
 		    } 
 	    	
@@ -439,8 +444,8 @@ text-decoration:none;
 	  	   
 	    	var symbol=$(nodeNow).attr("symbol");
 		    currentSymbol=symbol;
+		    //currentNode=$(nodeNow).children().get(0);
 		    currentNode=$(nodeNow);
-		    
 	  	   $(".symbolA").css("background-color","");
 	  	   $(nodeNow).css("background-color","pink");
 	  	 
