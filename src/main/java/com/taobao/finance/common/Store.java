@@ -13,16 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
-
 import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.mapping.Fetchable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
-
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.AV10_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
@@ -103,8 +99,8 @@ public class Store {
 		for (String s : sSet) {
 			List<Stock> l = Hisdata_Base.readHisDataMerge(s, null);
 			List<Stock> lNew = new ArrayList<Stock>();
-			if (l.size() > 300) {
-				for (int i = l.size() - 300; i < l.size(); i++) {
+			if (l.size() > 200) {
+				for (int i = l.size() - 200; i < l.size(); i++) {
 					lNew.add(l.get(i));
 				}
 			} else {
@@ -137,8 +133,7 @@ public class Store {
 				down = true;
 			}
 			try {
-				Map<String, Object> m = dataService.getKData2(s,
-						this.workingDay, down, this);
+				Map<String, Object> m = dataService.getKData2(s,this.workingDay, down, this);
 				this.kdata.put(s, m);
 				this.kdata2.add(m);
 			} catch (IOException e) {

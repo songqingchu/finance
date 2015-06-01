@@ -8,10 +8,7 @@ import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.util.FetchUtil;
 
 
-/**
- * ����symbolץȡstock������������Ϣ
- * @author songhong.ljy
- */
+
 public class Fetch_SingleStock_Sina {
 
 	public static String url = "http://hq.sinajs.cn/list=";
@@ -20,12 +17,7 @@ public class Fetch_SingleStock_Sina {
 		return url + stock;
 	}
 
-	/**
-	 * ץȡ����
-	 * 
-	 * @param url
-	 * @return
-	 */
+
 	public static Stock fetch(String code) {
 		HttpClient client = new HttpClient();
 		Stock s = null;
