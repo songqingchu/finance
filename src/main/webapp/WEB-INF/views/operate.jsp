@@ -446,7 +446,7 @@ text-decoration:none;
 		    currentSymbol=symbol;
 		    //currentNode=$(nodeNow).children().get(0);
 		    currentNode=$(nodeNow);
-	  	   $(".symbolA").css("background-color","");
+	  	   $(".symbolA").parent().css("background-color","");
 	  	   $(nodeNow).css("background-color","pink");
 	  	 
 	  	   $.ajax({
