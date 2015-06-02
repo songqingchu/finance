@@ -280,9 +280,9 @@ text-decoration:none;
 	   $("#container").show();
 	   var symbol=$(this).attr("symbol");
 	   currentSymbol=symbol;
-	   currentNode=this;
+	   currentNode=$(this).parent();
 	   $(".symbolA").css("background-color","");
-	   $(this).css("background-color","pink");
+	   $(this).parent().css("background-color","pink");
 	   
 	   $(".listClass").hide();
 	   $("#"+currentCat+"Div").show();
