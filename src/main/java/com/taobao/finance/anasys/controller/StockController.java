@@ -747,31 +747,31 @@ public class StockController {
 		
 		if(bigs.size()>0){
 			bigs.get(0).setPosition(bigs.get(0).getPosition()+"head");
-			bigs.get(bigs.size()-1).setPosition(bigs.get(0).getPosition()+" tail");
+			bigs.get(bigs.size()-1).setPosition(bigs.get(bigs.size()-1).getPosition()+" tail");
 		}
 		if(acvus.size()>0){
 			acvus.get(0).setPosition(acvus.get(0).getPosition()+"head");
-			acvus.get(acvus.size()-1).setPosition(acvus.get(0).getPosition()+" tail");
+			acvus.get(acvus.size()-1).setPosition(acvus.get(acvus.size()-1).getPosition()+" tail");
 		}
 		if(av5s.size()>0){
 			av5s.get(0).setPosition(av5s.get(0).getPosition()+"head");
-			av5s.get(av5s.size()-1).setPosition(av5s.get(0).getPosition()+" tail");
+			av5s.get(av5s.size()-1).setPosition(av5s.get(av5s.size()-1).getPosition()+" tail");
 		}
 		if(av10s.size()>0){
 			av10s.get(0).setPosition(av10s.get(0).getPosition()+"head");
-			av10s.get(av10s.size()-1).setPosition(av10s.get(0).getPosition()+" tail");
+			av10s.get(av10s.size()-1).setPosition(av10s.get(av10s.size()-1).getPosition()+" tail");
 		}
 		if(cbs.size()>0){
 			cbs.get(0).setPosition(cbs.get(0).getPosition()+"head");
-			cbs.get(cbs.size()-1).setPosition(cbs.get(0).getPosition()+" tail");
+			cbs.get(cbs.size()-1).setPosition(cbs.get(cbs.size()-1).getPosition()+" tail");
 		}
 		if(ratios.size()>0){
 			ratios.get(0).setPosition(ratios.get(0).getPosition()+"head");
-			ratios.get(ratios.size()-1).setPosition(ratios.get(0).getPosition()+" tail");
+			ratios.get(ratios.size()-1).setPosition(ratios.get(ratios.size()-1).getPosition()+" tail");
 		}
 		if(tps.size()>0){
 			tps.get(0).setPosition(tps.get(0).getPosition()+"head");
-			tps.get(tps.size()-1).setPosition(tps.get(0).getPosition()+" tail");
+			tps.get(tps.size()-1).setPosition(tps.get(tps.size()-1).getPosition()+" tail");
 		}
 		
 		
@@ -885,12 +885,14 @@ public class StockController {
 					String[] datas=StringUtils.split(s,"-");
 					symbol=datas[0];
 					type=datas[1];
+				}else{
+					symbol=s;
 				}
 				if(store.publicStockMap.containsKey(symbol)){
 					continue;
 				}
-				if(StringUtils.isNotBlank(s)){
-					if(StringUtils.isNumeric(s)){
+				if(StringUtils.isNotBlank(symbol)){
+					if(StringUtils.isNumeric(symbol)){
 						if(s.length()==6){
 							if(s.startsWith("6")){
 								s="sh"+s;
@@ -1241,44 +1243,36 @@ public class StockController {
 		
 		
 		if(bigs.size()>0){
-			//Collections.sort(bigs, new Comparator.ChooseComparator());
 			bigs.get(0).setPosition("head");
-			bigs.get(bigs.size()-1).setPosition("tail");
+			bigs.get(bigs.size()-1).setPosition(bigs.get(bigs.size()-1).getPosition()+" tail");
 		}
 		if(acvus.size()>0){
-			//Collections.sort(acvus, new Comparator.ChooseComparator());
 			acvus.get(0).setPosition("head");
-			acvus.get(acvus.size()-1).setPosition("tail");
+			acvus.get(acvus.size()-1).setPosition(acvus.get(acvus.size()-1).getPosition()+" tail");
 		}
 		if(av5s.size()>0){
-			//Collections.sort(av5s, new Comparator.ChooseComparator());
 			av5s.get(0).setPosition("head");
-			av5s.get(av5s.size()-1).setPosition("tail");
+			av5s.get(av5s.size()-1).setPosition(av5s.get(av5s.size()-1).getPosition()+" tail");
 		}
 		if(av10s.size()>0){
-			//Collections.sort(av10s, new Comparator.ChooseComparator());
 			av10s.get(0).setPosition("head");
-			av10s.get(av10s.size()-1).setPosition("tail");
+			av10s.get(av10s.size()-1).setPosition(av10s.get(av10s.size()-1).getPosition()+" tail");
 		}
 		if(cbs.size()>0){
-			//Collections.sort(acvus, new Comparator.ChooseComparator());
 			cbs.get(0).setPosition("head");
-			cbs.get(cbs.size()-1).setPosition("tail");
+			cbs.get(cbs.size()-1).setPosition(cbs.get(cbs.size()-1).getPosition()+" tail");
 		}
 		if(cb2s.size()>0){
-			//Collections.sort(acvus, new Comparator.ChooseComparator());
 			cb2s.get(0).setPosition("head");
-			cb2s.get(cb2s.size()-1).setPosition("tail");
+			cb2s.get(cb2s.size()-1).setPosition(cb2s.get(cb2s.size()-1).getPosition()+" tail");
 		}
 		if(ratios.size()>0){
-			//Collections.sort(av5s, new Comparator.ChooseComparator());
 			ratios.get(0).setPosition("head");
-			ratios.get(ratios.size()-1).setPosition("tail");
+			ratios.get(ratios.size()-1).setPosition(ratios.get(ratios.size()-1).getPosition()+" tail");
 		}
 		if(tps.size()>0){
-			//Collections.sort(av10s, new Comparator.ChooseComparator());
 			tps.get(0).setPosition("head");
-			tps.get(tps.size()-1).setPosition("tail");
+			tps.get(tps.size()-1).setPosition(tps.get(tps.size()-1).getPosition()+" tail");
 		}
 			
 		int size=0;
