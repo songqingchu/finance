@@ -335,14 +335,14 @@ text-decoration:none;
 	    if(event.keyCode == 33||event.keyCode == 34){
 	    	if(event.keyCode == 33) {
                if(currentCatIndex==1){
-            	   currentCatIndex=8
+            	   currentCatIndex=6;
                }else{
             	   currentCatIndex--;
                }
 		    }
 	    	if(event.keyCode == 34) {
-	    	   if(currentCatIndex==8){
-	    		   currentCatIndex=1
+	    	   if(currentCatIndex==6){
+	    		   currentCatIndex=1;
 	           }else{
 	        	   currentCatIndex++;
 	           }
@@ -363,14 +363,14 @@ text-decoration:none;
             if(currentCatIndex==5){
             	currentCat='tp';
 	    	}
-            if(currentCatIndex==6){
+            /*if(currentCatIndex==6){
             	currentCat='cb';
             }
             if(currentCatIndex==7){
             	currentCat='ratio';
-            }
-            if(currentCatIndex==8){
-            	currentCat='cb2';
+            } */
+            if(currentCatIndex==6){
+            	currentCat='cb';
             }
 
 	 	   head=$(".head."+currentCat+"Symbol").get(0);
