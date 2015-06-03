@@ -386,7 +386,8 @@ text-decoration:none;
 	 	   $("#addDiv").show();
 		   $("#container").show();
 		   $("#"+currentCat+"Div").show();
-		    
+		   $("#"+currentCat+"Div").width(160);
+		   $("#"+currentCat+"Div").height(h);
 		    
 	 	  // currentNode=tail;//切换 
 	 	   currentNode=$(tail).children().get(0);

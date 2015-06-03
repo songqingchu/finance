@@ -547,8 +547,11 @@ public class StockController {
 		result.clear();
 		result.addAll(indexs);
 		result.addAll(acvus);
-		result.get(0).setPosition("head");
-		result.get(result.size()-1).setPosition("tail");
+		if(result.size()>0){
+			result.get(0).setPosition("head");
+			result.get(result.size()-1).setPosition("tail");
+		}
+		
 		
 		
 		request.setAttribute("pool", store.publicStockMap);
