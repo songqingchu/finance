@@ -32,12 +32,12 @@ text-decoration:none;
 <c:forEach var="s" items="${acvu}">  
      <span  class="acvuSymbol symbol  ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;
+       ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a> 
      </c:if>
      </span>
 
@@ -49,12 +49,12 @@ text-decoration:none;
 <c:forEach var="s" items="${av5}">  
      <span  class="av5Symbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a>  
      </c:if>
      </span>
 
@@ -66,12 +66,12 @@ text-decoration:none;
 <c:forEach var="s" items="${av10}">  
      <span  class="av10Symbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a> 
      </c:if>
      </span>
 
@@ -83,12 +83,12 @@ text-decoration:none;
 <c:forEach var="s" items="${big}">  
      <span  class="bigSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a> 
      </c:if>
      </span>
 
@@ -100,12 +100,12 @@ text-decoration:none;
 <c:forEach var="s" items="${tp}">  
      <span  class="tpSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a>  
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a>   
      </c:if>
      </span>
 
@@ -118,12 +118,12 @@ text-decoration:none;
 <c:forEach var="s" items="${cb}">  
      <span  class="cbSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}" >
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;
+        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删除</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移出</a> 
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a>  
      </c:if>
      </span>
 

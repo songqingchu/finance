@@ -665,42 +665,77 @@ public class StockController {
 		for(GPublicStock s:acvu){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				acvus.add(st);
 			}
 		}
 		for(GPublicStock s:av5){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				av5s.add(st);
 			}
 		}
 		for(GPublicStock s:av10){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				av10s.add(st);
 			}
 		}
 		for(GPublicStock s:big){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				bigs.add(st);
 			}
 		}
 		for(GPublicStock s:tp){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				tps.add(st);
 			}
 		}
 		for(GPublicStock s:ratio){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				ratios.add(st);
 			}
 		}
 		for(GPublicStock s:cb){
 			Stock st=allR.get(s.getSymbol());
 			if(st!=null){
+				if(s.getConcern()!=null){
+					if(s.getConcern()==1){
+						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
+					}
+				}
 				cbs.add(st);
 			}
 		}
@@ -726,21 +761,30 @@ public class StockController {
 		}
 		if(acvus.size()>0){
 			Collections.sort(acvus,new Comparator.RateDescComparator());
+			Collections.reverse(acvus);
 		}
 		if(av5s.size()>0){
 			Collections.sort(av5s,new Comparator.RateDescComparator());
+			Collections.reverse(acvus);
 		}
 		if(av10s.size()>0){
 			Collections.sort(av10s,new Comparator.RateDescComparator());
+			Collections.reverse(acvus);
 		}
 		if(bigs.size()>0){
 			Collections.sort(bigs,new Comparator.RateDescComparator());
+			Collections.reverse(acvus);
+
 		}
 		if(ratios.size()>0){
 			Collections.sort(ratios,new Comparator.RateDescComparator());
+			Collections.reverse(acvus);
+
 		}
 		if(tps.size()>0){
 			Collections.sort(tps,new Comparator.RateDescComparator());
+			Collections.reverse(acvus);
+
 		}
 		if(cbs.size()>0){
 			Collections.sort(cbs,new Comparator.RateDescComparator());
