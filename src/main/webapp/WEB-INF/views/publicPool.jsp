@@ -109,7 +109,7 @@ text-decoration:none;
 <a href="publicPool.do?realTime=1&interval=2000" id="realTime">2秒</a>&nbsp;
 <a href="publicPool.do?realTime=1&interval=2500" id="realTime">2.5秒</a>&nbsp;
 <a href="publicPool.do?realTime=1&interval=3000" id="realTime">3秒</a>&nbsp;
-<a href="publicPool.do?realTime=1&interval=5000" id="realTime">5秒</a><br>&nbsp;
+<a href="publicPool.do?realTime=1&interval=5000" id="realTime">5秒</a>&nbsp;
 <a href="publicPool.do?realTime=1&interval=50000000000" id="realTime">静态</a><br>
 </div>
 <div id="container" style="height: 800px;float:left;display:none"></div>
