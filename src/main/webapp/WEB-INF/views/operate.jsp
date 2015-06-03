@@ -130,29 +130,29 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:200px;float:left;margin-left: 10px" id="addDiv"  class="listClass">
+<div style="width:160px;float:left;margin-left: 10px" id="addDiv"  class="listClass">
 
 <c:if test="${root==true}">
-<textarea rows="5" cols="20" id="symbolText">
+<textarea rows="1" cols="15" style="width:160px" id="symbolText">
 </textarea>
 </c:if>
 <c:if test="${sessionScope.root==true}">
-<a href="#" class="submitA" replace="0" type="acvu"><b>acvu</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" class="submitA" replace="0" type="acvu"><b>acvu</b></a>&nbsp;&nbsp;
 </c:if>
 <c:if test="${sessionScope.root==true}">
-<a href="#" class="submitA" replace="0" type="av5"><b>av5</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" class="submitA" replace="0" type="av5"><b>av5</b></a>&nbsp;&nbsp;
 </c:if>
 <c:if test="${sessionScope.root==true}">
-<a href="#" class="submitA" replace="0" type="av10"><b>av10</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" class="submitA" replace="0" type="av10"><b>av10</b></a>&nbsp;&nbsp;
 </c:if>
 <c:if test="${sessionScope.root==true}">
-<a href="#" class="submitA" replace="0" type="big"><b>big</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" class="submitA" replace="0" type="big"><b>big</b></a>&nbsp;&nbsp;
 </c:if>
 <c:if test="${sessionScope.root==true}">
-<a href="#" class="submitA" replace="0" type="tp"><b>tp</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" class="submitA" replace="0" type="tp"><b>tp</b></a>&nbsp;&nbsp;
 </c:if>
 <c:if test="${sessionScope.root==true}">
-<a href="#" class="submitA" replace="0" type="cb"><b>cb</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#" class="submitA" replace="0" type="cb"><b>cb</b></a>&nbsp;&nbsp;
 </c:if>
 <c:if test="${sessionScope.root==true}">
 <a href="#" class="submitA" replace="0" type="ratio"><b>ratio</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -387,7 +387,8 @@ text-decoration:none;
 		   $("#container").show();
 		   $("#"+currentCat+"Div").show();
 		   $("#"+currentCat+"Div").width(160);
-		   $("#"+currentCat+"Div").height(h);
+		   $("#"+currentCat+"Div").height(h-100);
+		   $("#addDiv").width(160);
 		    
 	 	  // currentNode=tail;//切换 
 	 	   currentNode=$(tail).children().get(0);
