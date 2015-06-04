@@ -208,6 +208,70 @@ text-decoration:none;
    //setWidth('ratio',acvuSize);
    setWidth('cbDiv',cbSize);
    
+   init();
+   
+   function init(){
+	   var cuCat="${currentCat}";
+	   var cuSymbol="${currentSymbol}";
+	   if(cuCat){
+		   currentCat=cuCat;
+		   $(".listClass").hide();
+		   $("#"+currentCat+"Div").show();
+		   $("#addDiv").show();
+		   
+		   $("#"+currentCat+"Div").show();
+		   $("#"+currentCat+"Div").width(160);
+		   $("#"+currentCat+"Div").height(h-100);
+		   $("#addDiv").width(160);
+		   $("#list").width(270);
+	   }
+	   if(cuSymbol){
+		   currentSymbol=cuSymbol;
+		   currentNode= $("#"+currentSymbol).parent();
+		   $("#"+currentSymbol).parent().css("background-color","pink");
+		   $.ajax({
+				type : "get",
+				async : true, //同步执行
+				url : "/kData.do?symbol="+cuSymbol,
+				dataType : "json", //返回数据形式为json
+				success : function(result) {
+					if (result) {
+						base=result;
+						total=base.data.length;
+						if(total>80){
+							start=total-80;
+						}else{
+							start=0;
+						}
+						
+						var copyMap={};
+				    	copyMap.av5 = base.av5.slice(start);
+				    	copyMap.av10 = base.av10.slice(start);
+				    	copyMap.av20 = base.av20.slice(start);
+				    	copyMap.data = base.data.slice(start);
+				    	copyMap.vol = base.vol.slice(start);
+				    	copyMap.start=base.start;
+				    	copyMap.high=base.high;
+				    	copyMap.low=base.low;
+				    	copyMap.end=base.end;
+				    	copyMap.name=base.name;
+				    	copyMap.av5Tips=base.av5Tips;
+				    	copyMap.acvuTips=base.acvuTips;
+				    	copyMap.bigTips=base.bigTips;
+				    	tradeChart(copyMap);
+				    	 $("#container").show();
+				    	//setTimeout('myrefresh()',5000);  
+					}
+				},
+				error : function(errorMsg) {
+				}
+			});
+	   }
+   }
+   
+   
+   
+   
    function setWidth(id,size){
 	   var a=Math.floor(size/30)+1;
 	   $("#"+id).width(a*160);
@@ -331,7 +395,14 @@ text-decoration:none;
    
    $(document).keydown(function(event){ 
 	    event.stopPropagation(); 
+	    event.preventDefault();
+	    if(event.keyCode == 82){
+	    	window.location="operate.do?currentCat="+currentCat+"&currentSymbol="+currentSymbol;
+	    }
 	    
+	    if(event.keyCode == 116){
+	    	window.location="operate.do?currentCat=&currentSymbol=";
+	    }
 	    if(event.keyCode == 33||event.keyCode == 34){
 	    	if(event.keyCode == 33) {
                if(currentCatIndex==1){

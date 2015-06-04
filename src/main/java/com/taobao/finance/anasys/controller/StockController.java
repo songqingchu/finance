@@ -586,8 +586,12 @@ public class StockController {
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/operate.do", method = RequestMethod.GET)
-	public String operate(HttpServletRequest request) {
+	public String operate(HttpServletRequest request,@RequestParam String currentCat,@RequestParam String currentSymbol) {
+		
+		
 		logger.info("request:view public pool");
+		request.setAttribute("currentCat", currentCat);
+		request.setAttribute("currentSymbol", currentSymbol);
 		List<GPublicStock> all=store.publicStock;
 		
 		List<GPublicStock> acvu=new ArrayList<GPublicStock>();
