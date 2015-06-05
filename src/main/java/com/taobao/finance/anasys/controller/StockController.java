@@ -37,7 +37,6 @@ import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
-import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 import com.taobao.finance.service.DataService;
 import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.GTaskService;
