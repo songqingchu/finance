@@ -888,6 +888,22 @@ public class StockController {
 	
 	@RequestMapping(value = "/removeFromPublicPool.do", method = RequestMethod.GET)
 	public String removeFromPublicPool(HttpServletRequest request,HttpServletResponse response, @RequestParam String symbol) throws IOException {
+		String currentCat=request.getParameter("currentCat");
+		String currentSymbol=request.getParameter("currentSymbol");
+		if(StringUtils.isBlank(currentCat)){
+			currentCat="";
+		}
+        if(currentCat.equals("undifined")){
+        	currentCat="";
+		}
+        
+        if(StringUtils.isBlank(currentSymbol)){
+        	currentSymbol="";
+		}
+        if(currentSymbol.equals("undifined")){
+        	currentSymbol="";
+		}
+        
 		logger.info("request:remove from public pool");
         GPublicStock ps=this.gPublicStockService.findRecordByProperty("symbol", symbol);
         if(ps!=null){
@@ -897,20 +913,21 @@ public class StockController {
         	this.store.removeFromPublic(symbol);
         	this.store.reloadPublicStock();
         }
-        response.sendRedirect(request.getContextPath() + "/publicPool.do?currentCat=&currentSymbol=");  
+        response.sendRedirect(request.getContextPath() + "/operate.do?currentCat="+currentCat+"&currentSymbol="+currentSymbol); 
 		return null;
 	}
 	
 	@RequestMapping(value = "/delFromPublicPool.do", method = RequestMethod.GET)
-	public String delFromPublicPool(HttpServletRequest request,HttpServletResponse response, @RequestParam String symbol) throws IOException {
+	@ResponseBody
+	public Map<String, Object> delFromPublicPool(HttpServletRequest request,HttpServletResponse response, @RequestParam String symbol) throws IOException {
+		Map<String,Object> m=new HashMap<String,Object>();	
 		logger.info("request:remove from public pool");
         GPublicStock ps=this.gPublicStockService.queryStockInPool(symbol);
         if(ps!=null){
         	this.gPublicStockService.delete(ps);
         	this.store.reloadPublicStock();
         }
-        response.sendRedirect(request.getContextPath() + "/operate.do?currentCat=&currentSymbol="); 
-		return null;
+		return m;
 	}
 	
 	

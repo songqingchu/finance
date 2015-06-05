@@ -9,6 +9,7 @@
 <script src="/resources/js/jquery.min.js" type="text/javascript"></script>
 <script src="/resources/js/highstock.js"></script>
 <script src="/resources/js/chartExt.js"></script>
+<script src="/resources/js/layer/layer.js"></script>
 
 <style type="text/css">
 .choose .symbolA{
@@ -36,8 +37,8 @@ text-decoration:none;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a> 
+     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate delA">删</a>
+     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate removeA">移</a> 
      </c:if>
      </span>
 
@@ -53,8 +54,8 @@ text-decoration:none;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a>  
+     <a href="#" class="operate delA">删</a>
+     <a href="#" class="operate removeA">移</a>  
      </c:if>
      </span>
 
@@ -70,8 +71,8 @@ text-decoration:none;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a> 
+     <a href="#" class="operate delA">删</a>
+     <a href="#" class="operate removeA">移</a>  
      </c:if>
      </span>
 
@@ -87,8 +88,8 @@ text-decoration:none;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a> 
+     <a href="#" class="operate delA">删</a>
+     <a href="#" class="operate removeA">移</a>  
      </c:if>
      </span>
 
@@ -104,8 +105,8 @@ text-decoration:none;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a>   
+     <a href="#" class="operate delA">删</a>
+     <a href="#" class="operate removeA">移</a>     
      </c:if>
      </span>
 
@@ -122,8 +123,8 @@ text-decoration:none;
      </a>
      
      <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate">删</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate">移</a>  
+     <a href="#" class="operate delA">删</a>
+     <a href="#" class="operate removeA">移</a>   
      </c:if>
      </span>
 
@@ -209,6 +210,15 @@ text-decoration:none;
    setWidth('cbDiv',cbSize);
    
    init();
+   
+   //loading 图标
+   function loadLayer(){
+	    layer.load(1, {
+		    type:3,
+		    area: ['355px', '127px'],
+		    shade: [0.1,'#000']//0.1透明度的白色背景
+	    });
+   };
    
    function init(){
 	   var cuCat="${currentCat}";
@@ -317,6 +327,8 @@ text-decoration:none;
 	   location.reload();
    });
    
+   
+   
    $(".submitA").on("click",function(){
 	   //var symbols=$("#symbolText").val().split("\n");
 	   var symbols=$("#symbolText").val();
@@ -342,23 +354,71 @@ text-decoration:none;
    });
    
    
-   $(".symbolA").on("click",function(){
-	   $("#container").show();
-	   var symbol=$(this).attr("symbol");
-	   currentSymbol=symbol;
-	   currentNode=$(this).parent();
-	   $(".symbolA").css("background-color","");
-	   $(this).parent().css("background-color","pink");
+  
+   
+   $(".removeA").on("click",function(){
+	   //var symbols=$("#symbolText").val().split("\n");
+	   var symbols=$("#symbolText").val();
+	   var replace=$(this).attr("replace");
 	   
-	   $(".listClass").hide();
-	   $("#"+currentCat+"Div").show();
-	   $("#addDiv").show();
-	   $(this).parent().parent().show();
-	   $("#list").width(270);
+	  // var symbol=$(currentNode).attr("symbol");
+   	   var type=$(this).attr("type");
 	   $.ajax({
 			type : "get",
 			async : true, //同步执行
-			url : "/kData.do?symbol="+symbol,
+			//"/addPublicPool.do?replace=false&symbols="+symbol+"-"+type,
+			url : "/addPublicPool.do?symbols="+symbols+"-"+type+"&replace=false",
+			
+			dataType : "json", //返回数据形式为json
+			success : function(result) {
+				if (result) {
+					location.reload();
+					$("#symbolText").val("");
+				}
+			},
+			error : function(errorMsg) {
+			}
+		});
+   });
+   
+   
+   $(".delA").on("click",function(){
+       var nodeNow=null;
+       var prevNode=currentNode;
+       if($(currentNode).hasClass("tail")){
+           	nodeNow=head;
+       }else{
+       		nodeNow=$(currentNode).next();
+       }
+
+       var symbol=$(nodeNow).attr("symbol");
+       var prevSymbol=$(currentNode).attr("symbol");
+	   currentSymbol=symbol;
+	   currentNode=$(nodeNow);
+
+	   $(".symbolA").css("background-color","");
+	   $(currentNode).css("background-color","pink");
+	   
+	   $.ajax({
+			type : "get",
+			async : false, //同步执行
+			url : "/delFromPublicPool.do?symbol="+prevSymbol,
+			beforeSend: function(){
+				loadLayer();	
+			},
+			dataType : "json", //返回数据形式为json
+			success : function(result) {
+				layer.closeAll();
+				$(prevNode).remove();
+			},
+			error : function(errorMsg) {
+			}
+		});
+	   
+	   $.ajax({
+			type : "get",
+			async : true, //同步执行
+			url : "/kData.do?symbol="+currentSymbol,
 			dataType : "json", //返回数据形式为json
 			success : function(result) {
 				if (result) {
@@ -391,7 +451,7 @@ text-decoration:none;
 			},
 			error : function(errorMsg) {
 			}
-		});
+		}); 
 	   
    });
    
