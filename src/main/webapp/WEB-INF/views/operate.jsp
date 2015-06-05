@@ -458,6 +458,78 @@ text-decoration:none;
    $(document).keydown(function(event){ 
 	    event.stopPropagation(); 
 	    event.preventDefault();
+	    
+	    if(event.keyCode == 46){
+	    	var nodeNow=null;
+	        var prevNode=currentNode;
+	        if($(currentNode).hasClass("tail")){
+	            	nodeNow=head;
+	        }else{
+	        		nodeNow=$(currentNode).next();
+	        }
+
+	        var symbol=$(nodeNow).attr("symbol");
+	        var prevSymbol=$(currentNode).attr("symbol");
+	 	   currentSymbol=symbol;
+	 	   currentNode=$(nodeNow);
+
+	 	   $(".symbolA").css("background-color","");
+	 	   $(currentNode).css("background-color","pink");
+	 	   
+	 	   $.ajax({
+	 			type : "get",
+	 			async : false, //同步执行
+	 			url : "/delFromPublicPool.do?symbol="+prevSymbol,
+	 			beforeSend: function(){
+	 				loadLayer();	
+	 			},
+	 			dataType : "json", //返回数据形式为json
+	 			success : function(result) {
+	 				layer.closeAll();
+	 				$(prevNode).remove();
+	 			},
+	 			error : function(errorMsg) {
+	 			}
+	 		});
+	 	   
+	 	   $.ajax({
+	 			type : "get",
+	 			async : true, //同步执行
+	 			url : "/kData.do?symbol="+currentSymbol,
+	 			dataType : "json", //返回数据形式为json
+	 			success : function(result) {
+	 				if (result) {
+	 					base=result;
+	 					total=base.data.length;
+	 					if(total>80){
+	 						start=total-80;
+	 					}else{
+	 						start=0;
+	 					}
+	 					
+	 					var copyMap={};
+	 			    	copyMap.av5 = base.av5.slice(start);
+	 			    	copyMap.av10 = base.av10.slice(start);
+	 			    	copyMap.av20 = base.av20.slice(start);
+	 			    	copyMap.data = base.data.slice(start);
+	 			    	copyMap.vol = base.vol.slice(start);
+	 			    	copyMap.start=base.start;
+	 			    	copyMap.high=base.high;
+	 			    	copyMap.low=base.low;
+	 			    	copyMap.end=base.end;
+	 			    	copyMap.name=base.name;
+	 			    	copyMap.av5Tips=base.av5Tips;
+	 			    	copyMap.acvuTips=base.acvuTips;
+	 			    	copyMap.bigTips=base.bigTips;
+	 			    	tradeChart(copyMap);
+	 			    	
+	 			    	//setTimeout('myrefresh()',5000);  
+	 				}
+	 			},
+	 			error : function(errorMsg) {
+	 			}
+	 		}); 
+	    }
 	    if(event.keyCode == 82){
 	    	window.location="operate.do?currentCat="+currentCat+"&currentSymbol="+currentSymbol;
 	    }
