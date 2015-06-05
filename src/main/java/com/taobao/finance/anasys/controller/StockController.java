@@ -798,7 +798,7 @@ public class StockController {
 		}
 		if(bigs.size()>0){
 			Collections.sort(bigs,new Comparator.RateDescComparator());
-			Collections.reverse(acvus);
+			Collections.reverse(bigs);
 
 		}
 		if(ratios.size()>0){
