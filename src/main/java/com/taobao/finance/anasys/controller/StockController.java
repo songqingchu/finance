@@ -321,7 +321,7 @@ public class StockController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(HttpServletRequest request,HttpServletResponse response) throws IOException {
-		response.sendRedirect(request.getContextPath() + "/publicPool.do");  
+		response.sendRedirect(request.getContextPath() + "/publicPool.do?currentCat=&currentSymbol="); 
 		return null;
 	}
 	
@@ -897,7 +897,7 @@ public class StockController {
         	this.store.removeFromPublic(symbol);
         	this.store.reloadPublicStock();
         }
-        response.sendRedirect(request.getContextPath() + "/publicPool.do");  
+        response.sendRedirect(request.getContextPath() + "/publicPool.do?currentCat=&currentSymbol=");  
 		return null;
 	}
 	
@@ -909,7 +909,7 @@ public class StockController {
         	this.gPublicStockService.delete(ps);
         	this.store.reloadPublicStock();
         }
-        response.sendRedirect(request.getContextPath() + "/operate.do");  
+        response.sendRedirect(request.getContextPath() + "/operate.do?currentCat=&currentSymbol="); 
 		return null;
 	}
 	
@@ -1471,7 +1471,7 @@ public class StockController {
 	@RequestMapping(value = "/setType.do", method = RequestMethod.GET)
 	public String setType(HttpServletRequest request,HttpServletResponse response,@RequestParam String symbol,@RequestParam String type) throws IOException, ParseException {
 		this.gPublicStockService.setType(symbol, type);
-		response.sendRedirect(request.getContextPath() + "/publicPool.do");  
+		response.sendRedirect(request.getContextPath() + "/publicPool.do?currentCat=&currentSymbol="); 
 		return null;
 	}
 	
