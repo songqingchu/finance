@@ -585,9 +585,10 @@ public class StockController {
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/operate.do", method = RequestMethod.GET)
-	public String operate(HttpServletRequest request,@RequestParam String currentCat,@RequestParam String currentSymbol) {
+	public String operate(HttpServletRequest request) {
 		
-		
+		String currentCat=request.getParameter("currentCat");
+		String currentSymbol=request.getParameter("currentSymbol");
 		logger.info("request:view public pool");
 		request.setAttribute("currentCat", currentCat);
 		request.setAttribute("currentSymbol", currentSymbol);
