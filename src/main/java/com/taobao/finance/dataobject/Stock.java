@@ -718,6 +718,18 @@ public class Stock implements Comparable<Stock> {
 	}
 	
 	public String getNameFormat() {
+		String symbol=this.getSymbol();
+		if(StringUtils.isNotBlank(symbol)){
+			if(symbol.startsWith("sh")){
+				name="沪"+name;
+			}else if(symbol.startsWith("sz002")){
+				name="中"+name;
+			}else if(symbol.startsWith("sz300")){
+				name="创"+name;
+			}else{
+				name="深"+name;
+			}
+		}
 		if(name==null){
 			return "请检查";
 		}

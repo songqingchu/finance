@@ -671,6 +671,9 @@ public class StockController {
 			if(st!=null){
 				if(s.getConcern()!=null){
 					if(s.getConcern()==1){
+						st.setName("<b>"+st.getName()+"</b>");
+					}
+					if(s.getConcern()==2){
 						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
 					}
 				}
@@ -682,6 +685,9 @@ public class StockController {
 			if(st!=null){
 				if(s.getConcern()!=null){
 					if(s.getConcern()==1){
+						st.setName("<b>"+st.getName()+"</b>");
+					}
+					if(s.getConcern()==2){
 						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
 					}
 				}
@@ -693,6 +699,9 @@ public class StockController {
 			if(st!=null){
 				if(s.getConcern()!=null){
 					if(s.getConcern()==1){
+						st.setName("<b>"+st.getName()+"</b>");
+					}
+					if(s.getConcern()==2){
 						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
 					}
 				}
@@ -704,6 +713,9 @@ public class StockController {
 			if(st!=null){
 				if(s.getConcern()!=null){
 					if(s.getConcern()==1){
+						st.setName("<b>"+st.getName()+"</b>");
+					}
+					if(s.getConcern()==2){
 						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
 					}
 				}
@@ -715,6 +727,9 @@ public class StockController {
 			if(st!=null){
 				if(s.getConcern()!=null){
 					if(s.getConcern()==1){
+						st.setName("<b>"+st.getName()+"</b>");
+					}
+					if(s.getConcern()==2){
 						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
 					}
 				}
@@ -726,6 +741,9 @@ public class StockController {
 			if(st!=null){
 				if(s.getConcern()!=null){
 					if(s.getConcern()==1){
+						st.setName("<b>"+st.getName()+"</b>");
+					}
+					if(s.getConcern()==2){
 						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
 					}
 				}
@@ -737,6 +755,9 @@ public class StockController {
 			if(st!=null){
 				if(s.getConcern()!=null){
 					if(s.getConcern()==1){
+						st.setName("<b>"+st.getName()+"</b>");
+					}
+					if(s.getConcern()==2){
 						st.setName("<font color=red><b>"+st.getName()+"</b></font>");
 					}
 				}
@@ -769,11 +790,11 @@ public class StockController {
 		}
 		if(av5s.size()>0){
 			Collections.sort(av5s,new Comparator.RateDescComparator());
-			Collections.reverse(acvus);
+			Collections.reverse(av5s);
 		}
 		if(av10s.size()>0){
 			Collections.sort(av10s,new Comparator.RateDescComparator());
-			Collections.reverse(acvus);
+			Collections.reverse(av10s);
 		}
 		if(bigs.size()>0){
 			Collections.sort(bigs,new Comparator.RateDescComparator());
@@ -782,16 +803,17 @@ public class StockController {
 		}
 		if(ratios.size()>0){
 			Collections.sort(ratios,new Comparator.RateDescComparator());
-			Collections.reverse(acvus);
+			Collections.reverse(ratios);
 
 		}
 		if(tps.size()>0){
 			Collections.sort(tps,new Comparator.RateDescComparator());
-			Collections.reverse(acvus);
+			Collections.reverse(tps);
 
 		}
 		if(cbs.size()>0){
 			Collections.sort(cbs,new Comparator.RateDescComparator());
+			Collections.reverse(cbs);
 		}
 		
 		
@@ -903,10 +925,12 @@ public class StockController {
 				if(st.getConcern()==null){
 					st.setConcern((byte)1);
 				}else{
-					if(st.getConcern()==1){
-						st.setConcern((byte)0);
-					}else{
+					if(st.getConcern()==0){
 						st.setConcern((byte)1);
+					}else if(st.getConcern()==1){
+						st.setConcern((byte)2);
+					}else if(st.getConcern()==2){
+						st.setConcern((byte)0);
 					}
 				}
 				this.gPublicStockService.update(st);

@@ -26,7 +26,7 @@ text-decoration:none;
 
    
 <div style="width:100%;float:left;" id="list">
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="listDiv" class="listClass"  id="acvuDiv">
+<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="listDiv" class="listClass"  id="acvuDiv">
 <b>ACVU</b><br><br>
 
 <c:forEach var="s" items="${acvu}">  
@@ -44,7 +44,7 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="av5" class="listClass"  id="av5Div">
+<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="av5" class="listClass"  id="av5Div">
 <b>AV5</b><br><br>
 <c:forEach var="s" items="${av5}">  
      <span  class="av5Symbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
@@ -61,7 +61,7 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="av10" class="listClass"  id="av10Div">
+<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="av10" class="listClass"  id="av10Div">
 <b>AV10</b><br><br>
 <c:forEach var="s" items="${av10}">  
      <span  class="av10Symbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
@@ -78,7 +78,7 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="tp" class="listClass"  id="bigDiv">
+<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="tp" class="listClass"  id="bigDiv">
 <b>BIG</b><br><br>
 <c:forEach var="s" items="${big}">  
      <span  class="bigSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
@@ -95,7 +95,7 @@ text-decoration:none;
 </c:forEach>
 </div>
 
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="cb" class="listClass"  id="tpDiv">
+<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="cb" class="listClass"  id="tpDiv">
 <b>TP</b><br><br>
 <c:forEach var="s" items="${tp}">  
      <span  class="tpSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
@@ -113,7 +113,7 @@ text-decoration:none;
 </div>
 
 
-<div style="width:160px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="cb" class="listClass"  id="cbDiv">
+<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none" div="cb" class="listClass"  id="cbDiv">
 <b>CB</b><br><br>
 <c:forEach var="s" items="${cb}">  
      <span  class="cbSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}" >
@@ -220,7 +220,7 @@ text-decoration:none;
 		   $("#addDiv").show();
 		   
 		   $("#"+currentCat+"Div").show();
-		   $("#"+currentCat+"Div").width(160);
+		   $("#"+currentCat+"Div").width(180);
 		   $("#"+currentCat+"Div").height(h-100);
 		   $("#addDiv").width(160);
 		   $("#list").width(270);
@@ -276,7 +276,7 @@ text-decoration:none;
    
    function setWidth(id,size){
 	   var a=Math.floor(size/30)+1;
-	   $("#"+id).width(a*160);
+	   $("#"+id).width(a*180);
    }
    
    function getParam(name)
@@ -453,13 +453,13 @@ text-decoration:none;
 	 	   $(".choose").css("background-color","");
 	 	   $("#"+currentCat+"Symbol").css("background-color","red");
 	 	   $(".symbol").css("display","none");
-	 	   $("."+currentCat+"Symbol").attr("style","display:block;width:160px;float:left;");
+	 	   $("."+currentCat+"Symbol").attr("style","display:block;width:180px;float:left;");
 	 	  
 	 	   $(".listClass").hide();
 	 	   $("#addDiv").show();
 		   $("#container").show();
 		   $("#"+currentCat+"Div").show();
-		   $("#"+currentCat+"Div").width(160);
+		   $("#"+currentCat+"Div").width(180);
 		   $("#"+currentCat+"Div").height(h-100);
 		   $("#addDiv").width(160);
 		    
