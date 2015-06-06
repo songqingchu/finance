@@ -603,7 +603,7 @@ var highStockChart = function(divID,result,crrentData,all){
 	                data: all.acvuTips,
 	                onSeries: 'candlestick',
 	                shape: 'squarepin',
-	                y:-100,
+	                y:-150,
 	                style:{
 	 	        	   fontSize: '11px',
 	 	               fontWeight: 'normal',
@@ -620,7 +620,7 @@ var highStockChart = function(divID,result,crrentData,all){
             data:  all.av5Tips,
             onSeries: 'candlestick',
             shape: 'squarepin',
-            y:50,
+            y:100,
             style:{
 	        	   fontSize: '11px',
 	               fontWeight: 'normal',
@@ -637,7 +637,7 @@ var highStockChart = function(divID,result,crrentData,all){
             data:  all.bigTips,
             onSeries: 'candlestick',
             shape: 'squarepin',
-            y:100,
+            y:150,
             style:{
 	        	   fontSize: '11px',
 	               fontWeight: 'normal',
