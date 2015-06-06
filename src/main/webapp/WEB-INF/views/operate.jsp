@@ -32,8 +32,8 @@ text-decoration:none;
 
 <c:forEach var="s" items="${acvu}">  
      <span  class="acvuSymbol symbol  ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
-     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-       ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="acvu" name="${s.name}" category="${s.category}" rate="${s.ratePercentHighLight}">
+       ${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -49,8 +49,8 @@ text-decoration:none;
 <b>AV5</b><br><br>
 <c:forEach var="s" items="${av5}">  
      <span  class="av5Symbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
-     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="av5" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
+        ${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -66,8 +66,8 @@ text-decoration:none;
 <b>AV10</b><br><br>
 <c:forEach var="s" items="${av10}">  
      <span  class="av10Symbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
-     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="av10" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
+        ${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -83,8 +83,8 @@ text-decoration:none;
 <b>BIG</b><br><br>
 <c:forEach var="s" items="${big}">  
      <span  class="bigSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
-     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="big" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
+        ${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -100,8 +100,8 @@ text-decoration:none;
 <b>TP</b><br><br>
 <c:forEach var="s" items="${tp}">  
      <span  class="tpSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}">
-     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="tp" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
+        ${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -118,8 +118,8 @@ text-decoration:none;
 <b>CB</b><br><br>
 <c:forEach var="s" items="${cb}">  
      <span  class="cbSymbol symbol ${s.getPosition()}" style="width:160px;float:left;"  symbol="${s.getSymbol()}" >
-     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
-        ${s.nameFormat}&nbsp;${s.ratePercentHighLight}
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}" cat="cb" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
+        ${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
      <c:if test="${sessionScope.root==true}">
@@ -239,49 +239,25 @@ text-decoration:none;
 	   }
 	   if(cuSymbol){
 		   currentSymbol=cuSymbol;
-		   currentNode= $("#"+currentSymbol).parent();
-		   $("#"+currentSymbol).parent().css("background-color","pink");
-		   $.ajax({
-				type : "get",
-				async : true, //同步执行
-				url : "/kData.do?symbol="+cuSymbol,
-				dataType : "json", //返回数据形式为json
-				success : function(result) {
-					if (result) {
-						base=result;
-						total=base.data.length;
-						if(total>80){
-							start=total-80;
-						}else{
-							start=0;
-						}
-						
-						var copyMap={};
-				    	copyMap.av5 = base.av5.slice(start);
-				    	copyMap.av10 = base.av10.slice(start);
-				    	copyMap.av20 = base.av20.slice(start);
-				    	copyMap.data = base.data.slice(start);
-				    	copyMap.vol = base.vol.slice(start);
-				    	copyMap.start=base.start;
-				    	copyMap.high=base.high;
-				    	copyMap.low=base.low;
-				    	copyMap.end=base.end;
-				    	copyMap.name=base.name;
-				    	copyMap.av5Tips=base.av5Tips;
-				    	copyMap.acvuTips=base.acvuTips;
-				    	copyMap.bigTips=base.bigTips;
-				    	tradeChart(copyMap);
-				    	 $("#container").show();
-				    	//setTimeout('myrefresh()',5000);  
-					}
-				},
-				error : function(errorMsg) {
-				}
-			});
+		   currentNode= $("#"+currentSymbol).parent();  
+		   getDataAndShow(currentSymbol);
 	   }
    }
    
    
+   $(".symbolA").on("click",function(){
+	   currentNode=$(this).parent();
+	   var symbol=$(this).attr("symbol");
+	   currentSymbol=symbol;
+	   $(".listClass").hide();
+	   currentCat=$(this).attr("cat");
+	   $("#"+currentCat+"Div").show();
+	   $("#"+currentCat+"Div").width(180);
+	   $("#"+currentCat+"Div").height(h-100);
+	   $("#addDiv").width(160);
+	   
+	   getDataAndShow(currentSymbol);
+   });
    
    
    function setWidth(id,size){
@@ -310,17 +286,9 @@ text-decoration:none;
 	   window.location.reload();
    }
    
-  /*  if(realTime==1){
-	   //setTimeout('myrefresh()',interval);  
-	   $(".operate").hide();
-	   //$(".listClass").width(160);
-	   $("#addDiv").show();
-	   
-   }else{ */
-	   $(".operate").show();
-	  // $(".listClass").width(160);
-	   $("#addDiv").show();
-   //}
+   $(".operate").show();
+   $("#addDiv").show();
+   
    
    
    $("#refreshA").on("click",function(){
@@ -355,7 +323,7 @@ text-decoration:none;
    
    
   
-   
+   //从公众池中移除
    $(".removeA").on("click",function(){
 	   //var symbols=$("#symbolText").val().split("\n");
 	   var symbols=$("#symbolText").val();
@@ -382,6 +350,7 @@ text-decoration:none;
    });
    
    
+   //删除股票
    $(".delA").on("click",function(){
        var nodeNow=null;
        var prevNode=currentNode;
@@ -415,50 +384,89 @@ text-decoration:none;
 			}
 		});
 	   
-	   $.ajax({
-			type : "get",
-			async : true, //同步执行
-			url : "/kData.do?symbol="+currentSymbol,
-			dataType : "json", //返回数据形式为json
-			success : function(result) {
-				if (result) {
-					base=result;
-					total=base.data.length;
-					if(total>80){
-						start=total-80;
-					}else{
-						start=0;
-					}
-					
-					var copyMap={};
-			    	copyMap.av5 = base.av5.slice(start);
-			    	copyMap.av10 = base.av10.slice(start);
-			    	copyMap.av20 = base.av20.slice(start);
-			    	copyMap.data = base.data.slice(start);
-			    	copyMap.vol = base.vol.slice(start);
-			    	copyMap.start=base.start;
-			    	copyMap.high=base.high;
-			    	copyMap.low=base.low;
-			    	copyMap.end=base.end;
-			    	copyMap.name=base.name;
-			    	copyMap.av5Tips=base.av5Tips;
-			    	copyMap.acvuTips=base.acvuTips;
-			    	copyMap.bigTips=base.bigTips;
-			    	tradeChart(copyMap);
-			    	
-			    	//setTimeout('myrefresh()',5000);  
-				}
-			},
-			error : function(errorMsg) {
-			}
-		}); 
-	   
+	   getDataAndShow(currentSymbol);
    });
+   
+   
    
    $(document).keydown(function(event){ 
 	    event.stopPropagation(); 
 	    event.preventDefault();
 	    
+	    //普通
+	    if(event.keyCode == 188){
+	    	$.ajax({
+				type : "get",
+				async : true,
+				url : "/setConcern.do?symbol="+currentSymbol+"&value=0",
+				dataType : "json", 
+				beforeSend: function(){
+	 				loadLayer();	
+	 			},
+				success : function(result) {
+					if (result) {
+						layer.closeAll();
+						var category=$("#"+currentSymbol).attr("category");
+	 					var name=$("#"+currentSymbol).attr("name");
+						var rate=$("#"+currentSymbol).attr("rate");
+						name=category+name;
+						$("#"+currentSymbol).html(name+"&nbsp;"+rate);
+					}
+				},
+				error : function(errorMsg) {
+				}
+			}); 
+	    }
+	    //关注
+        if(event.keyCode == 190){
+        	$.ajax({
+				type : "get",
+				async : true,
+				url : "/setConcern.do?symbol="+currentSymbol+"&value=1",
+				dataType : "json", 
+				beforeSend: function(){
+	 				loadLayer();	
+	 			},
+				success : function(result) {
+					if (result) {
+						layer.closeAll();
+						var category=$("#"+currentSymbol).attr("category");
+	 					var name=$("#"+currentSymbol).attr("name");
+						var rate=$("#"+currentSymbol).attr("rate");
+						name=category+"<b>"+name+"</b>";
+						$("#"+currentSymbol).html(name+"&nbsp;"+rate);
+					}
+				},
+				error : function(errorMsg) {
+				}
+			}); 
+	    }
+	    //超级关注
+        if(event.keyCode == 191){
+        	$.ajax({
+				type : "get",
+				async : true,
+				url : "/setConcern.do?symbol="+currentSymbol+"&value=2",
+				dataType : "json",
+				beforeSend: function(){
+	 				loadLayer();	
+	 			},
+				success : function(result) {
+					if (result) {
+	 					layer.closeAll();
+	 					var category=$("#"+currentSymbol).attr("category");
+	 					var name=$("#"+currentSymbol).attr("name");
+						var rate=$("#"+currentSymbol).attr("rate");
+						name=category+"<font color=red><b>"+name+"</b></font>";
+						$("#"+currentSymbol).html(name+"&nbsp;"+rate);
+	 				}
+				},
+				error : function(errorMsg) {
+				}
+			}); 
+        }
+	    
+	    //删除股票
 	    if(event.keyCode == 46){
 	    	var nodeNow=null;
 	        var prevNode=currentNode;
@@ -490,53 +498,22 @@ text-decoration:none;
 	 			},
 	 			error : function(errorMsg) {
 	 			}
-	 		});
-	 	   
-	 	   $.ajax({
-	 			type : "get",
-	 			async : true, //同步执行
-	 			url : "/kData.do?symbol="+currentSymbol,
-	 			dataType : "json", //返回数据形式为json
-	 			success : function(result) {
-	 				if (result) {
-	 					base=result;
-	 					total=base.data.length;
-	 					if(total>80){
-	 						start=total-80;
-	 					}else{
-	 						start=0;
-	 					}
-	 					
-	 					var copyMap={};
-	 			    	copyMap.av5 = base.av5.slice(start);
-	 			    	copyMap.av10 = base.av10.slice(start);
-	 			    	copyMap.av20 = base.av20.slice(start);
-	 			    	copyMap.data = base.data.slice(start);
-	 			    	copyMap.vol = base.vol.slice(start);
-	 			    	copyMap.start=base.start;
-	 			    	copyMap.high=base.high;
-	 			    	copyMap.low=base.low;
-	 			    	copyMap.end=base.end;
-	 			    	copyMap.name=base.name;
-	 			    	copyMap.av5Tips=base.av5Tips;
-	 			    	copyMap.acvuTips=base.acvuTips;
-	 			    	copyMap.bigTips=base.bigTips;
-	 			    	tradeChart(copyMap);
-	 			    	
-	 			    	//setTimeout('myrefresh()',5000);  
-	 				}
-	 			},
-	 			error : function(errorMsg) {
-	 			}
-	 		}); 
+	 		});   
+	 	   getDataAndShow(currentSymbol);
 	    }
+	    
+	    //刷新实时行情，像是当前股票
 	    if(event.keyCode == 82){
 	    	window.location="operate.do?currentCat="+currentCat+"&currentSymbol="+currentSymbol;
 	    }
 	    
+	    //回到页面，刷新行情
 	    if(event.keyCode == 116){
 	    	window.location="operate.do?currentCat=&currentSymbol=";
 	    }
+	    
+	    
+	    //切换分类
 	    if(event.keyCode == 33||event.keyCode == 34){
 	    	if(event.keyCode == 33) {
                if(currentCatIndex==1){
@@ -595,11 +572,11 @@ text-decoration:none;
 		   $("#"+currentCat+"Div").height(h-100);
 		   $("#addDiv").width(160);
 		    
-	 	  // currentNode=tail;//切换 
 	 	   currentNode=$(tail).children().get(0);
 	    }
 	    
 	    
+	    //缩放K线图
 	    if(event.keyCode == 38||event.keyCode == 40){
 	    	if(event.keyCode == 38) {
 		    	start=start+40;
@@ -624,6 +601,9 @@ text-decoration:none;
 	    	copyMap.bigTips=base.bigTips;
 	    	tradeChart(copyMap);
 	    }
+	    
+	    
+	    //前后键，上一条，下一条
 	    if(event.keyCode == 37||event.keyCode == 39){
 	    	var children=$(currentNode).parent().prev().children();
 	    	var nodeNow=null;
@@ -631,9 +611,6 @@ text-decoration:none;
 	        	if($(currentNode).hasClass("head")){
 	        		nodeNow=tail;
 	        	}else{
-	        		//children=$(currentNode).parent().prev().children();
-	        		//nodeNow=children.get(0);
-	        		
 	        		nodeNow=$(currentNode).prev();
 	        	}
 		    }
@@ -641,65 +618,68 @@ text-decoration:none;
                 if($(currentNode).hasClass("tail")){
                 	nodeNow=head;
 	        	}else{
-	    		    //children=$(currentNode).parent().next().children();
-	    		    //nodeNow=children.get(0);
 	        		nodeNow=$(currentNode).next();
 	        	}
 		    } 
-	    	
-	  	   
-	  	   
+
 	    	var symbol=$(nodeNow).attr("symbol");
 		    currentSymbol=symbol;
-		    //currentNode=$(nodeNow).children().get(0);
 		    currentNode=$(nodeNow);
-	  	   $(".symbolA").parent().css("background-color","");
-	  	   $(nodeNow).css("background-color","pink");
+	  	    $(".symbolA").parent().css("background-color","");
+	  	    $(nodeNow).css("background-color","pink");
 	  	 
-	  	   $.ajax({
-	  			type : "get",
-	  			async : true, //同步执行
-	  			url : "/kData.do?symbol="+symbol,
-	  			dataType : "json", //返回数据形式为json
-	  			success : function(result) {
-	  				if (result) {
-	  					base=result;
-	  					total=base.data.length;
-	  					if(total>80){
-	  						start=total-80;
-	  					}else{
-	  						start=0;
-	  					}
-	  					
-	  					var copyMap={};
-	  			    	copyMap.av5 = base.av5.slice(start);
-	  			    	copyMap.av10 = base.av10.slice(start);
-	  			    	copyMap.av20 = base.av20.slice(start);
-	  			    	copyMap.data = base.data.slice(start);
-	  			    	copyMap.vol = base.vol.slice(start);
-	  			    	copyMap.start=base.start;
-	  			    	copyMap.high=base.high;
-	  			    	copyMap.low=base.low;
-	  			    	copyMap.end=base.end;
-	  			    	copyMap.name=base.name;
-	  			    	copyMap.av5Tips=base.av5Tips;
-	  			    	copyMap.acvuTips=base.acvuTips;
-	  			    	copyMap.bigTips=base.bigTips;
-	  			    	$("#list").width(270);
-	  			    	$(".listClass").hide();
-	  				    $(currentNode).parent().parent().show();
-	  				    $("#container").show();
-	  			 	    $("#addDiv").show();
-	  			 	    $("#"+currentCat+"Div").show();
-	  			    	tradeChart(copyMap);
-	  				}
-	  			},
-	  			error : function(errorMsg) {
-	  			}
-	  		});
+	  	    getDataAndShow(currentSymbol);
 	    }
    });  
    
+   
+   
+   
+   function getDataAndShow(symbol){
+	   $.ajax({
+ 			type : "get",
+ 			async : true, //同步执行
+ 			url : "/kData.do?symbol="+symbol,
+ 			dataType : "json", //返回数据形式为json
+ 			success : function(result) {
+ 				if (result) {
+ 					base=result;
+ 					total=base.data.length;
+ 					if(total>80){
+ 						start=total-80;
+ 					}else{
+ 						start=0;
+ 					}
+ 					
+ 					var copyMap={};
+ 			    	copyMap.av5 = base.av5.slice(start);
+ 			    	copyMap.av10 = base.av10.slice(start);
+ 			    	copyMap.av20 = base.av20.slice(start);
+ 			    	copyMap.data = base.data.slice(start);
+ 			    	copyMap.vol = base.vol.slice(start);
+ 			    	copyMap.start=base.start;
+ 			    	copyMap.high=base.high;
+ 			    	copyMap.low=base.low;
+ 			    	copyMap.end=base.end;
+ 			    	copyMap.name=base.name;
+ 			    	copyMap.av5Tips=base.av5Tips;
+ 			    	copyMap.acvuTips=base.acvuTips;
+ 			    	copyMap.bigTips=base.bigTips;
+ 			    	
+ 			    	$("#list").width(270);
+ 			    	$(".listClass").hide();
+ 				    $(currentNode).parent().show();
+ 				    $("#container").show();
+ 			 	    $("#addDiv").show();
+ 			    	tradeChart(copyMap);
+ 			    	$(".symbol").css("background-color","");
+ 			    	$(currentNode).css("background-color","pink");
+ 				}
+ 			},
+ 			error : function(errorMsg) {
+ 			}
+ 		});
+   }
    
    function tradeChart(all) {
 		var crrentData = [];

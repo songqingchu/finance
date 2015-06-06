@@ -11,6 +11,21 @@ import com.taobao.finance.util.FetchUtil;
 
 public class Stock implements Comparable<Stock> {
 	private Float vrate;
+	private String category;
+	private Byte concern=0;
+	private String htName;
+	public String getHtName() {
+		return htName;
+	}
+	public void setHtName(String htName) {
+		this.htName = htName;
+	}
+	public Byte getConcern() {
+		return concern;
+	}
+	public void setConcern(Byte concern) {
+		this.concern = concern;
+	}
 	public Float getVrate() {
 		return vrate;
 	}
@@ -714,7 +729,35 @@ public class Stock implements Comparable<Stock> {
 	}
 
 	public String getName() {
+		/*String symbol=this.getSymbol();
+		if(StringUtils.isNotBlank(symbol)){
+			if(symbol.startsWith("sh")){
+				name="沪"+name;
+			}else if(symbol.startsWith("sz002")){
+				name="中"+name;
+			}else if(symbol.startsWith("sz300")){
+				name="创"+name;
+			}else{
+				name="深"+name;
+			}
+		}*/
 		return name;
+	}
+	
+	public String getCategory() {
+		String clazz="";
+		if(StringUtils.isNotBlank(symbol)){
+			if(symbol.startsWith("sh")){
+				clazz="沪";
+			}else if(symbol.startsWith("sz002")){
+				clazz="中";
+			}else if(symbol.startsWith("sz300")){
+				clazz="创";
+			}else{
+				clazz="深";
+			}
+		}
+		return clazz;
 	}
 	
 	public String getNameFormat() {
