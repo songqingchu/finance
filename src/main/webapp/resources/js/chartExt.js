@@ -310,8 +310,10 @@ var highStockChart = function(divID,result,crrentData,all){
 		chart:{
 			renderTo : divID,
 			margin: [0, 0,0, 0],
-			spacing: [80, 0,0, 0],
-			padding: [80, 0,0, 0],
+			//height:600,
+			//spacing: [80, 50,50, 50],
+			//spacingTop:100,
+			//padding: [80, 50,50, 50],
 			plotBorderColor: '#3C94C4',
 			plotBorderWidth: 0.3,
 			events:{

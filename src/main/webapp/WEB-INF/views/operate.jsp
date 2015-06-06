@@ -677,6 +677,11 @@ text-decoration:none;
  			    	tradeChart(copyMap);
  			    	$(".symbol").css("background-color","");
  			    	$(currentNode).css("background-color","pink");
+ 			    	
+ 			    	//$("svg").width($("#container").width()+100);
+ 			    	//var style=$("svg").attr("style");
+ 			    	//$("rect").attr("style","padding:30px");
+ 			    	//$("rect").height($("rect").height()+100);
  				}
  			},
  			error : function(errorMsg) {
