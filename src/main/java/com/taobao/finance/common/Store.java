@@ -170,7 +170,7 @@ public class Store {
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			for(String id:ids){
-				if(!publicPool.containsKey(id)){
+				if(!publicStockMap.containsKey(id)){
 					l.add(id);
 				}
 			}
@@ -191,7 +191,7 @@ public class Store {
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			for(String id:ids){
-				if(!publicPool.containsKey(id)){
+				if(!publicStockMap.containsKey(id)){
 					l.add(id);
 				}
 			}
@@ -213,7 +213,7 @@ public class Store {
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			for(String id:ids){
-				if(!publicPool.containsKey(id)){
+				if(!publicStockMap.containsKey(id)){
 					l.add(id);
 				}
 			}
@@ -232,7 +232,7 @@ public class Store {
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			for(String id:ids){
-				if(!publicPool.containsKey(id)){
+				if(!publicStockMap.containsKey(id)){
 					l.add(id);
 				}
 			}
@@ -252,7 +252,7 @@ public class Store {
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			for(String id:ids){
-				if(!publicPool.containsKey(id)){
+				if(!publicStockMap.containsKey(id)){
 					l.add(id);
 				}
 			}
@@ -272,7 +272,7 @@ public class Store {
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			for(String id:ids){
-				if(!publicPool.containsKey(id)){
+				if(!publicStockMap.containsKey(id)){
 					l.add(id);
 				}
 			}
@@ -292,7 +292,7 @@ public class Store {
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			for(String id:ids){
-				if(!publicPool.containsKey(id)){
+				if(!publicStockMap.containsKey(id)){
 					l.add(id);
 				}
 			}
@@ -311,7 +311,7 @@ public class Store {
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			for(String id:ids){
-				if(!publicPool.containsKey(id)){
+				if(!publicStockMap.containsKey(id)){
 					l.add(id);
 				}
 			}
