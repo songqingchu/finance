@@ -159,6 +159,8 @@ public class Store {
 
 		Set<String> sSet = new HashSet<String>();
 		
+		reloadPublicPool();
+		
 		String[] ids =null;
 		if (StringUtils.isNotBlank(today.getAcvu())) {
 			ids = StringUtils.split(today.getAcvu(), ",");
@@ -167,7 +169,11 @@ public class Store {
 		}
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
-			l.addAll(Arrays.asList(ids));
+			for(String id:ids){
+				if(!publicPool.containsKey(id)){
+					l.add(id);
+				}
+			}
 			store.put("acvu", l);
 			sSet.addAll(l);
 		}else{
@@ -184,7 +190,11 @@ public class Store {
 		}
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
-			l.addAll(Arrays.asList(ids));
+			for(String id:ids){
+				if(!publicPool.containsKey(id)){
+					l.add(id);
+				}
+			}
 			store.put("big", l);
 			sSet.addAll(l);
 		}else{
@@ -202,7 +212,11 @@ public class Store {
 		}
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
-			l.addAll(Arrays.asList(ids));
+			for(String id:ids){
+				if(!publicPool.containsKey(id)){
+					l.add(id);
+				}
+			}
 			store.put("av5", l);
 			sSet.addAll(l);
 		}else{
@@ -217,7 +231,11 @@ public class Store {
 		}
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
-			l.addAll(Arrays.asList(ids));
+			for(String id:ids){
+				if(!publicPool.containsKey(id)){
+					l.add(id);
+				}
+			}
 			store.put("av10", l);
 			sSet.addAll(l);
 		}else{
@@ -233,7 +251,11 @@ public class Store {
 		}
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
-			l.addAll(Arrays.asList(ids));
+			for(String id:ids){
+				if(!publicPool.containsKey(id)){
+					l.add(id);
+				}
+			}
 			store.put("cb", l);
 			sSet.addAll(l);
 		}else{
@@ -249,7 +271,11 @@ public class Store {
 		}
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
-			l.addAll(Arrays.asList(ids));
+			for(String id:ids){
+				if(!publicPool.containsKey(id)){
+					l.add(id);
+				}
+			}
 			store.put("ratio", l);
 			sSet.addAll(l);
 		}else{
@@ -265,7 +291,11 @@ public class Store {
 		}
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
-			l.addAll(Arrays.asList(ids));
+			for(String id:ids){
+				if(!publicPool.containsKey(id)){
+					l.add(id);
+				}
+			}
 			store.put("tp", l);
 			sSet.addAll(l);
 		}else{
@@ -280,7 +310,11 @@ public class Store {
 		}
 		if(ids!=null){
 			List<String> l = new ArrayList<String>();
-			l.addAll(Arrays.asList(ids));
+			for(String id:ids){
+				if(!publicPool.containsKey(id)){
+					l.add(id);
+				}
+			}
 			store.put("cb2", l);
 			sSet.addAll(l);
 		}else{
@@ -331,7 +365,7 @@ public class Store {
 		logger.info("system start:    system start end" );
 		logger.info("*******************************************************");
 
-		reloadPublicPool();
+		
 		history = this.gPublicStockService.queryHistory();
 		Thread d = new Thread() {
 			@SuppressWarnings("deprecation")
