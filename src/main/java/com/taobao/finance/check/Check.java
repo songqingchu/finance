@@ -36,6 +36,7 @@ public abstract class Check {
 			System.out.println(s);
 			dateList.add(s);
 		}
+		//dateList.add(l.get(l.size()-1).getDate());
 		return dateList;
 	}
 	

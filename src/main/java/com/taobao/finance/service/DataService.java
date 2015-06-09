@@ -344,8 +344,8 @@ public class DataService {
 		Object[][] av5 = new Object[size - 1][2];
 		Object[][] av10 = new Object[size - 1][2];
 		Object[][] av20 = new Object[size - 1][2];
-		Object[][] data = new Object[size - 1][6];
-		Object[][] vol = new Object[size - 1][2];
+		Object[][] data = new Object[size+1][6];
+		Object[][] vol = new Object[size+1][2];
 
 		for (int i = 1; i <= size - 1; i++) {
 			if (i == 56) {
@@ -379,6 +379,26 @@ public class DataService {
 					/ Float.parseFloat(yesterday.getEndPrice()) * 100 - 100;
 			data[size - 1 - i][5] = rate;
 		}
+		vol[size - 1][0] = vol[size - 2][0];
+		vol[size - 1][1] = vol[size - 2][1];
+		data[size - 1][0] =data[size - 2][0];
+		data[size - 1][1] = Float.parseFloat(data[size - 2][1].toString())*1.1;
+		data[size - 1][2] = Float.parseFloat(data[size - 2][1].toString())*1.1;
+		data[size - 1][3] = Float.parseFloat(data[size - 2][1].toString())*1.1;
+		data[size - 1][4] = Float.parseFloat(data[size - 2][1].toString())*1.1;
+		data[size - 1][5] = 1;
+		
+		vol[size ][0] = vol[size - 2][0];
+		vol[size ][1] = vol[size - 2][1];
+		data[size ][0] =data[size - 2][0];
+		data[size ][1] = Float.parseFloat(data[size - 2][1].toString())*1.1;
+		data[size ][2] = Float.parseFloat(data[size - 2][1].toString())*1.1;
+		data[size ][3] = Float.parseFloat(data[size - 2][1].toString())*1.1;
+		data[size ][4] = Float.parseFloat(data[size - 2][1].toString())*1.1;
+		data[size ][5] = 1;
+		
+		
+		
 
 		List<String> acvuDate = new Check_AVCU().check(symbol);
 		List<String> av5Date = new Check_AV5().check(symbol);

@@ -310,7 +310,10 @@ var highStockChart = function(divID,result,crrentData,all){
 		chart:{
 			renderTo : divID,
 			margin: [0, 0,0, 0],
-			spacing: [80, 0,0, 0],
+			//height:600,
+			//spacing: [80, 50,50, 50],
+			//spacingTop:100,
+			//padding: [80, 50,50, 50],
 			plotBorderColor: '#3C94C4',
 			plotBorderWidth: 0.3,
 			events:{
@@ -603,7 +606,7 @@ var highStockChart = function(divID,result,crrentData,all){
 	                data: all.acvuTips,
 	                onSeries: 'candlestick',
 	                shape: 'squarepin',
-	                y:-100,
+	                y:-150,
 	                style:{
 	 	        	   fontSize: '11px',
 	 	               fontWeight: 'normal',
@@ -620,7 +623,7 @@ var highStockChart = function(divID,result,crrentData,all){
             data:  all.av5Tips,
             onSeries: 'candlestick',
             shape: 'squarepin',
-            y:50,
+            y:100,
             style:{
 	        	   fontSize: '11px',
 	               fontWeight: 'normal',
@@ -637,7 +640,7 @@ var highStockChart = function(divID,result,crrentData,all){
             data:  all.bigTips,
             onSeries: 'candlestick',
             shape: 'squarepin',
-            y:100,
+            y:150,
             style:{
 	        	   fontSize: '11px',
 	               fontWeight: 'normal',
