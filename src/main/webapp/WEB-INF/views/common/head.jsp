@@ -27,6 +27,8 @@ color:purple;
 <a href="help.do">新手</a> &nbsp;
 <c:if test="${root==true}">
 <a href="choose.do">复盘</a> &nbsp;
+<a href="rixing.do">日省</a> &nbsp;
+<a href="canwu.do">参悟</a> &nbsp;
 <a href="check.do">检测</a> &nbsp;
 <a href="getToday.do?force=false">下载</a>【<a href="getToday.do?force=true">强制</a>】 &nbsp;
 <a href="ananyse.do?force=false">分析</a>【<a href="ananyse.do?force=true">强制</a>】  &nbsp;

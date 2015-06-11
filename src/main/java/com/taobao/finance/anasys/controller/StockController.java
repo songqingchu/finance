@@ -36,10 +36,12 @@ import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GUser;
+import com.taobao.finance.entity.GXing;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.service.DataService;
 import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.GTaskService;
+import com.taobao.finance.service.GXingService;
 import com.taobao.finance.service.ThreadService;
 import com.taobao.finance.task.RealTask;
 import com.taobao.finance.util.FetchUtil;
@@ -60,7 +62,50 @@ public class StockController {
 	@Autowired
 	private GTaskService gTaskService;
 	@Autowired
+	private GXingService gXingService;
+	@Autowired
 	private DataService dataService;
+	
+	
+	@RequestMapping(value = "/rixing.do", method = RequestMethod.GET)
+	public String rixing(HttpServletRequest request) {
+		String id=request.getParameter("id");
+		String key=request.getParameter("id");
+		String content=request.getParameter("id");
+		
+		if(StringUtils.isNotBlank(id)){
+			List<GXing> l=this.gXingService.queryAll();
+			GXing xing=this.gXingService.queryById(Integer.parseInt(id));
+			if(xing!=null){
+				request.setAttribute("now", xing);
+			}
+			request.setAttribute("all", l);
+		}else{
+			//新增
+			if(StringUtils.isNotBlank(key)&&StringUtils.isNotBlank(content)){
+				GXing xing=new GXing();
+				xing.setKey(key);
+				xing.setContent(content);
+				xing.setDate(new Date());
+				this.gXingService.insert(xing);
+			}else{
+			//列表
+				List<GXing> l=this.gXingService.queryAll();
+				request.setAttribute("all", l);
+			}
+		}
+		
+		return "rixing";
+	}
+	
+	
+	@RequestMapping(value = "/canwu.do", method = RequestMethod.GET)
+	public String canwu(HttpServletRequest request) {
+		
+		return "canwu";
+	}
+	
+	
 	
 	
 	

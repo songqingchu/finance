@@ -15,9 +15,9 @@
 		<property name="user" value="anasys" />
 		<property name="password" value="Chenshanhui924" />
 
-		<property name="initialPoolSize" value="5" />
-		<property name="maxPoolSize" value="50" />
-		<property name="minPoolSize" value="5" />
+		<property name="initialPoolSize" value="3" />
+		<property name="maxPoolSize" value="10" />
+		<property name="minPoolSize" value="3" />
 		<property name="maxIdleTime" value="60" />
 		<property name="acquireIncrement" value="3" />
 		<property name="acquireRetryAttempts" value="10" />
