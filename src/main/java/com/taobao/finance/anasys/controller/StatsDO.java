@@ -180,6 +180,9 @@ public class StatsDO {
 	
 	public Integer getYyRate() {
 		Integer f=1;
+		if(this.ayCount+this.nyCount==0){
+			return 0;
+		}
 		if(this.ayRate+this.nyRate==0){
 			return 0;
 		}else{
@@ -192,6 +195,9 @@ public class StatsDO {
 	}
 	public Integer getYsRate() {
 		Integer f=1;
+		if(this.asCount+this.nsCount==0){
+			return 0;
+		}
 		if(this.asRate+this.nsRate==0){
 			return 0;
 		}else{

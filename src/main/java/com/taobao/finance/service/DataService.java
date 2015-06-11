@@ -88,7 +88,7 @@ public class DataService {
 
 			for (StatsDO s : mine) {
 				dList.add(s.getDate());
-				mL.add(s.getvRate() / 10F - 100);
+				mL.add(s.getvRate() / 1F - 100);
 
 				Date endDate = StatsDO.df.parse(s.getDate());
 				Calendar c = Calendar.getInstance();
@@ -100,7 +100,7 @@ public class DataService {
 				if (dayCount == 0) {
 					year.add(20F);
 				} else {
-					Float yearV = (s.getvRate() / 10F - 100) * 365 / dayCount;
+					Float yearV = (s.getvRate() / 1.0F - 100) * 365 / dayCount;
 					year.add(yearV);
 				}
 
