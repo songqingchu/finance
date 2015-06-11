@@ -22,13 +22,6 @@ public class GXing {
     private Integer type;	
 
     
-	public String getFormatDate() {
-		if(this.date!=null){
-			return FetchUtil.FILE_FORMAT.format(date);
-		}else{
-			return "";
-		}
-	}
 	
 	@Id
 	@GeneratedValue
