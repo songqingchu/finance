@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +26,15 @@ import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.util.NodeList;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonArray;
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.dataobject.Tick;
+import com.taobao.finance.entity.GStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 
 public class FetchUtil {
@@ -114,6 +118,37 @@ public class FetchUtil {
 			return null;
 		}
 		return stock;
+
+	}
+	
+	public static Map<String,Object> parseHolders(String s) {
+        Map<String,Object> m=new HashMap<String,Object>(); 
+        List<GStock> l=new ArrayList<GStock>();
+
+			JSONArray array=(JSONArray)JSON.parse(s);
+			for(int i=0;i<array.size();i++){
+				String d=(String)array.get(i);
+				GStock st=new GStock();
+				String[] datas=d.split(",");
+				String symbol=datas[0];
+				String name=datas[1];
+				String holder=datas[2];
+				String change=datas[3];
+				if(symbol.startsWith("60")){
+					symbol="sh"+symbol;
+				}else{
+					symbol="sz"+symbol;
+				}
+				st.setSymbol(symbol);
+				st.setName(name);
+				st.setHolder(Integer.parseInt(holder));
+				st.setChange((int)(Float.parseFloat(change)*100));
+				l.add(st);
+			}
+			m.put("data", l);
+		
+		
+		return m;
 
 	}
 

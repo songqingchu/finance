@@ -166,6 +166,7 @@ text-decoration:none;
 <br>
 
 </div>
+<div id="holderDiv" style="height: 800px;width:150px;float:left;display:none"></div>
 <div id="container" style="height: 800px;float:left;display:none"></div>
 <jsp:include page="common/foot.jsp" flush="true"/>
 </body>
@@ -174,8 +175,9 @@ text-decoration:none;
    var windowHight=$(window).height();
    var w=windowWidth-290;
    var h=windowHight*0.8;
-   $("#container").width(w-20);
+   $("#container").width(w-170);
    $("#container").height(h);
+   $("#holderDiv").height(h);
    //$("#list").height(h);
    
    $("#listDiv").height(h-80);
@@ -625,6 +627,10 @@ text-decoration:none;
 	    	var symbol=$(nodeNow).attr("symbol");
 		    currentSymbol=symbol;
 		    currentNode=$(nodeNow);
+		    
+			
+			   
+			   
 	  	    $(".symbolA").parent().css("background-color","");
 	  	    $(nodeNow).css("background-color","pink");
 	  	    
@@ -669,14 +675,21 @@ text-decoration:none;
  			    	copyMap.acvuTips=base.acvuTips;
  			    	copyMap.bigTips=base.bigTips;
  			    	
- 			    	$("#list").width(270);
+ 			    	$("#"+currentCat+"Div").show();
+ 					$("#"+currentCat+"Div").width(180);
+ 					$("#"+currentCat+"Div").height(h-100);
+ 					$("#addDiv").width(180);
+ 					
+ 			    	$("#list").width(200);
  			    	$(".listClass").hide();
  				    $(currentNode).parent().show();
  				    $("#container").show();
+ 				    $("#holderDiv").show();
  			 	    $("#addDiv").show();
  			    	tradeChart(copyMap);
  			    	$(".symbol").css("background-color","");
  			    	$(currentNode).css("background-color","pink");
+ 			    	$("#holderDiv").html(result.holder);
  			    	
  			    	//$("svg").width($("#container").width()+100);
  			    	//var style=$("svg").attr("style");

@@ -35,11 +35,14 @@ import com.taobao.finance.common.Store;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
+import com.taobao.finance.entity.GStock;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.entity.GXing;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.fetch.impl.Fetch_Holders;
 import com.taobao.finance.service.DataService;
 import com.taobao.finance.service.GPublicStockService;
+import com.taobao.finance.service.GStockService;
 import com.taobao.finance.service.GTaskService;
 import com.taobao.finance.service.GXingService;
 import com.taobao.finance.service.ThreadService;
@@ -65,6 +68,8 @@ public class StockController {
 	private GXingService gXingService;
 	@Autowired
 	private DataService dataService;
+	@Autowired
+	private GStockService gStockService;
 	
 	
 	@RequestMapping(value = "/rixing.do", method = RequestMethod.GET)
@@ -103,6 +108,17 @@ public class StockController {
 	public String canwu(HttpServletRequest request) {
 		
 		return "canwu";
+	}
+	
+	
+	@RequestMapping(value = "/holdersLong.do", method = RequestMethod.GET)
+	public String holdersLong(HttpServletRequest request) {
+		Map<String,GStock> m=Fetch_Holders.getAllLong();
+		for(String s:m.keySet()){
+			GStock st=m.get(s);
+			this.gStockService.insert(st);
+		}
+		return "operate";
 	}
 	
 	
@@ -1604,6 +1620,7 @@ public class StockController {
 			download=true;
 		}
 		logger.info("name to symbol:"+symbol);
+
 		Map<String,Object> map=dataService.getKData2(symbol,Store.workingDay,download,store);
 		return map;
 	}	

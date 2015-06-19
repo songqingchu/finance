@@ -13,12 +13,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
+
 import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
+
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.AV10_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
@@ -29,10 +32,12 @@ import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
+import com.taobao.finance.entity.GStock;
 import com.taobao.finance.entity.GTask;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.service.DataService;
 import com.taobao.finance.service.GPublicStockService;
+import com.taobao.finance.service.GStockService;
 import com.taobao.finance.service.GTaskService;
 import com.taobao.finance.service.ThreadService;
 import com.taobao.finance.task.HisDataTask;
@@ -56,7 +61,8 @@ public class Store {
 	public Map<String, List<Stock>> hot = new HashMap<String, List<Stock>>();
 	public Map<String, Object> kdata = new HashMap<String, Object>();
 	public List<Map<String, Object>> kdata2 = new ArrayList<Map<String, Object>>();
-
+	public List<GStock> holders;
+	public Map<String,GStock> holderMap=new HashMap<String,GStock>();
 	public static Boolean workingDay = null;
 	public static DateFormat DF = new SimpleDateFormat("yyyy.MM.dd");
 	public static DateFormat DF2 = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
@@ -76,7 +82,11 @@ public class Store {
 
 	@Autowired
 	private DataService dataService;
-
+	
+	@Autowired
+	private GStockService gStockService;
+	
+	
 	private GTask today;
 
 	public Store() {
@@ -125,6 +135,7 @@ public class Store {
 
 	public void reloadKdata(Set<String> sSet) {
 		logger.info("reload symbols");
+		
 		this.kdata.clear();
 		this.kdata2.clear();
 		for (String s : sSet) {
@@ -134,6 +145,9 @@ public class Store {
 			}
 			try {
 				Map<String, Object> m = dataService.getKData2(s,this.workingDay, down, this);
+				
+				
+				
 				this.kdata.put(s, m);
 				this.kdata2.add(m);
 			} catch (IOException e) {
@@ -158,6 +172,13 @@ public class Store {
 		GTask lastDay=gTaskService.queryLast2Task();
 
 		Set<String> sSet = new HashSet<String>();
+		
+		this.holders=this.gStockService.queryAll();
+		
+		for(GStock s:holders){
+			holderMap.put(s.getSymbol(), s);
+		}
+		
 		
 		reloadPublicPool();
 		

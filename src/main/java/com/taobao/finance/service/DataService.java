@@ -27,6 +27,7 @@ import com.taobao.finance.check.impl.Check_BigTrend;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
+import com.taobao.finance.entity.GStock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 import com.taobao.finance.util.FetchUtil;
@@ -295,6 +296,29 @@ public class DataService {
 	public Map<String, Object> getKData2(String symbol, Boolean working,
 			Boolean downloaded, Store store) throws IOException, ParseException {
 		Map<String, Object> m = new HashMap<String, Object>();
+		
+		if(store.holderMap.containsKey(symbol)){
+			String record=store.holderMap.get(symbol).getRecord();
+			if(StringUtils.isNotBlank(record)){
+				String content="<b>股东户数<b><br><br>";
+				String[] res=StringUtils.split(record,";");
+				for(String rr:res){
+					if(StringUtils.isNotBlank(rr)){
+							
+						String[] rrs=StringUtils.split(rr,":");
+						rrs[0]=rrs[0].replace("-3-","-03-");
+						rrs[0]=rrs[0].replace("-6-","-06-");
+						rrs[0]=rrs[0].replace("-9-","-09-");
+						if(rrs.length==2){
+							content=content+"<b>"+rrs[0]+":</b>&nbsp;"+rrs[1]+"<br>";
+						}
+					}
+				}
+				m.put("holder", content);
+			}
+		}
+		
+		
 		List<Stock> l = null;
 		if (store.hot.containsKey(symbol)) {
 			l = store.hot.get(symbol);
