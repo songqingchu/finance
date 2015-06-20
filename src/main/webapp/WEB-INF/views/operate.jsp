@@ -85,7 +85,7 @@ text-decoration:none;
 </div>
 </div>
 
-<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="tp" class="listClass"  id="bigDiv">
+<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="big" class="listClass"  id="bigDiv">
 <b>BIG</b><br><br>
 <div style="overflow-y:auto;overflow-x:hidden;" class="showDiv"  id="bigShowDiv">
 <c:forEach var="s" items="${big}">  
@@ -104,7 +104,7 @@ text-decoration:none;
 </div>
 </div>
 
-<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="cb" class="listClass"  id="tpDiv">
+<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="tp" class="listClass"  id="tpDiv">
 <b>TP</b><br><br>
 <div style="overflow-y:auto;overflow-x:hidden;" class="showDiv"  id="tpShowDiv">
 <c:forEach var="s" items="${tp}">  
@@ -196,7 +196,14 @@ text-decoration:none;
 <br>
 
 </div>
-<div id="holderDiv" style="height: 800px;width:150px;float:left;display:none"></div>
+<div id="holderDiv" style="height: 800px;width:150px;float:left;display:none">
+  <div id="holderContentDiv" style="float:left;;padding-left:30px">
+
+  </div>
+  <div id="holderChartDiv" style="height: 400px;float:left;">
+
+  </div>
+</div>
 <div id="container" style="height: 800px;float:left;display:none"></div>
 <jsp:include page="common/foot.jsp" flush="true"/>
 </body>
@@ -205,9 +212,11 @@ text-decoration:none;
    var windowHight=$(window).height();
    var w=windowWidth-290;
    var h=windowHight*0.8;
-   $("#container").width(w-170);
+   $("#container").width(w-250);
    $("#container").height(h);
    $("#holderDiv").height(h);
+   $("#holderDiv").width(270);
+   $("#holderChartDiv").width(260);
    //$("#list").height(h);
    
    $("#listDiv").height(h-80);
@@ -603,7 +612,7 @@ text-decoration:none;
 		   $("#"+currentCat+"Div").show();
 		   $("#"+currentCat+"Div").width(180);
 		   $("#"+currentCat+"Div").height(h-100);
-		   
+		   $("#"+currentCat+"ShowDiv").height(h-140);
 		   $("#addDiv").width(180);
 		    
 	 	   currentNode=$(tail).children().get(0);
@@ -724,7 +733,17 @@ text-decoration:none;
  			    	$(".symbol").css("background-color","");
  			    	$(currentNode).css("background-color","pink");
  			    	$("#holderDiv").show();
- 			    	$("#holderDiv").html(result.holder);
+ 			    	$("#holderContentDiv").html(result.holder);
+ 			    	
+ 			    	if(result.years){
+ 			    		$('#holderChartDiv').highcharts({ chart: { type: 'bar' }, 
+	                         title: { text: '' }, 
+	                         subtitle: { text: '' },
+	                         xAxis: { categories: result.years, title: { text: null } }, 
+	                         series: [{ name: '12', data: result.v12}, { name: '9', data:  result.v9 },{ name: '6', data:  result.v6 } ,{ name: '3', data:  result.v3} ] 
+	                      }); 
+ 			    	}
+ 			    	
  			    	
  			    	//$("svg").width($("#container").width()+100);
  			    	//var style=$("svg").attr("style");

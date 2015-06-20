@@ -296,29 +296,78 @@ public class DataService {
 	public Map<String, Object> getKData2(String symbol, Boolean working,
 			Boolean downloaded, Store store) throws IOException, ParseException {
 		Map<String, Object> m = new HashMap<String, Object>();
-		
-		if(store.holderMap.containsKey(symbol)){
-			String record=store.holderMap.get(symbol).getRecord();
-			if(StringUtils.isNotBlank(record)){
-				String content="<b>股东户数<b><br><br>";
-				String[] res=StringUtils.split(record,";");
-				for(String rr:res){
-					if(StringUtils.isNotBlank(rr)){
-							
-						String[] rrs=StringUtils.split(rr,":");
-						rrs[0]=rrs[0].replace("-3-","-03-");
-						rrs[0]=rrs[0].replace("-6-","-06-");
-						rrs[0]=rrs[0].replace("-9-","-09-");
-						if(rrs.length==2){
-							content=content+"<b>"+rrs[0]+":</b>&nbsp;"+rrs[1]+"<br>";
+
+		if (store.holderMap.containsKey(symbol)) {
+			String record = store.holderMap.get(symbol).getRecord();
+			if (StringUtils.isNotBlank(record)) {
+				String content = "<b>股东户数<b><br><br>";
+				String[] res = StringUtils.split(record, ";");
+				Map<String, List<Integer>> ma = new HashMap<String, List<Integer>>();
+				List<String> yearList = new ArrayList<String>();
+				for (String rr : res) {
+					if (StringUtils.isNotBlank(rr)) {
+						String[] rrs = StringUtils.split(rr, ":");
+						if (rrs.length == 2) {
+							content = content + "<b>" + rrs[0] + ":</b>&nbsp;"
+									+ rrs[1] + "<br>";
+						}
+
+						String year = rrs[0].substring(0, 4);
+						if (!ma.containsKey(year)) {
+							yearList.add(year);
+							List<Integer> volList = new ArrayList<Integer>();
+							volList.add(Integer.parseInt(rrs[1]));
+							ma.put(year, volList);
+						} else {
+							List<Integer> volList = ma.get(year);
+							volList.add(Integer.parseInt(rrs[1]));
+							ma.put(year, volList);
 						}
 					}
 				}
+
+				List<Integer> l3 = new ArrayList<Integer>();
+				List<Integer> l6 = new ArrayList<Integer>();
+				List<Integer> l9 = new ArrayList<Integer>();
+				List<Integer> l12 = new ArrayList<Integer>();
+
+				for (String year : yearList) {
+					List<Integer> vol = ma.get(year);
+					if (vol.size() == 1) {
+                        l3.add(vol.get(0));
+                        l6.add(0);
+						l9.add(0);
+						l12.add(0);
+					}
+					if (vol.size() == 2) {
+						l3.add(vol.get(0));
+						l6.add(vol.get(1));
+						l9.add(0);
+						l12.add(0);
+					}
+					if (vol.size() == 3) {
+						l3.add(vol.get(0));
+						l6.add(vol.get(1));
+						l9.add(vol.get(2));
+						l12.add(0);
+					}
+					if (vol.size() == 4) {
+						l3.add(vol.get(0));
+						l6.add(vol.get(1));
+						l9.add(vol.get(2));
+						l12.add(vol.get(3));
+					}
+				}
 				m.put("holder", content);
+				m.put("years", yearList);
+				m.put("v3", l3);
+				m.put("v6", l6);
+				m.put("v9", l9);
+				m.put("v12", l12);
+
 			}
 		}
-		
-		
+
 		List<Stock> l = null;
 		if (store.hot.containsKey(symbol)) {
 			l = store.hot.get(symbol);
@@ -329,7 +378,7 @@ public class DataService {
 		if (working) {
 			if (!downloaded) {
 				Stock s = Fetch_SingleStock_Sina.fetch(symbol);
-				if(s!=null){
+				if (s != null) {
 					l.add(s);
 				}
 			}
@@ -358,7 +407,7 @@ public class DataService {
 					ting = true;
 				}
 			}
-			
+
 			if (ting) {
 				l.remove(l.size() - 1);
 			}
@@ -368,8 +417,8 @@ public class DataService {
 		Object[][] av5 = new Object[size - 1][2];
 		Object[][] av10 = new Object[size - 1][2];
 		Object[][] av20 = new Object[size - 1][2];
-		Object[][] data = new Object[size+1][6];
-		Object[][] vol = new Object[size+1][2];
+		Object[][] data = new Object[size + 1][6];
+		Object[][] vol = new Object[size + 1][2];
 
 		for (int i = 1; i <= size - 1; i++) {
 			if (i == 56) {
@@ -405,24 +454,21 @@ public class DataService {
 		}
 		vol[size - 1][0] = vol[size - 2][0];
 		vol[size - 1][1] = vol[size - 2][1];
-		data[size - 1][0] =data[size - 2][0];
-		data[size - 1][1] = Float.parseFloat(data[size - 2][1].toString())*1.1;
-		data[size - 1][2] = Float.parseFloat(data[size - 2][1].toString())*1.1;
-		data[size - 1][3] = Float.parseFloat(data[size - 2][1].toString())*1.1;
-		data[size - 1][4] = Float.parseFloat(data[size - 2][1].toString())*1.1;
+		data[size - 1][0] = data[size - 2][0];
+		data[size - 1][1] = Float.parseFloat(data[size - 2][1].toString()) * 1.1;
+		data[size - 1][2] = Float.parseFloat(data[size - 2][1].toString()) * 1.1;
+		data[size - 1][3] = Float.parseFloat(data[size - 2][1].toString()) * 1.1;
+		data[size - 1][4] = Float.parseFloat(data[size - 2][1].toString()) * 1.1;
 		data[size - 1][5] = 1;
-		
-		vol[size ][0] = vol[size - 2][0];
-		vol[size ][1] = vol[size - 2][1];
-		data[size ][0] =data[size - 2][0];
-		data[size ][1] = Float.parseFloat(data[size - 2][1].toString())*1.1;
-		data[size ][2] = Float.parseFloat(data[size - 2][1].toString())*1.1;
-		data[size ][3] = Float.parseFloat(data[size - 2][1].toString())*1.1;
-		data[size ][4] = Float.parseFloat(data[size - 2][1].toString())*1.1;
-		data[size ][5] = 1;
-		
-		
-		
+
+		vol[size][0] = vol[size - 2][0];
+		vol[size][1] = vol[size - 2][1];
+		data[size][0] = data[size - 2][0];
+		data[size][1] = Float.parseFloat(data[size - 2][1].toString()) * 1.1;
+		data[size][2] = Float.parseFloat(data[size - 2][1].toString()) * 1.1;
+		data[size][3] = Float.parseFloat(data[size - 2][1].toString()) * 1.1;
+		data[size][4] = Float.parseFloat(data[size - 2][1].toString()) * 1.1;
+		data[size][5] = 1;
 
 		List<String> acvuDate = new Check_AVCU().check(symbol);
 		List<String> av5Date = new Check_AV5().check(symbol);
