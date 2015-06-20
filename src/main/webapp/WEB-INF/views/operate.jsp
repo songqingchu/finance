@@ -684,11 +684,12 @@ text-decoration:none;
  			    	$(".listClass").hide();
  				    $(currentNode).parent().show();
  				    $("#container").show();
- 				    $("#holderDiv").show();
+ 				    
  			 	    $("#addDiv").show();
  			    	tradeChart(copyMap);
  			    	$(".symbol").css("background-color","");
  			    	$(currentNode).css("background-color","pink");
+ 			    	$("#holderDiv").show();
  			    	$("#holderDiv").html(result.holder);
  			    	
  			    	//$("svg").width($("#container").width()+100);

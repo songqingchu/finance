@@ -154,8 +154,8 @@ a {
 <div id="check_div" style="float:left;margin-left: 80px"></div>
  -->
 
-
-	<div id="container" style="height: 800px; float: right;"></div>
+<div id="holderDiv" style="height: 800px;width:150px;float:left;display:none"></div>
+<div id="container" style="height: 800px; float: left;"></div>
 
 
 
@@ -176,8 +176,11 @@ a {
    var windowHight=$(window).height();
    var w=windowWidth-220;
    var h=windowHight*0.8;
-   $("#container").width(w);
+   $("#container").width(w-170);
    $("#container").height(h);
+   $("#holderDiv").height(h);
+   
+   
    $("#leftDiv").height(h);
    $("#listDiv").height(h-100);
    
@@ -281,6 +284,8 @@ a {
 		    	copyMap.acvuTips=base.acvuTips;
 		    	copyMap.bigTips=base.bigTips;
 		    	
+		    	$("#holderDiv").show();
+			    $("#holderDiv").html(base.holder);
 		    	tradeChart(copyMap);
 		   }
 	   }
@@ -407,6 +412,8 @@ a {
 	    	copyMap.acvuTips=base.acvuTips;
 	    	copyMap.bigTips=base.bigTips;
 
+	    	$("#holderDiv").show();
+		    $("#holderDiv").html(base.holder);
 	    	tradeChart(copyMap);
 	    }
 	    
@@ -469,6 +476,8 @@ a {
 			    	copyMap.acvuTips=base.acvuTips;
 			    	copyMap.bigTips=base.bigTips;
 			    	
+			    	$("#holderDiv").show();
+				    $("#holderDiv").html(base.holder);
 			    	tradeChart(copyMap);
 			   }
 		   }

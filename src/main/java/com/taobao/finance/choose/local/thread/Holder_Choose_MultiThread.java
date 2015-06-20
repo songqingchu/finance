@@ -70,6 +70,7 @@ class Holder_Task implements Callable<List<Stock>> {
 			}
 			Float value = CheckUtil.checkHolder(st.getRecord());
 			s.setSuo(value);
+			l.add(s);
 		}
 
 		return l;
