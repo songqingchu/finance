@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.util.FetchUtil;
@@ -322,6 +324,51 @@ public class CheckUtil {
 			}			
 		}
 		return false;
+	}
+	
+	
+	public static Float checkHolder(String r) {
+		String[] datas=StringUtils.split(r,";");
+		List<Integer> l=new ArrayList<Integer>();
+		for(String d:datas){
+			if(StringUtils.isNotBlank(d)){
+				String[] dd=d.split(":");
+				if(dd.length==2){
+					l.add(new Integer(dd[1]));
+				}
+			}
+			
+		}
+		if(l.size()>=3){
+			if(l.size()==3){
+				float s1=(float)l.get(0);
+				float s2=(float)l.get(1);
+				float s3=(float)l.get(2);
+				if(s2<s1&&s3<s1){
+					return (s3/s1)*(s2/s1)*(s3/s2);
+				}
+			}else{
+				int size=l.size();
+				float s1=(float)l.get(size-4);
+				float s2=(float)l.get(size-3);
+				float s3=(float)l.get(size-2);
+				float s4=(float)l.get(size-1);
+				
+				if(s1>s3&&s1>s2&&s1>s4){
+					return (s3/s1)*(s2/s1)*(s4/s1)*(s3/s2)*(s4/s2)*(s4/s3);
+				}
+				
+                if(s2>s3&&s2>s4){
+                	return (s3/s2)*(s4/s2)*(s4/s3)*0.9F;
+				}
+                if(s3>s4){
+                	return (s4/s3)*(s2/s1)*(s3/s2)*0.85F;
+				}
+			}
+		}else{
+			return 10000F;
+		}
+		return 10000F;
 	}
 	
 	

@@ -113,11 +113,51 @@ public class StockController {
 	
 	@RequestMapping(value = "/holdersLong.do", method = RequestMethod.GET)
 	public String holdersLong(HttpServletRequest request) {
-		Map<String,GStock> m=Fetch_Holders.getAllLong();
+		
+		List<GStock> l=this.gStockService.queryAll();
+		for(GStock s:l){
+			String record=s.getRecord();
+			if(StringUtils.isNotBlank(record)){
+				record=StringUtils.replace(record, "-3-", "-03-");
+				record=StringUtils.replace(record, "-6-", "-06-");
+				record=StringUtils.replace(record, "-9-", "-09-");
+				String[] datas=StringUtils.split(record,";");
+				if(datas.length>0){
+					List<String> li=new ArrayList<String>();
+					for(String data:datas){
+						if(!li.contains(data)){
+							li.add(data);
+						}
+					}
+					if(li.size()>0){
+						String newRecord=StringUtils.join(li,";");
+						s.setRecord(newRecord);
+						this.gStockService.saveOrUpdate(s);
+					}
+				}
+			}
+		}
+		
+		
+		/*Map<String,GStock> m=Fetch_Holders.getAllLong();
 		for(String s:m.keySet()){
 			GStock st=m.get(s);
 			this.gStockService.insert(st);
-		}
+		}*/
+		return "operate";
+	}
+	
+	
+	@RequestMapping(value = "/holders.do", method = RequestMethod.GET)
+	public String holders(HttpServletRequest request) {
+		
+		/*List<GStock> l=Fetch_Holders.getAll(null);
+		
+		//Map<String,GStock> m=
+		for(String s:m.keySet()){
+			GStock st=m.get(s);
+			this.gStockService.insert(st);
+		}*/
 		return "operate";
 	}
 	

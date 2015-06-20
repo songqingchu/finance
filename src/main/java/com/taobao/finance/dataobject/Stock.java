@@ -14,6 +14,15 @@ public class Stock implements Comparable<Stock> {
 	private String category;
 	private Byte concern=0;
 	private String htName;
+	private Float suo;
+	
+	
+	public Float getSuo() {
+		return suo;
+	}
+	public void setSuo(Float suo) {
+		this.suo = suo;
+	}
 	public String getHtName() {
 		return htName;
 	}

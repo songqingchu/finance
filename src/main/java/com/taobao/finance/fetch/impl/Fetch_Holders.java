@@ -120,6 +120,9 @@ public class Fetch_Holders {
 		for(int i=0;i<l.size();i++){
 			String s=l.get(i);
 			List<GStock> li=getAll(s);
+			s=StringUtils.replace(s, "-3-", "-03-");
+			s=StringUtils.replace(s, "-6-", "-06-");
+			s=StringUtils.replace(s, "-9-", "-09-");
 			for(GStock st:li){
 				if(!m.containsKey(st.getSymbol())){
 					String r=s+":"+st.getHolder();
@@ -143,8 +146,12 @@ public class Fetch_Holders {
 
 	public static void main(String args[]) {
 
-		Map<String,GStock> m = getAllLong();
-		m.size();
+		//Map<String,GStock> m = getAllLong();
+		//m.size();
+		
+		List<String> l=new ArrayList<String>();
+		l.add("hello");
+		System.out.println(l.contains("hello"));
 	}
 
 }

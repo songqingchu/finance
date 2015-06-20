@@ -13,30 +13,32 @@ public class Comparator {
 
 	}
 
+	public static class HoldereComparator implements
+			java.util.Comparator<Stock> {
+
+		public int compare(Stock o1, Stock o2) {
+			return o1.getSuo()*10000 - o2.getSuo()*10000 > 0 ? 1 : -1;
+		}
+
+	}
+
 	public static class RateDescComparator implements
 			java.util.Comparator<Stock> {
 		public int compare(Stock o1, Stock o2) {
-			//System.out.println(o1.getName()+":"+o2.getName());
-			if(o1.getConcern().equals(o2.getConcern())){
+			// System.out.println(o1.getName()+":"+o2.getName());
+			if (o1.getConcern().equals(o2.getConcern())) {
 				return o1.getRate() - o2.getRate() >= 0 ? -1 : 1;
-			}else{
+			} else {
 				return o1.getConcern() - o2.getConcern() <= 0 ? -1 : 1;
 			}
-			
-			
-			/*if(o1==o2){
-				return -1;
-			}
-			if (o1.getConcern() - o2.getConcern() > 0) {
-               return 1;
-			}
-			if (o1.getConcern() - o2.getConcern() == 0) {
-				return o1.getRate() - o2.getRate() >= 0 ? -1 : 1;
-			}
-			if (o1.getConcern() - o2.getConcern() <0) {
-				return o1.getRate() - o2.getRate() >= 0 ? -1 : 1;
-			}
-			return 1;*/
+
+			/*
+			 * if(o1==o2){ return -1; } if (o1.getConcern() - o2.getConcern() >
+			 * 0) { return 1; } if (o1.getConcern() - o2.getConcern() == 0) {
+			 * return o1.getRate() - o2.getRate() >= 0 ? -1 : 1; } if
+			 * (o1.getConcern() - o2.getConcern() <0) { return o1.getRate() -
+			 * o2.getRate() >= 0 ? -1 : 1; } return 1;
+			 */
 		}
 	}
 

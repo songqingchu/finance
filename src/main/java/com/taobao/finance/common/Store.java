@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,8 +29,10 @@ import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.CB2_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.CB_Choose_MultiThread;
+import com.taobao.finance.choose.local.thread.Holder_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
+import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GStock;
@@ -600,6 +603,11 @@ public class Store {
 			logger.info("anaysys cb2");
 			List<Stock> cb2 = new CB2_Choose_MultiThread().choose();
 			
+			logger.info("anaysys holders");
+			List<Stock> holder = new Holder_Choose_MultiThread(this).choose();
+			Collections.sort(holder,new Comparator.HoldereComparator());
+			holder=holder.subList(0,300);
+			
 			List<Stock> ratio =new ArrayList<Stock>(); 
 					
 					
@@ -640,10 +648,10 @@ public class Store {
 				cb2s.add(s.getSymbol());
 			}
 			
-			List<String> ratios = new ArrayList<String>();
-			/*for (Stock s : cb) {
-				cbs.add(s.getSymbol());
-			}*/
+			List<String> holders = new ArrayList<String>();
+			for (Stock s : holder) {
+				holders.add(s.getSymbol());
+			}
 
 			if (this.today != null) {
 				GTask t = today;
@@ -668,8 +676,8 @@ public class Store {
 				if (cb2s.size() > 0) {
 					t.setCb2(StringUtils.join(cb2s, ","));
 				}
-				if (ratios.size() > 0) {
-					t.setCb(StringUtils.join(ratios, ","));
+				if (holders.size() > 0) {
+					t.setRatio(StringUtils.join(holders, ","));
 				}
 				
 				t.setChoose(GTask.CHOOSEN);
@@ -686,7 +694,7 @@ public class Store {
 			store.put("tp", tps);
 			store.put("cb", cbs);
 			store.put("cb2", cb2s);
-			store.put("ratio", ratios);
+			store.put("ratio", holders);
 
 			store.put("bigs", big);
 			store.put("acvus", acvu);
@@ -695,7 +703,7 @@ public class Store {
 			store.put("tps", tp);
 			store.put("cbs", cb);
 			store.put("cb2s", cb2);
-			store.put("ratios", ratio);
+			store.put("ratios", holder);
 			
 			Set<String> sSet = new HashSet<String>();
 			if (StringUtils.isNoneBlank(today.getAcvu())) {
