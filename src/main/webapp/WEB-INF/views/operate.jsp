@@ -30,6 +30,7 @@ text-decoration:none;
 <div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="listDiv" class="listClass"  id="acvuDiv">
 <b>ACVU</b><br><br>
 
+<div style="overflow-y:auto;overflow-x:hidden;" class="showDiv"  id="acvuShowDiv">
 <c:forEach var="s" items="${acvu}">  
      <span  class="acvuSymbol symbol  ${s.getPosition()}" style="width:180px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="acvu" name="${s.name}" category="${s.category}" rate="${s.ratePercentHighLight}">
@@ -44,9 +45,11 @@ text-decoration:none;
 
 </c:forEach>
 </div>
+</div>
 
-<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="av5" class="listClass"  id="av5Div">
+<div style="width:180px;float:left;overflow-y:hidden;overflow-x:hidden;border:0px solid;display:none;position:relative" div="av5" class="listClass"  id="av5Div">
 <b>AV5</b><br><br>
+<div style="overflow-y:auto;overflow-x:hidden;" class="showDiv"  id="av5ShowDiv">
 <c:forEach var="s" items="${av5}">  
      <span  class="av5Symbol symbol ${s.getPosition()}" style="width:180px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="av5" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
@@ -61,9 +64,11 @@ text-decoration:none;
 
 </c:forEach>
 </div>
+</div>
 
 <div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="av10" class="listClass"  id="av10Div">
 <b>AV10</b><br><br>
+<div style="overflow-y:auto;overflow-x:hidden;" class="showDiv"  id="av10ShowDiv">
 <c:forEach var="s" items="${av10}">  
      <span  class="av10Symbol symbol ${s.getPosition()}" style="width:180px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="av10" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
@@ -78,9 +83,11 @@ text-decoration:none;
 
 </c:forEach>
 </div>
+</div>
 
 <div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="tp" class="listClass"  id="bigDiv">
 <b>BIG</b><br><br>
+<div style="overflow-y:auto;overflow-x:hidden;" class="showDiv"  id="bigShowDiv">
 <c:forEach var="s" items="${big}">  
      <span  class="bigSymbol symbol ${s.getPosition()}" style="width:180px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="big" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
@@ -95,9 +102,11 @@ text-decoration:none;
 
 </c:forEach>
 </div>
+</div>
 
 <div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="cb" class="listClass"  id="tpDiv">
 <b>TP</b><br><br>
+<div style="overflow-y:auto;overflow-x:hidden;" class="showDiv"  id="tpShowDiv">
 <c:forEach var="s" items="${tp}">  
      <span  class="tpSymbol symbol ${s.getPosition()}" style="width:180px;float:left;"  symbol="${s.getSymbol()}">
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="tp" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
@@ -112,10 +121,11 @@ text-decoration:none;
 
 </c:forEach>
 </div>
-
+</div>
 
 <div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="cb" class="listClass"  id="cbDiv">
 <b>CB</b><br><br>
+<div style="overflow-y:auto;overflow-x:hidden;" class="showDiv"  id="cbShowDiv">
 <c:forEach var="s" items="${cb}">  
      <span  class="cbSymbol symbol ${s.getPosition()}" style="width:180px;float:left;"  symbol="${s.getSymbol()}" >
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}" cat="cb" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
@@ -130,9 +140,11 @@ text-decoration:none;
 
 </c:forEach>
 </div>
+</div>
 
 <div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="ratio" class="listClass"  id="ratioDiv">
 <b>HOLDER</b><br><br>
+<div style="overflow-y:auto;overflow-x:hidden;" class="showDiv"  id="ratioShowDiv">
 <c:forEach var="s" items="${ratio}">  
      <span  class="ratioSymbol symbol ${s.getPosition()}" style="width:180px;float:left;"  symbol="${s.getSymbol()}" >
      <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="ratio" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
@@ -146,6 +158,7 @@ text-decoration:none;
      </span>
 
 </c:forEach>
+</div>
 </div>
 
 <div style="width:180px;float:left;margin-left: 10px" id="addDiv"  class="listClass">
@@ -198,6 +211,7 @@ text-decoration:none;
    //$("#list").height(h);
    
    $("#listDiv").height(h-80);
+   //$(".showDiv").height(h-140);
    $("#addDiv").height(50);
    
    var head=$(".head").get(0);
@@ -579,16 +593,17 @@ text-decoration:none;
 	 	   
 
 	 	   $(".choose").css("background-color","");
-	 	   $("#"+currentCat+"Symbol").css("background-color","red");
-	 	   $(".symbol").css("display","none");
-	 	   $("."+currentCat+"Symbol").attr("style","display:block;width:180px;float:left;");
-	 	  $("#list").width(200);
+	 	   $("#"+currentCat+"Symbol").css("background-color","pink");
+	 	   //$(".symbol").css("display","none");
+	 	   //$("."+currentCat+"Symbol").attr("style","display:block;width:180px;float:left;");
+	 	   $("#list").width(200);
 	 	   $(".listClass").hide();
 	 	   $("#addDiv").show();
 		   $("#container").show();
 		   $("#"+currentCat+"Div").show();
 		   $("#"+currentCat+"Div").width(180);
 		   $("#"+currentCat+"Div").height(h-100);
+		   
 		   $("#addDiv").width(180);
 		    
 	 	   currentNode=$(tail).children().get(0);
@@ -645,15 +660,14 @@ text-decoration:none;
 		    currentSymbol=symbol;
 		    currentNode=$(nodeNow);
 		    
-			
 			   
 			   
 	  	    $(".symbolA").parent().css("background-color","");
 	  	    $(nodeNow).css("background-color","pink");
 	  	    
 	  	    var top=$(nodeNow).position().top;
-		    var stop=$("#"+currentCat+"Div").scrollTop();
-		    $("#"+currentCat+"Div").animate({scrollTop:(top+stop)},500);
+		    var stop=$("#"+currentCat+"ShowDiv").scrollTop();
+		    $("#"+currentCat+"ShowDiv").animate({scrollTop:(top+stop-50)},500);
 	  	    getDataAndShow(currentSymbol);
 	    }
    });  
@@ -692,15 +706,18 @@ text-decoration:none;
  			    	copyMap.acvuTips=base.acvuTips;
  			    	copyMap.bigTips=base.bigTips;
  			    	
- 			    	$("#"+currentCat+"Div").show();
- 					$("#"+currentCat+"Div").width(180);
- 					$("#"+currentCat+"Div").height(h-100);
- 					$("#addDiv").width(180);
+ 			    	
  					
  			    	$("#list").width(200);
  			    	$(".listClass").hide();
  				    $(currentNode).parent().show();
  				    $("#container").show();
+ 				    
+ 				    $("#"+currentCat+"Div").show();
+					$("#"+currentCat+"Div").width(180);
+					$("#"+currentCat+"Div").height(h-100);
+					$("#"+currentCat+"ShowDiv").height(h-140);
+					$("#addDiv").width(180);
  				    
  			 	    $("#addDiv").show();
  			    	tradeChart(copyMap);
