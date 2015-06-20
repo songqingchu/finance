@@ -131,6 +131,23 @@ text-decoration:none;
 </c:forEach>
 </div>
 
+<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid;display:none;position:relative" div="ratio" class="listClass"  id="ratioDiv">
+<b>HOLDER</b><br><br>
+<c:forEach var="s" items="${ratio}">  
+     <span  class="ratioSymbol symbol ${s.getPosition()}" style="width:180px;float:left;"  symbol="${s.getSymbol()}" >
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position}" id="${s.symbol}" cat="ratio" name="${s.name}"  category="${s.category}" rate="${s.ratePercentHighLight}">
+       ${s.category}-${s.htName}&nbsp;${s.ratePercentHighLight}
+     </a>
+     
+     <c:if test="${sessionScope.root==true}">
+     <a href="#" class="operate delA">删</a>
+     <a href="#" class="operate removeA">移</a>   
+     </c:if>
+     </span>
+
+</c:forEach>
+</div>
+
 <div style="width:180px;float:left;margin-left: 10px" id="addDiv"  class="listClass">
 
 <c:if test="${root==true}">
@@ -519,13 +536,13 @@ text-decoration:none;
 	    if(event.keyCode == 33||event.keyCode == 34){
 	    	if(event.keyCode == 33) {
                if(currentCatIndex==1){
-            	   currentCatIndex=6;
+            	   currentCatIndex=7;
                }else{
             	   currentCatIndex--;
                }
 		    }
 	    	if(event.keyCode == 34) {
-	    	   if(currentCatIndex==6){
+	    	   if(currentCatIndex==7){
 	    		   currentCatIndex=1;
 	           }else{
 	        	   currentCatIndex++;
@@ -549,11 +566,11 @@ text-decoration:none;
 	    	}
             /*if(currentCatIndex==6){
             	currentCat='cb';
-            }
-            if(currentCatIndex==7){
-            	currentCat='ratio';
-            } */
+            }*/
             if(currentCatIndex==6){
+            	currentCat='ratio';
+            } 
+            if(currentCatIndex==7){
             	currentCat='cb';
             }
 
@@ -565,7 +582,7 @@ text-decoration:none;
 	 	   $("#"+currentCat+"Symbol").css("background-color","red");
 	 	   $(".symbol").css("display","none");
 	 	   $("."+currentCat+"Symbol").attr("style","display:block;width:180px;float:left;");
-	 	  
+	 	  $("#list").width(200);
 	 	   $(".listClass").hide();
 	 	   $("#addDiv").show();
 		   $("#container").show();
