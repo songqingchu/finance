@@ -149,7 +149,7 @@ text-decoration:none;
    setWidth('av10Div',av10Size);
    setWidth('bigDiv',bigSize);
    setWidth('tpDiv',tpSize);
-   //setWidth('ratio',acvuSize);
+   setWidth('ratio',ratioSize);
    setWidth('cbDiv',cbSize);
    
    function setWidth(id,size){
@@ -181,7 +181,7 @@ text-decoration:none;
    if(realTime==1){
 	   setTimeout('myrefresh()',interval);  
 	   $(".operate").hide();
-	   //$(".listClass").width(180);
+	   $(".listClass").width(200);
 	   $("#addDiv").show();
 	   
    }else{

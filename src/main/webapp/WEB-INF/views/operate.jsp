@@ -247,7 +247,7 @@ text-decoration:none;
    setWidth('av10Div',av10Size);
    setWidth('bigDiv',bigSize);
    setWidth('tpDiv',tpSize);
-   //setWidth('ratio',acvuSize);
+   setWidth('ratio',ratioSize);
    setWidth('cbDiv',cbSize);
    
    init();
@@ -303,7 +303,9 @@ text-decoration:none;
    
    function setWidth(id,size){
 	   var a=Math.floor(size/30)+1;
-	   $("#"+id).width(a*180);
+	   $("#"+id).width(1*200);
+	  // $("#"+id).width( windowWidth);
+	  
    }
    
    function getParam(name)
