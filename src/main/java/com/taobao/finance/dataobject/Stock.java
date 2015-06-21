@@ -589,10 +589,16 @@ public class Stock implements Comparable<Stock> {
 			}
 			if(rate<-0.06){
 				String s=FetchUtil.formatRatePercent(rate);
-				s="<font color=blue><b>"+s+"</b></font>";
+				s="<font color=green><b>"+s+"</b></font>";
+				return s;
+			}else if(rate>=-0.06&&rate<=0){
+				String s=FetchUtil.formatRatePercent(rate);
+				s="<font>"+s+"</font>";
 				return s;
 			}else{
-				return FetchUtil.formatRatePercent(rate);
+				String s=FetchUtil.formatRatePercent(rate);
+				s="<font color=red>"+s+"</font>";
+				return s;
 			}
 			
 		}else{

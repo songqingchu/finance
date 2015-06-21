@@ -1162,28 +1162,28 @@ public class StockController {
         String zhs="";
         String chs="";
         
-        if(sh.getRealRate()>0){
-        	shs="<b><font color=red>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        if(sh.getRealRate()<0){
+        	shs="<b><font color=red>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/up2.png'>&nbsp;&nbsp;";
         }else{
-        	shs="<b><font color=green>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        	shs="<b><font color=green>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/dn2.png'>&nbsp;&nbsp;";
         }
         
         if(sz.getRealRate()>0){
-        	szs="<b><font color=red>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        	szs="<b><font color=red>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRate())+"</font></b><img src='resources/pic/up2.png'>&nbsp;&nbsp;";
         }else{
-        	szs="<b><font color=green>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        	szs="<b><font color=green>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRate())+"</font></b><img src='resources/pic/dn2.png'>&nbsp;&nbsp;";
         }
         
         if(zh.getRealRate()>0){
-        	zhs="<b><font color=red>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        	zhs="<b><font color=red>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRate())+"</font></b><img src='resources/pic/up2.png'>&nbsp;&nbsp;";
         }else{
-        	zhs="<b><font color=green>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        	zhs="<b><font color=green>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRate())+"</font></b><img src='resources/pic/dn2.png'>&nbsp;&nbsp;";
         }
         
         if(ch.getRealRate()>0){
-        	chs="<b><font color=red>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        	chs="<b><font color=red>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRate())+"</font></b><img src='resources/pic/up2.png'>&nbsp;&nbsp;";
         }else{
-        	chs="<b><font color=green>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        	chs="<b><font color=green>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRate())+"</font></b><img src='resources/pic/dn2.png'>&nbsp;&nbsp;";
         }
 
         

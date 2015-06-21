@@ -433,8 +433,19 @@ text-decoration:none;
    
    
    $(document).keydown(function(event){ 
-	    
-	    
+
+	   if(event.key == 'BrowserForward'){
+	    	event.preventDefault(); 
+		    event.stopPropagation();
+		    if(!r){
+		    	r=true;
+		    	setInterval('fresh()',3000);  
+		    }else{
+		    	r=false;
+		    	window.location.reload(); 
+		    } 
+		}
+		
 	    //普通
 	    if(event.keyCode == 188){
 	    	event.stopPropagation(); 

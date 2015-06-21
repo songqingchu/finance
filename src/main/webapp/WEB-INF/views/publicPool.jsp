@@ -260,6 +260,20 @@ text-decoration:none;
 			}
 		}); 
    });
+   
+   $(document).keydown(function(event){ 
+	   if(event.key == 'BrowserForward'){
+	    	event.preventDefault(); 
+		    event.stopPropagation();
+		    if(!r){
+		    	r=true;
+		    	setInterval('fresh()',3000);  
+		    }else{
+		    	r=false;
+		    	window.location.reload(); 
+		    } 
+		}
+	}); 
    /* 
    $(document).keydown(function(event){ 
 	    event.stopPropagation(); 

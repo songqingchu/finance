@@ -60,9 +60,20 @@ ${sessionScope.isWorking}&nbsp;${sessionScope.downloaded}&nbsp;${sessionScope.ch
 <script>
 
 
+var r=false;
+
 fresh();
 
+
+
+
+
+
 function fresh(){
+ 	/* $("#shang").html("");
+    $("#shen").html("");
+    $("#chuang").html("");
+    $("#zhong").html("");  */
 	
 	$.ajax({
 		type : "get",
