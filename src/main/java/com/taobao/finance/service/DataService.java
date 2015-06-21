@@ -27,6 +27,7 @@ import com.taobao.finance.check.impl.Check_BigTrend;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
+import com.taobao.finance.entity.GRecord;
 import com.taobao.finance.entity.GStock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
@@ -60,13 +61,15 @@ public class DataService {
 		return name;
 	}
 
-	public static Map<String, Object> mockStats(Integer id) throws IOException,
+	public static Map<String, Object> mockStats(Integer id,List<GRecord> mine) throws IOException,
 			ParseException {
 		Map<String, Object> m = new HashMap<String, Object>();
-		List<StatsDO> mine = readChart(id);
+		//List<StatsDO> mine = readChart(id);
 		DateFormat df = new SimpleDateFormat("yyyy.MM.dd");
 		if (mine.size() > 0) {
-			Date startDate = df.parse(mine.get(0).getDate());
+			
+			
+			Date startDate =mine.get(0).getDate();
 			List<StatsDO> sh = readIndex(startDate, null, "sh000001");
 			List<StatsDO> sz = readIndex(startDate, null, "sz399001");
 			List<StatsDO> ch = readIndex(startDate, null, "sz399006");
@@ -87,11 +90,11 @@ public class DataService {
 			List<Float> yyRate = new ArrayList<Float>();
 			List<Float> ysRate = new ArrayList<Float>();
 
-			for (StatsDO s : mine) {
-				dList.add(s.getDate());
-				mL.add(s.getvRate() / 1F - 100);
+			for (GRecord s : mine) {
+				dList.add(df.format(s.getDate()));
+				mL.add(s.getRate() / 100F - 100);
 
-				Date endDate = StatsDO.df.parse(s.getDate());
+				Date endDate = s.getDate();
 				Calendar c = Calendar.getInstance();
 				c.setTime(startDate);
 				long time1 = c.getTimeInMillis();
@@ -101,13 +104,13 @@ public class DataService {
 				if (dayCount == 0) {
 					year.add(20F);
 				} else {
-					Float yearV = (s.getvRate() / 1.0F - 100) * 365 / dayCount;
+					Float yearV = (s.getRate() / 100F - 100) * 365 / dayCount;
 					year.add(yearV);
 				}
 
 				sRate.add(s.getsRate() / 100F);
-				r.add(s.getR() / 100F);
-				pRate.add(s.getpRate() / 100F);
+				r.add(s.getR() / 1F);
+				pRate.add(s.getpRate() / 1F);
 				yRate.add(s.getyRate() / 100F);
 				yyRate.add(s.getYyRate() / 100F);
 				ysRate.add(s.getYsRate() / 100F);

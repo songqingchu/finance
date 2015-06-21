@@ -35,15 +35,16 @@ import com.taobao.finance.common.Store;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GPublicStock;
+import com.taobao.finance.entity.GRecord;
 import com.taobao.finance.entity.GStock;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.entity.GXing;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
-import com.taobao.finance.fetch.impl.Fetch_Holders;
 import com.taobao.finance.fetch.impl.Fetch_ShiZhi;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 import com.taobao.finance.service.DataService;
 import com.taobao.finance.service.GPublicStockService;
+import com.taobao.finance.service.GRecordService;
 import com.taobao.finance.service.GStockService;
 import com.taobao.finance.service.GTaskService;
 import com.taobao.finance.service.GXingService;
@@ -72,6 +73,10 @@ public class StockController {
 	private DataService dataService;
 	@Autowired
 	private GStockService gStockService;
+	@Autowired
+	private GRecordService gRecordService;
+	
+	
 	
 	
 	@RequestMapping(value = "/rixing.do", method = RequestMethod.GET)
@@ -286,13 +291,14 @@ public class StockController {
 	public String record(HttpServletRequest request) throws IOException, ParseException {
 		logger.info("request:view record");
 		GUser user=(GUser) request.getSession().getAttribute("user");
-		List<StatsDO> l=DataService.getRecords(user.getId());
+		List<GRecord> l=this.gRecordService.queryAll(user.getId());
+		//List<StatsDO> l=DataService.getRecords(user.getId());
 		if(l.size()>0){
-			StatsDO d=l.get(l.size()-1);
+			GRecord d=l.get(l.size()-1);
 			d.setLast(true);
 			request.setAttribute("t", d);
-			Integer lastVRate=d.getvRate();
-			Integer value=d.getValue();
+			Integer lastVRate=d.getRate();
+			Integer value=d.getMoney();
 			request.setAttribute("lastValue", value);
 			request.setAttribute("lastVRate", lastVRate);
 		}		
@@ -350,7 +356,37 @@ public class StockController {
 		d.setNsRate((int)(nsr*100F));
 		
 		GUser user=(GUser) request.getSession().getAttribute("user");
-		File f = new File(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");  
+		
+		GRecord g=new GRecord();
+		g.setDate(FetchUtil.FILE_FORMAT.parse(date));
+		g.setMoney(value);
+		g.setModi(change);
+		g.setRate((value-change)*lastVRate/lastValue);
+		g.setAyc(ayc);
+		g.setAsc(asc);
+		g.setNyc(nyc);
+		g.setNsc(nsc);
+		
+		g.setAyv(ayv);
+		g.setAsv(asv);
+		g.setNyv(nyv);
+		g.setNsv(nsv);
+		
+		g.setAyp(ayp);
+		g.setAsp(asp);
+		g.setNyp(nyp*100/value);
+		g.setNsp(nsp*100/value);
+		
+		g.setAyr((int)(ayr*100F));
+		g.setAsr((int)(asr*100F));
+		g.setNyr((int)(nyr*100F));
+		g.setNsr((int)(nsr*100F));
+		g.setUser(user.getId());
+		
+		this.gRecordService.insert(g);
+		
+		
+		/*File f = new File(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");  
 		if(!f.exists()){
 			FetchUtil.createFile(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");
 			BufferedWriter br=new BufferedWriter(new FileWriter(f,true));
@@ -364,7 +400,7 @@ public class StockController {
 			String line=d.toFileString();
 			br.write(line+"\n");
 			br.close();
-		}
+		}*/
 		response.sendRedirect(request.getContextPath() + "/record.do");  
 		return null;
 	}
@@ -410,7 +446,8 @@ public class StockController {
 	public Map<String, Object> statsData(HttpServletRequest request) throws IOException, ParseException {
 		logger.info("request:get stats data");
 		GUser user=(GUser) request.getSession().getAttribute("user");
-		Map<String,Object> m=DataService.mockStats(user.getId());
+		List<GRecord> list=this.gRecordService.queryAll(user.getId());
+		Map<String,Object> m=DataService.mockStats(user.getId(),list);
 		return m;
 	}
 	
@@ -420,8 +457,8 @@ public class StockController {
 	public String stats(HttpServletRequest request) throws IOException, ParseException {
 		logger.info("request:view stats chart");
 		GUser user=(GUser) request.getSession().getAttribute("user");
-		File f = new File(FetchUtil.FILE_USER_STATS_BASE+user.getId()+".csv");  
-		if(!f.exists()){
+		List<GRecord> list=this.gRecordService.queryAll(user.getId());  
+		if(list.size()<0){
 			request.setAttribute("exist", false);
 		}else{
 			request.setAttribute("exist", true);

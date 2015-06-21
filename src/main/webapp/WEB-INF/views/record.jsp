@@ -6,10 +6,6 @@
 <head>
 <meta charset="utf-8">
 <title>逐日钉市-赌博者之路</title>
-<script src="/resources/js/jquery.min.js" type="text/javascript"></script>
-<script src="/resources/js/highstock.js"></script>
-<script src="/resources/js/chartExt.js"></script>
-<script src="/resources/js/jquery-ui.js"></script>
 
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="/resources/js/jquery.dataTables.js"></script>
@@ -71,21 +67,21 @@ td {
 				<tbody id="recordTableBody" >
 				<c:forEach var="d" items="${data}">  
 				<tr>
-				       <td>${d.date}</td>
-				       <td>${d.value}</td>
-				       <td>${d.change}</td>
-				       <td>${d.ayCount}</td>
-				       <td>${d.asCount}</td>
-				       <td>${d.nyCount}</td>
-				       <td>${d.nsCount}</td>
-				       <td>${d.ayValue}</td>
-				       <td>${d.asValue}</td>
-				       <td>${d.nyValue}</td>
-				       <td>${d.nsValue}</td>
-				       <td>${d.ayPosition}</td>
-				       <td>${d.asPosition}</td>
-				       <td>${d.nyPosition}</td>
-				       <td>${d.nsPosition}</td>
+				       <td>${d.dateFormat}</td>
+				       <td>${d.money}</td>
+				       <td>${d.modi}</td>
+				       <td>${d.ayc}</td>
+				       <td>${d.asc}</td>
+				       <td>${d.nyc}</td>
+				       <td>${d.nsc}</td>
+				       <td>${d.ayv}</td>
+				       <td>${d.asv}</td>
+				       <td>${d.nyv}</td>
+				       <td>${d.nsv}</td>
+				       <td>${d.ayp}</td>
+				       <td>${d.asp}</td>
+				       <td>${d.nyp}</td>
+				       <td>${d.nsp}</td>
 				       <td>${d.ayRateFormat}</td>
 				       <td>${d.asRateFormat}</td>
 				       <td>${d.nyRateFormat}</td>
@@ -100,24 +96,24 @@ td {
 				<c:if test="${size>0}">
 				<tr>
 				       <td></td>
-				       <td><a href="#" toId="value" value="${t.value}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="v" v="${t.money}" class="tianchong">填充</a></td>
 				       <td></td>
-				       <td><a href="#" toId="ayc" value="${t.ayCount}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="asc" value="${t.asCount}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="nyc" value="${t.nyCount}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="nsc" value="${t.nsCount}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="ayv" value="${t.ayValue}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="asv" value="${t.asValue}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="nyv" value="${t.nyValue}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="nsv" value="${t.nsValue}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="ayp" value="${t.ayPosition}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="asp" value="${t.asPosition}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="nyp" value="${t.nyPosition}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="nsp" value="${t.nsPosition}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="ayr" value="${t.ayRateFormat}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="asr" value="${t.asRateFormat}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="nyr" value="${t.nyRateFormat}" class="tianchong">填充</a></td>
-				       <td><a href="#" toId="nsr" value="${t.nsRateFormat}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="ayc" v="${t.ayc}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="asc" v="${t.asc}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="nyc" v="${t.nyc}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="nsc" v="${t.nsc}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="ayv" v="${t.ayv}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="asv" v="${t.asv}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="nyv" v="${t.nyv}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="nsv" v="${t.nsv}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="ayp" v="${t.ayp}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="asp" v="${t.asp}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="nyp" v="${t.nyp}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="nsp" v="${t.nsp}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="ayr" v="${t.ayRateFormat}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="asr" v="${t.asRateFormat}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="nyr" v="${t.nyRateFormat}" class="tianchong">填充</a></td>
+				       <td><a href="#" toId="nsr" v="${t.nsRateFormat}" class="tianchong">填充</a></td>
 				</tr>
 				</c:if>
 				</tbody>
@@ -130,6 +126,38 @@ td {
 </div>
 <jsp:include page="common/foot.jsp" flush="true"/>
 </body>
+
+
+<script>
+var r=false;
+fresh();
+function fresh(){
+ 	/* $("#shang").html("");
+    $("#shen").html("");
+    $("#chuang").html("");
+    $("#zhong").html("");  */
+	
+	$.ajax({
+		type : "get",
+		async : true, //同步执行
+		//"/addPublicPool.do?replace=false&symbols="+symbol+"-"+type,
+		url : "/indexReal.do",
+		dataType : "json", //返回数据形式为json
+		success : function(result) {
+			if (result) {
+               $("#shang").html(result.sh);
+               $("#shen").html(result.sz);
+               $("#chuang").html(result.ch);
+               $("#zhong").html(result.zh);
+			}
+		},
+		error : function(errorMsg) {
+		}
+	});
+}
+</script>
+
+
 <script>
 var newNode=false; 
 $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
@@ -176,7 +204,7 @@ $("#cancelButton").click(function(){
 
 $(".tianchong").click(function(){
     var target=$(this).attr("toId");
-    var val=$(this).attr("value");
+    var val=$(this).attr("v");
     $("#"+target).val(val);
 });
 

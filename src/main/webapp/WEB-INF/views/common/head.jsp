@@ -2,10 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 <script src="/resources/js/jquery.min.js" type="text/javascript"></script>
 <script src="/resources/js/highstock.js"></script>
 <script src="/resources/js/chartExt.js"></script>
-<script src="/resources/js/layer/layer.js"></script>
+<script src="/resources/js/jquery-ui.js"></script>
+
 <style type="text/css">
 .choose .symbolA{
 cursor:pointer;
@@ -57,42 +59,4 @@ ${sessionScope.isWorking}&nbsp;${sessionScope.downloaded}&nbsp;${sessionScope.ch
 <hr style="color:blue;" size="1px">
 </div>
 
-<script>
 
-
-var r=false;
-
-fresh();
-
-
-
-
-
-
-function fresh(){
- 	/* $("#shang").html("");
-    $("#shen").html("");
-    $("#chuang").html("");
-    $("#zhong").html("");  */
-	
-	$.ajax({
-		type : "get",
-		async : true, //同步执行
-		//"/addPublicPool.do?replace=false&symbols="+symbol+"-"+type,
-		url : "/indexReal.do",
-		dataType : "json", //返回数据形式为json
-		success : function(result) {
-			if (result) {
-               $("#shang").html(result.sh);
-               $("#shen").html(result.sz);
-               $("#chuang").html(result.ch);
-               $("#zhong").html(result.zh);
-			}
-		},
-		error : function(errorMsg) {
-		}
-	});
-}
-
-
-</script>
