@@ -7,10 +7,6 @@
 <meta charset="utf-8">
 <title>操作</title>
 
-<script src="/resources/js/jquery.min.js" type="text/javascript"></script>
-<script src="/resources/js/highstock.js"></script>
-<script src="/resources/js/chartExt.js"></script>
-<script src="/resources/js/jquery-ui.js"></script>
 <style type="text/css">
 .choose .symbolA{
 cursor:pointer;
