@@ -29,7 +29,6 @@ import org.htmlparser.util.NodeList;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonArray;
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
@@ -118,6 +117,28 @@ public class FetchUtil {
 			return null;
 		}
 		return stock;
+
+	}
+	
+	public static Map<String,String> parseShiZhi(String s) {
+		DecimalFormat df = new DecimalFormat("#.00");
+		Map<String,String> m=new HashMap<String,String>();
+		try{
+		JSONArray a=(JSONArray)JSON.parse(s);
+		int size=a.size();
+		for(int i=0;i<size;i++){
+			JSONObject o=(JSONObject)a.get(i);
+			String symbol=o.getString("symbol");
+			String value=o.getString("nmc");
+			Float f=Float.parseFloat(value);
+			f=f/10000;
+			String newValue=df.format(f);
+			m.put(symbol, newValue);
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return m;
 
 	}
 	

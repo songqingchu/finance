@@ -19,6 +19,7 @@ public class GStock {
 	private Integer change;
 	private String record;
 	private Integer id;
+	private String liuTong;
 	
 	
 	@Id
@@ -38,6 +39,14 @@ public class GStock {
 	}
 	public void setRecord(String record) {
 		this.record = record;
+	}
+	
+	@Column(name = "liutong")
+	public String getLiuTong() {
+		return liuTong;
+	}
+	public void setLiuTong(String liuTong) {
+		this.liuTong = liuTong;
 	}
 
 	@Column(name = "symbol")

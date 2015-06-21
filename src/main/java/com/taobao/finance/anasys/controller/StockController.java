@@ -40,6 +40,8 @@ import com.taobao.finance.entity.GUser;
 import com.taobao.finance.entity.GXing;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_Holders;
+import com.taobao.finance.fetch.impl.Fetch_ShiZhi;
+import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 import com.taobao.finance.service.DataService;
 import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.GStockService;
@@ -151,6 +153,15 @@ public class StockController {
 	@RequestMapping(value = "/holders.do", method = RequestMethod.GET)
 	public String holders(HttpServletRequest request) {
 		
+		
+		Map<String,String> m=Fetch_ShiZhi.fetch();
+		for(String sy:m.keySet()){
+			GStock s=store.holderMap.get(sy);
+			if(s!=null){
+				s.setLiuTong(m.get(sy));
+				this.gStockService.update(s);
+			}
+		}
 		/*List<GStock> l=Fetch_Holders.getAll(null);
 		
 		//Map<String,GStock> m=
@@ -1132,6 +1143,54 @@ public class StockController {
         	this.gPublicStockService.delete(ps);
         	this.store.reloadPublicStock();
         }
+		return m;
+	}
+	
+	
+	@RequestMapping(value = "/indexReal.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> indexReal(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		Map<String,Object> m=new HashMap<String,Object>();	
+		logger.info("request:remove from public pool");
+        Stock sh=Fetch_SingleStock_Sina.fetch("sh000001");
+        Stock sz=Fetch_SingleStock_Sina.fetch("sz399001");
+        Stock zh=Fetch_SingleStock_Sina.fetch("sz399101");
+        Stock ch=Fetch_SingleStock_Sina.fetch("sz399006");
+        
+        String shs="";
+        String szs="";
+        String zhs="";
+        String chs="";
+        
+        if(sh.getRealRate()>0){
+        	shs="<b><font color=red>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        }else{
+        	shs="<b><font color=green>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        }
+        
+        if(sz.getRealRate()>0){
+        	szs="<b><font color=red>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        }else{
+        	szs="<b><font color=green>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        }
+        
+        if(zh.getRealRate()>0){
+        	zhs="<b><font color=red>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        }else{
+        	zhs="<b><font color=green>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        }
+        
+        if(ch.getRealRate()>0){
+        	chs="<b><font color=red>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        }else{
+        	chs="<b><font color=green>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRealRate())+"</font></b>&nbsp;&nbsp;";
+        }
+
+        
+        m.put("sh", shs);
+        m.put("sz", szs);
+        m.put("zh", zhs);
+        m.put("ch", chs);
 		return m;
 	}
 	

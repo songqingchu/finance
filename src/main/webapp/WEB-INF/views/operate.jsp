@@ -6,10 +6,7 @@
 <head>
 <meta charset="utf-8">
 <title>操作</title>
-<script src="/resources/js/jquery.min.js" type="text/javascript"></script>
-<script src="/resources/js/highstock.js"></script>
-<script src="/resources/js/chartExt.js"></script>
-<script src="/resources/js/layer/layer.js"></script>
+
 
 <style type="text/css">
 .choose .symbolA{
@@ -208,6 +205,8 @@ text-decoration:none;
 <jsp:include page="common/foot.jsp" flush="true"/>
 </body>
 <script>
+
+
    var windowWidth=$(window).width();
    var windowHight=$(window).height();
    var w=windowWidth-290;
@@ -432,11 +431,12 @@ text-decoration:none;
    
    
    $(document).keydown(function(event){ 
-	    event.stopPropagation(); 
-	    event.preventDefault();
+	    
 	    
 	    //普通
 	    if(event.keyCode == 188){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
 	    	$.ajax({
 				type : "get",
 				async : true,
@@ -461,6 +461,8 @@ text-decoration:none;
 	    }
 	    //关注
         if(event.keyCode == 190){
+        	event.stopPropagation(); 
+    	    event.preventDefault();
         	$.ajax({
 				type : "get",
 				async : true,
@@ -485,6 +487,8 @@ text-decoration:none;
 	    }
 	    //超级关注
         if(event.keyCode == 191){
+        	event.stopPropagation(); 
+    	    event.preventDefault();
         	$.ajax({
 				type : "get",
 				async : true,
@@ -510,6 +514,8 @@ text-decoration:none;
 	    
 	    //删除股票
 	    if(event.keyCode == 46){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
 	    	var nodeNow=null;
 	        var prevNode=currentNode;
 	        if($(currentNode).hasClass("tail")){
@@ -546,17 +552,23 @@ text-decoration:none;
 	    
 	    //刷新实时行情，像是当前股票
 	    if(event.keyCode == 82){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
 	    	window.location="operate.do?currentCat="+currentCat+"&currentSymbol="+currentSymbol;
 	    }
 	    
 	    //回到页面，刷新行情
 	    if(event.keyCode == 116){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
 	    	window.location="operate.do?currentCat=&currentSymbol=";
 	    }
 	    
 	    
 	    //切换分类
 	    if(event.keyCode == 33||event.keyCode == 34){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
 	    	if(event.keyCode == 33) {
                if(currentCatIndex==1){
             	   currentCatIndex=7;
@@ -621,6 +633,8 @@ text-decoration:none;
 	    
 	    //缩放K线图
 	    if(event.keyCode == 38||event.keyCode == 40){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
 	    	if(event.keyCode == 38) {
 		    	start=start+40;
 		    }
@@ -645,9 +659,13 @@ text-decoration:none;
 	    	tradeChart(copyMap);
 	    }
 	    
-	    
+	    /* if(event.keyCode == 38||event.keyCode == 40){
+	    	alert(event.keyCode);
+	    } */
 	    //前后键，上一条，下一条
 	    if(event.keyCode == 37||event.keyCode == 39){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
 	    	var children=$(currentNode).parent().prev().children();
 	    	var nodeNow=null;
 	        if(event.keyCode == 37) {

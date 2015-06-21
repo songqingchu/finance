@@ -328,9 +328,10 @@ a {
    });
    
    $(document).keydown(function(event){ 
-	    event.preventDefault(); 
-	    event.stopPropagation(); 
-	    if(event.keyCode == 17){
+	     
+	    if(event.keyCode == 166){
+	    	event.preventDefault(); 
+		    event.stopPropagation();
 	    	var symbol=$(currentNode).attr("symbol");
 	    	var type=$(currentNode).attr("type");
 	    	
@@ -352,6 +353,8 @@ a {
 	    });
 	    }
 	    if(event.keyCode == 33||event.keyCode == 34){
+	    	event.preventDefault(); 
+		    event.stopPropagation();
 	    	if(event.keyCode == 33) {
                if(currentCatIndex==1){
             	   currentCatIndex=8
@@ -405,6 +408,8 @@ a {
 	    }	
 	    
 	    if(event.keyCode == 38||event.keyCode == 40){
+	    	event.preventDefault(); 
+		    event.stopPropagation();
 	    	if(event.keyCode == 38) {
 	    		if(start+40<total){
 	    			start=start+40;
@@ -446,6 +451,8 @@ a {
 	    
 	    
 	    if(event.keyCode == 37||event.keyCode == 39){
+	    	event.preventDefault(); 
+		    event.stopPropagation();
 	    	var nodeNow=null;
 	        if(event.keyCode == 37) {
 	        	if($(currentNode).hasClass("head")){

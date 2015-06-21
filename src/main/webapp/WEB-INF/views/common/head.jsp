@@ -2,7 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
+<script src="/resources/js/jquery.min.js" type="text/javascript"></script>
+<script src="/resources/js/highstock.js"></script>
+<script src="/resources/js/chartExt.js"></script>
+<script src="/resources/js/layer/layer.js"></script>
 <style type="text/css">
 .choose .symbolA{
 cursor:pointer;
@@ -42,7 +45,41 @@ ${user.userName},<a href="loginOut.do?force=false">退出</a>  &nbsp;
 ${sessionScope.isWorking}&nbsp;${sessionScope.downloaded}&nbsp;${sessionScope.choosen}
 </b>
 </c:if>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<span id="shang"></span>
+<span id="shen"></span>
+<span id="zhong"></span>
+<span id="chuang"></span>
+
 </span>
 <hr style="color:blue;" size="1px">
 </div>
 
+<script>
+
+
+fresh();
+
+function fresh(){
+	
+	$.ajax({
+		type : "get",
+		async : true, //同步执行
+		//"/addPublicPool.do?replace=false&symbols="+symbol+"-"+type,
+		url : "/indexReal.do",
+		dataType : "json", //返回数据形式为json
+		success : function(result) {
+			if (result) {
+               $("#shang").html(result.sh);
+               $("#shen").html(result.sz);
+               $("#chuang").html(result.ch);
+               $("#zhong").html(result.zh);
+			}
+		},
+		error : function(errorMsg) {
+		}
+	});
+}
+
+
+</script>

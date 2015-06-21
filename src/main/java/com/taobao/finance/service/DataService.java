@@ -300,7 +300,7 @@ public class DataService {
 		if (store.holderMap.containsKey(symbol)) {
 			String record = store.holderMap.get(symbol).getRecord();
 			if (StringUtils.isNotBlank(record)) {
-				String content = "<b>股东户数<b><br><br>";
+				String content = "<b>股东户数<b>&nbsp;&nbsp;&nbsp;流通:"+store.holderMap.get(symbol).getLiuTong()+"亿<br><br><br>";
 				String[] res = StringUtils.split(record, ";");
 				Map<String, List<Integer>> ma = new HashMap<String, List<Integer>>();
 				List<String> yearList = new ArrayList<String>();
