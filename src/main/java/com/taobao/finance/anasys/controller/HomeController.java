@@ -28,7 +28,7 @@ public class HomeController {
 	@Autowired
 	private GUserService gUserService;
 	
-	@RequestMapping(value = "/gotoRegister.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/gotoRegister1.do", method = RequestMethod.GET)
 	public String gotoRegister() {
 		return "register";
 	}
@@ -70,7 +70,7 @@ public class HomeController {
 		}
 	}
 	
-	@RequestMapping(value = "/register.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/register1.do", method = RequestMethod.POST)
 	public String register(HttpServletRequest request,HttpServletResponse response,
 			@RequestParam String userName,@RequestParam String passWord) throws IOException {
 		boolean success=false;
