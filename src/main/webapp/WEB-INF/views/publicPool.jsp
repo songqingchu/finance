@@ -104,6 +104,18 @@ text-decoration:none;
 </c:forEach>
 </div>
 
+<div style="width:180px;float:left;overflow-y:auto;overflow-x:hidden;border:0px solid" div="cb" class="listClass"  id="holderDiv">
+<b>HOLDER</b><br><br>
+<c:forEach var="s" items="${ratio}">  
+     <span  class="holderSymbol symbol" style="width:180px;float:left;">
+     <a href="#" symbol="${s.symbol}" class="symbolA ${s.position} }" id="${s.symbol}">
+        ${s.category}-${s.htName}&nbsp;${s.ratePercentHighLight}
+     </a>
+     </span>
+
+</c:forEach>
+</div>
+
 <br>
 
 </div>
@@ -120,16 +132,44 @@ text-decoration:none;
 <jsp:include page="common/foot.jsp" flush="true"/>
 </body>
 <script>
+var r=false;
+fresh();
+function fresh(){
+ 	/* $("#shang").html("");
+    $("#shen").html("");
+    $("#chuang").html("");
+    $("#zhong").html("");  */
+	
+	$.ajax({
+		type : "get",
+		async : true, //同步执行
+		//"/addPublicPool.do?replace=false&symbols="+symbol+"-"+type,
+		url : "/indexReal.do",
+		dataType : "json", //返回数据形式为json
+		success : function(result) {
+			if (result) {
+               $("#shang").html(result.sh);
+               $("#shen").html(result.sz);
+               $("#chuang").html(result.ch);
+               $("#zhong").html(result.zh);
+			}
+		},
+		error : function(errorMsg) {
+		}
+	});
+}
+</script>
+<script>
    var windowWidth=$(window).width();
    var windowHight=$(window).height();
    var w=windowWidth-290;
    var h=windowHight*0.8;
-   $("#container").width(w);
-   $("#container").height(h);
+   //$("#container").width(w);
+   //$("#container").height(h);
    //$("#list").height(h);
    
    $("#listDiv").height(h-80);
-   $("#addDiv").height(50);
+  // $("#addDiv").height(50);
    
    var head=$(".head").get(0);
    var tail=$(".tail").get(0);
@@ -153,12 +193,26 @@ text-decoration:none;
    setWidth('av10Div',av10Size);
    setWidth('bigDiv',bigSize);
    setWidth('tpDiv',tpSize);
-   setWidth('ratio',ratioSize);
+   setWidth('ratioDiv',ratioSize);
    setWidth('cbDiv',cbSize);
    
+   
+   function setHight(size){
+	   var a=Math.floor(size/50)+1;
+	   $("#"+id).width(a*170);
+	   /* $(".listClass").width(170);
+	   if(size>30){
+		   $(".listClass").width(340);
+	   } */
+   }
+   
    function setWidth(id,size){
-	   var a=Math.floor(size/30)+1;
-	   $("#"+id).width(a*190);
+	  // var a=Math.floor(size/50)+1;
+	  // $("#"+id).width(a*170);
+	   $(".listClass").width(170);
+	   /* if(size>30){
+		   $(".listClass").width(340);
+	   }  */
    }
    
    function getParam(name)
@@ -185,7 +239,7 @@ text-decoration:none;
    if(realTime==1){
 	   setTimeout('myrefresh()',interval);  
 	   $(".operate").hide();
-	   $(".listClass").width(200);
+	  // $(".listClass").width(200);
 	   $("#addDiv").show();
 	   
    }else{

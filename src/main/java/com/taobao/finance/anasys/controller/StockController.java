@@ -40,6 +40,7 @@ import com.taobao.finance.entity.GStock;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.entity.GXing;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.fetch.impl.Fetch_ServeralStock_Sina;
 import com.taobao.finance.fetch.impl.Fetch_ShiZhi;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 import com.taobao.finance.service.DataService;
@@ -542,7 +543,11 @@ public class StockController {
 			symbolList.add(s.getSymbol());
 		}
 		set.addAll(symbolList);
-		List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
+		String symbols="";
+		symbols=StringUtils.join(set,",");
+		List<Stock> newL=Fetch_ServeralStock_Sina.fetch(symbols);
+		
+		/*List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
 		List<Callable<Object>> callList=new ArrayList<Callable<Object>>();
 		for(List<Object> sys:symbolTaskList){
 			callList.add(new RealTask(sys));
@@ -551,13 +556,14 @@ public class StockController {
         List<Object> r=threadService.service(callList);	
         long end=System.currentTimeMillis();
         logger.info("获取实时行情耗时："+(end-start)+"毫秒");
-        List<Stock> result=new ArrayList<Stock>();
+        
         
         for(Object l:r){
         	List<Stock> slice=(List<Stock>)l;
         	result.addAll(slice);
-        }
-        
+        }*/
+		List<Stock> result=new ArrayList<Stock>();
+        result=newL;
         Map<String,Stock> allR=new HashMap<String,Stock>();
         for(Stock s:result){
         	allR.put(s.getSymbol(), s);
@@ -571,6 +577,8 @@ public class StockController {
 		List<Stock> cbs=new ArrayList<Stock>();
 
 		acvu.addAll(other);
+		
+		Set<String> sss=allR.keySet();
 		
 		for(GPublicStock s:acvu){
 			Stock st=allR.get(s.getSymbol());
@@ -593,6 +601,7 @@ public class StockController {
 		}
 		for(GPublicStock s:av5){
 			Stock st=allR.get(s.getSymbol());
+			Stock st2=allR.get("sz002053");
 			if(st!=null){
 				if(s.getConcern()!=null){
 					st.setHtName(st.getName());
@@ -855,7 +864,11 @@ public class StockController {
 			symbolList.add(s.getSymbol());
 		}
 		set.addAll(symbolList);
-		List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
+		String symbols=StringUtils.join(set,",");
+		List<Stock> newL=Fetch_ServeralStock_Sina.fetch(symbols);
+		
+		
+		/*List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
 		List<Callable<Object>> callList=new ArrayList<Callable<Object>>();
 		for(List<Object> sys:symbolTaskList){
 			callList.add(new RealTask(sys));
@@ -865,8 +878,9 @@ public class StockController {
         for(Object l:r){
         	List<Stock> slice=(List<Stock>)l;
         	result.addAll(slice);
-        }
+        }*/
         
+		List<Stock> result=newL;
         Map<String,Stock> allR=new HashMap<String,Stock>();
         for(Stock s:result){
         	allR.put(s.getSymbol(), s);
@@ -1189,10 +1203,12 @@ public class StockController {
 	public Map<String, Object> indexReal(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		Map<String,Object> m=new HashMap<String,Object>();	
 		logger.info("request:remove from public pool");
-        Stock sh=Fetch_SingleStock_Sina.fetch("sh000001");
-        Stock sz=Fetch_SingleStock_Sina.fetch("sz399001");
-        Stock zh=Fetch_SingleStock_Sina.fetch("sz399101");
-        Stock ch=Fetch_SingleStock_Sina.fetch("sz399006");
+		
+		List<Stock> l=Fetch_ServeralStock_Sina.fetch("sh000001,sz399001,sz399101,sz399006");
+        Stock sh=l.get(0);
+        Stock sz=l.get(1);
+        Stock zh=l.get(2);
+        Stock ch=l.get(3);
         
         String shs="";
         String szs="";
@@ -1200,27 +1216,27 @@ public class StockController {
         String chs="";
         
         if(sh.getRealRate()<0){
-        	shs="<b><font color=red>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/up2.png'>&nbsp;&nbsp;";
+        	shs="<b><font color=red>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
         }else{
-        	shs="<b><font color=green>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/dn2.png'>&nbsp;&nbsp;";
+        	shs="<b><font color=green>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
         }
         
         if(sz.getRealRate()>0){
-        	szs="<b><font color=red>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRate())+"</font></b><img src='resources/pic/up2.png'>&nbsp;&nbsp;";
+        	szs="<b><font color=red>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
         }else{
-        	szs="<b><font color=green>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRate())+"</font></b><img src='resources/pic/dn2.png'>&nbsp;&nbsp;";
+        	szs="<b><font color=green>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
         }
         
         if(zh.getRealRate()>0){
-        	zhs="<b><font color=red>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRate())+"</font></b><img src='resources/pic/up2.png'>&nbsp;&nbsp;";
+        	zhs="<b><font color=red>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
         }else{
-        	zhs="<b><font color=green>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRate())+"</font></b><img src='resources/pic/dn2.png'>&nbsp;&nbsp;";
+        	zhs="<b><font color=green>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
         }
         
         if(ch.getRealRate()>0){
-        	chs="<b><font color=red>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRate())+"</font></b><img src='resources/pic/up2.png'>&nbsp;&nbsp;";
+        	chs="<b><font color=red>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
         }else{
-        	chs="<b><font color=green>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRate())+"</font></b><img src='resources/pic/dn2.png'>&nbsp;&nbsp;";
+        	chs="<b><font color=green>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
         }
 
         

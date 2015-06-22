@@ -33,9 +33,11 @@ text-decoration:none;
        ${s.category}-${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
-     <c:if test="${sessionScope.root==true}">
-     <a href="/delFromPublicPool.do?symbol=${s.symbol}" class="operate delA">删</a>
-     <a href="/removeFromPublicPool.do?symbol=${s.symbol}" class="operate removeA">移</a> 
+     <a href="#" class="operate delA">删</a>
+     <c:if test="${sessionScope.root==true}">  
+     <!-- 
+     <a href="#" class="operate removeA">移</a>  
+      -->
      </c:if>
      </span>
 
@@ -52,9 +54,11 @@ text-decoration:none;
        ${s.category}-${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
-     <c:if test="${sessionScope.root==true}">
      <a href="#" class="operate delA">删</a>
+     <c:if test="${sessionScope.root==true}">  
+     <!-- 
      <a href="#" class="operate removeA">移</a>  
+      -->
      </c:if>
      </span>
 
@@ -71,9 +75,11 @@ text-decoration:none;
        ${s.category}-${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
-     <c:if test="${sessionScope.root==true}">
-     <a href="#" class="operate delA">删</a>
+      <a href="#" class="operate delA">删</a>
+     <c:if test="${sessionScope.root==true}">  
+     <!-- 
      <a href="#" class="operate removeA">移</a>  
+      -->
      </c:if>
      </span>
 
@@ -90,9 +96,11 @@ text-decoration:none;
       ${s.category}-${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
-     <c:if test="${sessionScope.root==true}">
-     <a href="#" class="operate delA">删</a>
+      <a href="#" class="operate delA">删</a>
+     <c:if test="${sessionScope.root==true}">  
+     <!-- 
      <a href="#" class="operate removeA">移</a>  
+      -->
      </c:if>
      </span>
 
@@ -109,9 +117,11 @@ text-decoration:none;
        ${s.category}-${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
-     <c:if test="${sessionScope.root==true}">
-     <a href="#" class="operate delA">删</a>
-     <a href="#" class="operate removeA">移</a>     
+      <a href="#" class="operate delA">删</a>
+     <c:if test="${sessionScope.root==true}">  
+     <!-- 
+     <a href="#" class="operate removeA">移</a>  
+      -->
      </c:if>
      </span>
 
@@ -128,9 +138,11 @@ text-decoration:none;
        ${s.category}-${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
-     <c:if test="${sessionScope.root==true}">
-     <a href="#" class="operate delA">删</a>
-     <a href="#" class="operate removeA">移</a>   
+      <a href="#" class="operate delA">删</a>
+     <c:if test="${sessionScope.root==true}">  
+     <!-- 
+     <a href="#" class="operate removeA">移</a>  
+      -->
      </c:if>
      </span>
 
@@ -147,9 +159,11 @@ text-decoration:none;
        ${s.category}-${s.htName}&nbsp;${s.ratePercentHighLight}
      </a>
      
-     <c:if test="${sessionScope.root==true}">
-     <a href="#" class="operate delA">删</a>
-     <a href="#" class="operate removeA">移</a>   
+      <a href="#" class="operate delA">删</a>
+     <c:if test="${sessionScope.root==true}">  
+     <!-- 
+     <a href="#" class="operate removeA">移</a>  
+      -->
      </c:if>
      </span>
 
@@ -464,7 +478,7 @@ function fresh(){
    
    $(document).keydown(function(event){ 
 
-	   if(event.key == 'BrowserForward'){
+	   if(event.key == 'BrowserForward'||event.keyCode == 167){
 	    	event.preventDefault(); 
 		    event.stopPropagation();
 		    if(!r){

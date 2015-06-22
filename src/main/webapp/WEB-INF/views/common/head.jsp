@@ -8,7 +8,7 @@
 <script src="/resources/js/highstock.js"></script>
 <script src="/resources/js/highchart/highcharts.js"></script>
 <script src="/resources/js/chartExt.js"></script>
-
+<script src="/resources/js/layer/layer.js"></script>
 
 <style type="text/css">
 .choose .symbolA{
@@ -25,11 +25,11 @@ color:purple;
 
 <div style="width:100%;border:0" id="head_div">
 <br>
-<span>     
-<a href="record.do">逐日盯市</a> &nbsp;
+<span style="height:20px;v-align:middle;display:block">     
+<a href="record.do">盯市记录</a> &nbsp;
 <a href="stats.do">分析图表</a> &nbsp;
 <a href="publicPool.do">盯市</a> &nbsp;
-<a href="operate.do?currentCat=&currentSymbol=">操作</a> &nbsp;
+<a href="operate.do?currentCat=&currentSymbol=">股票池</a> &nbsp;
 <!-- 
 <a href="history.do">经典</a> &nbsp;
  -->

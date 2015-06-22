@@ -89,12 +89,17 @@ public class FetchUtil {
 	public  void setFILE_STOCK_TMP_BASE(String fILE_STOCK_TMP_BASE) {
 		FILE_STOCK_TMP_BASE = fILE_STOCK_TMP_BASE;
 	}
-	public static Stock parseTodayStockFromSina(String s, String code) {
+	public static Stock parseTodayStockFromSina(String s) {
 
+		s=StringUtils.replace(s, "var hq_str_", "");
+		if(s.contains("\n")){
+			s=s.substring(1,s.length());
+		}
 		Stock stock = null;
 		try {
 			String ss[] = s.split("=");
 			if (ss.length == 2) {
+				
 				String data[] = ss[1].split(",");
 				stock = new Stock();
 				stock.setStartPrice(data[1]);
@@ -109,7 +114,7 @@ public class FetchUtil {
 						.parseFloat(data[1])) / Float.parseFloat(data[2]);
 				stock.setRealRate(realRate);
 				stock.setRate(rate);
-				stock.setSymbol(code);
+				stock.setSymbol(ss[0]);
 				stock.setName(data[0].replace("\"", ""));
 				stock.setTradeNum(Long.parseLong(data[8]));
 			}

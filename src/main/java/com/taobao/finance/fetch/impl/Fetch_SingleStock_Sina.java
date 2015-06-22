@@ -33,7 +33,7 @@ public class Fetch_SingleStock_Sina {
 			client.executeMethod(getMethod);
 			if (getMethod.getStatusCode() == 200) {
 				String jsonStr = getMethod.getResponseBodyAsString();
-				s = FetchUtil.parseTodayStockFromSina(jsonStr, code);
+				s = FetchUtil.parseTodayStockFromSina(jsonStr);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

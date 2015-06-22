@@ -168,11 +168,39 @@ a {
 
 
 	<jsp:include page="common/foot.jsp" flush="true" />
-
-	<script src="/resources/js/jquery.min.js" type="text/javascript"></script>
-	<script src="/resources/js/highstock.js"></script>
-	<script src="/resources/js/chartExt.js"></script>
-	<script src="/resources/js/layer/layer.js"></script>
+	
+	
+	
+	
+	
+	<script>
+var r=false;
+fresh();
+function fresh(){
+ 	/* $("#shang").html("");
+    $("#shen").html("");
+    $("#chuang").html("");
+    $("#zhong").html("");  */
+	
+	$.ajax({
+		type : "get",
+		async : true, //同步执行
+		//"/addPublicPool.do?replace=false&symbols="+symbol+"-"+type,
+		url : "/indexReal.do",
+		dataType : "json", //返回数据形式为json
+		success : function(result) {
+			if (result) {
+               $("#shang").html(result.sh);
+               $("#shen").html(result.sz);
+               $("#chuang").html(result.ch);
+               $("#zhong").html(result.zh);
+			}
+		},
+		error : function(errorMsg) {
+		}
+	});
+}
+</script>
 	<script>
 
 
@@ -331,7 +359,7 @@ a {
 	     
 	   
 
-	   if(event.key == 'BrowserForward'){
+	   if(event.key == 'BrowserForward'||event.keyCode == 167){
 	    	event.preventDefault(); 
 		    event.stopPropagation();
 		    if(!r){
@@ -343,7 +371,7 @@ a {
 		    } 
 		}
 	
-	    if(event.key == 'BrowserBack'){
+	    if(event.key == 'BrowserBack'||event.keyCode == 166)){
 	    	event.preventDefault(); 
 		    event.stopPropagation();
 	    	var symbol=$(currentNode).attr("symbol");
