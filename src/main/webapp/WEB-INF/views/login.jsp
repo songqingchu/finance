@@ -6,7 +6,7 @@
 <head>
 <head>
 <meta charset="utf-8">
-<title>登录-赌博者之路</title>
+<title>登录</title>
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="/resources/js/jquery.min.js" type="text/javascript"></script>
 <script src="/resources/js/highstock.js"></script>

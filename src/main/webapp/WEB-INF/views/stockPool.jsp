@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<title>模型复盘结果-赌博者之路</title>
+<title>复盘</title>
 
 
 

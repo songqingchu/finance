@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<title>图表绩效分析-赌博者之路</title>
+<title>绩效图表分析</title>
 <script src="/resources/js/jquery.js"></script> 
 </head>
 <body>

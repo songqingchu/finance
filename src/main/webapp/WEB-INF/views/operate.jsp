@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<title>操作</title>
+<title>股票池</title>
 
 <style type="text/css">
 .choose .symbolA{

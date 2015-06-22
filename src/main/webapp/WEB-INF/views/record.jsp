@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<title>逐日钉市-赌博者之路</title>
+<title>记录投资数据</title>
 
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="/resources/js/jquery.dataTables.js"></script>

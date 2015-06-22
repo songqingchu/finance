@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<title>帮助-赌博者之路</title>
+<title>帮助</title>
 <script src="/resources/js/jquery.min.js" type="text/javascript"></script>
 <script src="/resources/js/highstock.js"></script>
 <script src="/resources/js/chartExt.js"></script>
