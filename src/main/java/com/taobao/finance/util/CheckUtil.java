@@ -354,6 +354,9 @@ public class CheckUtil {
 				float s3=(float)l.get(size-2);
 				float s4=(float)l.get(size-1);
 				
+				if(s4/s3<0.7F){
+					return s4/s3*0.01F;
+				}
 				if(s1>s3&&s1>s2&&s1>s4){
 					return (s3/s1)*(s2/s1)*(s4/s1)*(s3/s2)*(s4/s2)*(s4/s3);
 				}

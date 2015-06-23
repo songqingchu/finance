@@ -371,7 +371,7 @@ function fresh(){
 		    } 
 		}
 	
-	    if(event.key == 'BrowserBack'||event.keyCode == 166)){
+	    if(event.key == 'BrowserBack'||event.keyCode == 166){
 	    	event.preventDefault(); 
 		    event.stopPropagation();
 	    	var symbol=$(currentNode).attr("symbol");
