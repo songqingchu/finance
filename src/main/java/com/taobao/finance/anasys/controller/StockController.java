@@ -1215,7 +1215,7 @@ public class StockController {
         String zhs="";
         String chs="";
         
-        if(sh.getRealRate()<0){
+        if(sh.getRealRate()>0){
         	shs="<b><font color=red>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
         }else{
         	shs="<b><font color=green>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
