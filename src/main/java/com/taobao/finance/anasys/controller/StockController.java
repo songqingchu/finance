@@ -1152,6 +1152,12 @@ public class StockController {
 		return "check";
 	}
 	
+	@RequestMapping(value = "/allIndex.do", method = RequestMethod.GET)
+	public String allIndex(HttpServletRequest request) {
+		logger.info("request:check");
+		return "allIndex";
+	}
+	
 	
 	@RequestMapping(value = "/removeFromPublicPool.do", method = RequestMethod.GET)
 	public String removeFromPublicPool(HttpServletRequest request,HttpServletResponse response, @RequestParam String symbol) throws IOException {
@@ -1216,27 +1222,27 @@ public class StockController {
         String chs="";
         
         if(sh.getRealRate()>0){
-        	shs="<b><font color=red>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
+        	shs="<b><font color=red>&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:8px'>&nbsp;&nbsp;";
         }else{
-        	shs="<b><font color=green>上:&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
+        	shs="<b><font color=green>&nbsp;"+FetchUtil.formatRatePercent(sh.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:8px'>&nbsp;&nbsp;";
         }
         
         if(sz.getRealRate()>0){
-        	szs="<b><font color=red>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
+        	szs="<b><font color=red>&nbsp;"+FetchUtil.formatRatePercent(sz.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:8px'>&nbsp;&nbsp;";
         }else{
-        	szs="<b><font color=green>深:&nbsp;"+FetchUtil.formatRatePercent(sz.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
+        	szs="<b><font color=green>&nbsp;"+FetchUtil.formatRatePercent(sz.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:8px'>&nbsp;&nbsp;";
         }
         
         if(zh.getRealRate()>0){
-        	zhs="<b><font color=red>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
+        	zhs="<b><font color=red>&nbsp;"+FetchUtil.formatRatePercent(zh.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:8px'>&nbsp;&nbsp;";
         }else{
-        	zhs="<b><font color=green>中:&nbsp;"+FetchUtil.formatRatePercent(zh.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
+        	zhs="<b><font color=green>&nbsp;"+FetchUtil.formatRatePercent(zh.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:8px'>&nbsp;&nbsp;";
         }
         
         if(ch.getRealRate()>0){
-        	chs="<b><font color=red>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
+        	chs="<b><font color=red>&nbsp;"+FetchUtil.formatRatePercent(ch.getRate())+"</font></b><img src='resources/pic/up2.png' style='width:12px;hight:8px'>&nbsp;&nbsp;";
         }else{
-        	chs="<b><font color=green>创:&nbsp;"+FetchUtil.formatRatePercent(ch.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:10px'>&nbsp;&nbsp;";
+        	chs="<b><font color=green>&nbsp;"+FetchUtil.formatRatePercent(ch.getRate())+"</font></b><img src='resources/pic/dn2.png' style='width:12px;hight:8px'>&nbsp;&nbsp;";
         }
 
         

@@ -271,6 +271,7 @@ function fresh(){
 
    var base;
    var start=0;
+   var end=0;
    var total;
    var currentSymbol;
    var currentNode=tail;
@@ -692,19 +693,65 @@ function fresh(){
 	    if(event.keyCode == 38||event.keyCode == 40){
 	    	event.stopPropagation(); 
 		    event.preventDefault();
+		    var middle=(start+end)/2;
 	    	if(event.keyCode == 38) {
-		    	start=start+40;
+	    		if(start+10<middle){
+	        		start=start+10;
+	        	}
+	        	if(end-10>middle){
+	        		end=end-10;
+	        	}
 		    }
 		    
 	        if(event.keyCode == 40) {
-	        	start=start-20;
+	        	if(start-10>=0){
+	        		start=start-10;
+	        	}
+	        	if(end+10<=total){
+	        		end=end+10;
+	        	}
+	        	
 		    }
 	        var copyMap={};
-	    	copyMap.av5 = base.av5.slice(start);
-	    	copyMap.av10 = base.av10.slice(start);
-	    	copyMap.av20 = base.av20.slice(start);
-	    	copyMap.data = base.data.slice(start);
-	    	copyMap.vol = base.vol.slice(start);
+	    	copyMap.av5 = base.av5.slice(start,end);
+	    	copyMap.av10 = base.av10.slice(start,end);
+	    	copyMap.av20 = base.av20.slice(start,end);
+	    	copyMap.data = base.data.slice(start,end);
+	    	copyMap.vol = base.vol.slice(start,end);
+	    	copyMap.start=base.start;
+	    	copyMap.high=base.high;
+	    	copyMap.low=base.low;
+	    	copyMap.end=base.end;
+	    	copyMap.name=base.name;
+	    	copyMap.av5Tips=base.av5Tips;
+	    	copyMap.acvuTips=base.acvuTips;
+	    	copyMap.bigTips=base.bigTips;
+	    	tradeChart(copyMap);
+	    }
+	    
+	    //左移动K线图
+	    if(event.keyCode == 188||event.keyCode == 190){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
+	    	if(event.keyCode == 190) {
+	    		if(end+10<=total){
+	    			start=start+10;
+			    	end=end+10;
+	    		}
+		    }
+		    
+	        if(event.keyCode == 188) {
+	        	if(start-10>=0){
+	        		start=start-10;
+		        	end=end-10;
+	        	}
+		    }
+	        var copyMap={};
+	    	copyMap.av5 = base.av5.slice(start,end);
+	    	copyMap.av10 = base.av10.slice(start,end);
+	    	copyMap.av20 = base.av20.slice(start,end);
+	    	copyMap.data = base.data.slice(start,end);
+	    	copyMap.vol = base.vol.slice(start,end);
 	    	copyMap.start=base.start;
 	    	copyMap.high=base.high;
 	    	copyMap.low=base.low;
@@ -774,6 +821,7 @@ function fresh(){
  					}else{
  						start=0;
  					}
+ 					end=base.data.length-1;
  					
  					var copyMap={};
  			    	copyMap.av5 = base.av5.slice(start);

@@ -234,6 +234,7 @@ function fresh(){
    
    var base;
    var start=0;
+   var end=0;
    var total=0;
    var currentSymbol;
    var currentNode=tail;

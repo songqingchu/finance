@@ -54,13 +54,20 @@ ${user.userName},<a href="loginOut.do?force=false">退出</a>  &nbsp;
 ${sessionScope.isWorking}&nbsp;${sessionScope.downloaded}&nbsp;${sessionScope.choosen}
 </b>
 </c:if>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<span id="shang"></span>
-<span id="shen"></span>
-<span id="zhong"></span>
-<span id="chuang"></span>
+</span> <br>
 
-</span>
+<span  style="height:14px;display:inline-block;font-size:15px;">上:</span>
+<span id="shang" style="height:14px;display:inline-block;font-size:15px;"></span>&nbsp;
+
+<span  style="height:14px;display:inline-block;font-size:15px;">深:</span>
+<span id="shen" style="height:14px;display:inline-block;font-size:15px;"></span>&nbsp;
+
+<span  style="height:14px;display:inline-block;font-size:15px;">中:</span>
+<span id="zhong" style="height:14px;display:inline-block;font-size:15px;"></span>&nbsp;
+
+<span  style="height:14px;display:inline-block;font-size:15px;">创:</span>
+<span id="chuang" style="height:14px;display:inline-block;font-size:15px;"></span>&nbsp;
+
 <hr style="color:blue;" size="1px">
 </div>
 

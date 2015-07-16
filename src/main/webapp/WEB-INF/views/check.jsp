@@ -6,9 +6,6 @@
 <head>
 <meta charset="utf-8">
 <title>检测</title>
-<script src="/resources/js/jquery.min.js" type="text/javascript"></script>
-<script src="/resources/js/highstock.js"></script>
-<script src="/resources/js/chartExt.js"></script>
 
 <style type="text/css">
 .choose .symbolA{
@@ -35,6 +32,16 @@ text-decoration:none;
 </c:if>
 </div>
 </div>
+
+
+<div id="holderDiv" style="height: 800px;width:150px;float:left;display:none">
+  <div id="holderContentDiv" style="float:left;;padding-left:30px">
+
+  </div>
+  <div id="holderChartDiv" style="height: 400px;float:left;">
+
+  </div>
+</div>
 <div id="container" style="height: 800px;float:left;"></div>
 
 <jsp:include page="common/foot.jsp" flush="true"/>
@@ -44,11 +51,15 @@ text-decoration:none;
    var windowHight=$(window).height();
    var w=windowWidth-240;
    var h=windowHight*0.8;
-   $("#container").width(w);
+   $("#container").width(w-250);
    $("#container").height(h);
+   $("#holderDiv").height(h);
+   $("#holderDiv").width(270);
+   $("#holderChartDiv").width(260);
 
    var base;
    var start=0;
+   var end=0;
    var total;
    var currentSymbol;
    
@@ -186,6 +197,20 @@ text-decoration:none;
 	 			    	copyMap.acvuTips=base.acvuTips;
 	 			    	copyMap.bigTips=base.bigTips;
 	 			    	tradeChart(copyMap);
+	 			    	
+	 			    	
+	 			    	$("#holderDiv").show();
+	 			    	$("#holderContentDiv").html(result.holder);
+	 			    	
+	 			    	if(result.years){
+	 			    		$('#holderChartDiv').highcharts({ chart: { type: 'bar' }, 
+		                         title: { text: '' }, 
+		                         subtitle: { text: '' },
+		                         xAxis: { categories: result.years, title: { text: null } }, 
+		                         series: [{ name: '12', data: result.v12}, { name: '9', data:  result.v9 },{ name: '6', data:  result.v6 } ,{ name: '3', data:  result.v3} ] 
+		                      }); 
+	 			    	}
+	 			    	
 	 				}
 	 			},
 	 			error : function(errorMsg) {
