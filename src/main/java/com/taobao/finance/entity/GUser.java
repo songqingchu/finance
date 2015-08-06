@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "g_user")
 public class GUser {
@@ -13,7 +14,6 @@ public class GUser {
 	private Integer id;
 	private String userName;
 	private String password;
-	
 	
 	@Id
 	@GeneratedValue

@@ -34,11 +34,13 @@ import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.entity.GHis;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GStock;
 import com.taobao.finance.entity.GTask;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.service.DataService;
+import com.taobao.finance.service.GHisService;
 import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.GStockService;
 import com.taobao.finance.service.GTaskService;
@@ -59,7 +61,9 @@ public class Store {
 	public Map<String, Boolean> checkWorkingRecord = new HashMap<String, Boolean>();
 	public List<GPublicStock> publicStock = new ArrayList<GPublicStock>();
 	public Map<String,GPublicStock> publicStockMap = new HashMap<String,GPublicStock>();
-	public List<GPublicStock> history = new ArrayList<GPublicStock>();
+	public List<GHis> history = new ArrayList<GHis>();
+	
+	public Map<Integer,GHis> hisMap=new HashMap<Integer,GHis>();
 	public Map<String, Stock> recent = new HashMap<String, Stock>();
 	public Map<String, List<Stock>> hot = new HashMap<String, List<Stock>>();
 	public Map<String, Object> kdata = new HashMap<String, Object>();
@@ -89,7 +93,8 @@ public class Store {
 	@Autowired
 	private GStockService gStockService;
 	
-	
+	@Autowired
+	private GHisService gHisService;
 	private GTask today;
 
 	public Store() {
@@ -390,7 +395,13 @@ public class Store {
 		logger.info("*******************************************************");
 
 		
-		history = this.gPublicStockService.queryHistory();
+		history = this.gHisService.queryHistory();
+		hisMap.clear();
+		for(GHis h:history){
+			hisMap.put(h.getId(), h);
+		}
+		
+		
 		Thread d = new Thread() {
 			@SuppressWarnings("deprecation")
 			public void run() {
@@ -541,7 +552,11 @@ public class Store {
 	}
 
 	public void reloadHistoryStock() {
-		history = this.gPublicStockService.queryHistory();
+		history = this.gHisService.queryHistory();
+		hisMap.clear();
+		for(GHis h:history){
+			hisMap.put(h.getId(), h);
+		}
 	}
 
 	public void reloadStatus() {

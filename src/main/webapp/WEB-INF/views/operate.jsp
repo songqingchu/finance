@@ -712,22 +712,9 @@ function fresh(){
 	        	}
 	        	
 		    }
-	        var copyMap={};
-	    	copyMap.av5 = base.av5.slice(start,end);
-	    	copyMap.av10 = base.av10.slice(start,end);
-	    	copyMap.av20 = base.av20.slice(start,end);
-	    	copyMap.data = base.data.slice(start,end);
-	    	copyMap.vol = base.vol.slice(start,end);
-	    	copyMap.start=base.start;
-	    	copyMap.high=base.high;
-	    	copyMap.low=base.low;
-	    	copyMap.end=base.end;
-	    	copyMap.name=base.name;
-	    	copyMap.av5Tips=base.av5Tips;
-	    	copyMap.acvuTips=base.acvuTips;
-	    	copyMap.bigTips=base.bigTips;
-	    	tradeChart(copyMap);
+	    	getLocalDataAndShow(start,end);
 	    }
+	    
 	    
 	    //左移动K线图
 	    if(event.keyCode == 188||event.keyCode == 190){
@@ -739,37 +726,47 @@ function fresh(){
 			    	end=end+10;
 	    		}
 		    }
-		    
 	        if(event.keyCode == 188) {
 	        	if(start-10>=0){
 	        		start=start-10;
 		        	end=end-10;
 	        	}
 		    }
-	        var copyMap={};
-	    	copyMap.av5 = base.av5.slice(start,end);
-	    	copyMap.av10 = base.av10.slice(start,end);
-	    	copyMap.av20 = base.av20.slice(start,end);
-	    	copyMap.data = base.data.slice(start,end);
-	    	copyMap.vol = base.vol.slice(start,end);
-	    	copyMap.start=base.start;
-	    	copyMap.high=base.high;
-	    	copyMap.low=base.low;
-	    	copyMap.end=base.end;
-	    	copyMap.name=base.name;
-	    	copyMap.av5Tips=base.av5Tips;
-	    	copyMap.acvuTips=base.acvuTips;
-	    	copyMap.bigTips=base.bigTips;
-	    	tradeChart(copyMap);
+	        getLocalDataAndShow(start,end);
 	    }
 	    
-	    /* if(event.keyCode == 38||event.keyCode == 40){
-	    	alert(event.keyCode);
-	    } */
+	    
+	    if(event.keyCode == 220){
+	    	var head=base.data[start];
+	    	var tail=base.data[end];
+	    	var name=base.name;
+	    	
+	    	event.stopPropagation(); 
+    	    event.preventDefault();
+        	$.ajax({
+				type : "get",
+				async : true,
+				url : "/his.do?symbol="+currentSymbol+"&name="+name+"&start="+head[0]+"&end="+tail[0],
+				dataType : "json",
+				beforeSend: function(){
+	 				loadLayer();	
+	 			},
+				success : function(result) {
+					if (result) {
+	 					layer.closeAll();
+	 				}
+				},
+				error : function(errorMsg) {
+				}
+			}); 
+	    	
+	    } 
 	    //前后键，上一条，下一条
 	    if(event.keyCode == 37||event.keyCode == 39){
 	    	event.stopPropagation(); 
 		    event.preventDefault();
+		    head=$(".head."+currentCat+"Symbol").get(0);
+		 	stail=$(".tail."+currentCat+"Symbol").get(0);
 	    	var children=$(currentNode).parent().prev().children();
 	    	var nodeNow=null;
 	        if(event.keyCode == 37) {
@@ -791,8 +788,6 @@ function fresh(){
 		    currentSymbol=symbol;
 		    currentNode=$(nodeNow);
 		    
-			   
-			   
 	  	    $(".symbolA").parent().css("background-color","");
 	  	    $(nodeNow).css("background-color","pink");
 	  	    
@@ -802,6 +797,25 @@ function fresh(){
 	  	    getDataAndShow(currentSymbol);
 	    }
    });  
+   
+   
+   function getLocalDataAndShow(start,end){
+	    var copyMap={};
+     	copyMap.av5 = base.av5.slice(start,end);
+   	    copyMap.av10 = base.av10.slice(start,end);
+      	copyMap.av20 = base.av20.slice(start,end);
+    	copyMap.data = base.data.slice(start,end);
+    	copyMap.vol = base.vol.slice(start,end);
+    	copyMap.start=base.start;
+    	copyMap.high=base.high;
+   	    copyMap.low=base.low;
+   	    copyMap.end=base.end;
+   	    copyMap.name=base.name;
+   	    copyMap.av5Tips=base.av5Tips;
+   	    copyMap.acvuTips=base.acvuTips;
+   	    copyMap.bigTips=base.bigTips;
+   	    tradeChart(copyMap);
+   }
    
    
    
@@ -837,9 +851,7 @@ function fresh(){
  			    	copyMap.av5Tips=base.av5Tips;
  			    	copyMap.acvuTips=base.acvuTips;
  			    	copyMap.bigTips=base.bigTips;
- 			    	
- 			    	
- 					
+ 			    	 					
  			    	$("#list").width(200);
  			    	$(".listClass").hide();
  				    $(currentNode).parent().show();
@@ -866,12 +878,6 @@ function fresh(){
 	                         series: [{ name: '12', data: result.v12}, { name: '9', data:  result.v9 },{ name: '6', data:  result.v6 } ,{ name: '3', data:  result.v3} ] 
 	                      }); 
  			    	}
- 			    	
- 			    	
- 			    	//$("svg").width($("#container").width()+100);
- 			    	//var style=$("svg").attr("style");
- 			    	//$("rect").attr("style","padding:30px");
- 			    	//$("rect").height($("rect").height()+100);
  				}
  			},
  			error : function(errorMsg) {

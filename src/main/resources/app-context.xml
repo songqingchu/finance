@@ -10,14 +10,18 @@
 	<bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl"
-			value="jdbc:mysql://stock100.mysql.rds.aliyuncs.com:3306/stock" />
+		
+		<property name="jdbcUrl" value="jdbc:mysql://stock100.mysql.rds.aliyuncs.com:3306/stock" />
 		<property name="user" value="anasys" />
-		<property name="password" value="Chenshanhui924" />
+		<property name="password" value="Chenshanhui924" /> 
+		
+		<!-- <property name="jdbcUrl" value="jdbc:mysql://115.29.51.86:3306/stock" />
+		<property name="user" value="root" />
+		<property name="password" value="root" /> -->
 
-		<property name="initialPoolSize" value="3" />
+		<property name="initialPoolSize" value="1" />
 		<property name="maxPoolSize" value="10" />
-		<property name="minPoolSize" value="3" />
+		<property name="minPoolSize" value="1" />
 		<property name="maxIdleTime" value="60" />
 		<property name="acquireIncrement" value="3" />
 		<property name="acquireRetryAttempts" value="10" />

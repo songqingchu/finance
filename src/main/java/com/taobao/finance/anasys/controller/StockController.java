@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.entity.GHis;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GRecord;
 import com.taobao.finance.entity.GStock;
@@ -42,17 +42,15 @@ import com.taobao.finance.entity.GXing;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_ServeralStock_Sina;
 import com.taobao.finance.fetch.impl.Fetch_ShiZhi;
-import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 import com.taobao.finance.service.DataService;
+import com.taobao.finance.service.GHisService;
 import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.GRecordService;
 import com.taobao.finance.service.GStockService;
 import com.taobao.finance.service.GTaskService;
 import com.taobao.finance.service.GXingService;
 import com.taobao.finance.service.ThreadService;
-import com.taobao.finance.task.RealTask;
 import com.taobao.finance.util.FetchUtil;
-import com.taobao.finance.util.ThreadUtil;
 
 
 @Controller
@@ -76,7 +74,8 @@ public class StockController {
 	private GStockService gStockService;
 	@Autowired
 	private GRecordService gRecordService;
-	
+	@Autowired
+	private GHisService gHisService;
 	
 	
 	
@@ -480,7 +479,7 @@ public class StockController {
 	@RequestMapping(value = "/history.do", method = RequestMethod.GET)
 	public String history(HttpServletRequest request) {
 		logger.info("request:view public pool");
-		List<GPublicStock> all=store.history;
+		List<GHis> all=store.history;
 		if(all.size()>0){
 			all.get(0).setPosition("head");
 			all.get(all.size()-1).setPosition("tail");
@@ -1792,14 +1791,35 @@ public class StockController {
 	}	
 	
 	
+	@RequestMapping(value = "/his.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> history(@RequestParam String symbol,@RequestParam String name,
+			@RequestParam long start,
+			@RequestParam long end) throws IOException, ParseException {
+		Map<String,Object> map=new HashMap<String,Object>();
+		GHis h=new GHis();
+		h.setSymbol(symbol);
+		h.setName(name);
+		h.setStart(new Date(start));
+		h.setEnd(new Date(end));
+		
+		this.gHisService.insert(h);
+		this.store.reloadHistoryStock();
+		return map;
+	}	
+	
+	
+	
 	@RequestMapping(value = "/canonHistory.do", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> canonHistory(@RequestParam String symbol) throws IOException, ParseException {
+	public Map<String, Object> canonHistory(@RequestParam Integer hisId) throws IOException, ParseException {
 		logger.info("request:get k data");
 		Calendar c=Calendar.getInstance();
 		int hour=c.get(Calendar.HOUR_OF_DAY);
 		int minits=c.get(Calendar.MINUTE);
 
+		
+		GHis h=store.hisMap.get(hisId);
 		boolean shi=true;
 		if(hour<9&&hour>=15){
 			shi=false;
@@ -1808,8 +1828,8 @@ public class StockController {
 			shi=false;
 		}
 		
-		List<GPublicStock> his=this.gPublicStockService.queryHistory(symbol);
-		Map<String,Object> map=DataService.canonHistory(symbol,Store.workingDay,shi,his);
+		//List<GPublicStock> his=this.gPublicStockService.queryHistory(symbol);
+		Map<String,Object> map=DataService.canonHistory(h.getSymbol(),Store.workingDay,shi,h);
 		return map;
 	}	
 	

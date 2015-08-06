@@ -19,7 +19,7 @@
 <div style="width:200px;float:left;">
 <div style="width:200px;float:left;overflow-y:auto;border:1px solid" id="listDiv">
 <c:forEach var="s" items="${all}">  
-     <span  class="bigSymbol symbol ${s.getPosition()}" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" class="symbolA" id="${s.symbol}">${s.name}&nbsp;&nbsp;</a></span>&nbsp;&nbsp;<c:if test="${root==true} }"><a href="/removeFromPublicPool.do?symbol=${s.symbol}">删除</a></c:if>
+     <span  class="bigSymbol symbol ${s.getPosition()}" style="width:140px;float:left;"><a href="#" symbol="${s.symbol}" hisId="${s.id}"  class="symbolA" id="${s.symbol}">${s.name}&nbsp;&nbsp;</a></span>&nbsp;&nbsp;<c:if test="${root==true} }"><a href="/removeFromPublicPool.do?symbol=${s.symbol}">删除</a></c:if>
 </c:forEach>
 </div>
 
@@ -40,6 +40,7 @@
    $("#listDiv").height(h-20);
    var base;
    var start=0;
+   var end=0;
    var total;
    var currentSymbol;
    var head=$(".head").get(0);
@@ -48,8 +49,8 @@
    var currentSymbol;
    var currentNode=tail;
    
+   
    $(".submitA").on("click",function(){
-	   
 	   var symbols=$("#symbolText").val().split("\n");
 	   var replace=$(this).attr("replace");
 	   $.ajax({
@@ -69,78 +70,68 @@
    });
    
    
+   
+   //点击
    $(".symbolA").on("click",function(){
 	   var symbol=$(this).attr("symbol");
+	   var hisId=$(this).attr("hisId");
 	   currentNode=$(this).parent();
 	   currentSymbol=symbol;
 	   currentSymbol=symbol;
 	   $(".symbolA").css("background-color","");
 	   $(this).css("background-color","pink");
-	   
-	   $.ajax({
-			type : "get",
-			async : true, //同步执行
-			url : "/canonHistory.do?symbol="+symbol,
-			dataType : "json", //返回数据形式为json
-			success : function(result) {
-				if (result) {
-					base=result;
-					total=base.data.length;
-					if(total>80){
-						start=total-80;
-					}else{
-						start=0;
-					}
-					
-					var copyMap={};
-			    	copyMap.av5 = base.av5.slice(start);
-			    	copyMap.av10 = base.av10.slice(start);
-			    	copyMap.av20 = base.av20.slice(start);
-			    	copyMap.data = base.data.slice(start);
-			    	copyMap.vol = base.vol.slice(start);
-			    	copyMap.start=base.start;
-			    	copyMap.high=base.high;
-			    	copyMap.low=base.low;
-			    	copyMap.end=base.end;
-			    	copyMap.name=base.name;
-			    	copyMap.av5Tips=base.av5Tips;
-			    	copyMap.acvuTips=base.acvuTips;
-			    	copyMap.bigTips=base.bigTips;
-			    	tradeChart(copyMap);
-				}
-			},
-			error : function(errorMsg) {
-			}
-		});
-	   
+	   getDataAndShow(symbol,hisId);
    });
+   
+   
    
    $(document).keydown(function(event){ 
 	    event.stopPropagation(); 
 	    if(event.keyCode == 38||event.keyCode == 40){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
+		    var middle=(start+end)/2;
 	    	if(event.keyCode == 38) {
-		    	start=start+40;
+	    		if(start+10<middle){
+	        		start=start+10;
+	        	}
+	        	if(end-10>middle){
+	        		end=end-10;
+	        	}
 		    }
 		    
 	        if(event.keyCode == 40) {
-	        	start=start-20;
+	        	if(start-10>=0){
+	        		start=start-10;
+	        	}
+	        	if(end+10<=total){
+	        		end=end+10;
+	        	}
+	        	
 		    }
-	        var copyMap={};
-	    	copyMap.av5 = base.av5.slice(start);
-	    	copyMap.av10 = base.av10.slice(start);
-	    	copyMap.av20 = base.av20.slice(start);
-	    	copyMap.data = base.data.slice(start);
-	    	copyMap.vol = base.vol.slice(start);
-	    	copyMap.start=base.start;
-	    	copyMap.high=base.high;
-	    	copyMap.low=base.low;
-	    	copyMap.end=base.end;
-	    	copyMap.name=base.name;
-	    	copyMap.av5Tips=base.av5Tips;
-	    	copyMap.acvuTips=base.acvuTips;
-	    	copyMap.bigTips=base.bigTips;
-	    	tradeChart(copyMap);
+	    	getLocalDataAndShow(start,end);
 	    }
+	    
+	    
+	    //左移动K线图
+	    if(event.keyCode == 188||event.keyCode == 190){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
+	    	if(event.keyCode == 190) {
+	    		if(end+10<=total){
+	    			start=start+10;
+			    	end=end+10;
+	    		}
+		    }
+	        if(event.keyCode == 188) {
+	        	if(start-10>=0){
+	        		start=start-10;
+		        	end=end-10;
+	        	}
+		    }
+	        getLocalDataAndShow(start,end);
+	    }
+	    
 	    if(event.keyCode == 37||event.keyCode == 39){
 	    	var nodeNow=null;
 	        if(event.keyCode == 37) {
@@ -157,55 +148,55 @@
 	        		nodeNow=$(currentNode).next();
 	        	}
 		    } 
-	    	
-	  	   
-	  	   
+	    	  	   
 	    	var symbol=$($(nodeNow).children().get(0)).attr("symbol");
 		    currentSymbol=symbol;
 		    currentNode=$(nodeNow);
-		    
-		    
-	  	   $(".symbol").css("background-color","");
-	  	   $(nodeNow).css("background-color","pink");
-	  	   
-	  	   $.ajax({
-	  			type : "get",
-	  			async : true, //同步执行
-	  			url : "/kData.do?symbol="+symbol,
-	  			dataType : "json", //返回数据形式为json
-	  			success : function(result) {
-	  				if (result) {
-	  					base=result;
-	  					total=base.data.length;
-	  					if(total>80){
-	  						start=total-80;
-	  					}else{
-	  						start=0;
-	  					}
-	  					
-	  					var copyMap={};
-	  			    	copyMap.av5 = base.av5.slice(start);
-	  			    	copyMap.av10 = base.av10.slice(start);
-	  			    	copyMap.av20 = base.av20.slice(start);
-	  			    	copyMap.data = base.data.slice(start);
-	  			    	copyMap.vol = base.vol.slice(start);
-	  			    	copyMap.start=base.start;
-	  			    	copyMap.high=base.high;
-	  			    	copyMap.low=base.low;
-	  			    	copyMap.end=base.end;
-	  			    	copyMap.name=base.name;
-	  			    	copyMap.av5Tips=base.av5Tips;
-	  			    	copyMap.acvuTips=base.acvuTips;
-	  			    	copyMap.bigTips=base.bigTips;
-	  			    	tradeChart(copyMap);
-	  				}
-	  			},
-	  			error : function(errorMsg) {
-	  			}
-	  		});
+			var hisId=$($(nodeNow).children().get(0)).attr("hisId");	        
+	  	    $(".symbol").css("background-color","");
+	  	    $(nodeNow).css("background-color","pink");
+	  	
+	  	    getDataAndShow(symbol,hisId);
 	    }
    });  
    
+   function getLocalDataAndShow(start,end){
+	    var copyMap={};
+    	copyMap.av5 = base.av5.slice(start,end);
+  	    copyMap.av10 = base.av10.slice(start,end);
+     	copyMap.av20 = base.av20.slice(start,end);
+     	copyMap.data = base.data.slice(start,end);
+    	copyMap.vol = base.vol.slice(start,end);
+   	    copyMap.start=base.start;
+      	copyMap.high=base.high;
+  	    copyMap.low=base.low;
+  	    copyMap.end=base.end;
+  	    copyMap.name=base.name;
+  	    copyMap.av5Tips=base.av5Tips;
+  	    copyMap.acvuTips=base.acvuTips;
+  	    copyMap.bigTips=base.bigTips;
+  	    tradeChart(copyMap);
+  }
+   
+   function getDataAndShow(symbol,hisId){
+	   $.ajax({
+ 			type : "get",
+ 			async : true, //同步执行
+ 			url : "/canonHistory.do?symbol="+symbol+"&hisId="+hisId,
+ 			dataType : "json", //返回数据形式为json
+ 			success : function(result) {
+ 				if (result) {
+ 					base=result;
+ 					total=base.data.length;
+ 					start=base.startIndex;
+					end=base.endIndex					
+					getLocalDataAndShow(start,end);
+ 				}
+ 			},
+ 			error : function(errorMsg) {
+ 			}
+ 		});
+   }
    
    function tradeChart(all) {
 		var crrentData = [];

@@ -26,15 +26,17 @@ color:purple;
 <div style="width:100%;border:0" id="head_div">
 <br>
 <span style="height:20px;v-align:middle;display:block">     
-<a href="record.do">盯市记录</a> &nbsp;
-<a href="stats.do">分析图表</a> &nbsp;
-<a href="publicPool.do">盯市</a> &nbsp;
+<a href="record.do">盯市</a> &nbsp;
+<a href="stats.do">图表</a> &nbsp;
+<a href="publicPool.do">实时</a> &nbsp;
 <a href="operate.do?currentCat=&currentSymbol=">股票池</a> &nbsp;
 <!-- 
-<a href="history.do">经典</a> &nbsp;
- -->
-
 <a href="help.do">新手</a> &nbsp;
+ -->
+<a href="history.do">经典</a> &nbsp;
+
+
+
 <c:if test="${root==true}">
 <a href="choose.do">复盘</a> &nbsp;
 <!-- 

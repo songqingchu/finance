@@ -63,6 +63,15 @@ text-decoration:none;
    var total;
    var currentSymbol;
    
+ //loading 图标
+   function loadLayer(){
+	    layer.load(1, {
+		    type:3,
+		    area: ['355px', '127px'],
+		    shade: [0.1,'#000']//0.1透明度的白色背景
+	    });
+   };
+   
    
    $(".submitA").on("click",function(){
 	   var symbol=$("#symbolText").attr("value");
@@ -153,8 +162,81 @@ text-decoration:none;
    
    $(document).keydown(function(event){ 
 	    event.stopPropagation(); 
+	  //缩放K线图
+	    if(event.keyCode == 38||event.keyCode == 40){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
+		    var middle=(start+end)/2;
+	    	if(event.keyCode == 38) {
+	    		if(start+10<middle){
+	        		start=start+10;
+	        	}
+	        	if(end-10>middle){
+	        		end=end-10;
+	        	}
+		    }
+		    
+	        if(event.keyCode == 40) {
+	        	if(start-10>=0){
+	        		start=start-10;
+	        	}
+	        	if(end+10<=total){
+	        		end=end+10;
+	        	}
+	        	
+		    }
+	    	getLocalDataAndShow(start,end);
+	    }
+	    
+	    //左移动K线图
+	    if(event.keyCode == 188||event.keyCode == 190){
+	    	event.stopPropagation(); 
+		    event.preventDefault();
+	    	if(event.keyCode == 190) {
+	    		if(end+10<=total){
+	    			start=start+10;
+			    	end=end+10;
+	    		}
+		    }
+	        if(event.keyCode == 188) {
+	        	if(start-10>=0){
+	        		start=start-10;
+		        	end=end-10;
+	        	}
+		    }
+	        getLocalDataAndShow(start,end);
+	    }
+	    
+	    
+	    if(event.keyCode == 220){
+	    	var head=base.data[start];
+	    	var tail=base.data[end];
+	    	var name=base.name;
+	    	
+	    	event.stopPropagation(); 
+    	    event.preventDefault();
+        	$.ajax({
+				type : "get",
+				async : true,
+				url : "/his.do?symbol="+currentSymbol+"&name="+name+"&start="+head[0]+"&end="+tail[0],
+				dataType : "json",
+				beforeSend: function(){
+	 				loadLayer();	
+	 			},
+				success : function(result) {
+					if (result) {
+	 					layer.closeAll();
+	 				}
+				},
+				error : function(errorMsg) {
+					alert(errorMsg);
+				}
+			}); 
+	    	
+	    } 
 	    if(event.keyCode == 13){
 	       var symbol=$("#symbolText").attr("value");
+	       $("#symbolText").blur();
 	       var symbols=symbol.split("\n");
 	       if(symbols.length>1){
 	    	   symbol=symbols[symbols.length-1];
@@ -171,7 +253,6 @@ text-decoration:none;
 	 			dataType : "json", //返回数据形式为json
 	 			success : function(result) {
 	 				if (result) {
-	 					
 	 					base=result;
 	 					total=base.data.length;
 	 					if(total>80){
@@ -179,25 +260,10 @@ text-decoration:none;
 	 					}else{
 	 						start=0;
 	 					}
+	 					end=base.data.length-1;
 	 					
-	 					
-	 					
-	 					var copyMap={};
-	 			    	copyMap.av5 = base.av5.slice(start);
-	 			    	copyMap.av10 = base.av10.slice(start);
-	 			    	copyMap.av20 = base.av20.slice(start);
-	 			    	copyMap.data = base.data.slice(start);
-	 			    	copyMap.vol = base.vol.slice(start);
-	 			    	copyMap.start=base.start;
-	 			    	copyMap.high=base.high;
-	 			    	copyMap.low=base.low;
-	 			    	copyMap.end=base.end;
-	 			    	copyMap.name=base.name;
-	 			    	copyMap.av5Tips=base.av5Tips;
-	 			    	copyMap.acvuTips=base.acvuTips;
-	 			    	copyMap.bigTips=base.bigTips;
-	 			    	tradeChart(copyMap);
-	 			    	
+	 					currentSymbol=base.symbol;
+	 					getLocalDataAndShow(start,end);
 	 			    	
 	 			    	$("#holderDiv").show();
 	 			    	$("#holderContentDiv").html(result.holder);
@@ -218,6 +284,31 @@ text-decoration:none;
 	 		});
 	    }
   });  
+   
+   
+   
+   function getLocalDataAndShow(start,end){
+	    var copyMap={};
+   	    copyMap.av5 = base.av5.slice(start,end);
+ 	    copyMap.av10 = base.av10.slice(start,end);
+    	copyMap.av20 = base.av20.slice(start,end);
+    	copyMap.data = base.data.slice(start,end);
+   	    copyMap.vol = base.vol.slice(start,end);
+  	    copyMap.start=base.start;
+     	copyMap.high=base.high;
+ 	    copyMap.low=base.low;
+ 	    copyMap.end=base.end;
+ 	    copyMap.name=base.name;
+ 	    copyMap.av5Tips=base.av5Tips;
+ 	    copyMap.acvuTips=base.acvuTips;
+ 	    copyMap.bigTips=base.bigTips;
+ 	    tradeChart(copyMap);
+ }
+   
+   
+   
+   
+   
    
    
    

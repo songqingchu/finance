@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.taobao.finance.anasys.controller.StatsDO;
@@ -26,9 +25,9 @@ import com.taobao.finance.check.impl.Check_AVCU;
 import com.taobao.finance.check.impl.Check_BigTrend;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.entity.GHis;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GRecord;
-import com.taobao.finance.entity.GStock;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 import com.taobao.finance.util.FetchUtil;
@@ -528,7 +527,7 @@ public class DataService {
 		if (st != null) {
 			name = st.getName();
 		} else {
-			name = s.getSymbol();
+			name = s.getName();
 		}
 
 		m.put("name", name);
@@ -540,7 +539,7 @@ public class DataService {
 	}
 
 	public static Map<String, Object> canonHistory(String symbol,
-			Boolean working, Boolean shi, List<GPublicStock> his)
+			Boolean working, Boolean shi, GHis his)
 			throws IOException, ParseException {
 		Map<String, Object> m = new HashMap<String, Object>();
 
@@ -604,10 +603,9 @@ public class DataService {
 		Date dd = new Date();
 		for (String s : acvuDate) {
 			Date d = FetchUtil.FILE_FORMAT.parse(s);
-			for (GPublicStock st : his) {
-				if ((!d.before(st.getAddDate()) && (!d
-						.after(st.getRemoveDate())))
-						&& st.getType().equals("acvu")) {
+			//for (GPublicStock st : his) {
+				if ((!d.before(his.getStart()) && (!d
+						.after(his.getEnd())))) {
 					if (d.before(dd)) {
 						dd = d;
 					}
@@ -616,15 +614,14 @@ public class DataService {
 					mm.put("title", "ACVU");
 					acvuTips.add(mm);
 				}
-			}
+			//}
 		}
 
 		for (String s : av5Date) {
 			Date d = FetchUtil.FILE_FORMAT.parse(s);
-			for (GPublicStock st : his) {
-				if ((!d.before(st.getAddDate()) && (!d
-						.after(st.getRemoveDate())))
-						&& st.getType().equals("av5")) {
+			//for (GPublicStock st : his) {
+			if ((!d.before(his.getStart()) && (!d
+					.after(his.getEnd())))) {
 					if (d.before(dd)) {
 						dd = d;
 					}
@@ -633,15 +630,14 @@ public class DataService {
 					mm.put("title", "AV5");
 					av5Tips.add(mm);
 				}
-			}
+			//}
 		}
 
 		for (String s : bigDate) {
 			Date d = FetchUtil.FILE_FORMAT.parse(s);
-			for (GPublicStock st : his) {
-				if ((!d.before(st.getAddDate()) && (!d
-						.after(st.getRemoveDate())))
-						&& st.getType().equals("oth")) {
+			//for (GPublicStock st : his) {
+			if ((!d.before(his.getStart()) && (!d
+					.after(his.getEnd())))) {
 					if (d.before(dd)) {
 						dd = d;
 					}
@@ -650,7 +646,7 @@ public class DataService {
 					mm.put("title", "BIG");
 					bigTips.add(mm);
 				}
-			}
+			//}
 		}
 
 		if (acvuTips.size() > 0) {
@@ -681,21 +677,37 @@ public class DataService {
 			name = s.getSymbol();
 		}
 		int startIndex = 0;
+		int endIndex = 0;
 		Stock startStock = null;
+		Stock endStock = null;
 		for (Stock stock : l) {
 			if (stock.getDate() != null) {
-				if (stock.getDate().before(dd)) {
-					startStock = stock;
+				if (stock.getDate().getYear()==his.getStart().getYear()) {
+					if (stock.getDate().getMonth()==his.getStart().getMonth()) {
+						if (stock.getDate().getDate()==his.getStart().getDate()) {
+							startStock = stock;
+						}
+					}
+				}
+				
+				if (stock.getDate().getYear()==his.getEnd().getYear()) {
+					if (stock.getDate().getMonth()==his.getEnd().getMonth()){
+						if (stock.getDate().getDate()==his.getEnd().getDate()) {
+							endStock = stock;
+						}
+					}
 				}
 			}
 		}
 		if (startStock != null) {
 			startIndex = l.indexOf(startStock);
-			if (startIndex - 60 > 0) {
-				startIndex = startIndex - 60;
-			}
 		}
+		if (endStock != null) {
+			endIndex = l.indexOf(endStock);
+		}
+		
 		m.put("startIndex", startIndex);
+		m.put("endIndex", endIndex);
 		m.put("name", name);
 		m.put("start", s.getStartPriceFloat());
 		m.put("high", s.getHighPriceFloat());
