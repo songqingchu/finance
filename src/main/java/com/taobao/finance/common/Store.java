@@ -614,10 +614,11 @@ public class Store {
 			logger.info("anaysys tp");
 			List<Stock> tp = new TP_Choose_MultiThread().choose();
 			logger.info("anaysys cb");
-			List<Stock> cb = new CB_Choose_MultiThread().choose();
+			List<Stock> cb = new ArrayList<Stock>();		
+			//List<Stock> cb = new CB_Choose_MultiThread().choose();
 			logger.info("anaysys cb2");
-			List<Stock> cb2 = new CB2_Choose_MultiThread().choose();
-			
+			//List<Stock> cb2 = new CB2_Choose_MultiThread().choose();
+			List<Stock> cb2 =  new ArrayList<Stock>();
 			logger.info("anaysys holders");
 			List<Stock> holder = new Holder_Choose_MultiThread(this).choose();
 			Collections.sort(holder,new Comparator.HoldereComparator());
