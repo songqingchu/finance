@@ -39,6 +39,7 @@ import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GStock;
 import com.taobao.finance.entity.GTask;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.fetch.impl.Fetch_Holders;
 import com.taobao.finance.service.DataService;
 import com.taobao.finance.service.GHisService;
 import com.taobao.finance.service.GPublicStockService;
@@ -128,6 +129,32 @@ public class Store {
 		}
 		logger.info("reload k-data end\n");
 	}
+	
+	public void downloadHolders(){
+		String date=Fetch_Holders.getDate();
+		String formalDate=date;
+		formalDate=formalDate.replace("-3-", "-03-");
+		formalDate=formalDate.replace("-6-", "-06-");
+		formalDate=formalDate.replace("-9-", "-09-");
+		
+		List<GStock> l=Fetch_Holders.getAll(date);
+		for(GStock s:l){
+			String symbol=s.getSymbol();
+			GStock old=holderMap.get(symbol);
+			if(old!=null){
+				if(old.getRecord().contains(formalDate)){
+					
+				}else{
+					if(StringUtils.isNotBlank(old.getRecord())){
+						old.setRecord(old.getRecord()+";"+formalDate+":"+s.getHolder());
+					}else{
+						old.setRecord(formalDate+":"+s.getHolder());
+					}
+					//ssthis.gStockService.update(old);
+				}
+			}
+		}
+	}
 
 	public void reloadRecent() {
 		logger.info("reload tmp-data");
@@ -186,6 +213,7 @@ public class Store {
 		for(GStock s:holders){
 			holderMap.put(s.getSymbol(), s);
 		}
+		//this.downloadHolders();
 		
 		
 		reloadPublicPool();
@@ -594,6 +622,7 @@ public class Store {
 	
 	public void download(){
 		logger.info("routin download begin");
+		downloadHolders();
 		updateHistory();
 		updateTmp();
 		logger.info("routin download end\n");

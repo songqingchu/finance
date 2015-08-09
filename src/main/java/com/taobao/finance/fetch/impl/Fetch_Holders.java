@@ -2,7 +2,6 @@ package com.taobao.finance.fetch.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +13,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.taobao.finance.base.Hisdata_Base;
-import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GStock;
-import com.taobao.finance.util.CheckUtil;
 import com.taobao.finance.util.FetchUtil;
 
 public class Fetch_Holders {
@@ -107,7 +103,7 @@ public class Fetch_Holders {
 	public static Map<String,GStock> getAllLong() {
 		Map<String,GStock> m=new HashMap<String,GStock>();
 		List<String> l=new ArrayList<String>();
-		l.add("2013-3-31");
+		/*l.add("2013-3-31");
 		l.add("2013-6-30");
 		l.add("2013-9-30");
 		l.add("2013-12-31");
@@ -115,7 +111,9 @@ public class Fetch_Holders {
 		l.add("2014-6-30");
 		l.add("2014-9-30");
 		l.add("2014-12-31");
-		l.add("2015-3-31");
+		l.add("2015-3-31");*/
+		
+		l.add("2015-6-30");
 		
 		for(int i=0;i<l.size();i++){
 			String s=l.get(i);
@@ -146,12 +144,10 @@ public class Fetch_Holders {
 
 	public static void main(String args[]) {
 
-		//Map<String,GStock> m = getAllLong();
-		//m.size();
+		Map<String,GStock> m = getAllLong();
+		m.size();
 		
-		List<String> l=new ArrayList<String>();
-		l.add("hello");
-		System.out.println(l.contains("hello"));
+
 	}
 
 }
