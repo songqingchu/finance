@@ -15,9 +15,9 @@
 		<property name="user" value="anasys" />
 		<property name="password" value="Chenshanhui924" />  -->
 		
-		<property name="jdbcUrl" value="${url}" />
-		<property name="user" value="${user}" />
-		<property name="password" value="${pass}" />
+		<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/stock" />
+		<property name="user" value="root" />
+		<property name="password" value="root" />
 
 		<property name="initialPoolSize" value="1" />
 		<property name="maxPoolSize" value="10" />
