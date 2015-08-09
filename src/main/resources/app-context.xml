@@ -15,8 +15,8 @@
 		<property name="user" value="anasys" />
 		<property name="password" value="Chenshanhui924" />  -->
 		
-		<property name="jdbcUrl" value="${user}" />
-		<property name="user" value="${name}" />
+		<property name="jdbcUrl" value="${url}" />
+		<property name="user" value="${user}" />
 		<property name="password" value="${pass}" />
 
 		<property name="initialPoolSize" value="1" />
