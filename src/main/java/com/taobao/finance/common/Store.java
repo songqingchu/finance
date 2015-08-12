@@ -306,7 +306,9 @@ public class Store {
 		}else{
 			ids = StringUtils.split(lastDay.getCb(), ",");
 		}
-		if(ids!=null){
+		
+		store.put("cb", new ArrayList<String>());
+		/*if(ids!=null){
 			List<String> l = new ArrayList<String>();
 			for(String id:ids){
 				if(!publicStockMap.containsKey(id)){
@@ -318,7 +320,7 @@ public class Store {
 		}else{
 			store.put("cb", new ArrayList<String>());
 		}
-		
+		*/
 		
 		ids =null;
 		if (StringUtils.isNotBlank(today.getRatio())) {
@@ -360,7 +362,9 @@ public class Store {
 		}
 		
 		ids =null;
-		if (StringUtils.isNotBlank(today.getCb2())) {
+		store.put("cb2", new ArrayList<String>());
+		
+		/*if (StringUtils.isNotBlank(today.getCb2())) {
 			ids = StringUtils.split(today.getCb2(), ",");
 		}else{
 			ids = StringUtils.split(lastDay.getCb2(), ",");
@@ -376,7 +380,7 @@ public class Store {
 			sSet.addAll(l);
 		}else{
 			store.put("cb2", new ArrayList<String>());
-		}
+		}*/
 		
 		
 		
@@ -775,7 +779,7 @@ public class Store {
 				l.addAll(Arrays.asList(ids));
 				sSet.addAll(l);
 			}
-			if (StringUtils.isNoneBlank(today.getCb())) {
+			/*if (StringUtils.isNoneBlank(today.getCb())) {
 				String[] ids = StringUtils.split(today.getCb(), ",");
 				List<String> l = new ArrayList<String>();
 				l.addAll(Arrays.asList(ids));
@@ -786,7 +790,7 @@ public class Store {
 				List<String> l = new ArrayList<String>();
 				l.addAll(Arrays.asList(ids));
 				sSet.addAll(l);
-			}
+			}*/
 			if (StringUtils.isNoneBlank(today.getTp())) {
 				String[] ids = StringUtils.split(today.getTp(), ",");
 				List<String> l = new ArrayList<String>();
