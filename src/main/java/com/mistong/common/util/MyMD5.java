@@ -1,4 +1,4 @@
-package com.mistong.zhaiyao;
+package com.mistong.common.util;
 
 import java.io.File;
 import java.io.FileInputStream;
