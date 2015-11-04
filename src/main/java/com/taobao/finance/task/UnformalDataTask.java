@@ -6,6 +6,7 @@ import java.util.concurrent.Callable;
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
+import com.taobao.finance.fetch.impl.Fetch_SingleStock_THS;
 
 public class UnformalDataTask implements Callable<Object>{
 	private List<Object> list;
@@ -19,7 +20,8 @@ public class UnformalDataTask implements Callable<Object>{
 			if(s.contains("600060")){
 				s.length();
 			}
-			Stock today = Fetch_SingleStock_Sina.fetch(s);
+			//Stock today = Fetch_SingleStock_Sina.fetch(s);
+			Stock today = Fetch_SingleStock_THS.fetch(s);
     		if(today==null){
     			continue;
     		}

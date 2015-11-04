@@ -35,7 +35,10 @@ public class Fetch_SingleStock_THS {
 				String ss=(String)o.get("xj");
 				s=new Stock();
 				s.setSymbol(code);
-				s.setRate(Float.parseFloat(ss));
+				s.setStartPrice(ss);
+				s.setHighPrice(ss);
+				s.setEndPrice(ss);
+				s.setEndPrice(ss);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

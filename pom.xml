@@ -20,6 +20,16 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>platform</artifactId>
+			<version>3.5.2</version>
+		</dependency>
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>3.4.0.GA</version>
@@ -228,11 +238,8 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>com.force.sdk</groupId>
-			<artifactId>force-springsecurity</artifactId>
-			<version>${force.sdk.version}</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.force.sdk</groupId> <artifactId>force-springsecurity</artifactId> 
+			<version>${force.sdk.version}</version> </dependency> -->
 
 		<!-- AspectJ -->
 		<dependency>
@@ -243,11 +250,8 @@
 
 		<!-- Database.com -->
 
-		<!-- <dependency>
-			<groupId>com.force.sdk</groupId>
-			<artifactId>force-jpa</artifactId>
-			<version>${force.sdk.version}</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.force.sdk</groupId> <artifactId>force-jpa</artifactId> 
+			<version>${force.sdk.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
@@ -305,20 +309,10 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.8</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.8</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
+		<!-- <dependency> <groupId>org.apache.poi</groupId> <artifactId>poi</artifactId> 
+			<version>3.8</version> <type>jar</type> <scope>compile</scope> </dependency> -->
+		<!-- <dependency> <groupId>org.apache.poi</groupId> <artifactId>poi-ooxml</artifactId> 
+			<version>3.8</version> <type>jar</type> <scope>compile</scope> </dependency> -->
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>

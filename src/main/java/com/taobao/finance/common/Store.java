@@ -150,7 +150,7 @@ public class Store {
 					}else{
 						old.setRecord(formalDate+":"+s.getHolder());
 					}
-					//ssthis.gStockService.update(old);
+					this.gStockService.update(old);
 				}
 			}
 		}
@@ -213,7 +213,7 @@ public class Store {
 		for(GStock s:holders){
 			holderMap.put(s.getSymbol(), s);
 		}
-		//this.downloadHolders();
+		this.downloadHolders();
 		
 		
 		reloadPublicPool();
