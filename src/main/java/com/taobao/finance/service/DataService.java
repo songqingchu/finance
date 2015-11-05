@@ -301,6 +301,9 @@ public class DataService {
 
 		if (store.holderMap.containsKey(symbol)) {
 			String record = store.holderMap.get(symbol).getRecord();
+			if(symbol.contains("600091")){
+				symbol.length();
+			}
 			if (StringUtils.isNotBlank(record)) {
 				String content = "<b>股东<b>&nbsp;&nbsp;&nbsp;流通:"+store.holderMap.get(symbol).getLiuTong()+"亿<br><br>";
 				String[] res = StringUtils.split(record, ";");

@@ -213,7 +213,7 @@ public class Store {
 		for(GStock s:holders){
 			holderMap.put(s.getSymbol(), s);
 		}
-		this.downloadHolders();
+		//this.downloadHolders();
 		
 		
 		reloadPublicPool();

@@ -32,8 +32,8 @@ public class MouseHook {
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 	public MouseHook() {
-		/*frame=new PicFrame();
-		frame.hide();*/
+		frame=new PicFrame();
+		frame.hide();
 		isWindows = Platform.isWindows();
 		if (isWindows) {
 			lib = User32.INSTANCE;
@@ -85,11 +85,11 @@ public class MouseHook {
 					if (nCode >= 0) {
 						switch (wParam.intValue()) {
 						case MouseHook.WM_MOUSEMOVE:
-							/*if(lParam.pt.x>mouseHook.screenSize.getWidth()-30){
+							if(lParam.pt.y<50){
 								mouseHook.frame.show();
 							}else{
 								mouseHook.frame.hide();
-							}*/
+							}
 							//363168439
 							//363013109
 						

@@ -1,6 +1,8 @@
 package com.taobao.finance.fetch.impl;
 
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpHost;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 
@@ -20,9 +22,15 @@ public class Fetch_SingleStock_Sina {
 
 	public static Stock fetch(String code) {
 		HttpClient client = new HttpClient();
+		
+        HostConfiguration config=new HostConfiguration();
+        config.setProxy("115.218.121.53", 9000);
+        //client.setHostConfiguration(config);
+        
 		Stock s = null;
 		String newUrl = getUrl(code);
 		HttpMethod getMethod = new GetMethod(newUrl);
+		
 		getMethod.setFollowRedirects(false);
 		getMethod
 				.addRequestHeader(
@@ -45,8 +53,8 @@ public class Fetch_SingleStock_Sina {
 
 	public static void main(String args[]) {
 
-      Stock s=fetch("sh000001");
-      s.getDate();
+      Stock s=fetch("sh600128");
+      System.out.println(s.getEndPrice());
 	}
 
 }
