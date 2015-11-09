@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
@@ -32,12 +35,14 @@ import com.taobao.finance.choose.local.thread.CB_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.Holder_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
+import com.taobao.finance.common.cache.ICacheService;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GHis;
 import com.taobao.finance.entity.GPublicStock;
 import com.taobao.finance.entity.GStock;
 import com.taobao.finance.entity.GTask;
+import com.taobao.finance.entity.Proxy;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
 import com.taobao.finance.fetch.impl.Fetch_Holders;
 import com.taobao.finance.service.DataService;
@@ -46,6 +51,7 @@ import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.GStockService;
 import com.taobao.finance.service.GTaskService;
 import com.taobao.finance.service.ThreadService;
+import com.taobao.finance.task.GetProxyTask;
 import com.taobao.finance.task.HisDataTask;
 import com.taobao.finance.task.UnformalDataTask;
 import com.taobao.finance.util.FetchUtil;
@@ -96,12 +102,41 @@ public class Store {
 	
 	@Autowired
 	private GHisService gHisService;
+	
+	@Autowired
+	private ICacheService cacheService;
+	
+	ScheduledExecutorService executor=Executors.newScheduledThreadPool(1);
+	
+	public static Map<String,Proxy> proxyPool=new HashMap<String,Proxy>();
+	public static List<Proxy> proxyList=new ArrayList<Proxy>();
+	
 	private GTask today;
 
 	public Store() {
 
 	}
+	
+	public static List<Proxy> getProxy(){
+		if(proxyList==null){
+			return null;
+		}
+		if(proxyList.size()<5){
+			return proxyList;
+		}
+		List<Proxy> l=new ArrayList<Proxy>();
+		l.add(proxyList.get(0));
+		l.add(proxyList.get(1));
+		l.add(proxyList.get(2));
+		l.add(proxyList.get(3));
+		l.add(proxyList.get(4));
+		return l;
+	}
 
+	
+	public void setTimerTask(){
+		executor.schedule(new GetProxyTask(threadService, null,cacheService,this), 60, TimeUnit.SECONDS);
+	}
 	
 	public void reloadPublicPool(){
 		logger.info("reload public pool");
@@ -196,7 +231,10 @@ public class Store {
 
 	@PostConstruct
 	public void init() {
-
+		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+		
+		this.setTimerTask();
+		
 		if (workingDay == null) {
 			workingDay = FetchUtil.checkWorkingDayUsusal();
 		}

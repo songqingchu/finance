@@ -51,6 +51,7 @@ public class ThreadService {
 	
 	
 	public List<Object> service(List<Callable<Object>> tasks){
+		System.out.println("开始执行并行任务");
 		List<Object> r=new ArrayList<Object>();
 		for(Callable<Object> o:tasks){
 			con.submit(o);	
@@ -66,6 +67,7 @@ public class ThreadService {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("执行并行任务结束！");
 		return r;
 	}
 }

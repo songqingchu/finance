@@ -34,6 +34,7 @@ import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.dataobject.Tick;
 import com.taobao.finance.entity.GStock;
+import com.taobao.finance.entity.Proxy;
 import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 
 public class FetchUtil {
@@ -124,6 +125,54 @@ public class FetchUtil {
 		return stock;
 
 	}
+	
+	
+	public static List<Proxy> parseProxy(String s) {
+
+		List<Proxy> l=new ArrayList<Proxy>();
+		try {
+			Parser parser = new Parser(s);
+			NodeList nodes = parser.parse(new AndFilter(new TagNameFilter( "tr"),new HasAttributeFilter( "class", "odd" )));
+			
+			for(int i=0;i<nodes.size();i++){
+				Node tr=nodes.elementAt(i);
+				NodeList tds=tr.getChildren();
+				List<Node> tdList=new ArrayList<Node>();
+				int k=0;
+				for(int j=0;j<tds.size();j++){
+					Node td=tds.elementAt(j);
+					if(td.getText().contains("td")){
+						tdList.add(td);
+						k++;
+						if(k>=10){
+							break;
+						}
+					}
+				}
+				
+				if(tdList.size()>=10){
+					String ip=tdList.get(2).getChildren().elementAt(0).getText();
+					String port=tdList.get(3).getChildren().elementAt(0).getText();
+					//String address=tdList.get(4).getChildren().elementAt(1).getChildren().elementAt(0).getText();
+					String date=tdList.get(9).getChildren().elementAt(0).getText();
+					Proxy p=new Proxy();
+					p.setIp(ip);
+					p.setPort(Integer.parseInt(port));
+					//p.setLocation(address);
+					DateFormat df=new SimpleDateFormat("yy-MM-dd HH:mm");
+					p.setIncludeDate(df.parse(date));
+					l.add(p);
+				}
+				
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return l;
+
+	}
+	
 	
 	public static Map<String,String> parseShiZhi(String s) {
 		DecimalFormat df = new DecimalFormat("#.00");

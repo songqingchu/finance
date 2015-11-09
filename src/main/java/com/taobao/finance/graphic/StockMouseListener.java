@@ -8,18 +8,35 @@ public class StockMouseListener extends MouseHookListener {
 	public StockFrame frame;
 	
 	int times=0;
+	long lastTime=0L;
+	boolean show=false;
 	public StockMouseListener(StockFrame frame){
 		this.frame=frame;
 	}
 	
+	public void swith(){
+		if(show){
+			frame.hide();
+			show=false;
+		}else{
+			frame.show();
+			show=true;
+		}
+	}
 	
 	@SuppressWarnings("deprecation")
 	public LRESULT callback(int nCode, WPARAM wParam, MouseHookStruct lParam) {
 		if (nCode >= 0) {
 			switch (wParam.intValue()) {
 			case StockPeek.WM_MOUSEMOVE:
-				if (lParam.pt.y < 50) {
-					frame.show();	
+				if (lParam.pt.y < 10) {
+					
+					long time=System.currentTimeMillis();
+					if(time-lastTime>1000){
+						swith();
+						lastTime=time;
+					}
+					
 				} /*else {
 					frame.hide();
 				}*/
@@ -36,7 +53,7 @@ public class StockMouseListener extends MouseHookListener {
 				System.out.println("------------------");
 				break;
 			case StockPeek.WM_RBUTTONDOWN:
-				frame.hide();	
+				/*frame.hide();*/	
 				break;
 			case StockPeek.WM_RBUTTONUP:
 				break;

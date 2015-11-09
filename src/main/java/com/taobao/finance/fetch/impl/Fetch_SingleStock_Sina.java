@@ -24,8 +24,8 @@ public class Fetch_SingleStock_Sina {
 		HttpClient client = new HttpClient();
 		
         HostConfiguration config=new HostConfiguration();
-        config.setProxy("115.218.121.53", 9000);
-        //client.setHostConfiguration(config);
+        config.setProxy("171.38.26.122", 8123);
+        client.setHostConfiguration(config);
         
 		Stock s = null;
 		String newUrl = getUrl(code);

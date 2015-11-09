@@ -380,14 +380,14 @@ public class DataService {
 			l = Hisdata_Base.readHisDataMerge(symbol, null);
 		}
 
-		if (working) {
+		/*if (working) {
 			if (!downloaded) {
 				Stock s = Fetch_SingleStock_Sina.fetch(symbol);
 				if (s != null) {
 					l.add(s);
 				}
 			}
-		}
+		}*/
 
 		if (l.size() > 0) {
 			Boolean ting = false;
