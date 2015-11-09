@@ -104,7 +104,7 @@
                 <bean class="java.net.InetSocketAddress">  
                     <constructor-arg>  
                     <!-- 10.0.0.233 -->
-                        <value>10.0.0.233</value>  
+                        <value>127.0.0.1</value>  
                     </constructor-arg>  
                     <constructor-arg>  
                         <value>11211</value>  
