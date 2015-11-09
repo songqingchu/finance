@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -30,9 +31,17 @@ public class Fetch_AllStock {
 			}
 		}
 	}
-	public static List<Stock> fetch() {
+	public static List<Stock> fetch(String proxy, Integer port) {
 		List<Stock> list = null;
 		HttpClient client = new HttpClient();
+		
+		if (proxy != null && port != null) {
+			HostConfiguration config = new HostConfiguration();
+			config.setProxy(proxy, port);
+			client.setHostConfiguration(config);
+		}
+		
+		
 		HttpMethod getMethod = new GetMethod(url);
 		getMethod.setFollowRedirects(false);
 		getMethod.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; QQDownload 1.7; .NET CLR 1.1.4322; CIBA; .NET CLR 2.0.50727)");
@@ -59,7 +68,7 @@ public class Fetch_AllStock {
 		FetchUtil.saveAbsolute(FetchUtil.FILE_STOCK_ANASYS_BASE+"stockAll.txt", save);
 	}
 	public static void getData(){
-		List<Stock> l=fetch();
+		List<Stock> l=fetch(null,null);
 		Stock ss=new Stock();
 		ss.setSymbol("sh000001");
 		ss.setName("上证指数");

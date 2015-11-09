@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
@@ -45,8 +46,16 @@ public class Fetch_StockHistory {
 	 * @param url
 	 * @return
 	 */
-	public static List<Stock> fetch(String code) {
+	public static List<Stock> fetch(String code,String proxy, Integer port) {
 		HttpClient client = new HttpClient();
+		
+		if (proxy != null && port != null) {
+			HostConfiguration config = new HostConfiguration();
+			config.setProxy(proxy, port);
+			client.setHostConfiguration(config);
+		}
+		
+		
 		List<Stock> s = new ArrayList<Stock>();
 		String newUrl = getUrl(code);
 		if(code.contains("000001")){
@@ -114,7 +123,7 @@ public class Fetch_StockHistory {
 			String url=toUrl(params);
 			url=code+"&"+url;
 			List<Stock> l=null;
-			l=fetch(url);
+			l=fetch(url,null,null);
 			if(l!=null){
 				s.addAll(l);
 			}	

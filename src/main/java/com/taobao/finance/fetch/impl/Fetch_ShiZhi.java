@@ -2,6 +2,7 @@ package com.taobao.finance.fetch.impl;
 
 import java.util.Map;
 
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -20,8 +21,15 @@ public class Fetch_ShiZhi{
 	}
 
 
-	public static Map<String,String> fetch() {
+	public static Map<String,String> fetch(String proxy, Integer port) {
 		HttpClient client = new HttpClient();
+		
+		if (proxy != null && port != null) {
+			HostConfiguration config = new HostConfiguration();
+			config.setProxy(proxy, port);
+			client.setHostConfiguration(config);
+		}
+		
 		Map<String,String> s = null;
 		HttpMethod getMethod = new GetMethod(url);
 		getMethod.setFollowRedirects(false);
@@ -48,7 +56,7 @@ public class Fetch_ShiZhi{
 
 	public static void main(String args[]) {
 
-       fetch();
+       fetch(null,null);
      // s.getDate();
 	}
 

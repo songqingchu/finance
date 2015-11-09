@@ -190,7 +190,7 @@ public class DataService {
 
 		if (working) {
 			if (!downloaded) {
-				Stock s = Fetch_SingleStock_Sina.fetch(symbol);
+				Stock s = Fetch_SingleStock_Sina.fetch(symbol,null,null);
 				l.add(s);
 			}
 		}
@@ -550,7 +550,7 @@ public class DataService {
 
 		if (working) {
 			if (shi) {
-				Stock s = Fetch_SingleStock_Sina.fetch(symbol);
+				Stock s = Fetch_SingleStock_Sina.fetch(symbol,null,null);
 				l.add(s);
 			}
 		}

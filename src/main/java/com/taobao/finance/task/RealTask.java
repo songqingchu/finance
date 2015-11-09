@@ -17,7 +17,7 @@ public class RealTask implements Callable<Object>{
 	public Object call(){
 		List<Stock> r=new ArrayList<Stock>();
 		for(Object s:l){
-			Stock st=Fetch_SingleStock_Sina.fetch((String)s);
+			Stock st=Fetch_SingleStock_Sina.fetch((String)s,null,null);
 			//Stock st=Fetch_SingleStock_THS.fetch((String)s);
 			if(st!=null){
 				r.add(st);

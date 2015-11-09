@@ -1,5 +1,6 @@
 package com.taobao.finance.fetch.impl;
 
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -18,8 +19,16 @@ public class Fetch_Profit {
 	}
 
 
-	public static Stock fetch(String code) {
+	public static Stock fetch(String code,String proxy, Integer port) {
 		HttpClient client = new HttpClient();
+		
+		if (proxy != null && port != null) {
+			HostConfiguration config = new HostConfiguration();
+			config.setProxy(proxy, port);
+			client.setHostConfiguration(config);
+		}
+		
+		
 		Stock s = null;
 		String newUrl = getUrl(code);
 		HttpMethod getMethod = new GetMethod("http://vip.stock.finance.sina.com.cn/corp/go.php/vFD_FinanceSummary/stockid/002084.phtml");
@@ -49,7 +58,7 @@ public class Fetch_Profit {
 
 	public static void main(String args[]) {
 
-      fetch("sz002084");
+      fetch("sz002084",null,null);
       
 	}
 

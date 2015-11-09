@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
@@ -41,8 +42,15 @@ public class Fetch_StockHistoryLong{
 	 * @param url
 	 * @return
 	 */
-	public static List<Stock> fetch(String code,int page) {
+	public static List<Stock> fetch(String code,int page,String proxy, Integer port) {
 		HttpClient client = new HttpClient();
+		
+		if (proxy != null && port != null) {
+			HostConfiguration config = new HostConfiguration();
+			config.setProxy(proxy, port);
+			client.setHostConfiguration(config);
+		}
+		
 		List<Stock> s = null;
 		String newUrl = getUrl(code,page);
 		HttpMethod getMethod = new GetMethod(newUrl);
@@ -98,7 +106,7 @@ public class Fetch_StockHistoryLong{
 	public static List<Stock> getData(String code,int page){
 		List<Stock> l=new ArrayList<Stock>();
 		for(int i =1;i<=page;i++){
-			List<Stock> s=fetch(code,i);
+			List<Stock> s=fetch(code,i,null,null);
 			if(s==null){
 				break;
 			}else{

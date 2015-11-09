@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -26,8 +27,16 @@ public class Fetch_Holders {
 		return newUrl;
 	}
 
-	public static Map<String, Object> fetch(String newUrl) {
+	public static Map<String, Object> fetch(String newUrl,String proxy, Integer port) {
 		HttpClient client = new HttpClient();
+		
+		if (proxy != null && port != null) {
+			HostConfiguration config = new HostConfiguration();
+			config.setProxy(proxy, port);
+			client.setHostConfiguration(config);
+		}
+		
+		
 		HttpMethod getMethod = new GetMethod(newUrl);
 		getMethod.setFollowRedirects(false);
 		getMethod
@@ -90,7 +99,7 @@ public class Fetch_Holders {
 
 		for (int i = 1; i <= 100; i++) {
 			url = getUrl(date, i);
-			m = fetch(url);
+			m = fetch(url,null,null);
 			li = (List<GStock>) m.get("data");
 			if (li.size() != 0) {
 				l.addAll(li);

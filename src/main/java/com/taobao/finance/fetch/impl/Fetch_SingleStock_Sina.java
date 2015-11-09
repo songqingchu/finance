@@ -20,12 +20,14 @@ public class Fetch_SingleStock_Sina {
 	}
 
 
-	public static Stock fetch(String code) {
+	public static Stock fetch(String code,String proxy, Integer port) {
 		HttpClient client = new HttpClient();
 		
-        HostConfiguration config=new HostConfiguration();
-        config.setProxy("171.38.26.122", 8123);
-        client.setHostConfiguration(config);
+		if (proxy != null && port != null) {
+			HostConfiguration config = new HostConfiguration();
+			config.setProxy(proxy, port);
+			client.setHostConfiguration(config);
+		}
         
 		Stock s = null;
 		String newUrl = getUrl(code);
@@ -53,7 +55,7 @@ public class Fetch_SingleStock_Sina {
 
 	public static void main(String args[]) {
 
-      Stock s=fetch("sh600128");
+      Stock s=fetch("sh600128",null,null);
       System.out.println(s.getEndPrice());
 	}
 

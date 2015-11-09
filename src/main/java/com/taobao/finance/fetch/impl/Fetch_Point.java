@@ -2,11 +2,15 @@ package com.taobao.finance.fetch.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang3.StringUtils;
+
 import sun.misc.BASE64Decoder;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -21,8 +25,15 @@ public class Fetch_Point {
 	}
 
 
-	public static String fetch(String lat,String lng) {
+	public static String fetch(String lat,String lng,String proxy, Integer port) {
 		HttpClient client = new HttpClient();
+		
+		if (proxy != null && port != null) {
+			HostConfiguration config = new HostConfiguration();
+			config.setProxy(proxy, port);
+			client.setHostConfiguration(config);
+		}
+		
 		String s = null;
 		String newUrl = getUrl(lat,lng);
 		//newUrl="http://api.map.baidu.com/ag/coord/convert?x=121.583140,121.583140&y=31.341174,31.341174&from=0&to=2&mode=1";
@@ -85,7 +96,7 @@ public class Fetch_Point {
 
 	public static void main(String args[]) {
 
-      fetch("121.583140","31.341174");
+      fetch("121.583140","31.341174",null,null);
       
 	}
 

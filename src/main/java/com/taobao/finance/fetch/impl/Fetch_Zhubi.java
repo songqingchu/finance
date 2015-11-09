@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -20,9 +21,16 @@ public class Fetch_Zhubi {
 		return url + stock;
 	}
 
-	public static List<Tick> fetch(String code,String filter) {
+	public static List<Tick> fetch(String code,String filter,String proxy, Integer port) {
 		List<Tick> l=null;
 		HttpClient client = new HttpClient();
+		
+		if (proxy != null && port != null) {
+			HostConfiguration config = new HostConfiguration();
+			config.setProxy(proxy, port);
+			client.setHostConfiguration(config);
+		}
+		
 		Stock s = null;
 		String newUrl = getUrl(code);
 		HttpMethod getMethod = new GetMethod(newUrl);
@@ -60,7 +68,7 @@ public class Fetch_Zhubi {
 				date=r.get(r.size()-1).getTimeStr();
 			} 
 			System.out.println("download Tick");
-			List<Tick> l=fetch("sz300019",date);
+			List<Tick> l=fetch("sz300019",date,null,null);
 			System.out.println("download Tick end:"+l.size()+","+r.size());
 			merge(r,l);
 			check(r);

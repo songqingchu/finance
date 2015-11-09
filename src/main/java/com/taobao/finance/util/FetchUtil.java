@@ -596,8 +596,8 @@ public class FetchUtil {
     public static boolean checkWorkingDay(){
     	String sh="sh000001";
     	String sz="sz399001";
-    	Stock todaySh = Fetch_SingleStock_Sina.fetch(sh);
-    	Stock todaySz = Fetch_SingleStock_Sina.fetch(sz);
+    	Stock todaySh = Fetch_SingleStock_Sina.fetch(sh,null,null);
+    	Stock todaySz = Fetch_SingleStock_Sina.fetch(sz,null,null);
     	Stock tmpSh = getTmp(sh);
     	Stock tmpSz = getTmp(sz);
     	if(!todaySh.getStartPrice().equals(tmpSh.getStartPrice())){
@@ -631,29 +631,29 @@ public class FetchUtil {
     public static boolean checkWorkingDay2(){
     	String sh="sh000001";
     	String sz="sz399001";
-    	Stock todaySh = Fetch_SingleStock_Sina.fetch(sh);
-    	Stock todaySz = Fetch_SingleStock_Sina.fetch(sz);
+    	Stock todaySh = Fetch_SingleStock_Sina.fetch(sh,null,null);
+    	Stock todaySz = Fetch_SingleStock_Sina.fetch(sz,null,null);
     	try {
 			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	Stock todaySh2 = Fetch_SingleStock_Sina.fetch(sh);
-    	Stock todaySz2 = Fetch_SingleStock_Sina.fetch(sz);
+    	Stock todaySh2 = Fetch_SingleStock_Sina.fetch(sh,null,null);
+    	Stock todaySz2 = Fetch_SingleStock_Sina.fetch(sz,null,null);
     	try {
 			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	Stock todaySh3 = Fetch_SingleStock_Sina.fetch(sh);
-    	Stock todaySz3 = Fetch_SingleStock_Sina.fetch(sz);
+    	Stock todaySh3 = Fetch_SingleStock_Sina.fetch(sh,null,null);
+    	Stock todaySz3 = Fetch_SingleStock_Sina.fetch(sz,null,null);
     	try {
 			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	Stock todaySh4 = Fetch_SingleStock_Sina.fetch(sh);
-    	Stock todaySz4 = Fetch_SingleStock_Sina.fetch(sz);
+    	Stock todaySh4 = Fetch_SingleStock_Sina.fetch(sh,null,null);
+    	Stock todaySz4 = Fetch_SingleStock_Sina.fetch(sz,null,null);
     	
     	if(!todaySh.getStartPrice().equals(todaySh2.getStartPrice())){
     		return true;

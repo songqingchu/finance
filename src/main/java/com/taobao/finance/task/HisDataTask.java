@@ -26,7 +26,7 @@ public class HisDataTask implements Callable<Object>{
     		if(longTime){
     			history=Fetch_StockHistory.fetch3(symbol);
     		}else{
-    			history=Fetch_StockHistory.fetch(symbol);
+    			history=Fetch_StockHistory.fetch(symbol,null,null);
     		}
     		if(history==null){
               continue;    			

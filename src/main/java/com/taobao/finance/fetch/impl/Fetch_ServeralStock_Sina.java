@@ -177,8 +177,7 @@ class FetchThread extends Thread {
 	Integer size;
 	Proxy p;
 
-	public FetchThread(CountDownLatch latch, List<Stock> l, String code,
-			Integer size, Proxy p) {
+	public FetchThread(CountDownLatch latch, List<Stock> l, String code,Integer size, Proxy p) {
 		this.latch = latch;
 		this.l = l;
 		this.code = code;

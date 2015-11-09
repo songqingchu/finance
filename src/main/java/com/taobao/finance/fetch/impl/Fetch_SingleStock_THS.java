@@ -1,7 +1,9 @@
 package com.taobao.finance.fetch.impl;
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
+
 import com.alibaba.fastjson.JSONObject;
 import com.taobao.finance.dataobject.Stock;
 
@@ -15,8 +17,15 @@ public class Fetch_SingleStock_THS {
 		return s;
 	}
 
-	public static Stock fetch(String code) {
+	public static Stock fetch(String code,String proxy, Integer port) {
 		HttpClient client = new HttpClient();
+		
+		if (proxy != null && port != null) {
+			HostConfiguration config = new HostConfiguration();
+			config.setProxy(proxy, port);
+			client.setHostConfiguration(config);
+		}
+		
 		Stock s = null;
 		String newUrl = getUrl(code);
 		HttpMethod getMethod = new GetMethod(newUrl);
@@ -48,7 +57,7 @@ public class Fetch_SingleStock_THS {
 
 
 	public static void main(String args[]) {
-      Stock s=fetch("sz300019");
+      Stock s=fetch("sz300019",null,null);
       s.getDate();
 	}
 }

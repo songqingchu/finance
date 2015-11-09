@@ -362,6 +362,9 @@ public static Stock readTmpData(String code) {
 		s.setHighPrice(ss[1]);
 		s.setLowPrice(ss[2]);
 		s.setEndPrice(ss[3]);
+		if(ss[4].contains("null")){
+			return null;
+		}
 		s.setTradeNum(Long.parseLong(ss[4]));
 		s.setDate(new Date());
 		return s;
@@ -474,7 +477,7 @@ public static Stock readTmpData(String code) {
 	    		if(longTime){
 	    			history=Fetch_StockHistory.fetch3(symbol);
 	    		}else{
-	    			history=Fetch_StockHistory.fetch(symbol);
+	    			history=Fetch_StockHistory.fetch(symbol,null,null);
 	    		}
 	    		if(history==null){
 	              continue;    			
@@ -499,7 +502,7 @@ public static Stock readTmpData(String code) {
 				if(s.contains("600060")){
 					s.length();
 				}
-				Stock today = Fetch_SingleStock_Sina.fetch(s);
+				Stock today = Fetch_SingleStock_Sina.fetch(s,null,null);
 	    		if(today==null){
 	    			continue;
 	    		}

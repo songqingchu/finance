@@ -159,7 +159,7 @@ public class StockController {
 	public String holders(HttpServletRequest request) {
 		
 		
-		Map<String,String> m=Fetch_ShiZhi.fetch();
+		Map<String,String> m=Fetch_ShiZhi.fetch(null,null);
 		for(String sy:m.keySet()){
 			GStock s=store.holderMap.get(sy);
 			if(s!=null){
