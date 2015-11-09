@@ -20,20 +20,20 @@ public class CheckTTLTask implements Callable<Object>{
 		for(Object o:list){
 			long begin=System.currentTimeMillis();
 			Proxy p=(Proxy)o;
-			List<Stock> r = Fetch_ServeralStock_Sina.fetch("sh600128,sh600005,sh600006,sh600007,sh600008,sh600009,sh600010,sh600011,sh600012,sh600013,sh600014,sh600015,sh600016,sh600017",p.getIp(),p.getPort());
-            	
+			List<Stock> r = Fetch_ServeralStock_Sina.fetch("sh600001,sz399001,sz399006",p.getIp(),p.getPort());
+			//List<Stock> r = Fetch_ServeralStock_Sina.fetch("sh600001,sz399001,sz399006",null,null);	
 			long end=System.currentTimeMillis();
-			if(r.size()!=14){
+			if(r.size()==0){
 				begin=System.currentTimeMillis();
-				r = Fetch_ServeralStock_Sina.fetch("sh600128,sh600005,sh600006,sh600007,sh600008,sh600009,sh600010,sh600011,sh600012,sh600013,sh600014,sh600015,sh600016,sh600017",p.getIp(),p.getPort());
+				r = Fetch_ServeralStock_Sina.fetch("sh600001,sz399001,sz399006",p.getIp(),p.getPort());
 				end=System.currentTimeMillis();
-				if(r.size()!=14){
+				if(r.size()==0){
 					begin=System.currentTimeMillis();
-					r = Fetch_ServeralStock_Sina.fetch("sh600128,sh600005,sh600006,sh600007,sh600008,sh600009,sh600010,sh600011,sh600012,sh600013,sh600014,sh600015,sh600016,sh600017",p.getIp(),p.getPort());
+					r = Fetch_ServeralStock_Sina.fetch("sh600001,sz399001,sz399006",p.getIp(),p.getPort());
 					end=System.currentTimeMillis();
-					if(r.size()!=14){
+					if(r.size()==0){
 						p.setLastTtl(-1L);
-						System.out.println("检测"+p.getIp()+"代理已经失效！");
+						//System.out.println("检测"+p.getIp()+"代理已经失效！");
 					}else{
 						p.setLastTtl((end-begin));
 						rList.add(p);
@@ -47,8 +47,8 @@ public class CheckTTLTask implements Callable<Object>{
 				p.setLastTtl((end-begin));
 				rList.add(p);
 			}
-			System.out.println("检测"+p.getIp()+"代理TTL:"+p.getLastTtl());
+			//System.out.println("检测"+p.getIp()+"代理TTL:"+p.getLastTtl());
 		}
-		return list;
+		return rList;
 	}
 }

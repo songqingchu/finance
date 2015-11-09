@@ -103,7 +103,8 @@
             <list>  
                 <bean class="java.net.InetSocketAddress">  
                     <constructor-arg>  
-                        <value>115.29.51.86</value>  
+                    <!-- 10.0.0.233 -->
+                        <value>10.0.0.233</value>  
                     </constructor-arg>  
                     <constructor-arg>  
                         <value>11211</value>  

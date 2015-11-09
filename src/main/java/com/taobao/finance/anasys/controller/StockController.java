@@ -544,7 +544,7 @@ public class StockController {
 		set.addAll(symbolList);
 		String symbols="";
 		symbols=StringUtils.join(set,",");
-		List<Stock> newL=Fetch_ServeralStock_Sina.fetch(symbols,null,null);
+		List<Stock> newL=Fetch_ServeralStock_Sina.fetch(symbols,Store.getProxy());
 		
 		/*List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
 		List<Callable<Object>> callList=new ArrayList<Callable<Object>>();
@@ -864,7 +864,7 @@ public class StockController {
 		}
 		set.addAll(symbolList);
 		String symbols=StringUtils.join(set,",");
-		List<Stock> newL=Fetch_ServeralStock_Sina.fetch(symbols,null,null);
+		List<Stock> newL=Fetch_ServeralStock_Sina.fetch(symbols,Store.getProxy());
 		
 		
 		/*List<List<Object>> symbolTaskList=ThreadUtil.divide(symbolList, 16);
@@ -1209,7 +1209,7 @@ public class StockController {
 		Map<String,Object> m=new HashMap<String,Object>();	
 		logger.info("request:remove from public pool");
 		
-		List<Stock> l=Fetch_ServeralStock_Sina.fetch("sh000001,sz399001,sz399101,sz399006",null,null);
+		List<Stock> l=Fetch_ServeralStock_Sina.fetch("sh000001,sz399001,sz399101,sz399006",Store.getProxy());
         Stock sh=l.get(0);
         Stock sz=l.get(1);
         Stock zh=l.get(2);

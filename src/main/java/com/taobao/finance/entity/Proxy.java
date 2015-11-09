@@ -1,5 +1,6 @@
 package com.taobao.finance.entity;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "g_proxy")
-public class Proxy implements Comparable<Proxy>{
+public class Proxy implements Comparable<Proxy> ,Serializable{
 
 	public static DateFormat df=new SimpleDateFormat("yy-MM-dd HH:mm");
 	private Integer id;
@@ -122,7 +123,7 @@ public class Proxy implements Comparable<Proxy>{
 			}
 		}
 		String r="";
-		r="地址："+ipStr+", 端口:"+portString+"， 收录时间："+df.format(includeDate)+",  rank:"+rank;
+		r="地址："+ipStr+", 端口:"+portString+"， 收录时间："+df.format(includeDate)+",  ttl:"+lastTtl;
 		return r;
 	}
 	@Override

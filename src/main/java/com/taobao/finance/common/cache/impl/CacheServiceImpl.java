@@ -2,6 +2,7 @@ package com.taobao.finance.common.cache.impl;
 
 import java.util.concurrent.TimeoutException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.rubyeye.xmemcached.MemcachedClient;
@@ -13,6 +14,7 @@ import com.taobao.finance.common.cache.ICacheService;
 @Component("cacheService")
 public class CacheServiceImpl implements ICacheService {
 
+	@Autowired
 	private MemcachedClient memcachedClient;
 
 	public void setMemcachedClient(MemcachedClient memcachedClient) {
@@ -50,6 +52,8 @@ public class CacheServiceImpl implements ICacheService {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (MemcachedException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

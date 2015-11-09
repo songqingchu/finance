@@ -16,6 +16,7 @@ import org.apache.commons.httpclient.NoHttpResponseException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang3.StringUtils;
 
+import com.taobao.finance.common.Store;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.Proxy;
 import com.taobao.finance.service.ThreadService;
@@ -73,13 +74,13 @@ public class Fetch_ServeralStock_Sina {
 
 			}
 		} catch (SocketTimeoutException e) {
-			System.out.println("代理:" + proxy + "," + port + " 响应超时！");
+			//System.out.println("代理:" + proxy + "," + port + " 响应超时！");
 		} catch (SocketException e) {
-			System.out.println("代理:" + proxy + "," + port + " 无法获取数据！");
+			//System.out.println("代理:" + proxy + "," + port + " 无法获取数据！");
 		} catch (ConnectTimeoutException e) {
-			System.out.println("代理:" + proxy + "," + port + " 连接超时！");
+			//System.out.println("代理:" + proxy + "," + port + " 连接超时！");
 		} catch (NoHttpResponseException e) {
-			System.out.println("代理:" + proxy + "," + port + " 没有响应！");
+			//System.out.println("代理:" + proxy + "," + port + " 没有响应！");
 		} catch (Exception e) {
 			if (e instanceof SocketTimeoutException) {
 
@@ -105,7 +106,7 @@ public class Fetch_ServeralStock_Sina {
 		}
 		try {
 			latch.await(5, TimeUnit.SECONDS);
-			System.out.println("等待3秒完毕！");
+			//System.out.println("等待3秒完毕！");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -186,18 +187,17 @@ class FetchThread extends Thread {
 	}
 
 	public void run() {
-		List<Stock> r = Fetch_ServeralStock_Sina.fetch(code, p.getIp(),
-				p.getPort());
+		List<Stock> r = Fetch_ServeralStock_Sina.fetch(code,p.getIp(),p.getPort());
 		if (r != null) {
 			if (r.size() != 0) {
 				synchronized (l) {
 					if (l.size()==0) {
 						//l = r;
 						l.addAll(r);
-						System.out.println("首先获取到结果！");
+						//System.out.println("首先获取到结果！");
 						latch.countDown();
 					} else {
-						System.out.println("已经获取到结果，丢弃！");
+						//System.out.println("已经获取到结果，丢弃！");
 					}
 				}
 			}

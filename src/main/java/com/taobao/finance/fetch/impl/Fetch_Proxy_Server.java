@@ -1,5 +1,8 @@
 package com.taobao.finance.fetch.impl;
 
+import java.net.ConnectException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,9 +10,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.NoHttpResponseException;
 import org.apache.commons.httpclient.methods.GetMethod;
 
 import com.taobao.finance.dataobject.Stock;
@@ -51,8 +56,27 @@ public class Fetch_Proxy_Server {
 				String jsonStr = getMethod.getResponseBodyAsString();
 				l = FetchUtil.parseProxy(jsonStr);
 			}
+		} catch (SocketTimeoutException e) {
+			//System.out.println("代理:" + proxy + "," + port + " 响应超时！");
+		} catch (SocketException e) {
+			//System.out.println("代理:" + proxy + "," + port + " 无法获取数据！");
+		} catch (ConnectTimeoutException e) {
+			//System.out.println("代理:" + proxy + "," + port + " 连接超时！");
+		} catch (NoHttpResponseException e) {
+			//System.out.println("代理:" + proxy + "," + port + " 没有响应！");
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (e instanceof SocketTimeoutException) {
+
+			} else if (e instanceof SocketException) {
+
+			} else if (e instanceof ConnectTimeoutException) {
+
+			} else if (e instanceof NoHttpResponseException) {
+
+			} else {
+				e.printStackTrace();
+			}
+
 		}
 		return l;
 	}
@@ -69,7 +93,7 @@ public class Fetch_Proxy_Server {
 		}
 		try {
 			latch.await(5, TimeUnit.SECONDS);
-			System.out.println("等待3秒完毕！");
+			//System.out.println("等待3秒完毕！");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -151,7 +175,7 @@ class FetchProxyThread extends Thread {
 						l.addAll(r);
 						latch.countDown();
 					} else {
-						System.out.println("已经获取到结果，丢弃！");
+						//System.out.println("已经获取到结果，丢弃！");
 					}
 				}
 			}

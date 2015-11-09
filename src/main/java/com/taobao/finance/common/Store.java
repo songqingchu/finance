@@ -121,6 +121,9 @@ public class Store {
 		if(proxyList==null){
 			return null;
 		}
+		if(proxyList.size()==0){
+			return null;
+		}
 		if(proxyList.size()<5){
 			return proxyList;
 		}
@@ -135,7 +138,8 @@ public class Store {
 
 	
 	public void setTimerTask(){
-		executor.schedule(new GetProxyTask(threadService, null,cacheService,this), 60, TimeUnit.SECONDS);
+		executor.schedule(new GetProxyTask(threadService, null,cacheService,this), 6, TimeUnit.SECONDS);
+		executor.scheduleWithFixedDelay(new GetProxyTask(threadService, null,cacheService,this),0, 6, TimeUnit.SECONDS);
 	}
 	
 	public void reloadPublicPool(){

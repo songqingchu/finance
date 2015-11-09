@@ -15,7 +15,7 @@ import com.taobao.finance.service.GProxyService;
 import com.taobao.finance.service.ThreadService;
 import com.taobao.finance.util.ThreadUtil;
 
-public class GetProxyTask implements Callable<Object> {
+public class GetProxyTask implements Runnable {
 	
 	ThreadService threadService;
 	GProxyService gProxyService;
@@ -29,82 +29,104 @@ public class GetProxyTask implements Callable<Object> {
         this.store=store;
 	}
 
-	public Object call() {
-		Map<String,Proxy> oldPool=null;
-		if(this.cacheService.contains("proxy_pool")){
-			oldPool=(Map<String,Proxy>)this.cacheService.get("proxy_pool");
-		}else{
-			oldPool=new HashMap<String,Proxy>();
-		}
-		
-		List<Proxy> oldFilterList=null;
-		if(this.cacheService.contains("proxy_pool")){
-			oldFilterList=(List<Proxy>)this.cacheService.get("proxy_list");
-		}else{
-			
-		}
-		
-		
-		Map<String,Proxy> newPool=new HashMap<String,Proxy>();
-		
-		List<Proxy> proxyList = Fetch_Proxy_Server.fetch("1",Store.getProxy());;
-
-		
-		List<Proxy> newList = new ArrayList<Proxy>();
-		List<Proxy> oldList = new ArrayList<Proxy>();
-		
-		
-		oldList.addAll(oldPool.values());
-	
-		
-		for(Proxy p:proxyList){
-			if(!oldPool.containsKey(p.getIp())){
-				newList.add(p);
+	public void run() {
+		try{
+			//System.out.println("开始执行代理抓取任务！");
+			Map<String,Proxy> oldPool=null;
+			if(this.cacheService.contains("proxy_pool")){
+				oldPool=(Map<String,Proxy>)this.cacheService.get("proxy_pool");
+			}else{
+				oldPool=new HashMap<String,Proxy>();
 			}
-		}
 			
-		List<Proxy> filter = new ArrayList<Proxy>();
+			List<Proxy> oldFilterList=null;
+			if(this.cacheService.contains("proxy_list")){
+				oldFilterList=(List<Proxy>)this.cacheService.get("proxy_list");
+			}else{
+				
+			}
+			
+			
+			Map<String,Proxy> newPool=new HashMap<String,Proxy>();
+			
+			List<Proxy> proxyList = Fetch_Proxy_Server.fetch("1",Store.getProxy());;
+
+			if(proxyList.size()==0){
+				proxyList = Fetch_Proxy_Server.fetch("1",null);;
+			}
+			
+			List<Proxy> proxyList2 = Fetch_Proxy_Server.fetch("2",Store.getProxy());;
+
+			if(proxyList2.size()==0){
+				proxyList2 = Fetch_Proxy_Server.fetch("2",null);;
+			}
+			
+			if(proxyList2.size()!=0){
+				proxyList.addAll(proxyList2);
+			}
+			
+			List<Proxy> newList = new ArrayList<Proxy>();
+			List<Proxy> oldList = new ArrayList<Proxy>();
+			
+			
+			oldList.addAll(oldPool.values());
 		
-		List<Proxy> result=null;
-		if(newList.size()!=0){
-			result = this.check(newList);
-			for (Proxy p : result) {
-				if (p.getLastTtl() > 0) {
-					filter.add(p);
-					newPool.put(p.getIp(), p);
+			
+			for(Proxy p:proxyList){
+				if(!oldPool.containsKey(p.getIp())){
+					newList.add(p);
 				}
 			}
-		}
-		
-		
-		if(oldList.size()!=0){
-			result = this.check(oldList);
-			for (Proxy p : result) {
-				if (p.getLastTtl() > 0) {
-					filter.add(p);
-					newPool.put(p.getIp(), p);
+				
+			List<Proxy> filter = new ArrayList<Proxy>();
+			
+			List<Proxy> result=null;
+			if(newList.size()!=0){
+				result = this.check(newList);
+				for (Proxy p : result) {
+					if (p.getLastTtl() > 0) {
+						filter.add(p);
+						newPool.put(p.getIp(), p);
+					}
 				}
 			}
-		}
-
-		if (filter.size() > 0) {
-			Collections.sort(filter);
-		}
-
-		for (Proxy p : filter) {
-			if (p.getLastTtl() > 0) {
-				//System.out.println(p.getIp() + "," + p.getPort() + ":"+ p.getLastTtl());
-				//proxyPool.put(p.getIp(), p);
+			
+			
+			if(oldList.size()!=0){
+				result = this.check(oldList);
+				for (Proxy p : result) {
+					if (p.getLastTtl() > 0) {
+						filter.add(p);
+						newPool.put(p.getIp(), p);
+					}
+				}
 			}
-		}
 
-		this.cacheService.set("proxy_pool", newPool);
-		this.cacheService.set("proxy_list", filter);
-		
-		store.proxyList=filter;
-		store.proxyPool=newPool;
-		
-		return filter;
+			if (filter.size() > 0) {
+				Collections.sort(filter);
+			}
+
+			for (Proxy p : filter) {
+				if (p.getLastTtl() > 0) {
+					//System.out.println(p.getIp() + "," + p.getPort() + ":"+ p.getLastTtl());
+					//proxyPool.put(p.getIp(), p);
+				}
+			}
+
+			this.cacheService.set("proxy_pool", newPool);
+			this.cacheService.set("proxy_list", filter);
+			
+			System.out.println("\n\n本次代理池:"+filter.size());
+			if(filter.size()>0){
+				for(Proxy p:filter){
+					System.out.println(p);
+				}
+			}
+			store.proxyList=filter;
+			store.proxyPool=newPool;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	
