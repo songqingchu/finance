@@ -6,6 +6,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
@@ -13,6 +17,7 @@ import com.sun.jna.platform.win32.WinDef.HMODULE;
 import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.platform.win32.WinUser.HHOOK;
 import com.sun.jna.platform.win32.WinUser.MSG;
+import com.taobao.finance.common.cache.ICacheService;
 
 public class StockPeek {
 	// 鼠标事件编码
@@ -34,6 +39,9 @@ public class StockPeek {
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 	StockService stockService=new StockService();
+	
+	@Autowired
+	ICacheService cacheService;
 	
 	public StockPeek() {
 		frame=new StockFrame();
@@ -82,15 +90,15 @@ public class StockPeek {
 
 	public static void main(String[] args) {
 		try {
+			
+			ApplicationContext ctx=new ClassPathXmlApplicationContext();
 			StockPeek mouseHook = new StockPeek();
 			mouseHook.executor.scheduleWithFixedDelay(new FetchThread(mouseHook.frame), 0, 4, TimeUnit.SECONDS);
 			MouseHookListener listener=new StockMouseListener(mouseHook.frame);
 			mouseHook.addMouseHookListener(listener);
 			mouseHook.startWindowsHookEx();
 			
-			
-			//Thread.sleep(20000);
-			//mouseHook.stopWindowsHookEx();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

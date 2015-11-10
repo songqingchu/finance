@@ -100,6 +100,12 @@ public class Fetch_ServeralStock_Sina {
 
 	public static List<Stock> fetch(final String code, List<Proxy> list) {
 		final List<Stock> result = new ArrayList<Stock>();
+		if(list==null){
+			return fetch(code, null,null);
+		}
+		if(list.size()==0){
+			return fetch(code, null,null);
+		}
 		CountDownLatch latch = new CountDownLatch(1);
 		for (final Proxy p : list) {
 			new FetchThread(latch, result, code, 0, p).start();

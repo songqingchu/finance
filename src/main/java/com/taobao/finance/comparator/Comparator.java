@@ -27,9 +27,12 @@ public class Comparator {
 		public int compare(Stock o1, Stock o2) {
 			// System.out.println(o1.getName()+":"+o2.getName());
 			if (o1.getConcern().equals(o2.getConcern())) {
-				return o1.getRate() - o2.getRate() >= 0 ? -1 : 1;
+				return o1.getRate().compareTo(o2.getRate());
+				
+				//return o1.getRate() - o2.getRate() >= 0 ? -1 : 1;
 			} else {
-				return o1.getConcern() - o2.getConcern() <= 0 ? -1 : 1;
+				return o1.getConcern().compareTo(o2.getConcern());
+				//return o1.getConcern() - o2.getConcern() <= 0 ? -1 : 1;
 			}
 
 			/*

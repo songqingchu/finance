@@ -1,12 +1,22 @@
 package com.taobao.finance.fetch.impl;
 
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpHost;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.NoHttpResponseException;
 import org.apache.commons.httpclient.methods.GetMethod;
 
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.entity.Proxy;
 import com.taobao.finance.util.FetchUtil;
 
 
@@ -45,12 +55,50 @@ public class Fetch_SingleStock_Sina {
 				String jsonStr = getMethod.getResponseBodyAsString();
 				s = FetchUtil.parseTodayStockFromSina(jsonStr);
 			}
+		} catch (SocketTimeoutException e) {
+			//System.out.println("代理:" + proxy + "," + port + " 响应超时！");
+		} catch (SocketException e) {
+			//System.out.println("代理:" + proxy + "," + port + " 无法获取数据！");
+		} catch (ConnectTimeoutException e) {
+			//System.out.println("代理:" + proxy + "," + port + " 连接超时！");
+		} catch (NoHttpResponseException e) {
+			//System.out.println("代理:" + proxy + "," + port + " 没有响应！");
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (e instanceof SocketTimeoutException) {
+
+			} else if (e instanceof SocketException) {
+
+			} else if (e instanceof ConnectTimeoutException) {
+
+			} else if (e instanceof NoHttpResponseException) {
+
+			} else {
+				e.printStackTrace();
+			}
+
 		}
 		return s;
 	}
 
+	
+	public static Stock fetch(final String code, List<Proxy> list) {
+		final List<Stock> result = new ArrayList<Stock>();
+		CountDownLatch latch = new CountDownLatch(1);
+		for (final Proxy p : list) {
+			new FetchSingleThread(latch, result, code, 0, p).start();
+		}
+		try {
+			latch.await(5, TimeUnit.SECONDS);
+			//System.out.println("等待3秒完毕！");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if(result.size()>0){
+			return result.get(0);
+		}else{
+			return null;
+		}
+	}
 	
 
 	public static void main(String args[]) {
@@ -59,4 +107,36 @@ public class Fetch_SingleStock_Sina {
       System.out.println(s.getEndPrice());
 	}
 
+}
+
+class FetchSingleThread extends Thread {
+	CountDownLatch latch;
+	List<Stock> l;
+	String code;
+	Integer size;
+	Proxy p;
+
+	public FetchSingleThread(CountDownLatch latch, List<Stock> l, String code,Integer size, Proxy p) {
+		this.latch = latch;
+		this.l = l;
+		this.code = code;
+		this.size = size;
+		this.p = p;
+	}
+
+	public void run() {
+		Stock r = Fetch_SingleStock_Sina.fetch(code,p.getIp(),p.getPort());
+		if (r != null) {
+				synchronized (l) {
+					if (l.size()==0) {
+						//l = r;
+						l.add(r);
+						//System.out.println("首先获取到结果！");
+						latch.countDown();
+					} else {
+						//System.out.println("已经获取到结果，丢弃！");
+					}
+				}
+		}
+	}
 }

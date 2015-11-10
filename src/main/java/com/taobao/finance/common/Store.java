@@ -30,8 +30,6 @@ import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.choose.local.thread.AV10_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AV5_Trend_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
-import com.taobao.finance.choose.local.thread.CB2_Choose_MultiThread;
-import com.taobao.finance.choose.local.thread.CB_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.Holder_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
@@ -138,8 +136,8 @@ public class Store {
 
 	
 	public void setTimerTask(){
-		executor.schedule(new GetProxyTask(threadService, null,cacheService,this), 6, TimeUnit.SECONDS);
-		executor.scheduleWithFixedDelay(new GetProxyTask(threadService, null,cacheService,this),0, 6, TimeUnit.SECONDS);
+		//executor.schedule(new GetProxyTask(threadService, null,cacheService,this), 6, TimeUnit.SECONDS);
+		executor.scheduleWithFixedDelay(new GetProxyTask(threadService, null,cacheService,this),0, 60, TimeUnit.SECONDS);
 	}
 	
 	public void reloadPublicPool(){
