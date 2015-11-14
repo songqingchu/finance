@@ -2,12 +2,9 @@ package com.taobao.finance.graphic;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
 
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Kernel32;
@@ -24,16 +20,10 @@ import com.sun.jna.platform.win32.WinDef.HMODULE;
 import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.platform.win32.WinUser.HHOOK;
 import com.sun.jna.platform.win32.WinUser.MSG;
-import com.taobao.finance.common.Store;
 import com.taobao.finance.common.cache.ICacheService;
 import com.taobao.finance.entity.Proxy;
-import com.taobao.finance.fetch.impl.Fetch_Proxy_Server;
-import com.taobao.finance.service.GProxyService;
-import com.taobao.finance.service.ThreadService;
-import com.taobao.finance.task.CheckTTLTask;
-import com.taobao.finance.util.ThreadUtil;
 
-@Component
+
 public class StockPeek {
 	// 鼠标事件编码
 	public static final int WM_MOUSEMOVE = 512;
