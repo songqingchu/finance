@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
@@ -14,12 +16,15 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.taobao.finance.common.Store;
+import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GStock;
+import com.taobao.finance.entity.Proxy;
 import com.taobao.finance.util.FetchUtil;
 
 public class Fetch_Holders {
 
-	public static String url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=GG&sty=GDRS&st=3&sr=1&p=page&ps=50&mkt=1&fd=date";
+	public static String url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx?type=GG&sty=GDRS&st=3&sr=1&p=page&ps=3000&mkt=1&fd=date";
 
 	public static String getUrl(String date, int page) {
 		String newUrl = url.replace("page", page + "");
@@ -97,7 +102,7 @@ public class Fetch_Holders {
 		Map<String, Object> m = null;
 		List<GStock> li = null;
 
-		for (int i = 1; i <= 100; i++) {
+		for (int i = 1; i <= 1; i++) {
 			url = getUrl(date, i);
 			m = fetch(url,null,null);
 			li = (List<GStock>) m.get("data");
@@ -110,6 +115,32 @@ public class Fetch_Holders {
 		}
 		return l;
 	}
+	
+	
+	public static Map<String, Object> fetch(final String url, List<Proxy> list) {
+	    Map<String, Object> result = new HashMap<String, Object>();
+		if(list==null){
+			return fetch(url, null,null);
+		}
+		if(list.size()==0){
+			return fetch(url, null,null);
+		}
+		CountDownLatch latch = new CountDownLatch(1);
+		for (final Proxy p : list) {
+			new FetchHolderThread(latch, result, url, 0, p).start();
+		}
+		try {
+			latch.await(5, TimeUnit.SECONDS);
+			if(result.size()==0){
+				result=fetch(url, null,null);
+			}
+			//System.out.println("等待3秒完毕！");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	
 	public static Map<String,GStock> getAllLong() {
 		Map<String,GStock> m=new HashMap<String,GStock>();
@@ -163,22 +194,36 @@ public class Fetch_Holders {
 
 }
 
+class FetchHolderThread extends Thread {
+	CountDownLatch latch;
+	Map<String, Object> m;
+	String url;
+	Integer size;
+	Proxy p;
 
-class Holder_Task implements Callable<List<GStock>> {
-	public static final Logger logger = Logger.getLogger("taskLogger");
-	private String date;
-	private int page;
-
-	public Holder_Task(String date,int page) {
-		this.date=date;
-		this.page=page;
+	public FetchHolderThread(CountDownLatch latch, Map<String, Object> m, String url,Integer size, Proxy p) {
+		this.latch = latch;
+		this.m=m;
+		this.url = url;
+		this.size = size;
+		this.p = p;
 	}
 
-
-	public List<GStock> call() throws Exception {
-		List<GStock> l = new ArrayList<GStock>();
-		
-
-		return l;
+	public void run() {
+		Map<String, Object> r = Fetch_Holders.fetch(url,p.getIp(),p.getPort());
+		if (r != null) {
+			if (r.size() != 0) {
+				synchronized (m) {
+					if (m.size()==0) {
+						//l = r;
+						m.put("data",r.get("data"));
+						//System.out.println("首先获取到结果！");
+						latch.countDown();
+					} else {
+						//System.out.println("已经获取到结果，丢弃！");
+					}
+				}
+			}
+		}
 	}
 }

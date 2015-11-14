@@ -189,16 +189,16 @@ text-decoration:none;
 	    }
 	    
 	    //左移动K线图
-	    if(event.keyCode == 188||event.keyCode == 190){
+	    if(event.keyCode == 219||event.keyCode == 221){
 	    	event.stopPropagation(); 
 		    event.preventDefault();
-	    	if(event.keyCode == 190) {
+	    	if(event.keyCode == 221) {
 	    		if(end+10<=total){
 	    			start=start+10;
 			    	end=end+10;
 	    		}
 		    }
-	        if(event.keyCode == 188) {
+	        if(event.keyCode == 219) {
 	        	if(start-10>=0){
 	        		start=start-10;
 		        	end=end-10;

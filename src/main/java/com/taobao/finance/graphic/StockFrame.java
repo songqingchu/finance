@@ -93,11 +93,13 @@ public class StockFrame extends JFrame {
         for(Stock s:l){
         	if(!stockMap.containsKey(s.getSymbol())){
         		JLabel la=new JLabel("  "+s.getName().trim()+"  "+s.getRatePercent());
+        		la.setToolTipText(s.getCode());
         		stockList.add(la);
         		stockMap.put(s.getSymbol(), la);
         		this.add(la);
         	}else{
         		stockMap.get(s.getSymbol()).setText("  "+s.getName().trim()+"  "+s.getRatePercent());
+        		stockMap.get(s.getSymbol()).setToolTipText(s.getCode());
         	}
         }
     }

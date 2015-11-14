@@ -491,7 +491,7 @@ function fresh(){
 		    } 
 		}
 		
-	    //普通
+	    //普通   <
 	    if(event.keyCode == 188){
 	    	event.stopPropagation(); 
 		    event.preventDefault();
@@ -517,7 +517,7 @@ function fresh(){
 				}
 			}); 
 	    }
-	    //关注
+	    //关注 >
         if(event.keyCode == 190){
         	event.stopPropagation(); 
     	    event.preventDefault();
@@ -543,7 +543,7 @@ function fresh(){
 				}
 			}); 
 	    }
-	    //超级关注
+	    //超级关注 /
         if(event.keyCode == 191){
         	event.stopPropagation(); 
     	    event.preventDefault();
@@ -570,7 +570,7 @@ function fresh(){
 			}); 
         }
 	    
-	    //删除股票
+	    //删除股票  Delete
 	    if(event.keyCode == 46){
 	    	event.stopPropagation(); 
 		    event.preventDefault();
@@ -608,14 +608,14 @@ function fresh(){
 	 	   getDataAndShow(currentSymbol);
 	    }
 	    
-	    //刷新实时行情，像是当前股票
+	    //刷新实时行情，像是当前股票  R
 	    if(event.keyCode == 82){
 	    	event.stopPropagation(); 
 		    event.preventDefault();
 	    	window.location="operate.do?currentCat="+currentCat+"&currentSymbol="+currentSymbol;
 	    }
 	    
-	    //回到页面，刷新行情
+	    //回到页面，刷新行情  F5
 	    if(event.keyCode == 116){
 	    	event.stopPropagation(); 
 		    event.preventDefault();
@@ -689,7 +689,7 @@ function fresh(){
 	    }
 	    
 	    
-	    //缩放K线图
+	    //缩放K线图   上下键
 	    if(event.keyCode == 38||event.keyCode == 40){
 	    	event.stopPropagation(); 
 		    event.preventDefault();
@@ -716,17 +716,17 @@ function fresh(){
 	    }
 	    
 	    
-	    //左移动K线图
-	    if(event.keyCode == 188||event.keyCode == 190){
+	    //左移动K线图  < >
+	    if(event.keyCode == 219||event.keyCode == 221){
 	    	event.stopPropagation(); 
 		    event.preventDefault();
-	    	if(event.keyCode == 190) {
+	    	if(event.keyCode == 221) {
 	    		if(end+10<=total){
 	    			start=start+10;
 			    	end=end+10;
 	    		}
 		    }
-	        if(event.keyCode == 188) {
+	        if(event.keyCode == 219) {
 	        	if(start-10>=0){
 	        		start=start-10;
 		        	end=end-10;
@@ -735,7 +735,7 @@ function fresh(){
 	        getLocalDataAndShow(start,end);
 	    }
 	    
-	    
+	    // |
 	    if(event.keyCode == 220){
 	    	var head=base.data[start];
 	    	var tail=base.data[end];
@@ -761,7 +761,7 @@ function fresh(){
 			}); 
 	    	
 	    } 
-	    //前后键，上一条，下一条
+	    //前后键，上一条，下一条          <-  ->
 	    if(event.keyCode == 37||event.keyCode == 39){
 	    	event.stopPropagation(); 
 		    event.preventDefault();

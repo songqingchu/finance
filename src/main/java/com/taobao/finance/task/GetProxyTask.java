@@ -46,6 +46,8 @@ public class GetProxyTask implements Runnable {
 				
 			}
 			
+			store.proxyList=oldFilterList;
+			store.proxyPool=oldPool;
 			
 			Map<String,Proxy> newPool=new HashMap<String,Proxy>();
 			

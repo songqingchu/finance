@@ -104,7 +104,7 @@ public class Store {
 	@Autowired
 	private ICacheService cacheService;
 	
-	ScheduledExecutorService executor=Executors.newScheduledThreadPool(1);
+	ScheduledExecutorService executor=Executors.newScheduledThreadPool(2);
 	
 	public static Map<String,Proxy> proxyPool=new HashMap<String,Proxy>();
 	public static List<Proxy> proxyList=new ArrayList<Proxy>();
@@ -137,7 +137,7 @@ public class Store {
 	
 	public void setTimerTask(){
 		//executor.schedule(new GetProxyTask(threadService, null,cacheService,this), 6, TimeUnit.SECONDS);
-		executor.scheduleWithFixedDelay(new GetProxyTask(threadService, null,cacheService,this),0, 60, TimeUnit.SECONDS);
+		executor.scheduleWithFixedDelay(new GetProxyTask(threadService, null,cacheService,this),0, 120, TimeUnit.SECONDS);
 	}
 	
 	public void reloadPublicPool(){
@@ -174,6 +174,8 @@ public class Store {
 		formalDate=formalDate.replace("-6-", "-06-");
 		formalDate=formalDate.replace("-9-", "-09-");
 		
+		
+		Map<String,GStock> newHolderMap=new HashMap<String,GStock>();
 		List<GStock> l=Fetch_Holders.getAll(date);
 		for(GStock s:l){
 			String symbol=s.getSymbol();
@@ -187,12 +189,125 @@ public class Store {
 					}else{
 						old.setRecord(formalDate+":"+s.getHolder());
 					}
-					this.gStockService.update(old);
+					try{
+						//holderMap.put(old.getSymbol(), old);
+						newHolderMap.put(old.getSymbol(), old);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+			}else{
+				try{
+					//holderMap.put(s.getSymbol(), s);
+					newHolderMap.put(s.getSymbol(), s);
+				}catch(Exception e){
+					e.printStackTrace();
 				}
 			}
 		}
+		
+		if(newHolderMap.size()>0){
+			List<GStock> all=new ArrayList<GStock>();
+			//all.addAll(holderMap.values());
+			all.addAll(newHolderMap.values());
+			List<List<Object>> rr=ThreadUtil.divide(all, 8);
+			List<Callable<Object>> tList=new ArrayList<Callable<Object>>();
+			for(List<Object> r:rr){
+				tList.add(new InsertTask(r, gStockService));
+			}
+			threadService.service(tList);
+		}
+		
+	}
+	
+	
+	public void downloadHoldersLong(){
+		String date=Fetch_Holders.getDate();
+		String formalDate=date;
+		formalDate=formalDate.replace("-3-", "-03-");
+		formalDate=formalDate.replace("-6-", "-06-");
+		formalDate=formalDate.replace("-9-", "-09-");
+		
+		List<String> li=new ArrayList<String>();
+		li.add("2013-3-31");
+		li.add("2013-6-30");
+		li.add("2013-9-30");
+		li.add("2013-12-31");
+		li.add("2014-3-31");
+		li.add("2014-6-30");
+		li.add("2014-9-30");
+		li.add("2014-12-31");
+		li.add("2015-3-31");
+		li.add("2015-6-30");
+		li.add("2015-9-30");
+		for(String d:li){
+			List<GStock> l=Fetch_Holders.getAll(d);
+			for(GStock s:l){
+				String symbol=s.getSymbol();
+				GStock old=holderMap.get(symbol);
+				
+				formalDate=d;
+				formalDate=formalDate.replace("-3-", "-03-");
+				formalDate=formalDate.replace("-6-", "-06-");
+				formalDate=formalDate.replace("-9-", "-09-");
+				
+				if(old!=null){
+					if(old.getRecord().contains(formalDate)){
+						
+					}else{
+						if(StringUtils.isNotBlank(old.getRecord())){
+							old.setRecord(old.getRecord()+";"+formalDate+":"+s.getHolder());
+						}else{
+							old.setRecord(formalDate+":"+s.getHolder());
+						}
+						
+						try{
+							//this.gStockService.update(old);
+							holderMap.put(old.getSymbol(), old);
+						}catch(Exception e){
+							e.printStackTrace();
+						}
+					}
+				}else{
+					s.setRecord(formalDate+":"+s.getHolder());
+					try{
+						//this.gStockService.saveOrUpdate(s);
+						holderMap.put(s.getSymbol(), s);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+			}
+			List<GStock> all=new ArrayList<GStock>();
+			all.addAll(holderMap.values());
+			List<List<Object>> rr=ThreadUtil.divide(all, 8);
+			List<Callable<Object>> tList=new ArrayList<Callable<Object>>();
+			for(List<Object> r:rr){
+				tList.add(new InsertTask(r, gStockService));
+			}
+			threadService.service(tList);
+		}
 	}
 
+	public static class InsertTask implements Callable<Object> {
+		List<Object> r;
+		GStockService gStockService;
+		
+		public InsertTask(List<Object> r,GStockService gStockService){
+			this.r=r;
+			this.gStockService=gStockService;
+		}
+		
+		@Override
+		public Object call() throws Exception {
+			for(Object s:r){
+				GStock st=(GStock)s;
+				this.gStockService.saveOrUpdate(st);
+			}
+			return r;
+		}
+	}
+	
 	public void reloadRecent() {
 		logger.info("reload tmp-data");
 		for (String s : Fetch_AllStock.map.keySet()) {
@@ -253,7 +368,7 @@ public class Store {
 		for(GStock s:holders){
 			holderMap.put(s.getSymbol(), s);
 		}
-		//this.downloadHolders();
+		this.downloadHolders();
 		
 		
 		reloadPublicPool();

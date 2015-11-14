@@ -99,6 +99,7 @@ public class Fetch_AllStock {
 	
 	
 	public static void main(String args[]){
-		getData();
+		//getData();
+		System.out.println(Fetch_AllStock.map.size());
 	}
 }
