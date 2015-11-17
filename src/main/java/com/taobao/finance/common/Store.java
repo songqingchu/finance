@@ -168,6 +168,7 @@ public class Store {
 	}
 	
 	public void downloadHolders(){
+		
 		String date=Fetch_Holders.getDate();
 		String formalDate=date;
 		formalDate=formalDate.replace("-3-", "-03-");

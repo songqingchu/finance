@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Kernel32;
@@ -23,7 +24,7 @@ import com.sun.jna.platform.win32.WinUser.MSG;
 import com.taobao.finance.common.cache.ICacheService;
 import com.taobao.finance.entity.Proxy;
 
-
+@Component
 public class StockPeek {
 	// 鼠标事件编码
 	public static final int WM_MOUSEMOVE = 512;
