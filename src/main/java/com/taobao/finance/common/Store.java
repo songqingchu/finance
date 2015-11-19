@@ -351,6 +351,19 @@ public class Store {
 	public void init() {
 		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
 		
+		if(this.cacheService.contains("proxy_pool")){
+			this.proxyPool=(Map<String,Proxy>)this.cacheService.get("proxy_pool");
+		}else{
+			this.proxyPool=new HashMap<String,Proxy>();
+		}
+		
+		if(this.cacheService.contains("proxy_list")){
+			this.proxyList=(List<Proxy>)this.cacheService.get("proxy_list");
+		}else{
+			
+		}
+		
+		
 		this.setTimerTask();
 		
 		if (workingDay == null) {
