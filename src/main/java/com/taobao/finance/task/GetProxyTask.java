@@ -54,13 +54,13 @@ public class GetProxyTask implements Runnable {
 			List<Proxy> proxyList = Fetch_Proxy_Server.fetch("1",Store.getProxy());;
 
 			if(proxyList.size()==0){
-				proxyList = Fetch_Proxy_Server.fetch("1",null);;
+				proxyList = Fetch_Proxy_Server.fetch("1",Store.getProxy());;
 			}
 			
 			List<Proxy> proxyList2 = Fetch_Proxy_Server.fetch("2",Store.getProxy());;
 
 			if(proxyList2.size()==0){
-				proxyList2 = Fetch_Proxy_Server.fetch("2",null);;
+				proxyList2 = Fetch_Proxy_Server.fetch("2",Store.getProxy());;
 			}
 			
 			if(proxyList2.size()!=0){
