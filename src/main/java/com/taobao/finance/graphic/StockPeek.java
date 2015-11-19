@@ -98,7 +98,7 @@ public class StockPeek {
 	public static void main(String[] args) {
 		try {
 			
-			ApplicationContext ctx=new ClassPathXmlApplicationContext("app-context.xml");
+			ApplicationContext ctx=new ClassPathXmlApplicationContext("app-context2.xml");
 			
 			StockPeek mouseHook = ctx.getBean(StockPeek.class);
 			mouseHook.executor.scheduleWithFixedDelay(new UpdateProxyTask(mouseHook.stockService,mouseHook.cacheService), 0, 60, TimeUnit.SECONDS);

@@ -33,7 +33,7 @@ public class Fetch_Proxy_Server {
 
 
 	public static List<Proxy> fetch(String code,String proxy, Integer port) {
-		List<Proxy> l=null;
+		List<Proxy> l=new ArrayList<Proxy>();
 		HttpClient client = new HttpClient();
 		
 		if (proxy != null && port != null) {

@@ -76,26 +76,7 @@
 		<property name="FILE_USER_STATS_BASE" value="${user.stats}" />
 	</bean>
 
-	<bean
-		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-		<property name="messageConverters">
-			<list>
-				<ref bean="mappingJacksonHttpMessageConverter" />
-			</list>
-		</property>
-	</bean>
 	
-	<bean id="store" class="com.taobao.finance.common.Store" autowire="default">
-	</bean>
-
-	<bean id="mappingJacksonHttpMessageConverter"
-		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-		<property name="supportedMediaTypes">
-			<list>
-				<value>application/json;charset=UTF-8</value>
-			</list>
-		</property>
-	</bean>
 	
 		<bean  
         id="memcachedClientBuilder"  

@@ -55,7 +55,7 @@ import com.taobao.finance.task.UnformalDataTask;
 import com.taobao.finance.util.FetchUtil;
 import com.taobao.finance.util.ThreadUtil;
 
-@Component
+
 @DependsOn("fetchUtil")
 public class Store {
 	private static final Logger logger = Logger.getLogger("taskLogger");
