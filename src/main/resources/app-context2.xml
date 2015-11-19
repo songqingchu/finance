@@ -76,7 +76,25 @@
 		<property name="FILE_USER_STATS_BASE" value="${user.stats}" />
 	</bean>
 
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
 	
+	
+
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
 	
 		<bean  
         id="memcachedClientBuilder"  
@@ -88,7 +106,7 @@
                 <bean class="java.net.InetSocketAddress">  
                     <constructor-arg>  
                     <!-- 10.0.0.233 -->
-                        <value>10.0.0.233</value>  
+                        <value>115.29.51.86</value>  
                     </constructor-arg>  
                     <constructor-arg>  
                         <value>11211</value>  
