@@ -12,9 +12,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import com.taobao.finance.common.Store;
 
 @Component
@@ -51,23 +54,22 @@ public class ThreadService {
 	
 	
 	public List<Object> service(List<Callable<Object>> tasks){
-		//System.out.println("开始执行并行任务");
 		List<Object> r=new ArrayList<Object>();
+		List<Future<Object>> result=new ArrayList<Future<Object>>();
+		
 		for(Callable<Object> o:tasks){
-			con.submit(o);	
+			result.add(con.submit(o));	
 		}
-		int i = 1;
-		while (i <= tasks.size()) {
+		
+		for(Future<Object> f:result){
 			try {
-				r.add(con.take().get());
-				i++;
+				r.add(f.get());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}
 		}
-		//System.out.println("执行并行任务结束！");
 		return r;
 	}
 }
