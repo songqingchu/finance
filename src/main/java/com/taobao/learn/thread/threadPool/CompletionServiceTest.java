@@ -22,7 +22,7 @@ public class CompletionServiceTest {
 		for(Callable<Object> o:tasks){
 			result.add(con.submit(o));	
 		}
-		
+	
 		for(Future<Object> f:result){
 			try {
 				r.add(f.get());
@@ -32,6 +32,27 @@ public class CompletionServiceTest {
 				e.printStackTrace();
 			}
 		}
+		return r;
+	}
+	
+	
+	public synchronized List<Object> syncService(List<Callable<Object>> tasks){
+		List<Object> r=new ArrayList<Object>();
+		List<Future<Object>> result=new ArrayList<Future<Object>>();
+		
+		for(Callable<Object> o:tasks){
+			result.add(con.submit(o));	
+		}
+	
+		for(Future<Object> f:result){
+			try {
+				r.add(f.get());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}  
 		return r;
 	}
 }
