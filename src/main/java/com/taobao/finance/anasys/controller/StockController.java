@@ -1309,7 +1309,7 @@ public class StockController {
 					symbol=s;
 				}
 				if(store.publicStockMap.containsKey(symbol)){
-					continue;
+					//continue;
 				}
 				if(StringUtils.isNotBlank(symbol)){
 					if(StringUtils.isNumeric(symbol)){
