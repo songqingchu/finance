@@ -81,6 +81,14 @@ public class StockService {
 			    +"sh600328,"//兰太实业
 			    +"sz002557" //恰恰食品
 				,getProxy());
+		List<Stock> l=Fetch_ServeralStock_Sina.fetch(
+				"sh000001,"
+				+ "sz399001,"
+				+ "sz399101,"
+				+ "sz399006,"
+				+ "sz002596,"
+				+ "sh600212",
+				getProxy());
 		return l;
 	}
 }
