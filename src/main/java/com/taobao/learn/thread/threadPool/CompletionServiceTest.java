@@ -10,6 +10,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+
+/**
+ * 优点在于：（1） 线程池submit之后，如果需要结果如果get就会阻塞，可以实现，哪个任务先执行完成就返回，而不是按顺序返回，这样可以极大的提升效率
+ *
+ */
 public class CompletionServiceTest {
 	
 	ExecutorService service = Executors.newFixedThreadPool(16);
