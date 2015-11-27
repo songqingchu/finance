@@ -64,23 +64,7 @@ public class StockService {
 	
 	public List<Stock> getRealPrice(List<Stock> list){
 		//System.out.println("刷新页面！");                                                //海南瑞泽            青青稞酒           重庆啤酒           江泉实业         //
-		List<Stock> l=Fetch_ServeralStock_Sina.fetch(
-				  "sh000001,"
-				+ "sz399001,"      
-				+ "sz399101,"      //海南瑞泽
-				+ "sh600212,"      //江泉实业
-				+ "sz000505,"      //珠江控股
-				+ "sz002567,"      //唐人神
-				+ "sz002193,"       //山东如意
-				+ "sz002088,"      //鲁阳节能
-				+"sh600051," //宁波联合
-				+"sz600510,"//黑牡丹
-				+"sh600638," //新黄浦
-			    +"sh6003123,"//翠微股份
-			    +"sh600506,"//香梨股份
-			    +"sh600328,"//兰太实业
-			    +"sz002557" //恰恰食品
-				,getProxy());
+
 		List<Stock> l=Fetch_ServeralStock_Sina.fetch(
 				"sh000001,"
 				+ "sz399001,"
