@@ -543,6 +543,14 @@ public class FetchUtil {
 		}
 		return str;
 	}
+	
+	public static String formatRate2(Float rate) {
+		String str = new DecimalFormat("0.00").format(rate);
+		if (!str.startsWith("-")) {
+			str = " " + str;
+		}
+		return str;
+	}
 
 	public static String formatExchange(Float rate) {
 		String str = new DecimalFormat("00000.00").format(rate);

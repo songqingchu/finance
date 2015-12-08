@@ -65,11 +65,14 @@ public class StockService {
 	public List<Stock> getRealPrice(List<Stock> list){
 		List<Stock> l=Fetch_ServeralStock_Sina.fetch(
 				  "sh000001,"//上证
-				+ "sz399001,"//深指
-				+ "sz399101,"//中小        
-				+ "sz399006,"//创业
-				+ "sz002596,"//海南
-				+ "sh600212",//江泉
+				+"sz399001,"//深指
+				+"sz399101,"//中小        
+				+"sz399006,"//创业
+				+"sz002596,"//海南
+				+"sh600212,"//江泉
+				+"sh600622,"//嘉宝
+				+"sz000702,"//正虹
+				+"sh600209",//罗顿
 				getProxy());
 		return l;
 	}

@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import com.taobao.finance.dataobject.Stock;
+import com.taobao.finance.util.FetchUtil;
 
 public class StockFrame extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -41,7 +42,7 @@ public class StockFrame extends JFrame {
     	this.setIconImage(imgae);
         pic = new JLabel();
         pic.setIcon(getIcon("aaa.jpg"));
-        pic.setBounds(0, 0, 510, 290);
+        pic.setBounds(0, 0, 510, 200);
         setAlwaysOnTop(true);
         // 初始化窗体
         setResizable(false);
@@ -49,7 +50,8 @@ public class StockFrame extends JFrame {
         setUndecorated(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
        
-        setSize(120, Toolkit.getDefaultToolkit().getScreenSize().height);
+      
+        //setSize(120, Toolkit.getDefaultToolkit().getScreenSize().height);
         setVisible(true);
         add(pic);
  
@@ -59,7 +61,7 @@ public class StockFrame extends JFrame {
         int h = 100;
         this.setLocation(w, h);
         this.setLayout(new FlowLayout());
-        this.add(new JLabel("        "));
+        //this.add(new JLabel("        "));
  
         // 为窗体添加鼠标事件
         this.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -89,16 +91,28 @@ public class StockFrame extends JFrame {
     }
  
     public void showStock(List<Stock> l){
-    	setSize(120, l.size()*30);
+    	setSize(120, l.size()*22);
         for(Stock s:l){
+        	String symbol=s.getSymbol();
         	if(!stockMap.containsKey(s.getSymbol())){
-        		JLabel la=new JLabel("  "+s.getName().trim()+"  "+s.getRatePercent());
+        		JLabel la=null;
+        		if(symbol.contains("sh000001")||symbol.contains("sz399001")||symbol.contains("sz399101")||symbol.contains("sz399006")){
+        			la=new JLabel("  "+s.getNameShot().trim()+"  "+s.getRatePercent()+"             ");
+        		}else{
+        			la=new JLabel("  "+s.getNameShot().trim()+"  "+s.getRatePercent()+" "+FetchUtil.formatRate2(s.getEndPriceFloat()));
+        		}
+        		
         		la.setToolTipText(s.getCode());
         		stockList.add(la);
         		stockMap.put(s.getSymbol(), la);
         		this.add(la);
         	}else{
-        		stockMap.get(s.getSymbol()).setText("  "+s.getName().trim()+"  "+s.getRatePercent());
+        		
+        		if(symbol.contains("sh000001")||symbol.contains("sz399001")||symbol.contains("sz399101")||symbol.contains("sz399006")){
+        			stockMap.get(s.getSymbol()).setText("  "+s.getNameShot().trim()+"  "+s.getRatePercent()+"             ");
+        		}else{
+        			stockMap.get(s.getSymbol()).setText("  "+s.getNameShot().trim()+"  "+s.getRatePercent()+" "+FetchUtil.formatRate2(s.getEndPriceFloat()));
+        		}
         		stockMap.get(s.getSymbol()).setToolTipText(s.getCode());
         	}
         }
