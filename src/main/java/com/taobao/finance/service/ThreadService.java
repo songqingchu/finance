@@ -23,8 +23,6 @@ import com.taobao.finance.common.Store;
 @Component
 public class ThreadService {
 
-	@Autowired
-	public Store store;
 	ExecutorService service = Executors.newFixedThreadPool(16);
 	CompletionService<Object> con = new ExecutorCompletionService<Object>(service);
 	
