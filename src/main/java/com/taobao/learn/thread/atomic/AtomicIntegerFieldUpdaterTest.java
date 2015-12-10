@@ -2,6 +2,7 @@ package com.taobao.learn.thread.atomic;
 
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  *  如果我们只需要某个类里的某个字段，那么就需要使用原子更新字段类，Atomic包提供了以下三个类：
@@ -14,21 +15,24 @@ public class AtomicIntegerFieldUpdaterTest {
 
 	private static AtomicIntegerFieldUpdater<User> a = AtomicIntegerFieldUpdater.newUpdater(User.class, "old");
 	private static AtomicLongFieldUpdater<User> b = AtomicLongFieldUpdater.newUpdater(User.class, "old2");
-
+	private static AtomicReferenceFieldUpdater <User ,String> c = AtomicReferenceFieldUpdater.newUpdater(User.class, String.class, "name");  
+	
 	public static void main(String[] args) {
 		User conan = new User("conan", 10 , 20);
 		System.out.println(a.getAndIncrement(conan));
 		System.out.println(b.incrementAndGet(conan));
+		c.compareAndSet(conan, "conan", "hello");
+		System.out.println(conan.name);
 	}
 
 	
 	
 	public static class User {
-		private String name;
+		public volatile String name;
 		public volatile int old;
-		public volatile int old2;
+		public volatile long old2;  
 		
-		public User(String name, int old,int old2) {
+		public User(String name, int old,long old2) {
 			this.name = name;
 			this.old = old;
 			this.old2=old2;
@@ -39,7 +43,7 @@ public class AtomicIntegerFieldUpdaterTest {
 		public int getOld() {
 			return old;
 		}
-		public int getOld2() {
+		public long getOld2() {
 			return old2;
 		}
 		public void setOld2(int old2) {

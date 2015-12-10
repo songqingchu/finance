@@ -2,7 +2,11 @@ package com.taobao.learn.thread.atomic;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-
+/**
+ * AtomicInteger,AtomicLong,AtomicBoolean
+ * @author Auser
+ *
+ */
 public class AtomicIntegerTest {
 
 	static AtomicInteger ai = new AtomicInteger(1);

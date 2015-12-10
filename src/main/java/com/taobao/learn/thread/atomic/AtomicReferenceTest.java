@@ -21,8 +21,30 @@ public class AtomicReferenceTest {
 		System.out.println(atomicUserRef.get().getName());
 		System.out.println(atomicUserRef.get().getOld());
 	}
+	
+	
+	public void test2(){
+		  final AtomicReference <String> ATOMIC_REFERENCE = new AtomicReference<String>("abc");  
+	      
+		        for(int i = 0 ; i < 100 ; i++) {  
+		            final int num = i;  
+		            new Thread() {  
+		                public void run() {  
+		                    try {  
+		                        Thread.sleep(Math.abs((int)(Math.random() * 100)));  
+		                    } catch (InterruptedException e) {  
+		                        e.printStackTrace();  
+		                    }  
+		                    if(ATOMIC_REFERENCE.compareAndSet("abc", new String("abc"))) {  
+		                        System.out.println("我是线程：" + num + ",我获得了锁进行了对象修改！");  
+		                    }  
+		                }  
+		            }.start();  
+		        }  
+		     
+	}
 
-	static class User {
+	public static class User {
 		private String name;
 		private int old;
 

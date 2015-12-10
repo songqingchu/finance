@@ -1,6 +1,7 @@
 package com.taobao.learn.thread.atomic;
 
 import java.util.concurrent.atomic.AtomicIntegerArray;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /**
  * 通过原子的方式更新数组里的某个元素，Atomic包提供了以下三个类： 
@@ -14,10 +15,23 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
  */
 
 public class AtomicIntegerArrayTest {
-	static int[] value = new int[] { 1, 2 };
-	static AtomicIntegerArray ai = new AtomicIntegerArray(value);
+	
 
 	public static void main(String[] args) {
+		testAtomicIntegerArray();
+	}
+	
+	public static void testAtomicReferenceArray(){
+		String[] a=new String[]{"1","2"};
+		AtomicReferenceArray<String> aa=new AtomicReferenceArray<String>(a);
+		aa.compareAndSet(0, "2", "3");
+		System.out.println(a[0]);
+		System.out.println(aa.get(0));
+	}
+	
+	public static void testAtomicIntegerArray(){
+	    int[] value = new int[] { 1, 2 };
+	    AtomicIntegerArray ai = new AtomicIntegerArray(value);
 		ai.getAndSet(0, 3);
 		System.out.println(ai.get(0));
 		System.out.println(value[0]);
