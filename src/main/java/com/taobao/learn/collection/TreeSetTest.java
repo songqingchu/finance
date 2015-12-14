@@ -8,6 +8,7 @@ public class TreeSetTest {
 		TreeSet<Integer> s=new TreeSet<Integer>();
 		s.add(3);
 		s.add(2);
+		s.add(4);
 		for(Integer i:s){
 			System.out.println(i);
 		}
