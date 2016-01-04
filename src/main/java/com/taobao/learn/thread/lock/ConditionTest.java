@@ -40,10 +40,10 @@ public class ConditionTest {
 					full.signalAll();
 				} catch (Exception e) {
 					e.printStackTrace();
+				} finally{
+					lock.unlock();
 				}
-				lock.unlock();
 			}
-
 		}
 	}
 
@@ -73,10 +73,10 @@ public class ConditionTest {
 					Thread.sleep(500);
 				} catch (Exception e) {
 					e.printStackTrace();
+				} finally{
+					lock.unlock();
 				}
-				lock.unlock();
 			}
-
 		}
 	}
 }

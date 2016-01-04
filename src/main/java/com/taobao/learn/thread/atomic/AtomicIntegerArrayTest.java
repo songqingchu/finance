@@ -18,13 +18,13 @@ public class AtomicIntegerArrayTest {
 	
 
 	public static void main(String[] args) {
-		testAtomicIntegerArray();
+		testAtomicReferenceArray();
 	}
 	
 	public static void testAtomicReferenceArray(){
 		String[] a=new String[]{"1","2"};
 		AtomicReferenceArray<String> aa=new AtomicReferenceArray<String>(a);
-		aa.compareAndSet(0, "2", "3");
+		aa.compareAndSet(0, "1", "3");
 		System.out.println(a[0]);
 		System.out.println(aa.get(0));
 	}

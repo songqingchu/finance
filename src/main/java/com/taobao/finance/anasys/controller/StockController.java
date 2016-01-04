@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.taobao.finance.common.Store;
 import com.taobao.finance.comparator.Comparator;
+import com.taobao.finance.dataobject.Report;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GHis;
 import com.taobao.finance.entity.GPublicStock;
@@ -40,6 +41,7 @@ import com.taobao.finance.entity.GStock;
 import com.taobao.finance.entity.GUser;
 import com.taobao.finance.entity.GXing;
 import com.taobao.finance.fetch.impl.Fetch_AllStock;
+import com.taobao.finance.fetch.impl.Fetch_Report_Jupai;
 import com.taobao.finance.fetch.impl.Fetch_ServeralStock_Sina;
 import com.taobao.finance.fetch.impl.Fetch_ShiZhi;
 import com.taobao.finance.service.DataService;
@@ -115,6 +117,22 @@ public class StockController {
 	public String canwu(HttpServletRequest request) {
 		
 		return "canwu";
+	}
+	
+	@RequestMapping(value = "/report.do", method = RequestMethod.GET)
+	public String report(HttpServletRequest request) {
+		List<Report> l=new Fetch_Report_Jupai().fetchAll(null);
+		
+		if(l.size()>0){
+			Collections.sort(l);
+		}
+		request.setAttribute("l", l);
+		return "report";
+	}
+	
+	@RequestMapping(value = "/report2.do", method = RequestMethod.GET)
+	public String report2(HttpServletRequest request) {
+		return "report2";
 	}
 	
 	

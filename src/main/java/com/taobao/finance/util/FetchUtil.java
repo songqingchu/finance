@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +25,18 @@ import org.htmlparser.Parser;
 import org.htmlparser.filters.AndFilter;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
+import org.htmlparser.util.ParserException;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.taobao.finance.base.Hisdata_Base;
 import com.taobao.finance.common.Store;
+import com.taobao.finance.dataobject.Achieve;
+import com.taobao.finance.dataobject.Introduce;
+import com.taobao.finance.dataobject.Report;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.dataobject.Tick;
 import com.taobao.finance.entity.GStock;
@@ -40,67 +46,75 @@ import com.taobao.finance.fetch.impl.Fetch_SingleStock_Sina;
 public class FetchUtil {
 
 	public static DateFormat SHANGTOU_FORMAT = new SimpleDateFormat("yyyymmdd");
-	public static DateFormat TIANTIAN_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	public static DateFormat TIANTIAN_FORMAT = new SimpleDateFormat(
+			"yyyy-MM-dd");
 	public static DateFormat FILE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
 
-	
 	public Store store;
-	public  void setFILE_STOCK_ANASYS_BASE(String fILE_STOCK_ANASYS_BASE) {
+
+	public void setFILE_STOCK_ANASYS_BASE(String fILE_STOCK_ANASYS_BASE) {
 		FILE_STOCK_ANASYS_BASE = fILE_STOCK_ANASYS_BASE;
 	}
-	public  void setFILE_STOCK_HISTORY_BASE(String fILE_STOCK_HISTORY_BASE) {
+
+	public void setFILE_STOCK_HISTORY_BASE(String fILE_STOCK_HISTORY_BASE) {
 		FILE_STOCK_HISTORY_BASE = fILE_STOCK_HISTORY_BASE;
 	}
-	public  void setFILE_STOCK_CHOOSE_BASE(String fILE_STOCK_CHOOSE_BASE) {
+
+	public void setFILE_STOCK_CHOOSE_BASE(String fILE_STOCK_CHOOSE_BASE) {
 		FILE_STOCK_CHOOSE_BASE = fILE_STOCK_CHOOSE_BASE;
 	}
-	public  void setFILE_USER_STATS_BASE(String fILE_USER_STATS_BASE) {
+
+	public void setFILE_USER_STATS_BASE(String fILE_USER_STATS_BASE) {
 		FILE_USER_STATS_BASE = fILE_USER_STATS_BASE;
 	}
 
-	public  String getFILE_STOCK_ANASYS_BASE() {
+	public String getFILE_STOCK_ANASYS_BASE() {
 		return FILE_STOCK_ANASYS_BASE;
 	}
-	public  String getFILE_STOCK_HISTORY_BASE() {
+
+	public String getFILE_STOCK_HISTORY_BASE() {
 		return FILE_STOCK_HISTORY_BASE;
 	}
-	public  String getFILE_USER_STATS_BASE() {
+
+	public String getFILE_USER_STATS_BASE() {
 		return FILE_USER_STATS_BASE;
 	}
-	public  String getFILE_STOCK_CHOOSE_BASE() {
+
+	public String getFILE_STOCK_CHOOSE_BASE() {
 		return FILE_STOCK_CHOOSE_BASE;
 	}
 
+	public static String FILE_STOCK_ANASYS_BASE = "E:\\stock\\anasys\\";
+	public static String FILE_STOCK_HISTORY_BASE = "E:\\stock\\history\\";
+	public static String FILE_USER_STATS_BASE = "E:\\stock\\stats\\";
+	public static String FILE_STOCK_TMP_BASE = "E:\\stock\\tmp\\";
+	public static String FILE_STOCK_CHOOSE_BASE = "E:\\stock\\choose\\";
 
-	public static String FILE_STOCK_ANASYS_BASE ="E:\\stock\\anasys\\";
-	public static String FILE_STOCK_HISTORY_BASE ="E:\\stock\\history\\";
-	public static String FILE_USER_STATS_BASE ="E:\\stock\\stats\\";
-	public static String FILE_STOCK_TMP_BASE ="E:\\stock\\tmp\\";
-	public static String FILE_STOCK_CHOOSE_BASE ="E:\\stock\\choose\\";
-
-	
-	public void init(){
-		/*boolean working=checkWorkingDay();
-		store.workingDay=working;*/
+	public void init() {
+		/*
+		 * boolean working=checkWorkingDay(); store.workingDay=working;
+		 */
 	}
-	
-	public  String getFILE_STOCK_TMP_BASE() {
+
+	public String getFILE_STOCK_TMP_BASE() {
 		return FILE_STOCK_TMP_BASE;
 	}
-	public  void setFILE_STOCK_TMP_BASE(String fILE_STOCK_TMP_BASE) {
+
+	public void setFILE_STOCK_TMP_BASE(String fILE_STOCK_TMP_BASE) {
 		FILE_STOCK_TMP_BASE = fILE_STOCK_TMP_BASE;
 	}
+
 	public static Stock parseTodayStockFromSina(String s) {
 
-		s=StringUtils.replace(s, "var hq_str_", "");
-		if(s.contains("\n")){
-			s=s.substring(1,s.length());
+		s = StringUtils.replace(s, "var hq_str_", "");
+		if (s.contains("\n")) {
+			s = s.substring(1, s.length());
 		}
 		Stock stock = null;
 		try {
 			String ss[] = s.split("=");
 			if (ss.length == 2) {
-				
+
 				String data[] = ss[1].split(",");
 				stock = new Stock();
 				stock.setStartPrice(data[1]);
@@ -125,45 +139,50 @@ public class FetchUtil {
 		return stock;
 
 	}
-	
-	
+
 	public static List<Proxy> parseProxy(String s) {
 
-		List<Proxy> l=new ArrayList<Proxy>();
+		List<Proxy> l = new ArrayList<Proxy>();
 		try {
 			Parser parser = new Parser(s);
-			NodeList nodes = parser.parse(new AndFilter(new TagNameFilter( "tr"),new HasAttributeFilter( "class", "odd" )));
-			
-			for(int i=0;i<nodes.size();i++){
-				Node tr=nodes.elementAt(i);
-				NodeList tds=tr.getChildren();
-				List<Node> tdList=new ArrayList<Node>();
-				int k=0;
-				for(int j=0;j<tds.size();j++){
-					Node td=tds.elementAt(j);
-					if(td.getText().contains("td")){
+			NodeList nodes = parser.parse(new AndFilter(
+					new TagNameFilter("tr"), new HasAttributeFilter("class",
+							"odd")));
+
+			for (int i = 0; i < nodes.size(); i++) {
+				Node tr = nodes.elementAt(i);
+				NodeList tds = tr.getChildren();
+				List<Node> tdList = new ArrayList<Node>();
+				int k = 0;
+				for (int j = 0; j < tds.size(); j++) {
+					Node td = tds.elementAt(j);
+					if (td.getText().contains("td")) {
 						tdList.add(td);
 						k++;
-						if(k>=10){
+						if (k >= 10) {
 							break;
 						}
 					}
 				}
-				
-				if(tdList.size()>=10){
-					String ip=tdList.get(2).getChildren().elementAt(0).getText();
-					String port=tdList.get(3).getChildren().elementAt(0).getText();
-					//String address=tdList.get(4).getChildren().elementAt(1).getChildren().elementAt(0).getText();
-					String date=tdList.get(9).getChildren().elementAt(0).getText();
-					Proxy p=new Proxy();
+
+				if (tdList.size() >= 10) {
+					String ip = tdList.get(2).getChildren().elementAt(0)
+							.getText();
+					String port = tdList.get(3).getChildren().elementAt(0)
+							.getText();
+					// String
+					// address=tdList.get(4).getChildren().elementAt(1).getChildren().elementAt(0).getText();
+					String date = tdList.get(9).getChildren().elementAt(0)
+							.getText();
+					Proxy p = new Proxy();
 					p.setIp(ip);
 					p.setPort(Integer.parseInt(port));
-					//p.setLocation(address);
-					DateFormat df=new SimpleDateFormat("yy-MM-dd HH:mm");
+					// p.setLocation(address);
+					DateFormat df = new SimpleDateFormat("yy-MM-dd HH:mm");
 					p.setIncludeDate(df.parse(date));
 					l.add(p);
 				}
-				
+
 			}
 
 		} catch (Exception e) {
@@ -172,64 +191,59 @@ public class FetchUtil {
 		return l;
 
 	}
-	
-	
-	public static Map<String,String> parseShiZhi(String s) {
+
+	public static Map<String, String> parseShiZhi(String s) {
 		DecimalFormat df = new DecimalFormat("#.00");
-		Map<String,String> m=new HashMap<String,String>();
-		try{
-		JSONArray a=(JSONArray)JSON.parse(s);
-		int size=a.size();
-		for(int i=0;i<size;i++){
-			JSONObject o=(JSONObject)a.get(i);
-			String symbol=o.getString("symbol");
-			String value=o.getString("nmc");
-			Float f=Float.parseFloat(value);
-			f=f/10000;
-			String newValue=df.format(f);
-			m.put(symbol, newValue);
-		}
-		}catch(Exception e){
+		Map<String, String> m = new HashMap<String, String>();
+		try {
+			JSONArray a = (JSONArray) JSON.parse(s);
+			int size = a.size();
+			for (int i = 0; i < size; i++) {
+				JSONObject o = (JSONObject) a.get(i);
+				String symbol = o.getString("symbol");
+				String value = o.getString("nmc");
+				Float f = Float.parseFloat(value);
+				f = f / 10000;
+				String newValue = df.format(f);
+				m.put(symbol, newValue);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return m;
 
 	}
-	
-	public static Map<String,Object> parseHolders(String s) {
-        Map<String,Object> m=new HashMap<String,Object>(); 
-        List<GStock> l=new ArrayList<GStock>();
 
-			JSONArray array=(JSONArray)JSON.parse(s);
-			for(int i=0;i<array.size();i++){
-				String d=(String)array.get(i);
-				GStock st=new GStock();
-				String[] datas=d.split(",");
-				String symbol=datas[0];
-				String name=datas[1];
-				String holder=datas[2];
-				String change=datas[3];
-				if(symbol.startsWith("60")){
-					symbol="sh"+symbol;
-				}else{
-					symbol="sz"+symbol;
-				}
-				st.setSymbol(symbol);
-				st.setName(name);
-				st.setHolder(Integer.parseInt(holder));
-				st.setChange((int)(Float.parseFloat(change)*100));
-				l.add(st);
+	public static Map<String, Object> parseHolders(String s) {
+		Map<String, Object> m = new HashMap<String, Object>();
+		List<GStock> l = new ArrayList<GStock>();
+
+		JSONArray array = (JSONArray) JSON.parse(s);
+		for (int i = 0; i < array.size(); i++) {
+			String d = (String) array.get(i);
+			GStock st = new GStock();
+			String[] datas = d.split(",");
+			String symbol = datas[0];
+			String name = datas[1];
+			String holder = datas[2];
+			String change = datas[3];
+			if (symbol.startsWith("60")) {
+				symbol = "sh" + symbol;
+			} else {
+				symbol = "sz" + symbol;
 			}
-			m.put("data", l);
-		
-		
+			st.setSymbol(symbol);
+			st.setName(name);
+			st.setHolder(Integer.parseInt(holder));
+			st.setChange((int) (Float.parseFloat(change) * 100));
+			l.add(st);
+		}
+		m.put("data", l);
+
 		return m;
 
 	}
 
-	
-
-	
 	public static List<Stock> parseStockHistoryFromCompass(String s, String code)
 			throws Exception {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -261,7 +275,6 @@ public class FetchUtil {
 					numStr = numStr.replace(",", "");
 					numStr = numStr.replace(".", "");
 
-					
 					stock.setDate(format.parse(dStr));
 					stock.setStartPrice(sStr);
 					stock.setHighPrice(hStr);
@@ -279,32 +292,33 @@ public class FetchUtil {
 		return r;
 	}
 
-
-	
-
-	public static Stock parseProfit(String s, String code)
-			throws Exception {
-		Map<String,String> m=new HashMap<String,String>();
+	public static Stock parseProfit(String s, String code) throws Exception {
+		Map<String, String> m = new HashMap<String, String>();
 		try {
 			Parser parser = new Parser(s);
-			parser.setEncoding("GBK"); 
-			NodeList nodes = parser.parse(new HasAttributeFilter( "id", "FundHoldSharesTable" ));
-			NodeList trs=nodes.elementAt(0).getChildren();
+			parser.setEncoding("GBK");
+			NodeList nodes = parser.parse(new HasAttributeFilter("id",
+					"FundHoldSharesTable"));
+			NodeList trs = nodes.elementAt(0).getChildren();
 			if (nodes.size() > 0) {
-				int size=nodes.elementAt(0).getChildren().size();
-				for(int i=0;i<size;i++){
-					List<Node> l=new ArrayList<Node>();
-					Node n=trs.elementAt(i);System.out.println("-==========================================");
-					
+				int size = nodes.elementAt(0).getChildren().size();
+				for (int i = 0; i < size; i++) {
+					List<Node> l = new ArrayList<Node>();
+					Node n = trs.elementAt(i);
+					System.out
+							.println("-==========================================");
+
 					System.out.println(n.toHtml());
-					if(n.toHtml().contains("鍏憡鏃ユ湡")){
+					if (n.toHtml().contains("鍏憡鏃ユ湡")) {
 						l.add(n);
-						String s1=n.getChildren().elementAt(0).getChildren().elementAt(1).getFirstChild().toHtml();
+						String s1 = n.getChildren().elementAt(0).getChildren()
+								.elementAt(1).getFirstChild().toHtml();
 						System.out.println(s1);
 					}
-					if(n.toHtml().contains("鍑�鍒╂鼎")){
+					if (n.toHtml().contains("鍑�鍒╂鼎")) {
 						l.add(n);
-						String s2=n.getChildren().elementAt(1).getFirstChild().toHtml();
+						String s2 = n.getChildren().elementAt(1)
+								.getFirstChild().toHtml();
 						System.out.println(s2);
 					}
 				}
@@ -314,62 +328,249 @@ public class FetchUtil {
 		}
 		return null;
 	}
-	
-	
-	public static List<Tick> parseZhubi(String s, String code,String dateStr,String filter)
-			throws Exception {
-		List<Tick> l=new ArrayList<Tick>();
+
+	public static Introduce parseInfo(String s) {
+		Date d = new Date();
+		List<Report> l = new ArrayList<Report>();
+		Parser parser = null;
+		try {
+			parser = new Parser(s);
+			NodeList nodes = parser.parse(new AndFilter(new HasAttributeFilter(
+					"id", "Table0"), new TagNameFilter("table")));
+			NodeList trs = nodes.elementAt(0).getChildren();
+			try {
+				Introduce i = new Introduce();
+				if (trs.elementAt(3).getChildren().size() > 3) {
+					Node name = trs.elementAt(3).getChildren().elementAt(3);
+					if (name.getChildren() != null) {
+						String nameStr = name.getChildren().elementAt(0)
+								.getText();
+						i.setName(nameStr);
+					}
+				}
+				
+				if (trs.elementAt(12).getChildren().size() > 3) {
+					Node address = trs.elementAt(12).getChildren().elementAt(3);
+					if (address.getChildren() != null) {
+						String add = address.getChildren().elementAt(0)
+								.getText();
+						i.setAddress(add);
+					}
+				}
+				if (trs.elementAt(13).getChildren().size() > 1) {
+					Node province = trs.elementAt(13).getChildren()
+							.elementAt(1);
+					if (province.getChildren() != null) {
+						String pro = province.getChildren().elementAt(0)
+								.getText();
+						i.setProvince(pro);
+					}
+				}
+				if (trs.elementAt(17).getChildren().size() > 1) {
+					Node introduce = trs.elementAt(17).getChildren()
+							.elementAt(1);
+					if (introduce.getChildren() != null) {
+						String intr = introduce.getChildren().elementAt(0)
+								.getText();
+						i.setIntroduce(intr);
+					}
+				}
+				if (trs.elementAt(18).getChildren().size() > 1) {
+					Node range = trs.elementAt(18).getChildren().elementAt(1);
+					if (range.getChildren() != null) {
+						String ran = range.getChildren().elementAt(0).getText();
+						i.setRange(ran);
+					}
+				}
+				if (trs.elementAt(6).getChildren().size() > 3) {
+					Node field = trs.elementAt(6).getChildren().elementAt(3);
+					if (field.getChildren() != null) {
+						String fie = field.getChildren().elementAt(0).getText();
+						i.setField(fie);
+					}
+				}
+				return i;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println(trs);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static List<Report> parseReport(String s) {
+		Date d = new Date();
+		List<Report> l = new ArrayList<Report>();
+		Parser parser = null;
+		try {
+			parser = new Parser(s);
+			NodeList nodes = parser.parse(new AndFilter(new HasAttributeFilter(
+					"class", "l3"), new TagNameFilter("span")));
+			for (int i = 1; i < nodes.size(); i++) {
+				try {
+					Node n = nodes.elementAt(i).getChildren().elementAt(0);
+					Node dNode = nodes.elementAt(i).getNextSibling()
+							.getNextSibling();
+					Node reNode = nodes.elementAt(i).getPreviousSibling();
+					String replay = reNode.getChildren().elementAt(0).getText();
+					String date = dNode.getChildren().elementAt(0).getText();
+
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+					Date dd = df.parse(d.getYear() + "-" + date);
+
+					LinkTag link = (LinkTag) n;
+					String href = link.getAttribute("href");
+					String text = n.getChildren().elementAt(0).getText();
+					if (text.contains("权益变动") || text.contains("要约")) {
+						Report r = new Report();
+						r.setType(1);
+						r.setTitle(text);
+						r.setLink("http://guba.eastmoney.com" + href);
+						r.setDate(dd);
+						r.setPingNum(Integer.parseInt(replay));
+						r.setDateString(d.getYear() + "-" + date);
+						l.add(r);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		} catch (ParserException e) {
+			e.printStackTrace();
+		}
+
+		return l;
+	}
+
+	public static List<Report> parseAchievement(String s) {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = new Date();
+		List<Report> l = new ArrayList<Report>();
+		Parser parser = null;
+		try {
+			String[] tokens = StringUtils.split(s, "\n");
+			if (tokens.length >= 0) {
+				for (String ss : tokens) {
+					if (ss.contains("defjson")) {
+
+						ss = ss.replace("defjson: {pages:1,data:[\"", "");
+						ss = ss.replace("\"]},", "");
+						ss = ss.replace(" ", "");
+						ss = ss.replace("\"", "aa");
+
+						String[] ttt = ss.split("aa,aa");
+						if (ttt.length > 0) {
+							for (String r : ttt) {
+								String[] tttt = StringUtils.split(r, ",");
+								if (tttt.length == 18) {
+									Achieve a = new Achieve();
+									a.setCode(tttt[0]);
+									a.setEarningStr(tttt[2]);
+									a.setRevenueStr(tttt[4]);
+									a.setRevenueTzStr(tttt[5]);
+									a.setRevenueHzStr(tttt[6]);
+
+									a.setProfitStr(tttt[7]);
+									a.setProfitTzStr(tttt[8]);
+									a.setProfitHzStr(tttt[9]);
+
+									a.setAssetStr(tttt[10]);
+									a.setAssetRateStr(tttt[11]);
+									a.setCashFlowStr(tttt[12]);
+
+									a.setDateStr(tttt[16]);
+									a.setReportDateStr(tttt[15]);
+									a.setDate(df.parse(tttt[16]));
+									a.setReportDate(df.parse(tttt[15]));
+								}
+							}
+
+						}
+
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return l;
+	}
+
+	public static List<Tick> parseZhubi(String s, String code, String dateStr,
+			String filter) throws Exception {
+		List<Tick> l = new ArrayList<Tick>();
 		try {
 			Parser parser = new Parser(s);
-			NodeList nodes = parser.parse(new AndFilter(new HasAttributeFilter( "id", "datatbl" ),new HasAttributeFilter( "class", "datatbl" )));
-			NodeList trs=nodes.elementAt(0).getChildren();
-            
-			boolean firstTr=true;
+			NodeList nodes = parser.parse(new AndFilter(new HasAttributeFilter(
+					"id", "datatbl"),
+					new HasAttributeFilter("class", "datatbl")));
+			NodeList trs = nodes.elementAt(0).getChildren();
+
+			boolean firstTr = true;
 			if (trs.size() > 0) {
-				int size=trs.size();;
-				for(int i=0;i<size;i++){
-					Node n=trs.elementAt(i);
-					boolean containsTr=false;
-					containsTr=n.toHtml().contains("<tr");
-					if(containsTr&&firstTr){
-						firstTr=false;
+				int size = trs.size();
+				;
+				for (int i = 0; i < size; i++) {
+					Node n = trs.elementAt(i);
+					boolean containsTr = false;
+					containsTr = n.toHtml().contains("<tr");
+					if (containsTr && firstTr) {
+						firstTr = false;
 						continue;
 					}
-					if(containsTr){
-						if(!firstTr){
-							NodeList tds =n.getChildren();
-							if(tds.size()>6){
-								List<Node> ll=new ArrayList<Node>();
-								for(int j=0;j<tds.size();j++){
-									if(tds.elementAt(j).toHtml().contains("<th")||tds.elementAt(j).toHtml().contains("<td")){
+					if (containsTr) {
+						if (!firstTr) {
+							NodeList tds = n.getChildren();
+							if (tds.size() > 6) {
+								List<Node> ll = new ArrayList<Node>();
+								for (int j = 0; j < tds.size(); j++) {
+									if (tds.elementAt(j).toHtml()
+											.contains("<th")
+											|| tds.elementAt(j).toHtml()
+													.contains("<td")) {
 										ll.add(tds.elementAt(j));
 									}
 								}
-								
-								String time=ll.get(0).getChildren().elementAt(0).getText();
-								String price=ll.get(1).getChildren().elementAt(0).getText();
-								String rate=ll.get(2).getChildren().elementAt(0).getText();
-								String d=ll.get(3).getChildren().elementAt(0).getText();
-								String num=ll.get(4).getChildren().elementAt(0).getText();
-								
-								if(filter!=null){
-									SimpleDateFormat df2=new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-									if(!df2.parse(dateStr+" "+time).after(df2.parse(filter))){
+
+								String time = ll.get(0).getChildren()
+										.elementAt(0).getText();
+								String price = ll.get(1).getChildren()
+										.elementAt(0).getText();
+								String rate = ll.get(2).getChildren()
+										.elementAt(0).getText();
+								String d = ll.get(3).getChildren().elementAt(0)
+										.getText();
+								String num = ll.get(4).getChildren()
+										.elementAt(0).getText();
+
+								if (filter != null) {
+									SimpleDateFormat df2 = new SimpleDateFormat(
+											"yyyy.MM.dd HH:mm:ss");
+									if (!df2.parse(dateStr + " " + time).after(
+											df2.parse(filter))) {
 										continue;
 									}
 								}
-								
-								rate=rate.replace("%", "");
-								rate=rate.replace("+", "");
-								if(d.equals("--")){
-									d="0";
+
+								rate = rate.replace("%", "");
+								rate = rate.replace("+", "");
+								if (d.equals("--")) {
+									d = "0";
 								}
-								d=d.replace("+", "");
-								
-								Tick t=new Tick();
+								d = d.replace("+", "");
+
+								Tick t = new Tick();
 								t.setSymbol(code);
 								t.setPriceStr(price);
-								t.setTimeStr(dateStr+" "+time);
+								t.setTimeStr(dateStr + " " + time);
 								t.setRateStr(rate);
 								t.setdStr(d);
 								t.setNum(Integer.parseInt(num));
@@ -382,16 +583,11 @@ public class FetchUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(l.size()>0){
+		if (l.size() > 0) {
 			Collections.reverse(l);
 		}
 		return l;
 	}
-	
-
-	
-
-
 
 	/**
 	 * Parser parser = new Parser(s); AndFilter filter = new AndFilter( new
@@ -426,24 +622,10 @@ public class FetchUtil {
 
 	}
 
-	
-
-	
-	
-	
 	public static String format0Right(float num) {
 		String format = "%07d";
 		return String.format(format, num);
 	}
-
-	
-	
-
-	
-	
-	
-
-	
 
 	public static boolean saveAbsolute(String file, List<String> content) {
 		File f = new File(file);
@@ -497,9 +679,6 @@ public class FetchUtil {
 		}
 	}
 
-	
-	
-	
 	public static Map<String, Stock> readFileMapAbsolute(String file) {
 		Map<String, Stock> map = new HashMap<String, Stock>();
 		File f = new File(file);
@@ -508,7 +687,7 @@ public class FetchUtil {
 			String line = null;
 			line = br.readLine();
 			while (line != null) {
-				if(StringUtils.isNotBlank(line)){
+				if (StringUtils.isNotBlank(line)) {
 					String data[] = line.split("\t");
 					Stock s = new Stock();
 					s.setSymbol(data[0]);
@@ -528,14 +707,6 @@ public class FetchUtil {
 		return map;
 	}
 
-	
-	
-	
-
-	
-	
-	
-
 	public static String formatRate(Float rate) {
 		String str = new DecimalFormat("0.000").format(rate);
 		if (!str.startsWith("-")) {
@@ -543,7 +714,7 @@ public class FetchUtil {
 		}
 		return str;
 	}
-	
+
 	public static String formatRate2(Float rate) {
 		String str = new DecimalFormat("0.00").format(rate);
 		if (!str.startsWith("-")) {
@@ -600,139 +771,128 @@ public class FetchUtil {
 		}
 		return str + "%";
 	}
-	
-    public static boolean checkWorkingDay(){
-    	String sh="sh000001";
-    	String sz="sz399001";
-    	Stock todaySh = Fetch_SingleStock_Sina.fetch(sh,null,null);
-    	Stock todaySz = Fetch_SingleStock_Sina.fetch(sz,null,null);
-    	Stock tmpSh = getTmp(sh);
-    	Stock tmpSz = getTmp(sz);
-    	if(!todaySh.getStartPrice().equals(tmpSh.getStartPrice())){
-    		return true;
-    	}
-    	if(!todaySh.getEndPrice().equals(tmpSh.getEndPrice())){
-    		return true;
-    	}
-    	if(!todaySz.getStartPrice().equals(tmpSz.getStartPrice())){
-    		return true;
-    	}
-    	if(!todaySz.getEndPrice().equals(tmpSz.getEndPrice())){
-    		return true;
-    	}
-    	return false;
-    }
-    
-    public static boolean checkWorkingDayUsusal(){
-        Calendar cal = Calendar.getInstance();
-        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
-        if (w < 0){
-        	w = 0;
-        }
-        if(w>=1&&w<=5){
-        	return true;
-        }else{
-        	return false;
-        }
-    }
-    
-    public static boolean checkWorkingDay2(){
-    	String sh="sh000001";
-    	String sz="sz399001";
-    	Stock todaySh = Fetch_SingleStock_Sina.fetch(sh,null,null);
-    	Stock todaySz = Fetch_SingleStock_Sina.fetch(sz,null,null);
-    	try {
+
+	public static boolean checkWorkingDay() {
+		String sh = "sh000001";
+		String sz = "sz399001";
+		Stock todaySh = Fetch_SingleStock_Sina.fetch(sh, null, null);
+		Stock todaySz = Fetch_SingleStock_Sina.fetch(sz, null, null);
+		Stock tmpSh = getTmp(sh);
+		Stock tmpSz = getTmp(sz);
+		if (!todaySh.getStartPrice().equals(tmpSh.getStartPrice())) {
+			return true;
+		}
+		if (!todaySh.getEndPrice().equals(tmpSh.getEndPrice())) {
+			return true;
+		}
+		if (!todaySz.getStartPrice().equals(tmpSz.getStartPrice())) {
+			return true;
+		}
+		if (!todaySz.getEndPrice().equals(tmpSz.getEndPrice())) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean checkWorkingDayUsusal() {
+		Calendar cal = Calendar.getInstance();
+		int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+		if (w < 0) {
+			w = 0;
+		}
+		if (w >= 1 && w <= 5) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean checkWorkingDay2() {
+		String sh = "sh000001";
+		String sz = "sz399001";
+		Stock todaySh = Fetch_SingleStock_Sina.fetch(sh, null, null);
+		Stock todaySz = Fetch_SingleStock_Sina.fetch(sz, null, null);
+		try {
 			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	Stock todaySh2 = Fetch_SingleStock_Sina.fetch(sh,null,null);
-    	Stock todaySz2 = Fetch_SingleStock_Sina.fetch(sz,null,null);
-    	try {
+		Stock todaySh2 = Fetch_SingleStock_Sina.fetch(sh, null, null);
+		Stock todaySz2 = Fetch_SingleStock_Sina.fetch(sz, null, null);
+		try {
 			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	Stock todaySh3 = Fetch_SingleStock_Sina.fetch(sh,null,null);
-    	Stock todaySz3 = Fetch_SingleStock_Sina.fetch(sz,null,null);
-    	try {
+		Stock todaySh3 = Fetch_SingleStock_Sina.fetch(sh, null, null);
+		Stock todaySz3 = Fetch_SingleStock_Sina.fetch(sz, null, null);
+		try {
 			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	Stock todaySh4 = Fetch_SingleStock_Sina.fetch(sh,null,null);
-    	Stock todaySz4 = Fetch_SingleStock_Sina.fetch(sz,null,null);
-    	
-    	if(!todaySh.getStartPrice().equals(todaySh2.getStartPrice())){
-    		return true;
-    	}
-    	if(!todaySh.getEndPrice().equals(todaySh3.getEndPrice())){
-    		return true;
-    	}
-    	if(!todaySh.getEndPrice().equals(todaySh4.getEndPrice())){
-    		return true;
-    	}
-    	if(!todaySz.getStartPrice().equals(todaySz2.getStartPrice())){
-    		return true;
-    	}
-    	if(!todaySz.getEndPrice().equals(todaySz3.getEndPrice())){
-    		return true;
-    	}
-    	if(!todaySz.getEndPrice().equals(todaySz4.getEndPrice())){
-    		return true;
-    	}
-    	
-    	
-    	if(!todaySh.getStartPrice().equals(todaySh3.getStartPrice())){
-    		return true;
-    	}
-    	if(!todaySh.getEndPrice().equals(todaySh3.getEndPrice())){
-    		return true;
-    	}
-    	if(!todaySz.getStartPrice().equals(todaySz3.getStartPrice())){
-    		return true;
-    	}
-    	if(!todaySz.getEndPrice().equals(todaySz3.getEndPrice())){
-    		return true;
-    	}
-    	
-    	if(!todaySh.getStartPrice().equals(todaySh4.getStartPrice())){
-    		return true;
-    	}
-    	if(!todaySh.getEndPrice().equals(todaySh4.getEndPrice())){
-    		return true;
-    	}
-    	if(!todaySz.getStartPrice().equals(todaySz4.getStartPrice())){
-    		return true;
-    	}
-    	if(!todaySz.getEndPrice().equals(todaySz4.getEndPrice())){
-    		return true;
-    	}
-    	return false;
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public static Stock getTmp(String symbol){
-    	String url=FetchUtil.FILE_STOCK_TMP_BASE+symbol+".txt";
-    	String s=FetchUtil.FILE_STOCK_HISTORY_BASE;
-        File f=new File(url);
-        Stock st=null;
+		Stock todaySh4 = Fetch_SingleStock_Sina.fetch(sh, null, null);
+		Stock todaySz4 = Fetch_SingleStock_Sina.fetch(sz, null, null);
+
+		if (!todaySh.getStartPrice().equals(todaySh2.getStartPrice())) {
+			return true;
+		}
+		if (!todaySh.getEndPrice().equals(todaySh3.getEndPrice())) {
+			return true;
+		}
+		if (!todaySh.getEndPrice().equals(todaySh4.getEndPrice())) {
+			return true;
+		}
+		if (!todaySz.getStartPrice().equals(todaySz2.getStartPrice())) {
+			return true;
+		}
+		if (!todaySz.getEndPrice().equals(todaySz3.getEndPrice())) {
+			return true;
+		}
+		if (!todaySz.getEndPrice().equals(todaySz4.getEndPrice())) {
+			return true;
+		}
+
+		if (!todaySh.getStartPrice().equals(todaySh3.getStartPrice())) {
+			return true;
+		}
+		if (!todaySh.getEndPrice().equals(todaySh3.getEndPrice())) {
+			return true;
+		}
+		if (!todaySz.getStartPrice().equals(todaySz3.getStartPrice())) {
+			return true;
+		}
+		if (!todaySz.getEndPrice().equals(todaySz3.getEndPrice())) {
+			return true;
+		}
+
+		if (!todaySh.getStartPrice().equals(todaySh4.getStartPrice())) {
+			return true;
+		}
+		if (!todaySh.getEndPrice().equals(todaySh4.getEndPrice())) {
+			return true;
+		}
+		if (!todaySz.getStartPrice().equals(todaySz4.getStartPrice())) {
+			return true;
+		}
+		if (!todaySz.getEndPrice().equals(todaySz4.getEndPrice())) {
+			return true;
+		}
+		return false;
+	}
+
+	public static Stock getTmp(String symbol) {
+		String url = FetchUtil.FILE_STOCK_TMP_BASE + symbol + ".txt";
+		String s = FetchUtil.FILE_STOCK_HISTORY_BASE;
+		File f = new File(url);
+		Stock st = null;
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line = null;
 			line = br.readLine();
-            if(line != null) {
-			  st=Hisdata_Base.parseTmpData(symbol, line);
-            }
+			if (line != null) {
+				st = Hisdata_Base.parseTmpData(symbol, line);
+			}
 			br.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -740,9 +900,9 @@ public class FetchUtil {
 			e.printStackTrace();
 		}
 		return st;
-    }
+	}
 
-    public static void main(String args[]) throws IOException, ParseException{
+	public static void main(String args[]) throws IOException, ParseException {
 		checkWorkingDay2();
 	}
 }

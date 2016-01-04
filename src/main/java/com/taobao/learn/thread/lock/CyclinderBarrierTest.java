@@ -6,7 +6,6 @@ import java.util.concurrent.CyclicBarrier;
 public class CyclinderBarrierTest {
 	public static void main(String[] args) {
 		CyclicBarrier cyclicBarrier = new CyclicBarrier(4, new Runnable() {
-
 			@Override
 			public void run() {
 				System.out.println("所有玩家通关！");

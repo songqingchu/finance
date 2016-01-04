@@ -1,34 +1,31 @@
 package com.taobao.learn.thread.lock;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 public class ReadWriteLockTest {
 
-	ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-	ReadLock readLock = lock.readLock();
-	WriteLock writeLock = lock.writeLock();
+	Object data;
+	volatile boolean cacheValid;
+	ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
 
-	public static void main(String args[]) {
-
-	}
-
-	public void add() {
-		writeLock.lock();
-		try {
-
-		} finally {
-			writeLock.unlock();
+	void processCachedData() {
+		rwl.readLock().lock();// @1
+		if (!cacheValid) {
+			// Must release read lock before acquiring write lock
+			rwl.readLock().unlock();// @4
+			rwl.writeLock().lock();// @2
+			// Recheck state because another thread might have acquired
+			// write lock and changed state before we did.
+			if (!cacheValid) {// @3
+				// data = ...
+				cacheValid = true;
+			}
+			// Downgrade by acquiring read lock before releasing write lock
+			rwl.readLock().lock();
+			rwl.writeLock().unlock(); // Unlock write, still hold read
 		}
-	}
 
-	public void get() {
-		readLock.lock();
-		try {
-
-		} finally {
-			readLock.unlock();
-		}
+		// use(data);
+		rwl.readLock().unlock();
 	}
 }

@@ -364,7 +364,7 @@ public class Store {
 		}
 		
 		
-		this.setTimerTask();
+		//this.setTimerTask();
 		
 		if (workingDay == null) {
 			workingDay = FetchUtil.checkWorkingDayUsusal();
@@ -382,7 +382,7 @@ public class Store {
 		for(GStock s:holders){
 			holderMap.put(s.getSymbol(), s);
 		}
-		//this.downloadHolders();
+		this.downloadHolders();
 		
 		
 		reloadPublicPool();
