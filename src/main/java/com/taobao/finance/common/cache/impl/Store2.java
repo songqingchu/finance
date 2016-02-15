@@ -33,7 +33,7 @@ import com.taobao.finance.service.ThreadService;
 import com.taobao.finance.task.CheckTTLTask;
 import com.taobao.finance.util.ThreadUtil;
 
-@Component
+
 @DependsOn("fetchUtil")
 public class Store2 {
 	private static final Logger logger = Logger.getLogger("taskLogger");

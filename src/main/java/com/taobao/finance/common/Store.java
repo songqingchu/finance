@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
@@ -33,7 +33,6 @@ import com.taobao.finance.choose.local.thread.AVCU_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.Holder_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.TP_Choose_MultiThread;
 import com.taobao.finance.choose.local.thread.other.BigTrend_Choose_MultiThread;
-import com.taobao.finance.common.cache.ICacheService;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GHis;
@@ -49,7 +48,6 @@ import com.taobao.finance.service.GPublicStockService;
 import com.taobao.finance.service.GStockService;
 import com.taobao.finance.service.GTaskService;
 import com.taobao.finance.service.ThreadService;
-import com.taobao.finance.task.GetProxyTask;
 import com.taobao.finance.task.HisDataTask;
 import com.taobao.finance.task.UnformalDataTask;
 import com.taobao.finance.util.FetchUtil;
@@ -101,8 +99,8 @@ public class Store {
 	@Autowired
 	private GHisService gHisService;
 	
-	@Autowired
-	private ICacheService cacheService;
+	/*@Autowired
+	private ICacheService cacheService;*/
 	
 	ScheduledExecutorService executor=Executors.newScheduledThreadPool(2);
 	
@@ -137,7 +135,7 @@ public class Store {
 	
 	public void setTimerTask(){
 		//executor.schedule(new GetProxyTask(threadService, null,cacheService,this), 6, TimeUnit.SECONDS);
-		executor.scheduleWithFixedDelay(new GetProxyTask(threadService, null,cacheService,this),0, 120, TimeUnit.SECONDS);
+		//executor.scheduleWithFixedDelay(new GetProxyTask(threadService, null,cacheService,this),0, 120, TimeUnit.SECONDS);
 	}
 	
 	public void reloadPublicPool(){
@@ -241,7 +239,9 @@ public class Store {
 		li.add("2015-3-31");
 		li.add("2015-6-30");
 		li.add("2015-9-30");
+		li.add("2015-12-31");
 		for(String d:li){
+			System.out.println(d);
 			List<GStock> l=Fetch_Holders.getAll(d);
 			for(GStock s:l){
 				String symbol=s.getSymbol();
@@ -279,18 +279,21 @@ public class Store {
 					}
 				}
 			}
-			List<GStock> all=new ArrayList<GStock>();
-			all.addAll(holderMap.values());
-			List<List<Object>> rr=ThreadUtil.divide(all, 8);
-			List<Callable<Object>> tList=new ArrayList<Callable<Object>>();
-			for(List<Object> r:rr){
-				tList.add(new InsertTask(r, gStockService));
-			}
-			threadService.service(tList);
+			
 		}
+		
+		List<GStock> all=new ArrayList<GStock>();
+		all.addAll(holderMap.values());
+		List<List<Object>> rr=ThreadUtil.divide(all, 8);
+		List<Callable<Object>> tList=new ArrayList<Callable<Object>>();
+		for(List<Object> r:rr){
+			tList.add(new InsertTask(r, gStockService));
+		}
+		threadService.service2(tList);
 	}
 
 	public static class InsertTask implements Callable<Object> {
+		AtomicInteger i=new AtomicInteger(0);
 		List<Object> r;
 		GStockService gStockService;
 		
@@ -304,6 +307,7 @@ public class Store {
 			for(Object s:r){
 				GStock st=(GStock)s;
 				this.gStockService.saveOrUpdate(st);
+				System.out.println(i.incrementAndGet());
 			}
 			return r;
 		}
@@ -351,7 +355,7 @@ public class Store {
 	public void init() {
 		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
 		
-		if(this.cacheService.contains("proxy_pool")){
+		/*if(this.cacheService.contains("proxy_pool")){
 			this.proxyPool=(Map<String,Proxy>)this.cacheService.get("proxy_pool");
 		}else{
 			this.proxyPool=new HashMap<String,Proxy>();
@@ -361,7 +365,7 @@ public class Store {
 			this.proxyList=(List<Proxy>)this.cacheService.get("proxy_list");
 		}else{
 			
-		}
+		}*/
 		
 		
 		//this.setTimerTask();
@@ -382,8 +386,8 @@ public class Store {
 		for(GStock s:holders){
 			holderMap.put(s.getSymbol(), s);
 		}
-		this.downloadHolders();
-		
+		//this.downloadHolders();
+		this.download();
 		
 		reloadPublicPool();
 		
@@ -795,9 +799,9 @@ public class Store {
 	
 	public void download(){
 		logger.info("routin download begin");
-		downloadHolders();
+		/*downloadHolders();
 		updateHistory();
-		updateTmp();
+		updateTmp();*/
 		logger.info("routin download end\n");
 	}
 

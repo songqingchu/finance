@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -14,10 +13,10 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.taobao.finance.common.Store;
-import com.taobao.finance.dataobject.Stock;
 import com.taobao.finance.entity.GStock;
 import com.taobao.finance.entity.Proxy;
 import com.taobao.finance.util.FetchUtil;
@@ -186,11 +185,18 @@ public class Fetch_Holders {
 
 	public static void main(String args[]) {
 
-		Map<String,GStock> m = getAllLong();
-		m.size();
-		
+			try {
+				
+				ApplicationContext ctx=new ClassPathXmlApplicationContext("app-context.xml");
+				
+				Store mouseHook = ctx.getBean(Store.class);
+				
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
-	}
 
 }
 

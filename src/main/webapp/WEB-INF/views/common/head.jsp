@@ -6,7 +6,7 @@
 <script src="/resources/js/jquery.min.js" type="text/javascript"></script>
 <script src="/resources/js/jquery-ui.js"></script>
 <script src="/resources/js/highstock.js"></script>
-<script src="/resources/js/highchart/highcharts.js"></script>
+
 <script src="/resources/js/chartExt.js"></script>
 <script src="/resources/js/layer/layer.js"></script>
 
@@ -34,7 +34,7 @@ color:purple;
 <a href="help.do">新手</a> &nbsp;
  -->
 <a href="history.do">经典</a> &nbsp;
-
+<a href="holderList.do">股东户数</a> &nbsp;
 
 
 <c:if test="${root==true}">

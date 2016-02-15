@@ -11,7 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
-@Table(name = "g_stock_2")
+@Table(name = "g_stock")
 public class GStock {
 	private String symbol;
 	private String name;

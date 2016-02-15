@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.taobao.finance.choose.local.thread.Holder_Choose_MultiThread;
 import com.taobao.finance.common.Store;
 import com.taobao.finance.comparator.Comparator;
 import com.taobao.finance.dataobject.Report;
@@ -504,6 +505,17 @@ public class StockController {
 		}
 		request.setAttribute("all", all);
 		return "history";
+	}
+	
+	@RequestMapping(value = "/holderList.do", method = RequestMethod.GET)
+	public String holderList(HttpServletRequest request) {
+		logger.info("request:view public pool");
+		List<Stock> holder = new Holder_Choose_MultiThread(store).choose();
+		Collections.sort(holder,new Comparator.HoldereComparator());
+		
+		Map<String,Stock> all=Fetch_AllStock.map;
+		request.setAttribute("all", holder);
+		return "holder";
 	}
 	
 	
@@ -1800,6 +1812,30 @@ public class StockController {
 		return map;
 	}	
 	
+	
+	@RequestMapping(value = "/allkData.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Map<String,Object>> allkData() throws IOException, ParseException {
+		Map<String,Stock> map=Fetch_AllStock.map;
+		Boolean download=false;
+		if(Store.downloaded==2){
+			download=true;
+		}
+		
+		List<Stock> holder = new Holder_Choose_MultiThread(store).choose();
+		Collections.sort(holder,new Comparator.HoldereComparator());
+		
+		List<Map<String,Object>> r=new ArrayList<Map<String,Object>>();
+		for(Stock s:holder){
+			Map<String,Object> m=dataService.getKData3(s.getSymbol(),Store.workingDay,download,store);
+			r.add(m);
+		}
+		
+		
+		
+		
+		return r;
+	}	
 	
 	@RequestMapping(value = "/getAll.do", method = RequestMethod.GET)
 	@ResponseBody

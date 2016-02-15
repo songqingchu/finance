@@ -295,6 +295,91 @@ public class DataService {
 		return m;
 	}
 
+	
+	public Map<String, Object> getKData3(String symbol, Boolean working,
+			Boolean downloaded, Store store) throws IOException, ParseException {
+		Map<String, Object> m = new HashMap<String, Object>();
+
+		if (store.holderMap.containsKey(symbol)) {
+			String record = store.holderMap.get(symbol).getRecord();
+			if(symbol.contains("600091")){
+				symbol.length();
+			}
+			if (StringUtils.isNotBlank(record)) {
+				String content = "<b>股东<b>&nbsp;&nbsp;&nbsp;流通:"+store.holderMap.get(symbol).getLiuTong()+"亿<br><br>";
+				String[] res = StringUtils.split(record, ";");
+				Map<String, List<Integer>> ma = new HashMap<String, List<Integer>>();
+				List<String> yearList = new ArrayList<String>();
+				for (String rr : res) {
+					if (StringUtils.isNotBlank(rr)) {
+						String[] rrs = StringUtils.split(rr, ":");
+						if (rrs.length == 2) {
+							content = content + "<b>" + rrs[0] + ":</b>&nbsp;"
+									+ rrs[1] + "<br>";
+						}
+
+						String year = rrs[0].substring(0, 4);
+						if (!ma.containsKey(year)) {
+							yearList.add(year);
+							List<Integer> volList = new ArrayList<Integer>();
+							volList.add(Integer.parseInt(rrs[1]));
+							ma.put(year, volList);
+						} else {
+							List<Integer> volList = ma.get(year);
+							volList.add(Integer.parseInt(rrs[1]));
+							ma.put(year, volList);
+						}
+					}
+				}
+
+				List<Integer> l3 = new ArrayList<Integer>();
+				List<Integer> l6 = new ArrayList<Integer>();
+				List<Integer> l9 = new ArrayList<Integer>();
+				List<Integer> l12 = new ArrayList<Integer>();
+
+				for (String year : yearList) {
+					List<Integer> vol = ma.get(year);
+					if (vol.size() == 1) {
+                        l3.add(vol.get(0));
+                        l6.add(0);
+						l9.add(0);
+						l12.add(0);
+					}
+					if (vol.size() == 2) {
+						l3.add(vol.get(0));
+						l6.add(vol.get(1));
+						l9.add(0);
+						l12.add(0);
+					}
+					if (vol.size() == 3) {
+						l3.add(vol.get(0));
+						l6.add(vol.get(1));
+						l9.add(vol.get(2));
+						l12.add(0);
+					}
+					if (vol.size() == 4) {
+						l3.add(vol.get(0));
+						l6.add(vol.get(1));
+						l9.add(vol.get(2));
+						l12.add(vol.get(3));
+					}
+				}
+				//m.put("holder", content);
+				m.put("years", yearList);
+				m.put("v3", l3);
+				m.put("v6", l6);
+				m.put("v9", l9);
+				m.put("v12", l12);
+
+			}
+		}
+
+		
+		m.put("symbol", symbol);
+		return m;
+	}
+	
+	
 	public Map<String, Object> getKData2(String symbol, Boolean working,
 			Boolean downloaded, Store store) throws IOException, ParseException {
 		Map<String, Object> m = new HashMap<String, Object>();
@@ -377,9 +462,18 @@ public class DataService {
 		if (store.hot.containsKey(symbol)) {
 			l = store.hot.get(symbol);
 		} else {
-			l = Hisdata_Base.readHisDataMerge(symbol, null);
+			try{
+				l = Hisdata_Base.readHisDataMerge(symbol, null);
+			}catch(Exception e){
+				l=new ArrayList<Stock>();
+				return m;
+			}
+			
 		}
 
+		if(l.size()<60){
+			return m;
+		}
 		/*if (working) {
 			if (!downloaded) {
 				Stock s = Fetch_SingleStock_Sina.fetch(symbol);
@@ -541,6 +635,8 @@ public class DataService {
 		return m;
 	}
 
+	
+	
 	public static Map<String, Object> canonHistory(String symbol,
 			Boolean working, Boolean shi, GHis his)
 			throws IOException, ParseException {

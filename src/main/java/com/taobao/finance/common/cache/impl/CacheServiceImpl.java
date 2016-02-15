@@ -11,7 +11,7 @@ import net.rubyeye.xmemcached.exception.MemcachedException;
 import com.taobao.finance.common.cache.ICacheService;
 
 
-@Component("cacheService")
+//@Component("cacheService")
 public class CacheServiceImpl implements ICacheService {
 
 	@Autowired

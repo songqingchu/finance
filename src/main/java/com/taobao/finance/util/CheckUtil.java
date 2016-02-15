@@ -1038,6 +1038,10 @@ public class CheckUtil {
 		}*/
 		return true;
 	}
+	
+	
+	
+	
 
 	public static boolean checkTP(List<Stock> l) {
 		if (l.size() < 70) {
@@ -1319,10 +1323,13 @@ public class CheckUtil {
 				return false;
 			}
 		}
+		
 		//case4
 		if (downCount > 1) {
 			return false;
 		}
+		
+		
 		//case5
 		if (upCount < 3) {
 			return false;
@@ -1361,6 +1368,9 @@ public class CheckUtil {
 		return match;
 	}
 
+	
+	
+	
 	
 	
 	public static Float getAve(List<Stock> l, int day) {

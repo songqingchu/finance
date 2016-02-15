@@ -24,7 +24,7 @@ import com.sun.jna.platform.win32.WinUser.MSG;
 import com.taobao.finance.common.cache.ICacheService;
 import com.taobao.finance.entity.Proxy;
 
-@Component
+//@Component
 public class StockPeek {
 	// 鼠标事件编码
 	public static final int WM_MOUSEMOVE = 512;
@@ -97,7 +97,6 @@ public class StockPeek {
 
 	public static void main(String[] args) {
 		try {
-			
 			ApplicationContext ctx=new ClassPathXmlApplicationContext("app-context2.xml");
 			
 			StockPeek mouseHook = ctx.getBean(StockPeek.class);
