@@ -29,6 +29,8 @@ public class Fetch_AllStock {
 			for(Stock s:map.values()){
 				nameMap.put(s.getName(),s.getSymbol());
 			}
+		}else{
+			getData();
 		}
 	}
 	public static List<Stock> fetch(String proxy, Integer port) {
@@ -99,7 +101,7 @@ public class Fetch_AllStock {
 	
 	
 	public static void main(String args[]){
-		//getData();
+		getData();
 		System.out.println(Fetch_AllStock.map.size());
 	}
 }

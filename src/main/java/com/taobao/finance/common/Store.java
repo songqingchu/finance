@@ -180,28 +180,19 @@ public class Store {
 			String symbol=s.getSymbol();
 			GStock old=holderMap.get(symbol);
 			if(old!=null){
-				if(old.getRecord().contains(formalDate)){
-					
-				}else{
-					if(StringUtils.isNotBlank(old.getRecord())){
-						old.setRecord(old.getRecord()+";"+formalDate+":"+s.getHolder());
+				if(StringUtils.isNotBlank(old.getRecord())){
+					if(old.getRecord().contains(formalDate)){
+						
 					}else{
-						old.setRecord(formalDate+":"+s.getHolder());
-					}
-					try{
-						//holderMap.put(old.getSymbol(), old);
+						old.setRecord(old.getRecord()+";"+formalDate+":"+s.getHolder());
 						newHolderMap.put(old.getSymbol(), old);
-					}catch(Exception e){
-						e.printStackTrace();
 					}
+				}else{
+					old.setRecord(formalDate+":"+s.getHolder());
+					newHolderMap.put(old.getSymbol(), old);
 				}
 			}else{
-				try{
-					//holderMap.put(s.getSymbol(), s);
-					newHolderMap.put(s.getSymbol(), s);
-				}catch(Exception e){
-					e.printStackTrace();
-				}
+				newHolderMap.put(s.getSymbol(), s);
 			}
 		}
 		
@@ -214,7 +205,7 @@ public class Store {
 			for(List<Object> r:rr){
 				tList.add(new InsertTask(r, gStockService));
 			}
-			threadService.service(tList);
+			threadService.service2(tList);
 		}
 		
 	}
@@ -240,6 +231,9 @@ public class Store {
 		li.add("2015-6-30");
 		li.add("2015-9-30");
 		li.add("2015-12-31");
+		li.add("2016-3-31");
+		li.add("2016-6-30");
+		li.add("2016-9-30");
 		for(String d:li){
 			System.out.println(d);
 			List<GStock> l=Fetch_Holders.getAll(d);
@@ -253,30 +247,18 @@ public class Store {
 				formalDate=formalDate.replace("-9-", "-09-");
 				
 				if(old!=null){
-					if(old.getRecord().contains(formalDate)){
-						
-					}else{
-						if(StringUtils.isNotBlank(old.getRecord())){
+					if(StringUtils.isNotBlank(old.getRecord())){
+						if(!old.getRecord().contains(formalDate)){
 							old.setRecord(old.getRecord()+";"+formalDate+":"+s.getHolder());
-						}else{
-							old.setRecord(formalDate+":"+s.getHolder());
-						}
-						
-						try{
-							//this.gStockService.update(old);
 							holderMap.put(old.getSymbol(), old);
-						}catch(Exception e){
-							e.printStackTrace();
 						}
+					}else{
+						old.setRecord(formalDate+":"+s.getHolder());
+						holderMap.put(old.getSymbol(), old);
 					}
 				}else{
 					s.setRecord(formalDate+":"+s.getHolder());
-					try{
-						//this.gStockService.saveOrUpdate(s);
-						holderMap.put(s.getSymbol(), s);
-					}catch(Exception e){
-						e.printStackTrace();
-					}
+					holderMap.put(s.getSymbol(), s);
 				}
 			}
 			
@@ -387,173 +369,159 @@ public class Store {
 			holderMap.put(s.getSymbol(), s);
 		}
 		//this.downloadHolders();
-		this.download();
+		//this.download();
 		
 		reloadPublicPool();
 		
-		String[] ids =null;
-		if (StringUtils.isNotBlank(today.getAcvu())) {
-			ids = StringUtils.split(today.getAcvu(), ",");
-		}else{
-			ids = StringUtils.split(lastDay.getAcvu(), ",");
-		}
-		if(ids!=null){
-			List<String> l = new ArrayList<String>();
-			for(String id:ids){
-				if(!publicStockMap.containsKey(id)){
-					l.add(id);
-				}
+		if(today!=null){
+			String[] ids =null;
+			if (StringUtils.isNotBlank(today.getAcvu())) {
+				ids = StringUtils.split(today.getAcvu(), ",");
+			}else{
+				ids = StringUtils.split(lastDay.getAcvu(), ",");
 			}
-			store.put("acvu", l);
-			sSet.addAll(l);
-		}else{
-			store.put("acvu", new ArrayList<String>());
-		}
-		
-		
-		
-		ids =null;
-		if (StringUtils.isNotBlank(today.getBig())) {
-			ids = StringUtils.split(today.getBig(), ",");
-		}else{
-			ids = StringUtils.split(lastDay.getBig(), ",");
-		}
-		if(ids!=null){
-			List<String> l = new ArrayList<String>();
-			for(String id:ids){
-				if(!publicStockMap.containsKey(id)){
-					l.add(id);
+			if(ids!=null){
+				List<String> l = new ArrayList<String>();
+				for(String id:ids){
+					if(!publicStockMap.containsKey(id)){
+						l.add(id);
+					}
 				}
+				store.put("acvu", l);
+				sSet.addAll(l);
+			}else{
+				store.put("acvu", new ArrayList<String>());
 			}
-			store.put("big", l);
-			sSet.addAll(l);
-		}else{
-			store.put("big", new ArrayList<String>());
-		}
-		
-		
-		
-		
-		ids =null;
-		if (StringUtils.isNotBlank(today.getAv5())) {
-			ids = StringUtils.split(today.getAv5(), ",");
-		}else{
-			ids = StringUtils.split(lastDay.getAv5(), ",");
-		}
-		if(ids!=null){
-			List<String> l = new ArrayList<String>();
-			for(String id:ids){
-				if(!publicStockMap.containsKey(id)){
-					l.add(id);
+			
+			
+			
+			ids =null;
+			if (StringUtils.isNotBlank(today.getBig())) {
+				ids = StringUtils.split(today.getBig(), ",");
+			}else{
+				ids = StringUtils.split(lastDay.getBig(), ",");
+			}
+			if(ids!=null){
+				List<String> l = new ArrayList<String>();
+				for(String id:ids){
+					if(!publicStockMap.containsKey(id)){
+						l.add(id);
+					}
 				}
+				store.put("big", l);
+				sSet.addAll(l);
+			}else{
+				store.put("big", new ArrayList<String>());
 			}
-			store.put("av5", l);
-			sSet.addAll(l);
-		}else{
-			store.put("av5", new ArrayList<String>());
-		}
-		
-		ids =null;
-		if (StringUtils.isNotBlank(today.getAv10())) {
-			ids = StringUtils.split(today.getAv10(), ",");
-		}else{
-			ids = StringUtils.split(lastDay.getAv10(), ",");
-		}
-		if(ids!=null){
-			List<String> l = new ArrayList<String>();
-			for(String id:ids){
-				if(!publicStockMap.containsKey(id)){
-					l.add(id);
+			
+			
+			
+			
+			ids =null;
+			if (StringUtils.isNotBlank(today.getAv5())) {
+				ids = StringUtils.split(today.getAv5(), ",");
+			}else{
+				ids = StringUtils.split(lastDay.getAv5(), ",");
+			}
+			if(ids!=null){
+				List<String> l = new ArrayList<String>();
+				for(String id:ids){
+					if(!publicStockMap.containsKey(id)){
+						l.add(id);
+					}
 				}
+				store.put("av5", l);
+				sSet.addAll(l);
+			}else{
+				store.put("av5", new ArrayList<String>());
 			}
-			store.put("av10", l);
-			sSet.addAll(l);
-		}else{
-			store.put("av10", new ArrayList<String>());
-		}
-		
-		
-		ids =null;
-		if (StringUtils.isNotBlank(today.getCb())) {
-			ids = StringUtils.split(today.getCb(), ",");
-		}else{
-			ids = StringUtils.split(lastDay.getCb(), ",");
-		}
-		
-		store.put("cb", new ArrayList<String>());
-		/*if(ids!=null){
-			List<String> l = new ArrayList<String>();
-			for(String id:ids){
-				if(!publicStockMap.containsKey(id)){
-					l.add(id);
+			
+			ids =null;
+			if (StringUtils.isNotBlank(today.getAv10())) {
+				ids = StringUtils.split(today.getAv10(), ",");
+			}else{
+				ids = StringUtils.split(lastDay.getAv10(), ",");
+			}
+			if(ids!=null){
+				List<String> l = new ArrayList<String>();
+				for(String id:ids){
+					if(!publicStockMap.containsKey(id)){
+						l.add(id);
+					}
 				}
+				store.put("av10", l);
+				sSet.addAll(l);
+			}else{
+				store.put("av10", new ArrayList<String>());
 			}
-			store.put("cb", l);
-			sSet.addAll(l);
-		}else{
+			
+			
+			ids =null;
+			if (StringUtils.isNotBlank(today.getCb())) {
+				ids = StringUtils.split(today.getCb(), ",");
+			}else{
+				ids = StringUtils.split(lastDay.getCb(), ",");
+			}
+			
 			store.put("cb", new ArrayList<String>());
-		}
-		*/
-		
-		ids =null;
-		if (StringUtils.isNotBlank(today.getRatio())) {
-			ids = StringUtils.split(today.getRatio(), ",");
-		}else{
-			ids = StringUtils.split(lastDay.getRatio(), ",");
-		}
-		if(ids!=null){
-			List<String> l = new ArrayList<String>();
-			for(String id:ids){
-				if(!publicStockMap.containsKey(id)){
-					l.add(id);
+			/*if(ids!=null){
+				List<String> l = new ArrayList<String>();
+				for(String id:ids){
+					if(!publicStockMap.containsKey(id)){
+						l.add(id);
+					}
 				}
+				store.put("cb", l);
+				sSet.addAll(l);
+			}else{
+				store.put("cb", new ArrayList<String>());
 			}
-			store.put("ratio", l);
-			sSet.addAll(l);
-		}else{
-			store.put("ratio", new ArrayList<String>());
-		}
-		
-		
-		ids =null;
-		if (StringUtils.isNotBlank(today.getTp())) {
-			ids = StringUtils.split(today.getTp(), ",");
-		}else{
-			ids = StringUtils.split(lastDay.getTp(), ",");
-		}
-		if(ids!=null){
-			List<String> l = new ArrayList<String>();
-			for(String id:ids){
-				if(!publicStockMap.containsKey(id)){
-					l.add(id);
+			*/
+			
+			ids =null;
+			if (StringUtils.isNotBlank(today.getRatio())) {
+				ids = StringUtils.split(today.getRatio(), ",");
+			}else{
+				ids = StringUtils.split(lastDay.getRatio(), ",");
+			}
+			if(ids!=null){
+				List<String> l = new ArrayList<String>();
+				for(String id:ids){
+					if(!publicStockMap.containsKey(id)){
+						l.add(id);
+					}
 				}
+				store.put("ratio", l);
+				sSet.addAll(l);
+			}else{
+				store.put("ratio", new ArrayList<String>());
 			}
-			store.put("tp", l);
-			sSet.addAll(l);
-		}else{
-			store.put("tp", new ArrayList<String>());
-		}
-		
-		ids =null;
-		store.put("cb2", new ArrayList<String>());
-		
-		/*if (StringUtils.isNotBlank(today.getCb2())) {
-			ids = StringUtils.split(today.getCb2(), ",");
-		}else{
-			ids = StringUtils.split(lastDay.getCb2(), ",");
-		}
-		if(ids!=null){
-			List<String> l = new ArrayList<String>();
-			for(String id:ids){
-				if(!publicStockMap.containsKey(id)){
-					l.add(id);
+			
+			
+			ids =null;
+			if (StringUtils.isNotBlank(today.getTp())) {
+				ids = StringUtils.split(today.getTp(), ",");
+			}else{
+				ids = StringUtils.split(lastDay.getTp(), ",");
+			}
+			if(ids!=null){
+				List<String> l = new ArrayList<String>();
+				for(String id:ids){
+					if(!publicStockMap.containsKey(id)){
+						l.add(id);
+					}
 				}
+				store.put("tp", l);
+				sSet.addAll(l);
+			}else{
+				store.put("tp", new ArrayList<String>());
 			}
-			store.put("cb2", l);
-			sSet.addAll(l);
-		}else{
+			
+			ids =null;
 			store.put("cb2", new ArrayList<String>());
-		}*/
+			
+		}
+		
 		
 		
 		
@@ -730,7 +698,7 @@ public class Store {
 			}
 		};
 		d.setName("check_thread");
-		d.start();
+		//d.start();
 	}
 
 	@Autowired
@@ -799,9 +767,9 @@ public class Store {
 	
 	public void download(){
 		logger.info("routin download begin");
-		/*downloadHolders();
-		updateHistory();
-		updateTmp();*/
+		downloadHolders();
+		//updateHistory();
+		//updateTmp();
 		logger.info("routin download end\n");
 	}
 
