@@ -12,7 +12,7 @@ public class StatsDO {
 	public String date;
 	public Integer value;
 	public Integer change;
-	
+	//test1
 	//增长率
 	public Integer vRate;
 	//胜率
